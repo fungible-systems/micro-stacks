@@ -35,18 +35,18 @@ describe(generateMnemonic.name, function () {
     );
   });
 
-  it('should throw', async () => {
-    await expect(() => {
+  it('should throw', () => {
+    expect(() => {
       entropyToMnemonic(Buffer.from('', 'hex'));
-    }).rejects.toThrow('Invalid entropy');
+    }).toThrow('Invalid entropy');
 
-    await expect(() => {
+    expect(() => {
       entropyToMnemonic(Buffer.from('000000', 'hex'));
-    }).rejects.toThrow('Invalid entropy');
+    }).toThrow('Invalid entropy');
 
-    await expect(() => {
+    expect(() => {
       entropyToMnemonic(Buffer.from(new Array(1028 + 1).join('00'), 'hex'));
-    }).rejects.toThrow('Invalid entropy');
+    }).toThrow('Invalid entropy');
 
     for (const vector of BAD_VECTORS) {
       expect(validateMnemonic(vector.mnemonic)).toEqual(false);
