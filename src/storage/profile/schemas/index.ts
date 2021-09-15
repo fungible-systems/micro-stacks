@@ -1,0 +1,1 @@
+export { getPersonFromLegacyFormat } from './personLegacy';

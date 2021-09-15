@@ -1,0 +1,12 @@
+node_modules
+.DS_Store
+dist-ssr
+dist
+*.local
+.idea
+coverage
+.vscode
+.yalc
+yalc.lock
+.jest-cache
+__WIP__

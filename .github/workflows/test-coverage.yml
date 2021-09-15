@@ -1,0 +1,40 @@
+name: Test coverage
+
+on: [push]
+
+jobs:
+  code_checks:
+    name: Code Checks
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        name: Cache node_modules
+        id: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+      - uses: actions/cache@v1
+        name: Cache Jest cache
+        id: cache-jest-cache
+        with:
+          path: '.jest-cache'
+          key: ${{ runner.os }}--jest-integration
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install yarn dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
+      - name: Typecheck
+        run: yarn typecheck
+      - name: Build
+        run: yarn build
+      - name: Tests
+        run: yarn test:coverage
