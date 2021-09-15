@@ -18,6 +18,17 @@
 - Highly typed -- written in typescript.
 - Well tested.
 
+## Usage
+
+You can start using micro-stacks by installing it in your project:
+```sh
+yarn add micro-stacks
+```
+or
+```sh
+npm install micro-stacks
+```
+
 ## Documentation
 
 Documentation is WIP
