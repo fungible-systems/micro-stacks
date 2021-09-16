@@ -33,3 +33,8 @@ npm install micro-stacks
 
 Documentation is WIP
 
+## Attribution
+Much of the code in the repo originated or has been influenced by the [stacks.js packages](https://github.com/blockstack/stacks.js). 
+
+This library would not be possible if it weren't for the help and advice of [@zone117x](https://github.com/zone117x) and [@hstove](https://github.com/hstove).
+
