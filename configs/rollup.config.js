@@ -13,8 +13,10 @@ const { root } = path.parse(process.cwd());
 function external(id) {
   return (
     (!id.startsWith('.') && !id.startsWith(root)) ||
+    id.startsWith('micro-stacks') ||
     id === 'react' ||
     id === 'jotai' ||
+    id === 'crypto' ||
     id.includes('.test.')
   );
 }
@@ -45,6 +47,8 @@ function getEsbuild(target) {
     loaders: {
       '.ts': 'ts',
     },
+    external,
+    platform: 'neutral',
     tsconfig: path.resolve('./tsconfig.build.json'),
   });
 }
@@ -73,7 +77,7 @@ function createESMConfig(input) {
       json({
         compact: true,
       }),
-      getEsbuild('node14'),
+      getEsbuild('esnext'),
     ].filter(Boolean),
   };
 }
