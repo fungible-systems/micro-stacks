@@ -1,4 +1,4 @@
-import { AuthOptions, StorageAdapter } from 'micro-stacks/connect';
+import { AuthOptions, defaultStorageAdapter, StorageAdapter } from 'micro-stacks/connect';
 import { StacksMainnet, StacksNetwork, StacksTestnet } from 'micro-stacks/network';
 import { InitialValuesAtomBuilder } from 'jotai-query-toolkit/nextjs';
 import { authOptionsAtom } from './store/auth';
@@ -28,6 +28,7 @@ interface AppProviderAtomBuilder {
   /** the network for the app (testnet | mainnet) */
   network?: StacksNetwork | 'mainnet' | 'testnet';
 }
+
 /**
  * appProviderAtomBuilder
  *
@@ -54,7 +55,7 @@ interface AppProviderAtomBuilder {
  */
 export const appProviderAtomBuilder = ({
   network,
-  storageAdapter,
+  storageAdapter = defaultStorageAdapter,
   authOptions,
 }: AppProviderAtomBuilder): InitialValuesAtomBuilder[] => {
   return [
