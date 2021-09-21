@@ -8,7 +8,7 @@ The react integration is highly opinionated, and as such, you'll need to install
 module:
 
 ```shell
-yarn add micro-stacks jotai jotai-query-toolkit react-query micro-memoize
+yarn add micro-stacks jotai jotai-query-toolkit react-query micro-memoize proxy-memoize
 ```
 
 ## Integration
