@@ -1,6 +1,6 @@
 import { FC, createElement } from 'react';
 import { defaultStorageAdapter } from 'micro-stacks/connect';
-import { StacksMainnet, StacksNetwork, StacksRegtest, StacksTestnet } from 'micro-stacks/network';
+import { StacksNetwork, StacksMainnet, StacksTestnet, StacksRegtest, StacksMocknet } from 'micro-stacks/network';
 import { Provider } from 'jotai';
 
 import { authOptionsAtom } from './store/auth';
@@ -12,7 +12,7 @@ import type { AuthOptions, StorageAdapter } from 'micro-stacks/connect';
 export const MicroStacksProvider: FC<{
   authOptions: AuthOptions;
   storageAdapter?: StorageAdapter<unknown>;
-  network?: StacksNetwork | 'mainnet' | 'testnet' | 'regtest';
+  network?: StacksNetwork | 'mainnet' | 'testnet' | 'regtest' | 'mocknet';
 }> = ({
   children,
   authOptions,
@@ -23,6 +23,8 @@ export const MicroStacksProvider: FC<{
     if (network) {
       if (typeof network === 'string') {
         switch (network) {
+          case 'mocknet':
+            return new StacksMocknet();
           case 'regtest':
             return new StacksRegtest();
           case 'testnet':
