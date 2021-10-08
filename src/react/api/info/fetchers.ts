@@ -4,10 +4,12 @@ import {
   NetworkBlockTimesResponse,
   NetworkBlockTimeResponse,
   GetStxSupplyResponse,
+  GetStxTotalSupplyPlainResponse,
 } from '@stacks/stacks-blockchain-api-types';
 import { BaseListParams, WithHeight } from '../types';
 import {
   fetchJson,
+  fetchText,
   generateUrl,
   infoEndpoint,
   statusEndpoint,
@@ -72,4 +74,15 @@ export async function fetchNetworkBlockTime({
 export async function fetchStxSupply({ url, height }: WithHeight<BaseListParams>) {
   const path = generateUrl(stxSupplyEndpoint(url), {});
   return fetchJson<GetStxSupplyResponse>(path);
+}
+
+/**
+ * Get total STX supply in plain text format
+ *
+ * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_stx_supply_total_supply_plain
+ */
+
+export async function fetchStxSupplyPlain({ url }: BaseListParams) {
+  const path = generateUrl(stxSupplyEndpoint(url), {});
+  return fetchText<GetStxTotalSupplyPlainResponse>(path);
 }
