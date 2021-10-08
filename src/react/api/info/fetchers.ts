@@ -3,8 +3,9 @@ import {
   ServerStatusResponse,
   NetworkBlockTimesResponse,
   NetworkBlockTimeResponse,
+  GetStxSupplyResponse,
 } from '@stacks/stacks-blockchain-api-types';
-import { BaseListParams } from '../types';
+import { BaseListParams, WithHeight } from '../types';
 import {
   fetchJson,
   generateUrl,
@@ -12,6 +13,7 @@ import {
   statusEndpoint,
   networkBlockTimesEndpoint,
   networkBlockTimeEndpoint,
+  stxSupplyEndpoint,
 } from '../utils';
 
 /**
@@ -59,4 +61,15 @@ export async function fetchNetworkBlockTime({
 }: BaseListParams & { network: 'mainnet' | 'testnet' }) {
   const path = generateUrl(`${networkBlockTimeEndpoint(url)}/${network}}`, {});
   return fetchJson<NetworkBlockTimeResponse>(path);
+}
+
+/**
+ * Get total and unlocked STX supply
+ *
+ * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_stx_supply
+ */
+
+export async function fetchStxSupply({ url, height }: WithHeight<BaseListParams>) {
+  const path = generateUrl(stxSupplyEndpoint(url), {});
+  return fetchJson<GetStxSupplyResponse>(path);
 }

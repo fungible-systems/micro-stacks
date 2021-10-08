@@ -82,6 +82,10 @@ export function statusEndpoint(url: string) {
   return `${extendedEndpoint(url)}/status`;
 }
 
+export function stxSupplyEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/stx_supply`;
+}
+
 export function addressEndpoint(url: string) {
   return `${extendedEndpoint(url)}/address`;
 }
