@@ -115,6 +115,19 @@ export async function fetchJson<T>(path: string) {
   return (await res.json()) as T;
 }
 
+export async function fetchText<T>(path: string): Promise<string> {
+  const requestHeaders = {
+    Accept: 'text/plain',
+  };
+
+  const fetchOptions = {
+    method: 'GET',
+    headers: requestHeaders,
+  };
+  const res = await fetchPrivate(path, fetchOptions);
+  return await res.text();
+}
+
 export function getNextPageParam(options: { limit: number; offset: number; total: number }) {
   if (!options) return 0;
   const { limit, offset, total } = options;
