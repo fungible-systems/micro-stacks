@@ -94,6 +94,10 @@ export function infoEndpoint(url: string) {
   return `${v2Endpoint(url)}/info`;
 }
 
+export function networkBlockTimesEndpoint(url: string) {
+  return `${infoEndpoint(url)}/network_block_times`;
+}
+
 export function txMempoolEndpoint(url: string) {
   return `${txEndpoint(url)}/mempool`;
 }
