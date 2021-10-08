@@ -78,6 +78,10 @@ export function extendedEndpoint(url: string) {
   return `${url}/extended/v1`;
 }
 
+export function statusEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/status`;
+}
+
 export function addressEndpoint(url: string) {
   return `${extendedEndpoint(url)}/address`;
 }
