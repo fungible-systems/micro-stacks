@@ -98,6 +98,10 @@ export function networkBlockTimesEndpoint(url: string) {
   return `${infoEndpoint(url)}/network_block_times`;
 }
 
+export function networkBlockTimeEndpoint(url: string) {
+  return `${infoEndpoint(url)}/network_block_time`;
+}
+
 export function txMempoolEndpoint(url: string) {
   return `${txEndpoint(url)}/mempool`;
 }

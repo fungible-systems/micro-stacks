@@ -2,6 +2,7 @@ import {
   CoreNodeInfoResponse,
   ServerStatusResponse,
   NetworkBlockTimesResponse,
+  NetworkBlockTimeResponse,
 } from '@stacks/stacks-blockchain-api-types';
 import { BaseListParams } from '../types';
 import {
@@ -10,6 +11,7 @@ import {
   infoEndpoint,
   statusEndpoint,
   networkBlockTimesEndpoint,
+  networkBlockTimeEndpoint,
 } from '../utils';
 
 /**
@@ -43,4 +45,18 @@ export async function fetchStatus({ url }: BaseListParams) {
 export async function fetchNetworkBlockTimes({ url }: BaseListParams) {
   const path = generateUrl(networkBlockTimesEndpoint(url), {});
   return fetchJson<NetworkBlockTimesResponse>(path);
+}
+
+/**
+ * Get a given network's target block time
+ *
+ * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_network_block_time_by_network
+ */
+
+export async function fetchNetworkBlockTime({
+  url,
+  network,
+}: BaseListParams & { network: 'mainnet' | 'testnet' }) {
+  const path = generateUrl(`${networkBlockTimeEndpoint(url)}/${network}}`, {});
+  return fetchJson<NetworkBlockTimeResponse>(path);
 }
