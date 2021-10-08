@@ -70,6 +70,10 @@ export const generateUrl = <Value = unknown>(
   return url.toString();
 };
 
+export function v2Endpoint(url: string) {
+  return `${url}/v2`;
+}
+
 export function extendedEndpoint(url: string) {
   return `${url}/extended/v1`;
 }
@@ -80,6 +84,10 @@ export function addressEndpoint(url: string) {
 
 export function txEndpoint(url: string) {
   return `${extendedEndpoint(url)}/tx`;
+}
+
+export function infoEndpoint(url: string) {
+  return `${v2Endpoint(url)}/info`;
 }
 
 export function txMempoolEndpoint(url: string) {
