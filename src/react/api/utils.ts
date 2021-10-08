@@ -86,6 +86,14 @@ export function stxSupplyEndpoint(url: string) {
   return `${extendedEndpoint(url)}/stx_supply`;
 }
 
+export function stxSupplyPlainEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/stx_supply/total/plain`;
+}
+
+export function stxSupplyCirculatingPlainEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/stx_supply/circulating/plain`;
+}
+
 export function addressEndpoint(url: string) {
   return `${extendedEndpoint(url)}/address`;
 }

@@ -5,6 +5,7 @@ import {
   NetworkBlockTimeResponse,
   GetStxSupplyResponse,
   GetStxTotalSupplyPlainResponse,
+  GetStxCirculatingSupplyPlainResponse,
 } from '@stacks/stacks-blockchain-api-types';
 import { BaseListParams, WithHeight } from '../types';
 import {
@@ -16,6 +17,8 @@ import {
   networkBlockTimesEndpoint,
   networkBlockTimeEndpoint,
   stxSupplyEndpoint,
+  stxSupplyPlainEndpoint,
+  stxSupplyCirculatingPlainEndpoint,
 } from '../utils';
 
 /**
@@ -83,6 +86,17 @@ export async function fetchStxSupply({ url, height }: WithHeight<BaseListParams>
  */
 
 export async function fetchStxSupplyPlain({ url }: BaseListParams) {
-  const path = generateUrl(stxSupplyEndpoint(url), {});
+  const path = generateUrl(stxSupplyPlainEndpoint(url), {});
   return fetchText<GetStxTotalSupplyPlainResponse>(path);
+}
+
+/**
+ * Get circulating STX supply in plain text format
+ *
+ * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_stx_supply_circulating_plain
+ */
+
+export async function fetchStxSupplyCirculatingPlain({ url }: BaseListParams) {
+  const path = generateUrl(stxSupplyCirculatingPlainEndpoint(url), {});
+  return fetchText<GetStxCirculatingSupplyPlainResponse>(path);
 }
