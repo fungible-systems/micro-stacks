@@ -6,6 +6,8 @@ import {
   GetStxSupplyResponse,
   GetStxTotalSupplyPlainResponse,
   GetStxCirculatingSupplyPlainResponse,
+  GetStxSupplyLegacyFormatResponse,
+  CoreNodePoxResponse,
 } from '@stacks/stacks-blockchain-api-types';
 import { BaseListParams, WithHeight } from '../types';
 import {
@@ -19,6 +21,8 @@ import {
   stxSupplyEndpoint,
   stxSupplyPlainEndpoint,
   stxSupplyCirculatingPlainEndpoint,
+  stxSupplyLegacyFormatEndpoint,
+  poxEndpoint,
 } from '../utils';
 
 /**
@@ -99,4 +103,26 @@ export async function fetchStxSupplyPlain({ url }: BaseListParams) {
 export async function fetchStxSupplyCirculatingPlain({ url }: BaseListParams) {
   const path = generateUrl(stxSupplyCirculatingPlainEndpoint(url), {});
   return fetchText<GetStxCirculatingSupplyPlainResponse>(path);
+}
+
+/**
+ * Get total and unlocked STX supply (results formatted the same as the legacy 1.0 API)
+ *
+ * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_total_stx_supply_legacy_format
+ */
+
+export async function fetchStxSupplyLegacyFormat({ url, height }: WithHeight<BaseListParams>) {
+  const path = generateUrl(stxSupplyLegacyFormatEndpoint(url), {});
+  return fetchJson<GetStxSupplyLegacyFormatResponse>(path);
+}
+
+/**
+ * Get PoX details
+ *
+ * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_pox_info
+ */
+
+export async function fetchPox({ url }: BaseListParams) {
+  const path = generateUrl(poxEndpoint(url), {});
+  return fetchJson<CoreNodePoxResponse>(path);
 }

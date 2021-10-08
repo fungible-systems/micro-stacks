@@ -94,6 +94,10 @@ export function stxSupplyCirculatingPlainEndpoint(url: string) {
   return `${extendedEndpoint(url)}/stx_supply/circulating/plain`;
 }
 
+export function stxSupplyLegacyFormatEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/stx_supply/legacy_format`;
+}
+
 export function addressEndpoint(url: string) {
   return `${extendedEndpoint(url)}/address`;
 }
@@ -104,6 +108,10 @@ export function txEndpoint(url: string) {
 
 export function infoEndpoint(url: string) {
   return `${v2Endpoint(url)}/info`;
+}
+
+export function poxEndpoint(url: string) {
+  return `${v2Endpoint(url)}/pox`;
 }
 
 export function networkBlockTimesEndpoint(url: string) {
