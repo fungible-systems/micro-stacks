@@ -115,11 +115,11 @@ export function poxEndpoint(url: string) {
 }
 
 export function networkBlockTimesEndpoint(url: string) {
-  return `${infoEndpoint(url)}/network_block_times`;
+  return `${extendedEndpoint(url)}/info/network_block_times`;
 }
 
 export function networkBlockTimeEndpoint(url: string) {
-  return `${infoEndpoint(url)}/network_block_time`;
+  return `${extendedEndpoint(url)}/info/network_block_time`;
 }
 
 export function txMempoolEndpoint(url: string) {

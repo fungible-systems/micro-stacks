@@ -68,7 +68,7 @@ export async function fetchNetworkBlockTime({
   url,
   network,
 }: BaseListParams & { network: 'mainnet' | 'testnet' }) {
-  const path = generateUrl(`${networkBlockTimeEndpoint(url)}/${network}}`, {});
+  const path = generateUrl(`${networkBlockTimeEndpoint(url)}/${network}`, {});
   return fetchJson<NetworkBlockTimeResponse>(path);
 }
 
