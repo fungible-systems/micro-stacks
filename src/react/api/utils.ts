@@ -82,6 +82,14 @@ export function statusEndpoint(url: string) {
   return `${extendedEndpoint(url)}/status`;
 }
 
+export function stxFaucetEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/faucets/stx`;
+}
+
+export function btcFaucetEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/faucets/btc`;
+}
+
 export function stxSupplyEndpoint(url: string) {
   return `${extendedEndpoint(url)}/stx_supply`;
 }
@@ -128,6 +136,22 @@ export function txMempoolEndpoint(url: string) {
 
 export async function fetchJson<T>(path: string) {
   const res = await fetchPrivate(path);
+  return (await res.json()) as T;
+}
+
+export async function fetchJsonPost<T>(path: string, body: any) {
+  const requestHeaders = {
+    'Content-Type': 'application/json; charset=utf-8',
+    Accept: 'application/json',
+  };
+
+  const contents = JSON.stringify(body);
+  const fetchOptions = {
+    method: 'POST',
+    body: contents,
+    headers: requestHeaders,
+  };
+  const res = await fetchPrivate(path, fetchOptions);
   return (await res.json()) as T;
 }
 
