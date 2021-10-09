@@ -12,6 +12,8 @@ export * from './react/api/tx/clients';
 export * from './react/api/tx/fetchers';
 export * from './react/api/tx/keys';
 export * from './react/api/info/fetchers';
+export * from './react/api/faucets/fetchers';
+export * from './react/api/faucets/types';
 
 // hooks
 export * from './react/hooks/use-auth';
