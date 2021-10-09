@@ -82,6 +82,10 @@ export function statusEndpoint(url: string) {
   return `${extendedEndpoint(url)}/status`;
 }
 
+export function burnchainEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/burnchain`;
+}
+
 export function blockEndpoint(url: string) {
   return `${extendedEndpoint(url)}/block`;
 }
