@@ -51,7 +51,7 @@ export const generateQueryStringFromArray = <T>(key: string, values?: T[]) => {
 };
 export const generateUrl = <Value = unknown>(
   baseUrl: string,
-  params: { [key: string]: string[] | string | number | undefined }
+  params: { [key: string]: string[] | string | number | boolean | undefined }
 ): string => {
   const url = new URL(baseUrl);
   Object.keys(params).forEach(key => {
@@ -88,6 +88,10 @@ export function burnchainEndpoint(url: string) {
 
 export function blockEndpoint(url: string) {
   return `${extendedEndpoint(url)}/block`;
+}
+
+export function contractEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/contract`;
 }
 
 export function microblockEndpoint(url: string) {
