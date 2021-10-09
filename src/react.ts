@@ -7,6 +7,7 @@ export * from './react/api/accounts/clients';
 export * from './react/api/accounts/queries';
 export * from './react/api/accounts/fetchers';
 export * from './react/api/accounts/keys';
+export * from './react/api/blocks/fetchers';
 export * from './react/api/tx/queries';
 export * from './react/api/tx/clients';
 export * from './react/api/tx/fetchers';
