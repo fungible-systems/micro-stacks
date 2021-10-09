@@ -82,6 +82,10 @@ export function statusEndpoint(url: string) {
   return `${extendedEndpoint(url)}/status`;
 }
 
+export function microblockEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/microblock`;
+}
+
 export function stxFaucetEndpoint(url: string) {
   return `${extendedEndpoint(url)}/faucets/stx`;
 }
