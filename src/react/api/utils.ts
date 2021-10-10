@@ -94,6 +94,10 @@ export function contractEndpoint(url: string) {
   return `${extendedEndpoint(url)}/contract`;
 }
 
+export function contractsEndpoint(url: string) {
+  return `${v2Endpoint(url)}/contracts`;
+}
+
 export function microblockEndpoint(url: string) {
   return `${extendedEndpoint(url)}/microblock`;
 }
