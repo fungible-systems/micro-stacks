@@ -61,7 +61,7 @@ export const generateUrl = <Value = unknown>(
       if (value.length === 0) return;
       return url.searchParams.set(`${key}[]`, generateQueryStringFromArray<string>(key, value));
     }
-    if (isNumber(value)) {
+    if (typeof value == 'boolean' || isNumber(value)) {
       return url.searchParams.set(key, String(value));
     } else {
       url.searchParams.set(key, value);
