@@ -15,7 +15,7 @@ import { HIRO_TESTNET_DEFAULT } from 'micro-stacks/network';
 
 const hash = 'string';
 
-export const GET_INFO_MOCKS = [
+export const GET_MICROBLOCKS_MOCKS = [
   rest.get(microblockEndpoint(HIRO_TESTNET_DEFAULT), (_req, res, ctx) => {
     return res(ctx.json(MICROBLOCK_LIST_200_RESPONSE));
   }),
@@ -32,7 +32,7 @@ export const GET_INFO_MOCKS = [
 
 // microblocks.fetchers.spec.ts
 describe('microblocks fetchers', () => {
-  const server = setupServer(...GET_INFO_MOCKS);
+  const server = setupServer(...GET_MICROBLOCKS_MOCKS);
   beforeAll(() => {
     server.listen();
   });

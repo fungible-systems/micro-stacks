@@ -19,7 +19,7 @@ const height = 3275;
 const burn_block_hash = '0xb154c008df2101023a6d0d54986b3964cee58119eed14f5bed98e15678e18fe2';
 const burn_block_height = 654439;
 
-export const GET_INFO_MOCKS = [
+export const GET_BLOCKS_MOCKS = [
   rest.get(blockEndpoint(HIRO_TESTNET_DEFAULT), (_req, res, ctx) => {
     return res(ctx.json(BLOCK_LIST_200_RESPONSE));
   }),
@@ -63,7 +63,7 @@ export const GET_INFO_MOCKS = [
 
 // blocks.fetchers.spec.ts
 describe('blocks fetchers', () => {
-  const server = setupServer(...GET_INFO_MOCKS);
+  const server = setupServer(...GET_BLOCKS_MOCKS);
   beforeAll(() => {
     server.listen();
   });
