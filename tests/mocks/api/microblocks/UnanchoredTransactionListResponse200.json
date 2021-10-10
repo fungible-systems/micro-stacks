@@ -1,0 +1,70 @@
+{
+  "total": 0,
+  "results": [
+    {
+      "tx_id": "string",
+      "nonce": 0,
+      "fee_rate": "string",
+      "sender_address": "string",
+      "sponsored": true,
+      "sponsor_address": "string",
+      "post_condition_mode": "allow",
+      "post_conditions": [
+        {
+          "principal": {
+            "type_id": "principal_origin"
+          },
+          "condition_code": "sent_equal_to",
+          "amount": "string",
+          "type": "stx"
+        }
+      ],
+      "anchor_mode": "on_chain_only",
+      "block_hash": "string",
+      "block_height": 0,
+      "burn_block_time": 0,
+      "burn_block_time_iso": "string",
+      "parent_burn_block_time": 0,
+      "parent_burn_block_time_iso": "string",
+      "canonical": true,
+      "tx_index": 0,
+      "tx_status": "success",
+      "tx_result": {
+        "hex": "string",
+        "repr": "string"
+      },
+      "event_count": 0,
+      "parent_block_hash": "string",
+      "is_unanchored": true,
+      "microblock_hash": "string",
+      "microblock_sequence": 0,
+      "microblock_canonical": true,
+      "execution_cost_read_count": 0,
+      "execution_cost_read_length": 0,
+      "execution_cost_runtime": 0,
+      "execution_cost_write_count": 0,
+      "execution_cost_write_length": 0,
+      "events": [
+        {
+          "event_index": 0,
+          "event_type": "smart_contract_log",
+          "tx_id": "string",
+          "contract_log": {
+            "contract_id": "string",
+            "topic": "string",
+            "value": {
+              "hex": "string",
+              "repr": "string"
+            }
+          }
+        }
+      ],
+      "tx_type": "token_transfer",
+      "token_transfer": {
+        "recipient_address": "string",
+        "amount": "string",
+        "memo": "string"
+      }
+    }
+  ]
+}
