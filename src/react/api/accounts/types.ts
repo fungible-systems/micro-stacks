@@ -9,7 +9,6 @@ export interface ListEndpointBase {
 }
 
 export type AccountListOptions = AccountBase & ListEndpointBase;
-export type WithHeight<T> = T & { height?: number };
 export type PrincipalListWithNetwork = [principal: string, limit: number, networkUrl: string];
 export type PrincipalListHeightWithNetwork = [
   principal: string,
