@@ -32,7 +32,7 @@ export async function fetchBurnchainRewardSlotHoldersByAddress({
   offset,
   address,
 }: BaseListParams & { address: string }) {
-  const path = generateUrl(`${burnchainEndpoint(url)}/${address}`, {
+  const path = generateUrl(`${burnchainEndpoint(url)}/reward_slot_holders/${address}`, {
     limit,
     offset,
   });
