@@ -106,6 +106,10 @@ export function contractsEndpoint(url: string) {
   return `${v2Endpoint(url)}/contracts`;
 }
 
+export function feesEndpoint(url: string) {
+  return `${v2Endpoint(url)}/fees/transfers`;
+}
+
 export function microblockEndpoint(url: string) {
   return `${extendedEndpoint(url)}/microblock`;
 }
