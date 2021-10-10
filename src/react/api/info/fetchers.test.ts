@@ -1,13 +1,32 @@
-// info.fetchers.spec.ts
+import { setupServer } from 'msw/node';
+import * as INFO_RESPONSE from '../../../../tests/mocks/api/info.json';
+import { rest } from 'msw';
 import { fetchCoreApiInfo } from './fetchers';
-import * as mockedResponse from '../../../../tests/mocks/api/info.json';
-const TESTNET_URL = 'https://stacks-node-api.xenon.blockstack.org';
+import { infoEndpoint } from '../utils';
+import { HIRO_TESTNET_DEFAULT } from 'micro-stacks/network';
 
+export const GET_INFO_MOCKS = [
+  rest.get(infoEndpoint(HIRO_TESTNET_DEFAULT), (_req, res, ctx) => {
+    return res(ctx.json(INFO_RESPONSE));
+  }),
+];
+
+// info.fetchers.spec.ts
 describe('info fetchers', () => {
+  const server = setupServer(...GET_INFO_MOCKS);
+  beforeAll(() => {
+    server.listen();
+  });
+  afterEach(() => {
+    server.resetHandlers();
+    jest.resetModules();
+  });
+  afterAll(() => {
+    server.close();
+  });
   test(fetchCoreApiInfo.name, async () => {
-    //const mockedResponse = '../../tests/api/info'; //{}; // this would be mocked, by following the msw docs
-    const args = { url: TESTNET_URL }; // default params
+    const args = { url: HIRO_TESTNET_DEFAULT }; // default params
     const data = await fetchCoreApiInfo(args); // fetch the data (mocked via msw)
-    expect(data).toBe(mockedResponse); // expect the results to equal the mocked data
+    expect(data).toEqual(INFO_RESPONSE); // expect the results to equal the mocked data
   });
 });
