@@ -15,8 +15,8 @@ export const GET_FAUCET_MOCKS = [
   }),
 ];
 
-// info.fetchers.spec.ts
-describe('info fetchers', () => {
+// faucets.fetchers.spec.ts
+describe('faucets fetchers', () => {
   const server = setupServer(...GET_FAUCET_MOCKS);
   beforeAll(() => {
     server.listen();
