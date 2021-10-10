@@ -9,7 +9,7 @@ import {
   ContractSourceResponse,
 } from '@stacks/stacks-blockchain-api-types';
 import { BaseListParams } from '../types';
-import { fetchJson, generateUrl, contractEndpoint } from '../utils';
+import { fetchJson, generateUrl, contractEndpoint, contractsEndpoint } from '../utils';
 
 /**
  * Get contract info using the contract ID
@@ -67,11 +67,12 @@ export async function fetchContractInterface({
   contract_name,
   tip,
 }: BaseListParams & { contract_address: string; contract_name: string; tip: string }) {
-  const path = generateUrl(`${contractEndpoint(url)}/${contract_address}/${contract_name}`, {
-    contract_address,
-    contract_name,
-    tip,
-  });
+  const path = generateUrl(
+    `${contractsEndpoint(url)}/interface/${contract_address}/${contract_name}`,
+    {
+      tip,
+    }
+  );
   return fetchJson<ContractInterfaceResponse>(path);
 }
 
@@ -93,11 +94,12 @@ export async function fetchContractSource({
   proof: number;
   tip: string;
 }) {
-  const path = generateUrl(`${contractEndpoint(url)}/${contract_address}/${contract_name}`, {
-    contract_address,
-    contract_name,
-    proof,
-    tip,
-  });
+  const path = generateUrl(
+    `${contractsEndpoint(url)}/source/${contract_address}/${contract_name}`,
+    {
+      proof,
+      tip,
+    }
+  );
   return fetchJson<ContractSourceResponse>(path);
 }
