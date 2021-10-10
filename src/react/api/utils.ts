@@ -70,6 +70,10 @@ export const generateUrl = <Value = unknown>(
   return url.toString();
 };
 
+export function v1Endpoint(url: string) {
+  return `${url}/v1`;
+}
+
 export function v2Endpoint(url: string) {
   return `${url}/v2`;
 }

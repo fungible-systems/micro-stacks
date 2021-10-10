@@ -9,6 +9,7 @@ export * from './react/api/accounts/fetchers';
 export * from './react/api/accounts/keys';
 export * from './react/api/blocks/fetchers';
 export * from './react/api/burnchain/fetchers';
+export * from './react/api/bns/fetchers';
 export * from './react/api/fees/fetchers';
 export * from './react/api/smartcontracts/fetchers';
 export * from './react/api/search/fetchers';
