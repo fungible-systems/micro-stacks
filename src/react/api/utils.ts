@@ -102,6 +102,10 @@ export function contractEndpoint(url: string) {
   return `${extendedEndpoint(url)}/contract`;
 }
 
+export function tokensEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/tokens`;
+}
+
 export function contractsEndpoint(url: string) {
   return `${v2Endpoint(url)}/contracts`;
 }
