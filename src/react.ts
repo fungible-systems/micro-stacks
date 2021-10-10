@@ -12,6 +12,7 @@ export * from './react/api/burnchain/fetchers';
 export * from './react/api/fees/fetchers';
 export * from './react/api/smartcontracts/fetchers';
 export * from './react/api/search/fetchers';
+export * from './react/api/tokens/fetchers';
 export * from './react/api/tx/queries';
 export * from './react/api/tx/clients';
 export * from './react/api/tx/fetchers';
