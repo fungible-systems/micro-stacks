@@ -11,6 +11,7 @@ export type SetOptional<BaseType, Keys extends keyof BaseType> = Simplify<
     Partial<Pick<BaseType, Keys>>
 >;
 export type WithLimit<T> = T & { limit?: number };
+export type WithHeight<T> = T & { height?: number };
 
 export type UseCallback<T extends (...args: any[]) => any> = ((
   ...args: Parameters<T>

@@ -1,4 +1,6 @@
-import { AccountBase, AccountListOptions, WithHeight } from './types';
+import { AccountBase, AccountListOptions } from './types';
+import { WithHeight } from '../../types';
+
 import {
   AddressBalanceResponse,
   AddressStxBalanceResponse,

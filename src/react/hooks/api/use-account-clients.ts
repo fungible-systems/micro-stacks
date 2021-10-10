@@ -22,7 +22,7 @@ import {
   accountTransactionsListClientAtom,
   accountTransactionsListWithTransfersClientAtom,
 } from '../../api/accounts/clients';
-import type { WithHeight } from '../../api/accounts/types';
+import type { WithHeight } from '../../types';
 import type { WithLimit } from '../../types';
 
 export type InfiniteOptionsWithLimit<T> = WithLimit<AtomWithInfiniteQueryOptions<T>>;

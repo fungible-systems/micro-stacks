@@ -9,7 +9,9 @@ import {
   GetStxSupplyLegacyFormatResponse,
   CoreNodePoxResponse,
 } from '@stacks/stacks-blockchain-api-types';
-import { BaseListParams, WithHeight } from '../types';
+import { BaseListParams } from '../types';
+import { WithHeight } from '../../types';
+
 import {
   fetchJson,
   fetchText,
