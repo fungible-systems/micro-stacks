@@ -14,8 +14,8 @@ export const GET_FEERATE_MOCKS = [
   }),
 ];
 
-// faucets.fetchers.spec.ts
-describe('faucets fetchers', () => {
+// feerate.fetchers.spec.ts
+describe('feerate fetchers', () => {
   const server = setupServer(...GET_FEERATE_MOCKS);
   beforeAll(() => {
     server.listen();

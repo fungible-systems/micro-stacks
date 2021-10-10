@@ -82,6 +82,10 @@ export function statusEndpoint(url: string) {
   return `${extendedEndpoint(url)}/status`;
 }
 
+export function searchEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/search`;
+}
+
 export function feeRateEndpoint(url: string) {
   return `${extendedEndpoint(url)}/fee_rate`;
 }
