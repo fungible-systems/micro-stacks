@@ -82,6 +82,10 @@ export function statusEndpoint(url: string) {
   return `${extendedEndpoint(url)}/status`;
 }
 
+export function feeRateEndpoint(url: string) {
+  return `${extendedEndpoint(url)}/fee_rate`;
+}
+
 export function burnchainEndpoint(url: string) {
   return `${extendedEndpoint(url)}/burnchain`;
 }
