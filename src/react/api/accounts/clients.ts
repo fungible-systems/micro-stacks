@@ -1,4 +1,4 @@
-import { makeAtomFamilyWithQuery, makeAtomFamilyWithInfiniteQuery } from 'jotai-query-toolkit';
+import { atomFamilyWithInfiniteQuery, atomFamilyWithQuery } from 'jotai-query-toolkit';
 
 import {
   fetchAccountAssets,
@@ -26,43 +26,40 @@ import type {
   MempoolTransactionListResponse,
 } from '@stacks/stacks-blockchain-api-types';
 
-export const makeAccountBalancesClientAtom = makeAtomFamilyWithQuery<
+export const accountBalancesClientAtom = atomFamilyWithQuery<
   PrincipalWithNetwork,
   AddressBalanceResponse
->({
-  queryKey: AccountClientKeys.Balances,
-  queryFn(get, [principal, url]) {
-    return fetchAccountBalances({ url, principal });
-  },
-});
-export const makeAccountStxBalanceClientAtom = makeAtomFamilyWithQuery<
-  PrincipalWithNetwork,
-  AddressStxBalanceResponse
->({
-  queryKey: AccountClientKeys.StxBalance,
-  queryFn(get, [principal, url]) {
-    return fetchAccountStxBalance({ url, principal });
-  },
+>(AccountClientKeys.Balances, async function queryFn(get, [principal, url]) {
+  return fetchAccountBalances({ url, principal });
 });
 
-export const makeAccountTransactionsListClientAtom = makeAtomFamilyWithInfiniteQuery<
+export const accountStxBalanceClientAtom = atomFamilyWithQuery<
+  PrincipalWithNetwork,
+  AddressStxBalanceResponse
+>(AccountClientKeys.StxBalance, async function queryFn(get, [principal, url]) {
+  return fetchAccountStxBalance({ url, principal });
+});
+
+export const accountTransactionsListClientAtom = atomFamilyWithInfiniteQuery<
   PrincipalListHeightWithNetwork,
   AddressTransactionsListResponse
->({
-  queryKey: AccountClientKeys.Transactions,
-  queryFn(get, [principal, params, url], { pageParam: offset = 0 }) {
+>(
+  AccountClientKeys.Transactions,
+  async function queryFn(get, [principal, params, url], { pageParam: offset = 0 }) {
     const { limit = DEFAULT_LIST_LIMIT, height = undefined } = params;
     return fetchAccountTransactions({ principal, limit, height, url, offset });
   },
-  getNextPageParam,
-});
+  {
+    getNextPageParam,
+  }
+);
 
-export const makeAccountTransactionsListWithTransfersClientAtom = makeAtomFamilyWithInfiniteQuery<
+export const accountTransactionsListWithTransfersClientAtom = atomFamilyWithInfiniteQuery<
   PrincipalListHeightWithNetwork,
   AddressTransactionsWithTransfersListResponse
->({
-  queryKey: AccountClientKeys.TransactionsWithTransfers,
-  queryFn(get, [principal, params, url], { pageParam: offset = 0 }) {
+>(
+  AccountClientKeys.TransactionsWithTransfers,
+  async function queryFn(get, [principal, params, url], { pageParam: offset = 0 }) {
     const { limit = DEFAULT_LIST_LIMIT, height = undefined } = params;
     return fetchAccountTransactionsWithTransfers({
       principal,
@@ -72,15 +69,21 @@ export const makeAccountTransactionsListWithTransfersClientAtom = makeAtomFamily
       height,
     });
   },
-  getNextPageParam,
-});
+  {
+    getNextPageParam,
+  }
+);
 
-export const makeAccountAssetsListClientAtom = makeAtomFamilyWithInfiniteQuery<
+export const accountAssetsListClientAtom = atomFamilyWithInfiniteQuery<
   PrincipalListWithNetwork,
   AddressAssetsListResponse
->({
-  queryKey: AccountClientKeys.Assets,
-  queryFn(get, [principal, limit = DEFAULT_LIST_LIMIT, url], { pageParam: offset = 0 }) {
+>(
+  AccountClientKeys.Assets,
+  async function queryFn(
+    get,
+    [principal, limit = DEFAULT_LIST_LIMIT, url],
+    { pageParam: offset = 0 }
+  ) {
     return fetchAccountAssets({
       url,
       limit,
@@ -88,15 +91,21 @@ export const makeAccountAssetsListClientAtom = makeAtomFamilyWithInfiniteQuery<
       offset,
     });
   },
-  getNextPageParam,
-});
+  {
+    getNextPageParam,
+  }
+);
 
-export const makeAccountMempoolTransactionsListClientAtom = makeAtomFamilyWithInfiniteQuery<
+export const accountMempoolTransactionsListClientAtom = atomFamilyWithInfiniteQuery<
   PrincipalListWithNetwork,
   MempoolTransactionListResponse
->({
-  queryKey: AccountClientKeys.PendingTransactions,
-  queryFn(get, [principal, limit = DEFAULT_LIST_LIMIT, url], { pageParam: offset = 0 }) {
+>(
+  AccountClientKeys.PendingTransactions,
+  async function queryFn(
+    get,
+    [principal, limit = DEFAULT_LIST_LIMIT, url],
+    { pageParam: offset = 0 }
+  ) {
     return fetchAccountMempoolTransactions({
       limit,
       offset,
@@ -104,5 +113,7 @@ export const makeAccountMempoolTransactionsListClientAtom = makeAtomFamilyWithIn
       principal,
     });
   },
-  getNextPageParam,
-});
+  {
+    getNextPageParam,
+  }
+);

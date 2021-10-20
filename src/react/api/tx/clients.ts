@@ -1,4 +1,4 @@
-import { makeAtomFamilyWithInfiniteQuery, makeAtomFamilyWithQuery } from 'jotai-query-toolkit';
+import { atomFamilyWithInfiniteQuery, atomFamilyWithQuery } from 'jotai-query-toolkit';
 import {
   MempoolTransaction,
   MempoolTransactionListResponse,
@@ -24,16 +24,18 @@ type TransactionsListParams = [
   limit?: number,
   type?: TransactionType | TransactionType[]
 ];
-export const makeTransactionsListClient = makeAtomFamilyWithInfiniteQuery<
+export const transactionsListClient = atomFamilyWithInfiniteQuery<
   TransactionsListParams,
   TransactionResults
->({
-  queryKey: TxClientKeys.TransactionsList,
-  queryFn(get, [url, limit = DEFAULT_LIST_LIMIT, type], { pageParam: offset = 0 }) {
+>(
+  TxClientKeys.TransactionsList,
+  async function queryFn(get, [url, limit = DEFAULT_LIST_LIMIT, type], { pageParam: offset = 0 }) {
     return fetchTransactionsList({ limit, url, offset, type });
   },
-  getNextPageParam,
-});
+  {
+    getNextPageParam,
+  }
+);
 
 type MempoolTransactionsListParams = [
   networkUrl: string,
@@ -46,12 +48,16 @@ type MempoolTransactionsListParams = [
     | { sender_address: string }
 ];
 
-export const makeMempoolTransactionsListClient = makeAtomFamilyWithInfiniteQuery<
+export const makeMempoolTransactionsListClient = atomFamilyWithInfiniteQuery<
   MempoolTransactionsListParams,
   MempoolTransactionListResponse
->({
-  queryKey: TxClientKeys.MempoolTransactionsList,
-  queryFn(get, [url, limit = DEFAULT_LIST_LIMIT, address = {}], { pageParam: offset = 0 }) {
+>(
+  TxClientKeys.MempoolTransactionsList,
+  async function queryFn(
+    get,
+    [url, limit = DEFAULT_LIST_LIMIT, address = {}],
+    { pageParam: offset = 0 }
+  ) {
     if (address && Object.keys(address)?.length > 1)
       throw new Error(
         `[micro-stacks] You cannot pass more than one address param to the tx mempool endpoint, found: ${Object.keys(
@@ -60,58 +66,68 @@ export const makeMempoolTransactionsListClient = makeAtomFamilyWithInfiniteQuery
       );
     return fetchMempoolTransactionsList({ limit, url, offset, ...address });
   },
-  getNextPageParam,
-});
+  {
+    getNextPageParam,
+  }
+);
 
-export const makeDroppedMempoolTransactionsListClient = makeAtomFamilyWithInfiniteQuery<
+export const makeDroppedMempoolTransactionsListClient = atomFamilyWithInfiniteQuery<
   [networkUrl: string, limit: number],
   MempoolTransactionListResponse
->({
-  queryKey: TxClientKeys.DroppedMempoolTransactionsList,
-  queryFn(get, [url, limit = DEFAULT_LIST_LIMIT], { pageParam: offset = 0 }) {
+>(
+  TxClientKeys.DroppedMempoolTransactionsList,
+  async function queryFn(get, [url, limit = DEFAULT_LIST_LIMIT], { pageParam: offset = 0 }) {
     return fetchDroppedMempoolTransactionsList({ limit, url, offset });
   },
-  getNextPageParam,
-});
+  {
+    getNextPageParam,
+  }
+);
 
-export const makeTransactionClient = makeAtomFamilyWithQuery<
+export const transactionClient = atomFamilyWithQuery<
   [networkUrl: string, txid: string],
   Transaction | MempoolTransaction
->({
-  queryKey: TxClientKeys.Transaction,
-  queryFn(get, [url, txid]) {
-    return fetchTransaction({ txid, url });
-  },
+>(TxClientKeys.Transaction, async function queryFn(get, [url, txid]) {
+  return fetchTransaction({ txid, url });
 });
 
-export const makeRawTransactionClient = makeAtomFamilyWithQuery<
+export const makeRawTransactionClient = atomFamilyWithQuery<
   [networkUrl: string, txid: string],
   string
->({
-  queryKey: TxClientKeys.TransactionRaw,
-  queryFn(get, [url, txid]) {
-    return fetchRawTransaction({ txid, url });
-  },
+>(TxClientKeys.TransactionRaw, async function queryFn(get, [url, txid]) {
+  return fetchRawTransaction({ txid, url });
 });
 
-export const makeTransactionsListByBlockHashClient = makeAtomFamilyWithInfiniteQuery<
+export const transactionsListByBlockHashClient = atomFamilyWithInfiniteQuery<
   [networkUrl: string, block_hash: string, limit: number],
   TransactionResults
->({
-  queryKey: TxClientKeys.TransactionsListByBlockHash,
-  queryFn(get, [url, block_hash, limit = DEFAULT_LIST_LIMIT], { pageParam: offset = 0 }) {
+>(
+  TxClientKeys.TransactionsListByBlockHash,
+  async function queryFn(
+    get,
+    [url, block_hash, limit = DEFAULT_LIST_LIMIT],
+    { pageParam: offset = 0 }
+  ) {
     return fetchTransactionsByBlockHash({ block_hash, limit, url, offset });
   },
-  getNextPageParam,
-});
+  {
+    getNextPageParam,
+  }
+);
 
-export const makeTransactionsListByBlockHeightClient = makeAtomFamilyWithInfiniteQuery<
+export const transactionsListByBlockHeightClient = atomFamilyWithInfiniteQuery<
   [networkUrl: string, block_height: number, limit: number],
   TransactionResults
->({
-  queryKey: TxClientKeys.TransactionsListByBlockHeight,
-  queryFn(get, [url, block_height, limit = DEFAULT_LIST_LIMIT], { pageParam: offset = 0 }) {
+>(
+  TxClientKeys.TransactionsListByBlockHeight,
+  async function queryFn(
+    get,
+    [url, block_height, limit = DEFAULT_LIST_LIMIT],
+    { pageParam: offset = 0 }
+  ) {
     return fetchTransactionsByBlockHeight({ block_height, limit, url, offset });
   },
-  getNextPageParam,
-});
+  {
+    getNextPageParam,
+  }
+);

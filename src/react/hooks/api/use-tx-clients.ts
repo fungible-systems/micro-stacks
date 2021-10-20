@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-// TODO: fix types
 import {
   MempoolTransaction,
   Transaction,
@@ -9,7 +6,7 @@ import {
 } from '@stacks/stacks-blockchain-api-types';
 import { useCurrentNetworkUrl } from '../use-network';
 
-import { makeTransactionClient, makeTransactionsListClient } from '../../api/tx/clients';
+import { transactionClient, transactionsListClient } from '../../api/tx/clients';
 import {
   AtomWithInfiniteQueryOptions,
   AtomWithQueryOptions,
@@ -31,7 +28,7 @@ export function useTransactionListClient(
   } = {}
 ) {
   const networkUrl = useCurrentNetworkUrl();
-  const atom = makeTransactionsListClient(options)([
+  const atom = transactionsListClient([
     networkUrl,
     options.limit || DEFAULT_LIST_LIMIT,
     options.type,
@@ -50,5 +47,5 @@ export function useTransactionClient(
   options: AtomWithQueryOptions<Transaction | MempoolTransaction> = {}
 ) {
   const networkUrl = useCurrentNetworkUrl();
-  return useAtom(makeTransactionClient(options)([networkUrl, txid]));
+  return useAtom(transactionClient([networkUrl, txid]));
 }

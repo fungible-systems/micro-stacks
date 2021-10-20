@@ -3,6 +3,20 @@ import { hexToJSON } from 'micro-stacks/common';
 
 import type { AuthResponsePayload, StacksSessionState } from './types';
 
+export function getDIDType(decentralizedID: string) {
+  const didParts = decentralizedID.split(':');
+  if (didParts.length !== 3) throw new TypeError('Decentralized IDs must have 3 parts');
+  if (didParts[0].toLowerCase() !== 'did')
+    throw new TypeError('Decentralized IDs must start with "did"');
+  return didParts[1].toLowerCase();
+}
+
+export function getAddressFromDID(decentralizedID: string): string | undefined {
+  return decentralizedID && getDIDType(decentralizedID) === 'btc-addr'
+    ? decentralizedID.split(':')[2]
+    : undefined;
+}
+
 export async function decodeAuthResponse(
   authResponseToken: string,
   transitPrivateKey: string
@@ -27,6 +41,8 @@ export async function decodeAuthResponse(
     profile_url: authResponse.profile_url,
     username: authResponse.username,
     version: authResponse.version,
+    decentralizedID: authResponse.iss,
+    identityAddress: getAddressFromDID(authResponse.iss),
   };
 
   return sessionState;

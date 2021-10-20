@@ -1,0 +1,10 @@
+node_modules
+configs
+docs
+dist
+coverage
+.yalc
+.jest-cache
+.github
+.changeset
+.eslintrc.js

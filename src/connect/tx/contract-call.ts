@@ -3,6 +3,7 @@ import { getPublicKey } from 'noble-secp256k1';
 import { signTransactionPayload } from './sign';
 import { TransactionTypes } from './types';
 import type { ContractCallTxOptions, ContractCallTxPayload } from './types';
+import { cleanHex } from 'micro-stacks/common';
 
 /**
  * makeContractCallToken
@@ -22,7 +23,7 @@ export async function makeContractCallToken({
   const payload: ContractCallTxPayload = {
     ...options,
     functionArgs: functionArgs.map((arg: string | ClarityValue) =>
-      typeof arg === 'string' ? arg : cvToHex(arg)
+      cleanHex(typeof arg === 'string' ? arg : cvToHex(arg))
     ),
     txType: TransactionTypes.ContractCall,
     publicKey,
