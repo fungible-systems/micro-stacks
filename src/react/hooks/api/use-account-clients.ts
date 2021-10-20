@@ -15,12 +15,12 @@ import type {
 import { useCurrentNetworkUrl } from '../use-network';
 import { DEFAULT_LIST_LIMIT } from '../../constants';
 import {
-  makeAccountAssetsListClientAtom,
-  makeAccountBalancesClientAtom,
-  makeAccountMempoolTransactionsListClientAtom,
-  makeAccountStxBalanceClientAtom,
-  makeAccountTransactionsListClientAtom,
-  makeAccountTransactionsListWithTransfersClientAtom,
+  accountAssetsListClientAtom,
+  accountBalancesClientAtom,
+  accountMempoolTransactionsListClientAtom,
+  accountStxBalanceClientAtom,
+  accountTransactionsListClientAtom,
+  accountTransactionsListWithTransfersClientAtom,
 } from '../../api/accounts/clients';
 import type { WithHeight } from '../../api/accounts/types';
 import type { WithLimit } from '../../types';
@@ -48,7 +48,7 @@ export function useAccountBalancesClient(
   options: AtomWithQueryOptions<AddressBalanceResponse> = {}
 ) {
   const networkUrl = useCurrentNetworkUrl();
-  return useQueryAtom(makeAccountBalancesClientAtom(options)([principal, networkUrl]));
+  return useQueryAtom(accountBalancesClientAtom([principal, networkUrl]));
 }
 
 /**
@@ -62,7 +62,7 @@ export function useAccountStxBalanceClient(
   options: AtomWithQueryOptions<AddressStxBalanceResponse> = {}
 ) {
   const networkUrl = useCurrentNetworkUrl();
-  return useQueryAtom(makeAccountStxBalanceClientAtom(options)([principal, networkUrl]));
+  return useQueryAtom(accountStxBalanceClientAtom([principal, networkUrl]));
 }
 
 /**
@@ -77,16 +77,15 @@ export function useAccountTransactionsClient(
 ) {
   const networkUrl = useCurrentNetworkUrl();
   const { limit, height, ...opts } = options;
-  return useInfiniteQueryAtom<AddressTransactionsListResponse | undefined>(
-    makeAccountTransactionsListClientAtom(opts)([
+  return useInfiniteQueryAtom(
+    accountTransactionsListClientAtom([
       principal,
       {
         limit: limit || DEFAULT_LIST_LIMIT,
         height,
       },
       networkUrl,
-    ]) as any
-    // TODO: fix types
+    ])
   );
 }
 
@@ -102,13 +101,8 @@ export function useAccountMempoolTransactionsClient(
 ) {
   const networkUrl = useCurrentNetworkUrl();
   const { limit, ...opts } = options;
-  return useInfiniteQueryAtom<MempoolTransactionListResponse | undefined>(
-    makeAccountMempoolTransactionsListClientAtom(opts)([
-      principal,
-      limit || DEFAULT_LIST_LIMIT,
-      networkUrl,
-    ]) as any
-    // TODO: fix types
+  return useInfiniteQueryAtom(
+    accountMempoolTransactionsListClientAtom([principal, limit || DEFAULT_LIST_LIMIT, networkUrl])
   );
 }
 
@@ -129,14 +123,14 @@ export function useAccountTransactionsWithTransfersClient(
   const networkUrl = useCurrentNetworkUrl();
   const { limit = DEFAULT_LIST_LIMIT, height, ...opts } = options;
   return useInfiniteQueryAtom(
-    makeAccountTransactionsListWithTransfersClientAtom(opts)([
+    accountTransactionsListWithTransfersClientAtom([
       principal,
       {
         limit,
         height,
       },
       networkUrl,
-    ]) as any // TODO: fix types
+    ])
   );
 }
 
@@ -152,7 +146,5 @@ export function useAccountAssetsClient(
 ) {
   const networkUrl = useCurrentNetworkUrl();
   const { limit = DEFAULT_LIST_LIMIT, ...opts } = options;
-  return useInfiniteQueryAtom(
-    makeAccountAssetsListClientAtom(opts)([principal, limit, networkUrl]) as any // TODO: fix types
-  );
+  return useInfiniteQueryAtom(accountAssetsListClientAtom([principal, limit, networkUrl]));
 }

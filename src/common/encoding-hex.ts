@@ -49,3 +49,8 @@ export const hexToJSON = (hex: string) => JSON.parse(bytesToUtf8(hexToBytes(hex)
 
 export const ensureHexBytes = (bytesOrHex: string | Uint8Array): Uint8Array =>
   typeof bytesOrHex === 'string' ? hexToBytes(bytesOrHex) : bytesOrHex;
+
+export const cleanHex = (hexMaybePrefixed: string): string => {
+  if (!hexMaybePrefixed.startsWith('0x')) return hexMaybePrefixed;
+  return hexMaybePrefixed.replace('0x', '');
+};

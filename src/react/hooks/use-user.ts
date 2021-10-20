@@ -1,6 +1,7 @@
-import { useCurrentNetworkChain, userDataAtom } from '../../react';
 import { useAtomValue } from 'jotai/utils';
-import { userStxAddressesAtom } from '../store/auth';
+import { userDataAtom, userStxAddressesAtom } from '../store/auth';
+import { useCurrentNetworkChain } from './use-network';
+import { useSession } from './use-session';
 
 export function useUserData() {
   return useAtomValue(userDataAtom);
@@ -14,4 +15,15 @@ export function useCurrentStxAddress() {
   const chain = useCurrentNetworkChain();
   const addresses = useStxAddresses();
   return addresses?.[chain];
+}
+
+export function useUser() {
+  const userData = useUserData();
+  const currentStxAddress = useCurrentStxAddress();
+  const [session] = useSession();
+  return {
+    ...userData,
+    ...session,
+    currentStxAddress,
+  };
 }

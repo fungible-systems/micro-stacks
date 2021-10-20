@@ -12,27 +12,31 @@ export function useAuth() {
   const [isLoading, setIsLoading] = useLoading(LOADING_KEYS.AUTHENTICATION);
   const storageAdapter = useDefaultStorageAdapter();
 
-  const handleSignIn = useCallback(async () => {
-    if (!authOptions) throw Error('[useAuthenticate] No authOptions provided.');
-    setIsLoading(true);
-    return authenticate(
-      {
-        manifestPath: '/',
-        ...authOptions,
-        onFinish: payload => {
-          authOptions?.onFinish?.(payload);
-          setSessionState(payload);
-          setIsSignedIn(true);
-          setIsLoading(false);
+  const handleSignIn = useCallback(
+    async (onFinish?: (payload: any) => void) => {
+      if (!authOptions) throw Error('[useAuthenticate] No authOptions provided.');
+      setIsLoading(true);
+      return authenticate(
+        {
+          manifestPath: '/',
+          ...authOptions,
+          onFinish: payload => {
+            if (onFinish) onFinish(payload);
+            authOptions?.onFinish?.(payload);
+            setSessionState(payload);
+            setIsSignedIn(true);
+            setIsLoading(false);
+          },
+          onCancel: error => {
+            console.error(error);
+            setIsLoading(false);
+          },
         },
-        onCancel: error => {
-          console.log(error);
-          setIsLoading(false);
-        },
-      },
-      storageAdapter
-    );
-  }, [setSessionState, setIsLoading, setIsSignedIn, storageAdapter, authOptions]);
+        storageAdapter
+      );
+    },
+    [setSessionState, setIsLoading, setIsSignedIn, storageAdapter, authOptions]
+  );
 
   const handleSignOut = useCallback(() => {
     storageAdapter.removeItem(SESSION_STORAGE_KEY);

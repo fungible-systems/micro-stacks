@@ -78,6 +78,8 @@ export interface StacksSessionState {
   profile_url: string;
   username: string | null;
   version?: string;
+  decentralizedID: string;
+  identityAddress?: string;
 }
 
 /**
