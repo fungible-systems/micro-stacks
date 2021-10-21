@@ -1,8 +1,8 @@
 import { setupServer } from 'msw/node';
-import * as FUNGIBLE_TOKENS_METADATA_LIST_200_RESPONSE from '../../../../tests/mocks/api/tokens/FungibleTokensMetadataList200.json';
-import * as NONFUNGIBLE_TOKENS_METADATA_LIST_200_RESPONSE from '../../../../tests/mocks/api/tokens/NonFungibleTokensMetadataList200.json';
-import * as NON_FUNGIBLE_TOKEN_METADATA_200_RESPONSE from '../../../../tests/mocks/api/tokens/NonFungibleTokenMetadata200.json';
-import * as FUNGIBLE_TOKEN_METADATA_200_RESPONSE from '../../../../tests/mocks/api/tokens/FungibleTokenMetadata200.json';
+import * as FUNGIBLE_TOKENS_METADATA_LIST_200_RESPONSE from '../../../tests/mocks/api/tokens/FungibleTokensMetadataList200.json';
+import * as NONFUNGIBLE_TOKENS_METADATA_LIST_200_RESPONSE from '../../../tests/mocks/api/tokens/NonFungibleTokensMetadataList200.json';
+import * as NON_FUNGIBLE_TOKEN_METADATA_200_RESPONSE from '../../../tests/mocks/api/tokens/NonFungibleTokenMetadata200.json';
+import * as FUNGIBLE_TOKEN_METADATA_200_RESPONSE from '../../../tests/mocks/api/tokens/FungibleTokenMetadata200.json';
 
 import { rest } from 'msw';
 import {

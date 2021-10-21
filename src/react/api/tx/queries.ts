@@ -9,7 +9,7 @@ import {
   fetchTransactionsByBlockHash,
   fetchTransactionsByBlockHeight,
   fetchTransactionsList,
-} from './fetchers';
+} from '../../../api/tx/fetchers';
 
 export function transactionListQuery({
   networkUrl,

@@ -1,7 +1,7 @@
 import { setupServer } from 'msw/node';
-import * as BURNCHAIN_REWARD_SLOT_HOLDERS_LIST_200_RESPONSE from '../../../../tests/mocks/api/burnchain/BurnchainRewardSlotHolderListResponse200.json';
-import * as BURNCHAIN_REWARD_LIST_200_RESPONSE from '../../../../tests/mocks/api/burnchain/BurnchainRewardListResponse200.json';
-import * as BURNCHAIN_REWARDS_TOTAL_200_RESPONSE from '../../../../tests/mocks/api/burnchain/BurnchainRewardsTotal200.json';
+import * as BURNCHAIN_REWARD_SLOT_HOLDERS_LIST_200_RESPONSE from '../../../tests/mocks/api/burnchain/BurnchainRewardSlotHolderListResponse200.json';
+import * as BURNCHAIN_REWARD_LIST_200_RESPONSE from '../../../tests/mocks/api/burnchain/BurnchainRewardListResponse200.json';
+import * as BURNCHAIN_REWARDS_TOTAL_200_RESPONSE from '../../../tests/mocks/api/burnchain/BurnchainRewardsTotal200.json';
 
 import { rest } from 'msw';
 import {

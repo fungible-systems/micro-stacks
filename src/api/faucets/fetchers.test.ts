@@ -1,5 +1,5 @@
 import { setupServer } from 'msw/node';
-import * as RUN_FAUCET_RESPONSE from '../../../../tests/mocks/api/faucets/RunFaucetResponse.json';
+import * as RUN_FAUCET_RESPONSE from '../../../tests/mocks/api/faucets/RunFaucetResponse.json';
 import { rest } from 'msw';
 import { fetchGetStxTokens, fetchGetBtcTokens } from './fetchers';
 import { stxFaucetEndpoint, btcFaucetEndpoint } from '../utils';

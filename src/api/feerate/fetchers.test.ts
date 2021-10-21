@@ -1,5 +1,5 @@
 import { setupServer } from 'msw/node';
-import * as FEE_RATE_RESPONSE from '../../../../tests/mocks/api/feerate/FeeRate.json';
+import * as FEE_RATE_RESPONSE from '../../../tests/mocks/api/feerate/FeeRate.json';
 import { rest } from 'msw';
 import { fetchFeeRate } from './fetchers';
 import { feeRateEndpoint } from '../utils';

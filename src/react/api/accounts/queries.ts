@@ -8,7 +8,7 @@ import {
   fetchAccountStxBalance,
   fetchAccountTransactions,
   fetchAccountTransactionsWithTransfers,
-} from './fetchers';
+} from '../../../api/accounts/fetchers';
 
 export interface AccountQueryParams {
   principal: string;

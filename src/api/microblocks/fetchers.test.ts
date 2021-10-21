@@ -1,8 +1,8 @@
 import { setupServer } from 'msw/node';
-import * as MICROBLOCK_LIST_200_RESPONSE from '../../../../tests/mocks/api/microblocks/MicroblockListResponse200.json';
-import * as MICROBLOCK_200_RESPONSE from '../../../../tests/mocks/api/microblocks/Microblock200.json';
-import * as MICROBLOCK_404_RESPONSE from '../../../../tests/mocks/api/microblocks/Microblock404.json';
-import * as UNANCHORED_TRANSACTION_LIST_200_RESPONSE from '../../../../tests/mocks/api/microblocks/UnanchoredTransactionListResponse200.json';
+import * as MICROBLOCK_LIST_200_RESPONSE from '../../../tests/mocks/api/microblocks/MicroblockListResponse200.json';
+import * as MICROBLOCK_200_RESPONSE from '../../../tests/mocks/api/microblocks/Microblock200.json';
+import * as MICROBLOCK_404_RESPONSE from '../../../tests/mocks/api/microblocks/Microblock404.json';
+import * as UNANCHORED_TRANSACTION_LIST_200_RESPONSE from '../../../tests/mocks/api/microblocks/UnanchoredTransactionListResponse200.json';
 
 import { rest } from 'msw';
 import {

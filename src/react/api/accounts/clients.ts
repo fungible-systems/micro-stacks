@@ -7,16 +7,16 @@ import {
   fetchAccountStxBalance,
   fetchAccountTransactions,
   fetchAccountTransactionsWithTransfers,
-} from './fetchers';
+} from '../../../api/accounts/fetchers';
 import { DEFAULT_LIST_LIMIT } from '../../constants';
-import { getNextPageParam } from '../utils';
+import { getNextPageParam } from '../../../api/utils';
 import { AccountClientKeys } from './keys';
 
 import type {
   PrincipalWithNetwork,
   PrincipalListWithNetwork,
   PrincipalListHeightWithNetwork,
-} from './types';
+} from '../../../api/accounts/types';
 import type {
   AddressAssetsListResponse,
   AddressBalanceResponse,

@@ -1,13 +1,13 @@
 import { setupServer } from 'msw/node';
-import * as CORE_NODE_INFO_RESPONSE from '../../../../tests/mocks/api/info/CoreNodeInfoResponse.json';
-import * as SERVER_STATUS_RESPONSE from '../../../../tests/mocks/api/info/ServerStatusResponse.json';
-import * as NETWORK_BLOCK_TIMES_RESPONSE from '../../../../tests/mocks/api/info/NetworkBlockTimesResponse.json';
-import * as NETWORK_BLOCK_TIME_RESPONSE from '../../../../tests/mocks/api/info/NetworkBlockTimeResponse.json';
-import * as GET_STX_SUPPLY_RESPONSE from '../../../../tests/mocks/api/info/GetStxSupplyResponse.json';
+import * as CORE_NODE_INFO_RESPONSE from '../../../tests/mocks/api/info/CoreNodeInfoResponse.json';
+import * as SERVER_STATUS_RESPONSE from '../../../tests/mocks/api/info/ServerStatusResponse.json';
+import * as NETWORK_BLOCK_TIMES_RESPONSE from '../../../tests/mocks/api/info/NetworkBlockTimesResponse.json';
+import * as NETWORK_BLOCK_TIME_RESPONSE from '../../../tests/mocks/api/info/NetworkBlockTimeResponse.json';
+import * as GET_STX_SUPPLY_RESPONSE from '../../../tests/mocks/api/info/GetStxSupplyResponse.json';
 const GET_STX_TOTAL_SUPPLY_PLAIN_RESPONSE = 123.456789;
 const GET_STX_CIRCULATING_SUPPLY_PLAIN_RESPONSE = 123.456789;
-import * as GET_STX_SUPPLY_LEGACY_FORMAT_RESPONSE from '../../../../tests/mocks/api/info/GetStxSupplyLegacyFormatResponse.json';
-import * as CORE_NODE_POX_RESPONSE from '../../../../tests/mocks/api/info/CoreNodePoxResponse.json';
+import * as GET_STX_SUPPLY_LEGACY_FORMAT_RESPONSE from '../../../tests/mocks/api/info/GetStxSupplyLegacyFormatResponse.json';
+import * as CORE_NODE_POX_RESPONSE from '../../../tests/mocks/api/info/CoreNodePoxResponse.json';
 
 import { rest } from 'msw';
 import {

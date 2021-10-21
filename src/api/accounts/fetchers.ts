@@ -1,5 +1,5 @@
 import { AccountBase, AccountListOptions } from './types';
-import { WithHeight } from '../../types';
+import { WithHeight } from '../../react/types';
 
 import {
   AddressBalanceResponse,
