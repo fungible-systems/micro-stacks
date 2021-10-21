@@ -1,8 +1,9 @@
 import { getCryptoLib } from 'micro-stacks/crypto-aes';
-import { pbkdf2_sha512 } from './pbkdf2-js-shim';
-import { utf8ToBytes } from 'micro-stacks/common';
+import { ensureUint8Array, utf8ToBytes } from 'micro-stacks/common';
 import { NodeCryptoPbkdf2 } from './node';
 import { WebCryptoPbkdf2 } from './web';
+import { pbkdf2Async } from 'noble-hashes/lib/pbkdf2.js';
+import { sha512 } from 'noble-hashes/lib/sha512.js';
 
 import type { Pbkdf2, Pbkdf2Digests } from './types';
 
@@ -20,7 +21,15 @@ export async function createPbkdf2(): Promise<Pbkdf2> {
         keyLength: number,
         _digest: Pbkdf2Digests = 'sha512'
       ): Promise<Uint8Array> {
-        return pbkdf2_sha512(utf8ToBytes(password), salt, iterations, keyLength);
+        return pbkdf2Async(
+          sha512,
+          ensureUint8Array(utf8ToBytes(password)),
+          ensureUint8Array(salt),
+          {
+            c: iterations,
+            dkLen: keyLength,
+          }
+        );
       },
     };
   }
