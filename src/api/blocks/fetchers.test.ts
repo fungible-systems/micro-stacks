@@ -1,7 +1,7 @@
 import { setupServer } from 'msw/node';
-import * as BLOCK_LIST_200_RESPONSE from '../../../../tests/mocks/api/blocks/BlockListResponse200.json';
-import * as BLOCK_200_RESPONSE from '../../../../tests/mocks/api/blocks/Block200.json';
-import * as BLOCK_404_RESPONSE from '../../../../tests/mocks/api/blocks/Block404.json';
+import * as BLOCK_LIST_200_RESPONSE from '../../../tests/mocks/api/blocks/BlockListResponse200.json';
+import * as BLOCK_200_RESPONSE from '../../../tests/mocks/api/blocks/Block200.json';
+import * as BLOCK_404_RESPONSE from '../../../tests/mocks/api/blocks/Block404.json';
 
 import { rest } from 'msw';
 import {

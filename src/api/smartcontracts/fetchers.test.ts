@@ -1,13 +1,13 @@
 import { setupServer } from 'msw/node';
 
-import * as ABSTRACT_TRANSACTION_200_RESPONSE from '../../../../tests/mocks/api/smartcontracts/AbstractTransaction200.json';
-import * as CONTRACT_INTERFACE_RESPONSE_200_RESPONSE from '../../../../tests/mocks/api/smartcontracts/ContractInterfaceResponse200.json';
-import * as TRANSACTION_EVENT_SMART_CONTRACT_LOG_200_RESPONSE from '../../../../tests/mocks/api/smartcontracts/TransactionEventSmartContractLog200.json';
+import * as ABSTRACT_TRANSACTION_200_RESPONSE from '../../../tests/mocks/api/smartcontracts/AbstractTransaction200.json';
+import * as CONTRACT_INTERFACE_RESPONSE_200_RESPONSE from '../../../tests/mocks/api/smartcontracts/ContractInterfaceResponse200.json';
+import * as TRANSACTION_EVENT_SMART_CONTRACT_LOG_200_RESPONSE from '../../../tests/mocks/api/smartcontracts/TransactionEventSmartContractLog200.json';
 //import * as TRANSACTION_EVENT_STX_LOCK_200_RESPONSE from '../../../../tests/mocks/api/smartcontracts/TransactionEventStxLock200.json';
 //import * as TRANSACTION_EVENT_STX_ASSET_200_RESPONSE from '../../../../tests/mocks/api/smartcontracts/TransactionEventStxAsset200.json';
 //import * as TRANSACTION_EVENT_FUNGIBLE_ASSET_200_RESPONSE from '../../../../tests/mocks/api/smartcontracts/TransactionEventFungibleAsset200.json';
 //import * as TRANSACTION_EVENT_NON_FUNGIBLE_ASSET_200_RESPONSE from '../../../../tests/mocks/api/smartcontracts/TransactionEventNonFungibleAsset200.json';
-import * as CONTRACT_SOURCE_200_RESPONSE from '../../../../tests/mocks/api/smartcontracts/ContractSourceResponse200.json';
+import * as CONTRACT_SOURCE_200_RESPONSE from '../../../tests/mocks/api/smartcontracts/ContractSourceResponse200.json';
 const CONTRACT_DATA_MAP_ENTRY = {
   data: '0x0a0c000000010a6d6f6e737465722d69640100000000000000000000000000000001',
   proof: '0x123',

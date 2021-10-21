@@ -10,6 +10,13 @@
   "types": "index.d.ts",
   "exports": {
     "./package.json": "./package.json",
+    "./api": {
+      "types": "./api.d.ts",
+      "module": "./esm/api.js",
+      "import": "./esm/api.js",
+      "react-native": "./api.js",
+      "default": "./api.js"
+    },
     "./bip32": {
       "types": "./bip32.d.ts",
       "module": "./esm/bip32.js",
@@ -136,6 +143,7 @@
     "deno:build": "concurrently 'rollup -c \"./configs/rollup.config.deno.js\" --config-clarity' 'rollup -c \"./configs/rollup.config.deno.js\" --config-connect' 'rollup -c \"./configs/rollup.config.deno.js\" --config-common' 'rollup -c \"./configs/rollup.config.deno.js\" --config-crypto' 'rollup -c \"./configs/rollup.config.deno.js\" --config-crypto-aes' 'rollup -c \"./configs/rollup.config.deno.js\" --config-network' 'rollup -c \"./configs/rollup.config.deno.js\" --config-storage' 'rollup -c \"./configs/rollup.config.deno.js\" --config-transactions' 'rollup -c \"./configs/rollup.config.deno.js\" --config-zone-file'",
     "deno:types": "concurrently 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-clarity' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-connect' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-common' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-crypto' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-crypto-aes' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-network' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-storage' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-transactions' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-zone-file'",
     "build": "concurrently 'pnpm:build:*'",
+    "build:api": "rollup -c \"./configs/rollup.config.js\" --config-api",
     "build:bip39": "rollup -c \"./configs/rollup.config.js\" --config-bip39",
     "build:bip32": "rollup -c \"./configs/rollup.config.js\" --config-bip32",
     "build:clarity": "rollup -c \"./configs/rollup.config.js\" --config-clarity",

@@ -1,6 +1,6 @@
 import { setupServer } from 'msw/node';
-import * as SEARCH_SUCCESS_200_RESPONSE from '../../../../tests/mocks/api/search/SearchSuccessResult200.json';
-import * as SEARCH_ERROR_404_RESPONSE from '../../../../tests/mocks/api/search/SearchErrorResult404.json';
+import * as SEARCH_SUCCESS_200_RESPONSE from '../../../tests/mocks/api/search/SearchSuccessResult200.json';
+import * as SEARCH_ERROR_404_RESPONSE from '../../../tests/mocks/api/search/SearchErrorResult404.json';
 
 import { rest } from 'msw';
 import { fetchSearch } from './fetchers';

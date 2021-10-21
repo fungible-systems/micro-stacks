@@ -7,7 +7,7 @@ import {
   TransactionType,
 } from '@stacks/stacks-blockchain-api-types';
 import { DEFAULT_LIST_LIMIT } from '../../constants';
-import { getNextPageParam } from '../utils';
+import { getNextPageParam } from '../../../api/utils';
 import {
   fetchDroppedMempoolTransactionsList,
   fetchMempoolTransactionsList,
@@ -16,7 +16,7 @@ import {
   fetchTransactionsByBlockHash,
   fetchTransactionsByBlockHeight,
   fetchTransactionsList,
-} from './fetchers';
+} from '../../../api/tx/fetchers';
 import { TxClientKeys } from './keys';
 
 type TransactionsListParams = [

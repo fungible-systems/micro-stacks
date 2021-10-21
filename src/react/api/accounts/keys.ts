@@ -3,7 +3,7 @@ import {
   PrincipalListHeightWithNetwork,
   PrincipalListWithNetwork,
   PrincipalWithNetwork,
-} from './types';
+} from '../../../api/accounts/types';
 
 export enum AccountClientKeys {
   Balances = 'accounts/Balances',
