@@ -83,3 +83,8 @@ export function concatByteArrays(byteArrays: Uint8Array[]): Uint8Array {
   }
   return resultArray;
 }
+
+export function ensureUint8Array(bytes: Uint8Array): Uint8Array {
+  if (typeof bytes === 'object') bytes = Uint8Array.from(bytes);
+  return bytes;
+}

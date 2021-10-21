@@ -278,6 +278,7 @@
     "typescript": "4.4.3"
   },
   "dependencies": {
+    "noble-hashes": "0.2.2",
     "noble-secp256k1": "1.2.14"
   },
   "resolutions": {
