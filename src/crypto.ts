@@ -1,7 +1,7 @@
 // utils
 export * from './crypto/common/ecies-utils';
-export * from './crypto/common/hashRipemd160';
-export { default as ripemd160 } from './crypto/common/ripemd160-minimal';
+export * from './crypto/ripemd160/hashRipemd160';
+export { default as ripemd160 } from './crypto/ripemd160/ripemd160-minimal';
 export * from './crypto/common/shared-secret';
 export * from './crypto/common/random-bytes';
 
