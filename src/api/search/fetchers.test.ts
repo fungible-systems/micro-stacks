@@ -21,7 +21,7 @@ export const GET_SEARCH_MOCKS = [
 ];
 
 // search.fetchers.spec.ts
-describe('burnchain fetchers', () => {
+describe('search fetchers', () => {
   const server = setupServer(...GET_SEARCH_MOCKS);
   beforeAll(() => {
     server.listen();
