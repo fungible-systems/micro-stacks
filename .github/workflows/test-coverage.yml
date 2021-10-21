@@ -13,28 +13,47 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Cache .pnpm-store
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+
       - uses: actions/cache@v2
         name: Cache node_modules
         id: cache-node-modules
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
-      - uses: actions/cache@v1
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/package.json') }}
+
+      - uses: actions/cache@v2
         name: Cache Jest cache
         id: cache-jest-cache
         with:
           path: '.jest-cache'
           key: ${{ runner.os }}--jest-integration
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install yarn dependencies
+
+      - name: install pnpm
+        run: npm i pnpm@latest -g
+
+      - name: setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      - name: install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
+        run: pnpm install
+
       - name: Typecheck
-        run: yarn typecheck
+        run: pnpm typecheck
+
       - name: Build
-        run: yarn build
+        run: pnpm build
+
       - name: Tests
-        run: yarn test:coverage
+        run: pnpm test:coverage

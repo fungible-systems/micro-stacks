@@ -10,3 +10,8 @@ coverage
 yalc.lock
 .jest-cache
 __WIP__
+**/dist
+.pnpm-store
+.pnpm-debug.log
+.rollup.cache
+.ultra.cache.json
