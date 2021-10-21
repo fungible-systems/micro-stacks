@@ -4,7 +4,7 @@ import { hashSha256 } from 'micro-stacks/crypto-sha';
 
 import { base58checkEncode } from './index';
 import { networks } from './networks';
-import { hashRipemd160 } from '../common/hashRipemd160';
+import { hashRipemd160 } from '../ripemd160/hashRipemd160';
 import { c32address, StacksNetworkVersion } from '../c32';
 
 export function privateKeyToStxAddress(
