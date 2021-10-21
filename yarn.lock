@@ -7126,10 +7126,10 @@ jotai-query-toolkit@0.1.12:
   resolved "https://registry.yarnpkg.com/jotai-query-toolkit/-/jotai-query-toolkit-0.1.12.tgz#03518462edd8afe174be7a502391f1a45de7ba4c"
   integrity sha512-mZiW3QnRN4aRECg942mY/1l2OJqWVff22XCqcqXL9/PCDNOC9Px6h23NzDI6YT1oDOONXKv8hXfl0BxDFiu7wA==
 
-jotai@1.3.9:
-  version "1.3.9"
-  resolved "https://registry.yarnpkg.com/jotai/-/jotai-1.3.9.tgz#d65a7069b949a3a74f9e069d3e3f06f99be02817"
-  integrity sha512-b6DvH9gf+7TfjaboCO54g+C0yhaakIaUBtjLf0dk1p15FWCzNw/93sezdXy9cCaZ8qcEdMLJcjBwQlORmIq29g==
+jotai@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/jotai/-/jotai-1.4.0.tgz#0f350f65a968dd3ee2f9ad3618a3af635cd10220"
+  integrity sha512-CUB+A3N+WjtimZvtDnMXvVRognzKh86KB3rKnQlbRvpnmGYU+O9aOZMWSgTaxstXc4Y5GYy02LBEjiv4Rs8MAg==
 
 joycon@^3.0.1:
   version "3.0.1"

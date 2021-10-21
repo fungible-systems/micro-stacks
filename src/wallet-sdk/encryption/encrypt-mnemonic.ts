@@ -21,9 +21,9 @@ export async function encryptMnemonic(
   password: string,
   salt: Uint8Array = getRandomBytes(16)
 ): Promise<Uint8Array> {
-  if (!(await validateMnemonic(mnemonic))) throw new Error('Not a valid bip39 mnemonic');
+  if (!validateMnemonic(mnemonic)) throw new Error('Not a valid bip39 mnemonic');
   const pbkdf2 = await createPbkdf2();
-  const mnemonicEntropy = await mnemonicToEntropy(mnemonic);
+  const mnemonicEntropy = mnemonicToEntropy(mnemonic);
   const plaintextNormalized = hexToBytes(mnemonicEntropy);
   const keysAndIV = await pbkdf2.derive(password, salt, 100000, 48, 'sha512');
   const encKey = keysAndIV.slice(0, 16);
@@ -31,6 +31,6 @@ export async function encryptMnemonic(
   const iv = keysAndIV.slice(32, 48);
   const cipherText = await aes128CbcEncrypt(iv, encKey, plaintextNormalized);
   const hmacPayload = concatByteArrays([salt, cipherText]);
-  const hmacDigest = await hmacSha256(macKey, hmacPayload);
+  const hmacDigest = hmacSha256(macKey, hmacPayload);
   return concatByteArrays([salt, hmacDigest, cipherText]);
 }

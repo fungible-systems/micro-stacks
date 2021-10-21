@@ -1061,7 +1061,8 @@ export async function callReadOnlyFunction(
     );
   }
 
-  return response.json().then(responseJson => parseReadOnlyResponse(responseJson));
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  return response.json().then(responseJson => parseReadOnlyResponse(responseJson as any));
 }
 
 /**

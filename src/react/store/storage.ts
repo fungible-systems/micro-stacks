@@ -1,4 +1,4 @@
-import { atom } from 'jotai';
+import { Atom, atom } from 'jotai';
 import {
   GaiaHubConfig,
   generateGaiaHubConfig,
@@ -26,7 +26,7 @@ primaryGaiaHubConfigAtom.debugLabel = 'primaryGaiaHubConfigAtom';
 
 export const makeGaiaHubConfigAtom = atomFamily<
   Omit<GenerateGaiaHubConfigOptions, 'privateKey' | 'gaiaHubUrl'>,
-  GaiaHubConfig | undefined
+  Promise<GaiaHubConfig> | undefined
 >(params => {
   const anAtom = atom(get => {
     if (IS_SSR) return;

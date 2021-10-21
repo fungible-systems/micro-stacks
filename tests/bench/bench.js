@@ -6,7 +6,7 @@ const { run, mark } = bench; // or bench.mark
 
 run(async () => {
   await mark('micro-stacks/bip32 fromBase58', async () => {
-    await HDKeychain.fromBase58(
+    HDKeychain.fromBase58(
       'xprv9uHRZZhk6KAJC1avXpDAp4MDc3sQKNxDiPvvkX8Br5ngLNv1TxvUxt4cV1rGL5hj6KCesnDYUhd7oWgT11eZG7XnxHrnYeSvkzY7d2bhkJ7'
     );
   });

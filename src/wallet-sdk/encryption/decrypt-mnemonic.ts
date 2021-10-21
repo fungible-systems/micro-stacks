@@ -31,7 +31,7 @@ export async function decryptMnemonic(
   const iv = keysAndIV.slice(32, 48);
 
   const decryptedResult = await aes128CbcDecrypt(iv, encKey, cipherText);
-  const hmacDigest = await hmacSha256(macKey, hmacPayload);
+  const hmacDigest = hmacSha256(macKey, hmacPayload);
 
   const hmacSigHash = hashSha256(hmacSig);
   const hmacDigestHash = hashSha256(hmacDigest);
@@ -41,13 +41,13 @@ export async function decryptMnemonic(
 
   let mnemonic: string;
   try {
-    mnemonic = await entropyToMnemonic(decryptedResult);
+    mnemonic = entropyToMnemonic(decryptedResult);
   } catch (error) {
     console.error('Error thrown by `entropyToMnemonic`');
     console.error(error);
     throw new Error('Wrong password (invalid plaintext)');
   }
-  if (!(await validateMnemonic(mnemonic))) {
+  if (!validateMnemonic(mnemonic)) {
     throw new Error('Wrong password (invalid plaintext)');
   }
 
