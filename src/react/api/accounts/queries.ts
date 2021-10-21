@@ -8,7 +8,7 @@ import {
   fetchAccountStxBalance,
   fetchAccountTransactions,
   fetchAccountTransactionsWithTransfers,
-} from '../../../api/accounts/fetchers';
+} from 'micro-stacks/api';
 
 export interface AccountQueryParams {
   principal: string;
@@ -27,7 +27,7 @@ export function accountBalancesQuery(params: AccountQueryParams): Queries[number
   const { principal, networkUrl } = params;
   return [
     makeAccountClientKeys.balances([principal, networkUrl]),
-    async () =>
+    () =>
       fetchAccountBalances({
         url: networkUrl,
         principal,
@@ -39,7 +39,7 @@ export function accountStxBalanceQuery(params: AccountQueryParams): Queries[numb
   const { principal, networkUrl } = params;
   return [
     makeAccountClientKeys.stxBalance([principal, networkUrl]),
-    async () =>
+    () =>
       fetchAccountStxBalance({
         url: networkUrl,
         principal,
@@ -53,7 +53,7 @@ export function accountTransactionsQuery(
   const { principal, limit = DEFAULT_LIST_LIMIT, height = undefined, networkUrl } = params;
   return [
     makeAccountClientKeys.transactions([principal, { limit, height }, networkUrl]),
-    async () =>
+    () =>
       fetchAccountTransactions({
         url: networkUrl,
         principal,
@@ -69,7 +69,7 @@ export function accountPendingTransactionsQuery(
   const { principal, limit = DEFAULT_LIST_LIMIT, networkUrl } = params;
   return [
     makeAccountClientKeys.pendingTransactions([principal, limit, networkUrl]),
-    async () =>
+    () =>
       fetchAccountMempoolTransactions({
         url: networkUrl,
         principal,
@@ -84,7 +84,7 @@ export function accountTransactionsWithTransfersQuery(
   const { principal, limit = DEFAULT_LIST_LIMIT, height = undefined, networkUrl } = params;
   return [
     makeAccountClientKeys.transactionsWithTransfers([principal, { limit, height }, networkUrl]),
-    async () =>
+    () =>
       fetchAccountTransactionsWithTransfers({
         url: networkUrl,
         principal,
@@ -98,7 +98,7 @@ export function accountAssetsQuery(params: PrincipalWithOptionalLimit): Queries[
   const { principal, limit = DEFAULT_LIST_LIMIT, networkUrl } = params;
   return [
     makeAccountClientKeys.assets([principal, limit, networkUrl]),
-    async () =>
+    () =>
       fetchAccountAssets({
         url: networkUrl,
         principal,

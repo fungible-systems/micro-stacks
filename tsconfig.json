@@ -12,6 +12,9 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
+      "micro-stacks/api": [
+        "./src/api.ts"
+      ],
       "micro-stacks/bip39": [
         "./src/bip39.ts"
       ],
