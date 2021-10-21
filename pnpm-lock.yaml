@@ -41,6 +41,7 @@ specifiers:
   '@types/react-dom': 17.0.10
   '@typescript-eslint/eslint-plugin': 5.0.0-alpha.42
   '@typescript-eslint/parser': 5.0.0-alpha.42
+  bip32: 2.0.6
   common-tags: 1.8.0
   concurrently: 6.3.0
   dependency-cruiser: 10.5.0
@@ -124,8 +125,9 @@ devDependencies:
   '@types/randombytes': 2.0.0
   '@types/react': 17.0.31
   '@types/react-dom': 17.0.10
-  '@typescript-eslint/eslint-plugin': 5.0.0-alpha.42_6f7b3f6a8ec4897bd67436f839b35c54
+  '@typescript-eslint/eslint-plugin': 5.0.0-alpha.42_fc34a5d430eb137bff0bf1401198a7af
   '@typescript-eslint/parser': 5.0.0-alpha.42_eslint@8.0.0+typescript@4.4.4
+  bip32: 2.0.6
   common-tags: 1.8.0
   concurrently: 6.3.0
   dependency-cruiser: 10.5.0
@@ -135,7 +137,7 @@ devDependencies:
   eslint-config-prettier: 8.3.0_eslint@8.0.0
   eslint-import-resolver-alias: 1.1.2_eslint-plugin-import@2.25.2
   eslint-plugin-import: 2.25.2_eslint@8.0.0
-  eslint-plugin-jest: 25.2.2_f1ffd2e1ec012f43c4ccf640be1ede45
+  eslint-plugin-jest: 25.2.2_01858d613e78b1d283fb1eea991f2fe2
   eslint-plugin-prettier: 4.0.0_d9a06a67ccd5236c5645569c7624c2c9
   eslint-plugin-react: 7.26.1_eslint@8.0.0
   eslint-plugin-react-hooks: 4.2.0_eslint@8.0.0
@@ -1592,7 +1594,7 @@ packages:
     resolution: {integrity: sha512-P7NgTvmOkhm/bWXs6qfJVOlgcxEkC+n96lyy7HanngZ/YnCGD5d1UmX237O4Vx9g9e8AjH9rKM3bn4X4mvWqbg==}
     dependencies:
       '@stacks/prettier-config': 0.0.9
-      '@typescript-eslint/eslint-plugin': 5.0.0-alpha.42_6f7b3f6a8ec4897bd67436f839b35c54
+      '@typescript-eslint/eslint-plugin': 5.0.0-alpha.42_fc34a5d430eb137bff0bf1401198a7af
       '@typescript-eslint/parser': 5.0.0-alpha.42_eslint@8.0.0+typescript@4.4.4
       eslint: 8.0.0
       eslint-config-prettier: 8.3.0_eslint@8.0.0
@@ -2634,7 +2636,7 @@ packages:
       '@types/yargs-parser': 20.2.1
     dev: true
 
-  /@typescript-eslint/eslint-plugin/5.0.0-alpha.42_6f7b3f6a8ec4897bd67436f839b35c54:
+  /@typescript-eslint/eslint-plugin/5.0.0-alpha.42_fc34a5d430eb137bff0bf1401198a7af:
     resolution: {integrity: sha512-uM7sxZByvKMM4p/JmXo7qJ3cBh61Rt4PMkgT05mybJ59h4Di3i0Lwy1iDW2AJ9Y80pavHwEr/M1WpvoFIh6l0g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -4911,7 +4913,7 @@ packages:
       tsconfig-paths: 3.11.0
     dev: true
 
-  /eslint-plugin-jest/25.2.2_f1ffd2e1ec012f43c4ccf640be1ede45:
+  /eslint-plugin-jest/25.2.2_01858d613e78b1d283fb1eea991f2fe2:
     resolution: {integrity: sha512-frn5yhOF60U4kcqozO3zKTNZQUk+mfx037XOy2iiYL8FhorEkuCuL3/flzKcY1ECDP2WYT9ydmvlO3fRW9o4mg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     peerDependencies:
@@ -4921,7 +4923,7 @@ packages:
       '@typescript-eslint/eslint-plugin':
         optional: true
     dependencies:
-      '@typescript-eslint/eslint-plugin': 5.0.0-alpha.42_6f7b3f6a8ec4897bd67436f839b35c54
+      '@typescript-eslint/eslint-plugin': 5.0.0-alpha.42_fc34a5d430eb137bff0bf1401198a7af
       '@typescript-eslint/experimental-utils': 5.1.0_eslint@8.0.0+typescript@4.4.4
       eslint: 8.0.0
     transitivePeerDependencies:
