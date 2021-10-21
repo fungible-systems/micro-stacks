@@ -1,7 +1,5 @@
 import { hmacSha512 } from './hmac-sha512';
 import { bytesToHex, utf8ToBytes } from 'micro-stacks/common';
-import { Hmac } from './hmac-shim';
-import { Sha512 } from 'micro-stacks/crypto-sha';
 
 // test vectors from
 // http://en.wikipedia.org/wiki/Hash-based_message_authentication_code
@@ -30,20 +28,11 @@ const testVectors = [
   },
 ];
 
-it('should compute a HMAC (SHA-512)', async () => {
+it('should compute a HMAC (SHA-512)', () => {
   for (const tv of testVectors) {
     const key = utf8ToBytes(tv.key);
     const data = utf8ToBytes(tv.data);
-    const result = await hmacSha512(key, data);
-    expect(bytesToHex(result)).toBe(tv.hmac);
-  }
-});
-
-it('should compute a HMAC (SHA-512) js-shim', () => {
-  for (const tv of testVectors) {
-    const key = utf8ToBytes(tv.key);
-    const data = utf8ToBytes(tv.data);
-    const result = new Hmac(new Sha512()).init(key).update(data).digest();
+    const result = hmacSha512(key, data);
     expect(bytesToHex(result)).toBe(tv.hmac);
   }
 });

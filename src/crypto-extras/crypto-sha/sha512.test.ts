@@ -1,5 +1,5 @@
 import { utf8ToBytes, bytesToHex } from 'micro-stacks/common';
-import { Sha512 } from './sha512';
+import { hashSha512 } from './sha512';
 
 // https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA512.pdf
 // https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA2_Additional.pdf
@@ -53,7 +53,7 @@ const TEST_CASES: [string, Uint8Array][] = [
 ];
 test('SHA-512', () => {
   for (let i = 0; i < TEST_CASES.length; i++) {
-    const result = new Sha512().update(TEST_CASES[i][1]).digest();
+    const result = hashSha512(TEST_CASES[i][1]);
     const hex = bytesToHex(result);
     expect(hex).toEqual(TEST_CASES[i][0]);
   }

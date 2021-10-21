@@ -1,5 +1,5 @@
 import { asciiToBytes, bytesToHex, utf8ToBytes } from 'micro-stacks/common';
-import { Sha512_256 } from './sha512_256';
+import { hashSha512_256 } from './sha512_256';
 
 // https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA512_224.pdf
 const TEST_CASES: [string, Uint8Array][] = [
@@ -55,7 +55,7 @@ const test_cases: Record<string, Record<string, string | Uint8Array>> = {
   },
 };
 
-describe(Sha512_256.name, () => {
+describe(hashSha512_256.name, () => {
   Object.keys(test_cases).forEach(key => {
     test(key, () => {
       const getByteConverter = () => {
@@ -70,9 +70,7 @@ describe(Sha512_256.name, () => {
       const bytesToX = getByteConverter();
       const entries = Object.entries(test_cases[key]);
       entries.forEach(([hash, value]) => {
-        const bytes = new Sha512_256()
-          .update(value instanceof Uint8Array ? value : bytesToX(value))
-          .digest();
+        const bytes = hashSha512_256(value instanceof Uint8Array ? value : bytesToX(value));
         expect(bytesToHex(bytes)).toEqual(hash);
       });
     });
@@ -81,7 +79,7 @@ describe(Sha512_256.name, () => {
 
 test('SHA-512/256', () => {
   for (let i = 0; i < TEST_CASES.length; i++) {
-    const result = new Sha512_256().update(TEST_CASES[i][1]).digest();
+    const result = hashSha512_256(TEST_CASES[i][1]);
     const hex = bytesToHex(result);
     expect(hex).toEqual(TEST_CASES[i][0]);
   }
