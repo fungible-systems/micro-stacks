@@ -16,4 +16,4 @@ export function onMountEffect(setAtom: SetAtom<OnMountUpdate>) {
 }
 
 export const loadingStateAtom = (initialValue = false) =>
-  atomFamily(_key => atomWithDefault(() => initialValue));
+  atomFamily<string, boolean, boolean>(_key => atomWithDefault<boolean>(() => initialValue));

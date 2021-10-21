@@ -4,5 +4,5 @@ import { useMemo } from 'react';
 
 export function useLoading(key: string, initialValue = false) {
   const atom = useMemo(() => loadingStateAtom(initialValue)(key), [key, initialValue]);
-  return useAtom<boolean, boolean>(atom);
+  return useAtom<boolean, boolean, void>(atom);
 }

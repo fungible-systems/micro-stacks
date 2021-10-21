@@ -9,7 +9,8 @@ export function useNetwork() {
   const name = useAtomValue(currentNetworkName);
   const setNetwork = useUpdateAtom<
     StacksNetwork | StacksTestnet | StacksMainnet | StacksRegtest,
-    StacksNetwork | StacksTestnet | StacksMainnet | StacksRegtest
+    StacksNetwork | StacksTestnet | StacksMainnet | StacksRegtest,
+    void
   >(networkAtom);
 
   const handleSetNetwork = useCallback(

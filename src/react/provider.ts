@@ -1,6 +1,12 @@
 import { FC, createElement } from 'react';
 import { defaultStorageAdapter } from 'micro-stacks/connect';
-import { StacksNetwork, StacksMainnet, StacksTestnet, StacksRegtest, StacksMocknet } from 'micro-stacks/network';
+import {
+  StacksNetwork,
+  StacksMainnet,
+  StacksTestnet,
+  StacksRegtest,
+  StacksMocknet,
+} from 'micro-stacks/network';
 import { Provider } from 'jotai';
 
 import { authOptionsAtom } from './store/auth';

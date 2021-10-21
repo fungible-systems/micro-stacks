@@ -31,11 +31,6 @@ export function isNodeCryptoAvailable<T>(
 export const NO_CRYPTO_LIB =
   'Crypto lib not found. Either the WebCrypto "crypto.subtle" or Node.js "crypto" module must be available.';
 
-export type TriplesecDecryptSignature = (
-  arg: { data: Uint8Array; key: Uint8Array },
-  cb: (err: Error | null, buff: Uint8Array | null) => void
-) => void;
-
 export interface WebCryptoLib {
   lib: Crypto; // Note this is the typedef for the Web Crypto API, included with typescript
   name: 'webCrypto';
@@ -56,7 +51,7 @@ export async function getCryptoLib(): Promise<WebCryptoLib | NodeCryptoLib> {
     };
   } else {
     try {
-      // eslint-disable-next-line max-len
+      // eslint-disable-next-line max-len,import/no-nodejs-modules
       // eslint-disable-next-line import/no-nodejs-modules,no-restricted-modules,global-require,@typescript-eslint/no-var-requires
       const nodeCrypto = require('crypto') as typeof import('crypto');
       return {
