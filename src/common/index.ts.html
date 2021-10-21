@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.82% </span>
+                <span class="strong">63.15% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>20/34</span>
+                <span class='fraction'>24/38</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.38% </span>
+                <span class="strong">30% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/13</span>
+                <span class='fraction'>3/10</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">66.66% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>4/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">60% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>3/5</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">56.25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/32</span>
+                <span class='fraction'>21/35</span>
             </div>
         
             
@@ -142,7 +142,12 @@
 <a name='L83'></a><a href='#L83'>83</a>
 <a name='L84'></a><a href='#L84'>84</a>
 <a name='L85'></a><a href='#L85'>85</a>
-<a name='L86'></a><a href='#L86'>86</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">63x</span>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">63x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">63x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -226,6 +231,11 @@
 <span class="cline-any cline-yes">3963x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1466x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63x</span>
+<span class="cline-any cline-yes">1797x</span>
+<span class="cline-any cline-yes">1797x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { getGlobalScope } from '../storage/common';
 &nbsp;
@@ -282,21 +292,21 @@ export function getGlobalObject&lt;K extends Extract&lt;keyof Window, string&gt;
   let globalScope: Window | undefined = undefined;
   try {
     globalScope = getGlobalScope();
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (globalScope) {
+    if (globalScope) {
       const obj = globalScope[name];
-      <span class="missing-if-branch" title="else path not taken" >E</span>if (obj) {
+      if (obj) {
         return obj;
       }
     }
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    console.error(`Error getting object '${name}' from global scope '${globalScope}': ${error}`);</span>
   }
-<span class="cstat-no" title="statement not covered" >  if (throwIfUnavailable) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (throwIfUnavailable) {</span>
     const errMsg = <span class="cstat-no" title="statement not covered" >getAPIUsageErrorMessage(globalScope, name.toString(), usageDesc);</span>
 <span class="cstat-no" title="statement not covered" >    console.error(errMsg);</span>
 <span class="cstat-no" title="statement not covered" >    throw new Error(errMsg);</span>
   }
-<span class="cstat-no" title="statement not covered" >  if (returnEmptyObject) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (returnEmptyObject) {</span>
 <span class="cstat-no" title="statement not covered" >    return {} as any;</span>
   }
 <span class="cstat-no" title="statement not covered" >  return undefined;</span>
@@ -312,6 +322,11 @@ export function concatByteArrays(byteArrays: Uint8Array[]): Uint8Array {
   }
   return resultArray;
 }
+&nbsp;
+export function ensureUint8Array(bytes: Uint8Array): Uint8Array {
+  if (typeof bytes === 'object') bytes = Uint8Array.from(bytes);
+  return bytes;
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -319,7 +334,7 @@ export function concatByteArrays(byteArrays: Uint8Array[]): Uint8Array {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Oct 21 2021 13:53:56 GMT+0000 (Coordinated Universal Time)
+                at Thu Oct 21 2021 21:07:33 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

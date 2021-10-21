@@ -23,28 +23,28 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">55.4% </span>
+                <span class="strong">55.39% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>77/139</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20.73% </span>
+                <span class="strong">8.77% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>17/82</span>
+                <span class='fraction'>5/57</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.12% </span>
+                <span class="strong">94.11% </span>
                 <span class="quiet">Functions</span>
                 <span class='fraction'>16/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">59.69% </span>
+                <span class="strong">59.68% </span>
                 <span class="quiet">Lines</span>
                 <span class='fraction'>77/129</span>
             </div>
@@ -596,7 +596,7 @@ export function makeZoneFile(
 &nbsp;
 function processOrigin(data: string | undefined, template: string) {
   let ret = '';
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof data !== 'undefined') {
+  if (typeof data !== 'undefined') {
     ret += '$ORIGIN ' + data;
   }
   return template.replace('{$origin}', ret);
@@ -604,7 +604,7 @@ function processOrigin(data: string | undefined, template: string) {
 &nbsp;
 function processTTL(data: number | undefined, template: string) {
   let ret = '';
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof data !== 'undefined') {
+  if (typeof data !== 'undefined') {
     ret += '$TTL ' + data;
   }
   return template.replace('{$ttl}', ret);
@@ -628,7 +628,7 @@ function processNS(data: NSType[] | undefined, template: string) {
   <span class="missing-if-branch" title="if path not taken" >I</span>if (data) {
 <span class="cstat-no" title="statement not covered" >    for (const record of data) {</span>
 <span class="cstat-no" title="statement not covered" >      ret += (record.name || '@') + '\t';</span>
-<span class="cstat-no" title="statement not covered" >      if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
 <span class="cstat-no" title="statement not covered" >      ret += 'IN\tNS\t' + record.host + '\n';</span>
     }
   }
@@ -640,7 +640,7 @@ function processA(data: AType[] | undefined, template: string) {
   <span class="missing-if-branch" title="if path not taken" >I</span>if (data) {
 <span class="cstat-no" title="statement not covered" >    for (const record of data) {</span>
 <span class="cstat-no" title="statement not covered" >      ret += (record.name || '@') + '\t';</span>
-<span class="cstat-no" title="statement not covered" >      if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
 <span class="cstat-no" title="statement not covered" >      ret += 'IN\tA\t' + record.ip + '\n';</span>
     }
   }
@@ -652,7 +652,7 @@ function processAAAA(data: AType[] | undefined, template: string) {
   <span class="missing-if-branch" title="if path not taken" >I</span>if (data) {
 <span class="cstat-no" title="statement not covered" >    for (const record of data) {</span>
 <span class="cstat-no" title="statement not covered" >      ret += (record.name || '@') + '\t';</span>
-<span class="cstat-no" title="statement not covered" >      if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
 <span class="cstat-no" title="statement not covered" >      ret += 'IN\tAAAA\t' + record.ip + '\n';</span>
     }
   }
@@ -664,7 +664,7 @@ function processCNAME(data: CNAMEType[] | undefined, template: string) {
   <span class="missing-if-branch" title="if path not taken" >I</span>if (data) {
 <span class="cstat-no" title="statement not covered" >    for (const record of data) {</span>
 <span class="cstat-no" title="statement not covered" >      ret += (record.name || '@') + '\t';</span>
-<span class="cstat-no" title="statement not covered" >      if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
 <span class="cstat-no" title="statement not covered" >      ret += 'IN\tCNAME\t' + record.alias + '\n';</span>
     }
   }
@@ -676,7 +676,7 @@ function processMX(data: MXType[] | undefined, template: string) {
   <span class="missing-if-branch" title="if path not taken" >I</span>if (data) {
 <span class="cstat-no" title="statement not covered" >    for (const record of data) {</span>
 <span class="cstat-no" title="statement not covered" >      ret += (record.name || '@') + '\t';</span>
-<span class="cstat-no" title="statement not covered" >      if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
 <span class="cstat-no" title="statement not covered" >      ret += 'IN\tMX\t' + record.preference + '\t' + record.host + '\n';</span>
     }
   }
@@ -688,7 +688,7 @@ function processPTR(data: NSType[] | undefined, template: string) {
   <span class="missing-if-branch" title="if path not taken" >I</span>if (data) {
 <span class="cstat-no" title="statement not covered" >    for (const record of data) {</span>
 <span class="cstat-no" title="statement not covered" >      ret += (record.name || '@') + '\t';</span>
-<span class="cstat-no" title="statement not covered" >      if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
 <span class="cstat-no" title="statement not covered" >      ret += 'IN\tPTR\t' + record.host + '\n';</span>
     }
   }
@@ -700,12 +700,12 @@ function processTXT(data: TXTType[] | undefined, template: string) {
   <span class="missing-if-branch" title="if path not taken" >I</span>if (data) {
 <span class="cstat-no" title="statement not covered" >    for (const record of data) {</span>
 <span class="cstat-no" title="statement not covered" >      ret += (record.name || '@') + '\t';</span>
-<span class="cstat-no" title="statement not covered" >      if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
 <span class="cstat-no" title="statement not covered" >      ret += 'IN\tTXT\t';</span>
       const txtData = <span class="cstat-no" title="statement not covered" >record.txt;</span>
 <span class="cstat-no" title="statement not covered" >      if (typeof txtData === 'string') {</span>
 <span class="cstat-no" title="statement not covered" >        ret += '"' + txtData + '"';</span>
-      } else <span class="cstat-no" title="statement not covered" >if (txtData instanceof Array) {</span>
+      } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (txtData instanceof Array) {</span>
 <span class="cstat-no" title="statement not covered" >        ret += txtData</span>
           .map(<span class="fstat-no" title="function not covered" >function </span>(datum) {
 <span class="cstat-no" title="statement not covered" >            return '"' + datum + '"';</span>
@@ -723,7 +723,7 @@ function processSRV(data: SRVType[] | undefined, template: string) {
   <span class="missing-if-branch" title="if path not taken" >I</span>if (data) {
 <span class="cstat-no" title="statement not covered" >    for (const record of data) {</span>
 <span class="cstat-no" title="statement not covered" >      ret += (record.name || '@') + '\t';</span>
-<span class="cstat-no" title="statement not covered" >      if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
 <span class="cstat-no" title="statement not covered" >      ret += 'IN\tSRV\t' + record.priority + '\t';</span>
 <span class="cstat-no" title="statement not covered" >      ret += record.weight + '\t';</span>
 <span class="cstat-no" title="statement not covered" >      ret += record.port + '\t';</span>
@@ -738,7 +738,7 @@ function processSPF(data: SPFType[] | undefined, template: string) {
   <span class="missing-if-branch" title="if path not taken" >I</span>if (data) {
 <span class="cstat-no" title="statement not covered" >    for (const record of data) {</span>
 <span class="cstat-no" title="statement not covered" >      ret += (record.name || '@') + '\t';</span>
-<span class="cstat-no" title="statement not covered" >      if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span></span>
 <span class="cstat-no" title="statement not covered" >      ret += 'IN\tSPF\t' + record.data + '\n';</span>
     }
   }
@@ -747,9 +747,9 @@ function processSPF(data: SPFType[] | undefined, template: string) {
 &nbsp;
 function processURI(data: URIType[] | undefined, template: string) {
   let ret = '';
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (data) {
+  if (data) {
     for (const record of data) {
-      ret += (record.name<span class="branch-1 cbranch-no" title="branch not covered" > || '@') + '</span>\t';
+      ret += (record.name || <span class="branch-1 cbranch-no" title="branch not covered" >'@') + '</span>\t';
       <span class="missing-if-branch" title="if path not taken" >I</span>if (record.ttl) <span class="cstat-no" title="statement not covered" >ret += record.ttl + '\t';</span>
       ret += 'IN\tURI\t' + record.priority + '\t';
       ret += record.weight + '\t';
@@ -762,7 +762,7 @@ function processURI(data: URIType[] | undefined, template: string) {
 function processValues(jsonZoneFile: ZoneFileObject, template: string) {
   template = template.replace(
     '{zone}',
-    jsonZoneFile['$origin'] || (<span class="branch-1 cbranch-no" title="branch not covered" >jsonZoneFile['soa'] ? jsonZoneFile['soa']['name'] : false<span class="branch-2 cbranch-no" title="branch not covered" >)</span> || ''</span>
+    jsonZoneFile['$origin'] || (<span class="branch-1 cbranch-no" title="branch not covered" >jsonZoneFile['soa'] ? jsonZoneFile['soa']['name'] : false)</span> || <span class="branch-2 cbranch-no" title="branch not covered" >''</span>
   );
   template = template.replace('{datetime}', new Date().toISOString());
   const time = Math.round(Date.now() / 1000);
@@ -775,7 +775,7 @@ function processValues(jsonZoneFile: ZoneFileObject, template: string) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Oct 21 2021 13:53:56 GMT+0000 (Coordinated Universal Time)
+                at Thu Oct 21 2021 21:07:33 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

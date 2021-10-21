@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">48.74% </span>
+                <span class="strong">48.73% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>58/119</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20.83% </span>
+                <span class="strong">19.51% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/48</span>
+                <span class='fraction'>8/41</span>
             </div>
         
             
@@ -44,7 +44,7 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">48.65% </span>
+                <span class="strong">48.64% </span>
                 <span class="quiet">Lines</span>
                 <span class='fraction'>54/111</span>
             </div>
@@ -1117,9 +1117,9 @@ export class GaiaHubError extends BlockstackError {
       };
       if (typeof response.body === 'string') {
         this.hubError.message = response.body;
-      <span class="missing-if-branch" title="else path not taken" >E</span>} else if (typeof response.body === 'object') {
+      } else if (typeof response.body === 'object') {
         Object.assign(this.hubError, response.body);
-      }<span class="cstat-no" title="statement not covered" ></span>
+      }<span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span><span class="missing-if-branch" title="else path not taken" >E</span></span>
     }<span class="cstat-no" title="statement not covered" ></span>
   }
 }
@@ -1249,9 +1249,9 @@ export async function getBlockstackErrorFromResponse(
 <span class="cstat-no" title="statement not covered" >    throw new BadPathError(errorMsg, gaiaResponse);</span>
   } else <span class="missing-if-branch" title="if path not taken" >I</span>if (gaiaResponse.status === 404) {
 <span class="cstat-no" title="statement not covered" >    throw new DoesNotExist(errorMsg, gaiaResponse);</span>
-  } else <span class="missing-if-branch" title="else path not taken" >E</span>if (gaiaResponse.status === 409) {
+  } else if (gaiaResponse.status === 409) {
     throw new ConflictError(errorMsg, gaiaResponse);
-  } else <span class="cstat-no" title="statement not covered" >if (gaiaResponse.status === 412) {</span>
+  } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (gaiaResponse.status === 412) {</span>
 <span class="cstat-no" title="statement not covered" >    throw new PreconditionFailedError(errorMsg, gaiaResponse)</span>;
   } else <span class="cstat-no" title="statement not covered" >if (gaiaResponse.status === 413) {</span>
 <span class="cstat-no" title="statement not covered" >    const maxBytes =</span>
@@ -1271,20 +1271,20 @@ export async function getBlockstackErrorFromResponse(
 export function isRecoverableGaiaError(error: GaiaHubError): boolean {
   if (!error || !error.hubError || !error.hubError.statusCode) {
     return false;
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>}</span>
 <span class="cstat-no" title="statement not covered" >  const statusCode = e</span>rror.hubError.statusCode;
   // 401 Unauthorized: possible expired, but renewable auth token.
   if (statusCode === <span class="cstat-no" title="statement not covered" >401) {</span>
     return true;
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>}</span>
 <span class="cstat-no" title="statement not covered" >  // 409 Conflict: possible concurrent writes to a file.</span>
   if (statusCode === 409) {
     return true;
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>}</span>
 <span class="cstat-no" title="statement not covered" >  // 500s: possible server-side transient error</span>
   if (statusCode &gt;= 500 &amp;&amp; statusCode &lt;= 599) {
     return true;
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>}</span>
 <span class="cstat-no" title="statement not covered" >  return false;</span>
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -1294,7 +1294,7 @@ export function isRecoverableGaiaError(error: GaiaHubError): boolean {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Oct 21 2021 13:53:56 GMT+0000 (Coordinated Universal Time)
+                at Thu Oct 21 2021 21:07:33 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

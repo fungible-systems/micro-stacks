@@ -23,28 +23,28 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">63.64% </span>
+                <span class="strong">63.63% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>42/66</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">64.81% </span>
+                <span class="strong">68% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>35/54</span>
+                <span class='fraction'>34/50</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.89% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Functions</span>
                 <span class='fraction'>8/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">63.08% </span>
+                <span class="strong">63.07% </span>
                 <span class="quiet">Lines</span>
                 <span class='fraction'>41/65</span>
             </div>
@@ -405,14 +405,14 @@ export class FileContentLoader {
 <span class="cstat-no" title="statement not covered" >        return content;</span>
       } else if (ArrayBuffer.isView(content)) {
         return new Uint8Array(content.buffer, content.byteOffset, content.byteLength);
-      } else <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof Blob !== 'undefined' &amp;&amp; content instanceof Blob) {
+      } else if (typeof Blob !== 'undefined' &amp;&amp; content instanceof Blob) {
         return content;
-      } else <span class="cstat-no" title="statement not covered" >if (content instanceof ArrayBuffer) {</span>
+      } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (content instanceof ArrayBuffer) {</span>
 <span class="cstat-no" title="statement not covered" >        return new Uint8Array(content);</span>
       } else <span class="cstat-no" title="statement not covered" >if (Array.isArray(content)) {</span>
         // Provided with a regular number `Array` -- this is either an (old) method
         // of representing an octet array, or a dev error. Perform basic check for octet array.
-<span class="cstat-no" title="statement not covered" >        if (</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (</span>
           content.length &gt; 0 &amp;&amp;
           (!Number.isInteger(content[0]) || content[0] &lt; 0 || content[0] &gt; 255)
         ) {
@@ -436,9 +436,9 @@ export class FileContentLoader {
   private detectContentType(): string {
     if (this.wasString) {
       return 'text/plain; charset=utf-8';
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof Blob !== 'undefined' &amp;&amp; this.content instanceof Blob &amp;&amp; this.content.type) {
+    } else if (typeof Blob !== 'undefined' &amp;&amp; this.content instanceof Blob &amp;&amp; this.content.type) {
       return this.content.type;
-    } else {
+    } else <span class="missing-if-branch" title="else path not taken" >E</span>{
 <span class="cstat-no" title="statement not covered" >      return 'application/octet-stream';</span>
     }
   }
@@ -446,7 +446,7 @@ export class FileContentLoader {
   private detectContentLength(): number {
     if (ArrayBuffer.isView(this.content) || this.content instanceof Uint8Array) {
       return this.content.byteLength;
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof Blob !== 'undefined' &amp;&amp; this.content instanceof Blob) {
+    } else if (typeof Blob !== 'undefined' &amp;&amp; this.content instanceof Blob) {
       return this.content.size;
     }
     const typeName = <span class="cstat-no" title="statement not covered" >Object.prototype.toString.call(this.content);</span>
@@ -465,7 +465,7 @@ export class FileContentLoader {
           this.content.byteOffset,
           this.content.byteLength
         );
-      } else <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof Blob !== 'undefined' &amp;&amp; this.content instanceof Blob) {
+      } else if (typeof Blob !== 'undefined' &amp;&amp; this.content instanceof Blob) {
         const reader = new FileReader();
         const readPromise = new Promise&lt;Uint8Array&gt;((resolve, reject) =&gt; {
           reader.onerror<span class="fstat-no" title="function not covered" > = e</span>rr =&gt; {
@@ -479,7 +479,7 @@ export class FileContentLoader {
         });
         const result = await readPromise;
         return result;
-      } else {
+      } else <span class="missing-if-branch" title="else path not taken" >E</span>{
         const typeName = <span class="cstat-no" title="statement not covered" >Object.prototype.toString.call(this.content);</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Unexpected type ${typeName}`);</span>
       }
@@ -492,7 +492,7 @@ export class FileContentLoader {
   }
 &nbsp;
   load(): Promise&lt;Uint8Array | string&gt; {
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (this.loadedData === undefined) {
+    if (this.loadedData === undefined) {
       this.loadedData = this.loadContent();
     }
     return this.loadedData;
@@ -505,7 +505,7 @@ export class FileContentLoader {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Oct 21 2021 13:53:56 GMT+0000 (Coordinated Universal Time)
+                at Thu Oct 21 2021 21:07:33 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

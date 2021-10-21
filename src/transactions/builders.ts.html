@@ -23,21 +23,21 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">73.08% </span>
+                <span class="strong">73.07% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>209/286</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">69.92% </span>
+                <span class="strong">68% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>86/123</span>
+                <span class='fraction'>68/100</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.19% </span>
+                <span class="strong">85.18% </span>
                 <span class="quiet">Functions</span>
                 <span class='fraction'>23/27</span>
             </div>
@@ -1219,7 +1219,8 @@
 <a name='L1160'></a><a href='#L1160'>1160</a>
 <a name='L1161'></a><a href='#L1161'>1161</a>
 <a name='L1162'></a><a href='#L1162'>1162</a>
-<a name='L1163'></a><a href='#L1163'>1163</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+<a name='L1163'></a><a href='#L1163'>1163</a>
+<a name='L1164'></a><a href='#L1164'>1164</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2282,6 +2283,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2458,7 +2460,7 @@ export async function getNonce(address: string, network?: StacksNetwork): Promis
     : <span class="branch-1 cbranch-no" title="branch not covered" >defaultNetwork.getAccountApiUrl(address);</span>
   const response = await fetchPrivate(url);
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {
-    let msg<span class="cstat-no" title="statement not covered" > = '';</span>
+    let msg = <span class="cstat-no" title="statement not covered" >'';</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      msg = await response.text();</span>
     } catch (error) {}
@@ -2506,7 +2508,7 @@ export async function estimateTransfer(
     : defaultNetwork.getTransferFeeEstimateApiUrl();
   const response = await fetchPrivate(url, fetchOptions);
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {
-    let msg<span class="cstat-no" title="statement not covered" > = '';</span>
+    let msg = <span class="cstat-no" title="statement not covered" >'';</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      msg = await response.text();</span>
     } catch (error) {}
@@ -2781,7 +2783,7 @@ export async function makeUnsignedSTXTokenTransfer(
 export async function makeSTXTokenTransfer(
   txOptions: SignedTokenTransferOptions | SignedMultiSigTokenTransferOptions
 ): Promise&lt;StacksTransaction&gt; {
-  <span class="missing-if-branch" title="else path not taken" >E</span>if ('senderKey' in txOptions) {
+  if ('senderKey' in txOptions) {
     const privKey = createStacksPrivateKey(txOptions.senderKey);
 &nbsp;
     const publicKey = publicKeyToString(getPublicKeyFromStacksPrivateKey(privKey));
@@ -2792,7 +2794,7 @@ export async function makeSTXTokenTransfer(
     await signer.signOrigin(privKey);
 &nbsp;
     return transaction;
-  } else {
+  } else <span class="missing-if-branch" title="else path not taken" >E</span>{
     const options<span class="cstat-no" title="statement not covered" > = omit(txOptions, 'signerKeys');</span>
     const transaction = <span class="cstat-no" title="statement not covered" >await makeUnsignedSTXTokenTransfer(options);</span>
 &nbsp;
@@ -2851,7 +2853,7 @@ export async function <span class="fstat-no" title="function not covered" >estim
   transaction: StacksTransaction,
   network?: StacksNetwork
 ): Promise&lt;bigint&gt; {
-<span class="cstat-no" title="statement not covered" >  if (transaction.payload.payloadType !== PayloadType.SmartContract) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (transaction.payload.payloadType !== PayloadType.SmartContract) {</span>
 <span class="cstat-no" title="statement not covered" >    throw new Error(</span>
       `Contract deploy fee estimation only possible with ${
         PayloadType[PayloadType.SmartContract]
@@ -2876,8 +2878,8 @@ export async function <span class="fstat-no" title="function not covered" >estim
     : defaultNetwork.getTransferFeeEstimateApiUrl();
 &nbsp;
   const response = <span class="cstat-no" title="statement not covered" >await fetchPrivate(url, fetchOptions);</span>
-<span class="cstat-no" title="statement not covered" >  if (!response.ok) {</span>
-    let msg<span class="cstat-no" title="statement not covered" > = '';</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
+    let msg = <span class="cstat-no" title="statement not covered" >'';</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      msg = await response.text();</span>
     } catch (error) {}
@@ -2967,7 +2969,7 @@ export async function makeContractDeploy(
 <span class="cstat-no" title="statement not covered" >    transaction.setNonce(txNonce);</span>
   }
 &nbsp;
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (options.senderKey) {
+  if (options.senderKey) {
     const signer = new TransactionSigner(transaction);
     await signer.signOrigin(privKey);
   }
@@ -3037,7 +3039,7 @@ export async function <span class="fstat-no" title="function not covered" >estim
   transaction: StacksTransaction,
   network?: StacksNetwork
 ): Promise&lt;bigint&gt; {
-<span class="cstat-no" title="statement not covered" >  if (transaction.payload.payloadType !== PayloadType.ContractCall) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (transaction.payload.payloadType !== PayloadType.ContractCall) {</span>
 <span class="cstat-no" title="statement not covered" >    throw new Error(</span>
       `Contract call fee estimation only possible with ${
         PayloadType[PayloadType.ContractCall]
@@ -3062,8 +3064,8 @@ export async function <span class="fstat-no" title="function not covered" >estim
     : defaultNetwork.getTransferFeeEstimateApiUrl();
 &nbsp;
   const response = <span class="cstat-no" title="statement not covered" >await fetchPrivate(url, fetchOptions);</span>
-<span class="cstat-no" title="statement not covered" >  if (!response.ok) {</span>
-    let msg<span class="cstat-no" title="statement not covered" > = '';</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
+    let msg = <span class="cstat-no" title="statement not covered" >'';</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      msg = await response.text();</span>
     } catch (error) {}
@@ -3107,9 +3109,9 @@ export async function makeUnsignedContractCall(
   if (<span class="branch-0 cbranch-no" title="branch not covered" >optio</span>ns?.validateWithAbi) {
     let abi: ClarityAbi;
     if (typeof options.validateWithAbi === 'boolean') {
-      <span class="missing-if-branch" title="else path not taken" >E</span>if (<span class="branch-0 cbranch-no" title="branch not covered" >optio</span>ns?.network) {
+      if (<span class="branch-0 cbranch-no" title="branch not covered" >optio</span>ns?.network) {
         abi = await getAbi(options.contractAddress, options.contractName, options.network);
-      } else {
+      } else <span class="missing-if-branch" title="else path not taken" >E</span>{
 <span class="cstat-no" title="statement not covered" >        throw new Error('Network option must be provided in order to validate with ABI');</span>
       }
     } else {
@@ -3435,7 +3437,7 @@ export async function callReadOnlyFunction(
   });
 &nbsp;
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {
-    let msg<span class="cstat-no" title="statement not covered" > = '';</span>
+    let msg = <span class="cstat-no" title="statement not covered" >'';</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      msg = await response.text();</span>
     } catch (error) {}
@@ -3444,7 +3446,8 @@ export async function callReadOnlyFunction(
     );
   }
 &nbsp;
-  return response.json().then(responseJson =&gt; parseReadOnlyResponse(responseJson));
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  return response.json().then(responseJson =&gt; parseReadOnlyResponse(responseJson as any));
 }
 &nbsp;
 /**
@@ -3550,7 +3553,7 @@ export async function sponsorTransaction(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Oct 21 2021 13:53:56 GMT+0000 (Coordinated Universal Time)
+                at Thu Oct 21 2021 21:07:33 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

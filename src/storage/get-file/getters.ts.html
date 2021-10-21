@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>16/50</span>
+                <span class='fraction'>13/39</span>
             </div>
         
             
@@ -598,14 +598,14 @@ export async function getUserAppFileUrl(
   const profile = await lookupProfile({ username, zoneFileLookupURL });
   let bucketUrl: string | undefined;
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!profile) <span class="cstat-no" title="statement not covered" >return;</span>
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (profile.hasOwnProperty('apps')) {
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (profile.apps.hasOwnProperty(appOrigin)) {
+  if (profile.hasOwnProperty('apps')) {
+    if (profile.apps.hasOwnProperty(appOrigin)) {
       const url = profile.apps[appOrigin];
       const bucket = url.replace(/\/?(\?|#|$)/, '/$1');
       bucketUrl = `${bucket}${path}`;
     }
-  } else <span class="cstat-no" title="statement not covered" >if (profile.hasOwnProperty('appsMeta')) {</span>
-<span class="cstat-no" title="statement not covered" >    if (profile.appsMeta.hasOwnProperty(appOrigin)) {</span>
+  } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span><span class="missing-if-branch" title="else path not taken" >E</span>if (profile.hasOwnProperty('appsMeta')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (profile.appsMeta.hasOwnProperty(appOrigin)) {</span>
       const url = <span class="cstat-no" title="statement not covered" >profile.appsMeta[appOrigin];</span>
       const bucket = <span class="cstat-no" title="statement not covered" >url.replace(/\/?(\?|#|$)/, '/$1');</span>
 <span class="cstat-no" title="statement not covered" >      bucketUrl = `${bucket}${path}`;</span>
@@ -661,7 +661,7 @@ export async function getGaiaAddress(options: {
   let fileUrl: string | undefined;
   <span class="missing-if-branch" title="if path not taken" >I</span>if (username) {
 <span class="cstat-no" title="statement not covered" >    fileUrl = await getUserAppFileUrl('/', username!, app, zoneFileLookupURL);</span>
-  } else <span class="missing-if-branch" title="else path not taken" >E</span>if (gaiaHubConfig) {
+  } else if (gaiaHubConfig) {
     fileUrl = await getFullReadUrl('/', gaiaHubConfig);
   }
   const matches = /([13][a-km-zA-HJ-NP-Z0-9]{26,35})/.exec(fileUrl!);
@@ -698,18 +698,18 @@ export async function getFileContents(options: {
 <span class="cstat-no" title="statement not covered" >    throw await getBlockstackErrorFromResponse(response, `getFile ${path} failed.`, null);</span>
   }
   let contentType = response.headers.get('Content-Type');
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof contentType === 'string') {
+  if (typeof contentType === 'string') {
     contentType = contentType.toLowerCase();
   }
 &nbsp;
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (
+  if (
     forceText ||
     contentType === null ||
     contentType.startsWith('text') ||
     contentType.startsWith('application/json')
   ) {
     return response.text();
-  } else {
+  } else <span class="missing-if-branch" title="else path not taken" >E</span>{
     const arrayBuffer = <span class="cstat-no" title="statement not covered" >await response.arrayBuffer();</span>
 <span class="cstat-no" title="statement not covered" >    return arrayBufferToUint8(arrayBuffer);</span>
   }
@@ -756,15 +756,15 @@ export async function <span class="fstat-no" title="function not covered" >getFi
       }),
     ]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!fileContents) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!fileContents) {</span>
 <span class="cstat-no" title="statement not covered" >      return fileContents;</span>
     }
-<span class="cstat-no" title="statement not covered" >    if (!gaiaAddress) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!gaiaAddress) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new SignatureVerificationError(</span>
         'Failed to get gaia address for verification of: ' + `${path}`
       );
     }
-<span class="cstat-no" title="statement not covered" >    if (!signatureContents || typeof signatureContents !== 'string') {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!signatureContents || typeof signatureContents !== 'string') {</span>
 <span class="cstat-no" title="statement not covered" >      throw new SignatureVerificationError(</span>
         'Failed to obtain signature for file: ' +
           `${path} -- looked in ${path}${SIGNATURE_FILE_SUFFIX}`
@@ -823,7 +823,7 @@ export async function <span class="fstat-no" title="function not covered" >getFi
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Oct 21 2021 13:53:56 GMT+0000 (Coordinated Universal Time)
+                at Thu Oct 21 2021 21:07:33 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

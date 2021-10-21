@@ -23,28 +23,28 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.72% </span>
+                <span class="strong">76.71% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>145/189</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70.47% </span>
+                <span class="strong">69.44% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>105/149</span>
+                <span class='fraction'>100/144</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.74% </span>
+                <span class="strong">94.73% </span>
                 <span class="quiet">Functions</span>
                 <span class='fraction'>18/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.14% </span>
+                <span class="strong">76.13% </span>
                 <span class="quiet">Lines</span>
                 <span class='fraction'>134/176</span>
             </div>
@@ -832,9 +832,9 @@ export function getTypeUnion(val: ClarityAbiType): ClarityAbiTypeUnion {
       return { id: ClarityAbiTypeId.ClarityAbiTypeBool, type: val };
     } else if (val === 'principal') {
       return { id: ClarityAbiTypeId.ClarityAbiTypePrincipal, type: val };
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>if (val === 'trait_reference') {
+    } else if (val === 'trait_reference') {
       return { id: ClarityAbiTypeId.ClarityAbiTypeTraitReference, type: val };
-    } else <span class="cstat-no" title="statement not covered" >if (val === 'none') {</span>
+    } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (val === 'none') {</span>
 <span class="cstat-no" title="statement not covered" >      return { id: ClarityAbiTypeId.ClarityAbiTypeNone, type: val };</span>
     } else {
 <span class="cstat-no" title="statement not covered" >      throw new Error(`Unexpected Clarity ABI type primitive: ${JSON.stringify(val)}`);</span>
@@ -851,9 +851,9 @@ export function getTypeUnion(val: ClarityAbiType): ClarityAbiTypeUnion {
     return { id: ClarityAbiTypeId.ClarityAbiTypeList, type: val };
   } else if (isClarityAbiStringAscii(val)) {
     return { id: ClarityAbiTypeId.ClarityAbiTypeStringAscii, type: val };
-  } else <span class="missing-if-branch" title="else path not taken" >E</span>if (isClarityAbiStringUtf8(val)) {
+  } else if (isClarityAbiStringUtf8(val)) {
     return { id: ClarityAbiTypeId.ClarityAbiTypeStringUtf8, type: val };
-  } else {
+  } else <span class="missing-if-branch" title="else path not taken" >E</span>{
 <span class="cstat-no" title="statement not covered" >    throw new Error(`Unexpected Clarity ABI type: ${JSON.stringify(val)}`);</span>
   }
 }
@@ -932,15 +932,15 @@ export function getTypeString(val: ClarityAbiType): string {
     return `(optional ${getTypeString(val.optional)})`;
   } else if (isClarityAbiTuple(val)) {
     return `(tuple ${val.tuple.map(t =&gt; `(${t.name} ${getTypeString(t.type)})`).join(' ')})`;
-  } else <span class="missing-if-branch" title="else path not taken" >E</span>if (isClarityAbiList(val)) {
+  } else if (isClarityAbiList(val)) {
     return `(list ${val.list.length} ${getTypeString(val.list.type)})`;
-  } else {
+  } else <span class="missing-if-branch" title="else path not taken" >E</span>{
 <span class="cstat-no" title="statement not covered" >    throw new Error(`Type string unsupported for Clarity type: ${JSON.stringify(val)}`);</span>
   }
 }
 &nbsp;
 export function abiFunctionToString(func: ClarityAbiFunction): string {
-  const access = func.access === 'read_only'<span class="branch-0 cbranch-no" title="branch not covered" > ? 'read-only' : f</span>unc.access;
+  const access = func.access === 'read_only' ? <span class="branch-0 cbranch-no" title="branch not covered" >'read-only' : f</span>unc.access;
   return `(define-${access} (${func.name} ${func.args
     .map(arg =&gt; `(${arg.name} ${getTypeString(arg.type)})`)
     .join(' ')}))`;
@@ -1006,7 +1006,7 @@ function matchType(cv: ClarityValue, abiType: ClarityAbiType): boolean {
         cv.list.every(val =&gt; matchType(val, union.type.list.type))
       );
     case ClarityType.Tuple:
-      <span class="missing-if-branch" title="else path not taken" >E</span>if (union.id == ClarityAbiTypeId.ClarityAbiTypeTuple) {
+      if (union.id == ClarityAbiTypeId.ClarityAbiTypeTuple) {
         const tuple = cloneDeep(cv.data);
         for (let i = 0; i &lt; union.type.tuple.length; i++) {
           const abiTupleEntry = union.type.tuple[i];
@@ -1025,7 +1025,7 @@ function matchType(cv: ClarityValue, abiType: ClarityAbiType): boolean {
           }
         }
         return true;
-      } else {
+      } else <span class="missing-if-branch" title="else path not taken" >E</span>{
 <span class="cstat-no" title="statement not covered" >        return false;</span>
       }
     default:
@@ -1098,28 +1098,28 @@ export function parseToCV(input: string, type: ClarityAbiType): ClarityValue {
     } else if (type === 'bool') {
       if (input.toLowerCase() === 'true') {
         return trueCV();
-      } else <span class="missing-if-branch" title="else path not taken" >E</span>if (input.toLowerCase() === 'false') {
+      } else if (input.toLowerCase() === 'false') {
         return falseCV();
-      } else {
+      } else <span class="missing-if-branch" title="else path not taken" >E</span>{
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Invalid bool value: ${input}`);</span>
       }
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>if (type === 'principal') {
+    } else if (type === 'principal') {
       if (input.includes('.')) {
         const [address, contractName] = input.split('.');
         return contractPrincipalCV(address, contractName);
       } else {
         return standardPrincipalCV(input);
       }
-    } else {
+    } else <span class="missing-if-branch" title="else path not taken" >E</span>{
 <span class="cstat-no" title="statement not covered" >      throw new Error(`Contract function contains unsupported Clarity ABI type: ${typeString}`);</span>
     }
-  } else <span class="missing-if-branch" title="else path not taken" >E</span>if (isClarityAbiBuffer(type)) {
+  } else if (isClarityAbiBuffer(type)) {
     const inputLength = utf8ToBytes(input).byteLength;
     <span class="missing-if-branch" title="if path not taken" >I</span>if (inputLength &gt; type.buffer.length) {
 <span class="cstat-no" title="statement not covered" >      throw new Error(`Input exceeds specified buffer length limit of ${type.buffer.length}`);</span>
     }
     return bufferCVFromString(input);
-  } else <span class="cstat-no" title="statement not covered" >if (isClarityAbiResponse(type)) {</span>
+  } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (isClarityAbiResponse(type)) {</span>
 <span class="cstat-no" title="statement not covered" >    throw new Error(`Contract function contains unsupported Clarity ABI type: ${typeString}`);</span>
   } else <span class="cstat-no" title="statement not covered" >if (isClarityAbiOptional(type)) {</span>
 <span class="cstat-no" title="statement not covered" >    throw new Error(`Contract function contains unsupported Clarity ABI type: ${typeString}`);</span>
@@ -1138,7 +1138,7 @@ export function parseToCV(input: string, type: ClarityAbiType): ClarityValue {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Oct 21 2021 13:53:56 GMT+0000 (Coordinated Universal Time)
+                at Thu Oct 21 2021 21:07:33 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

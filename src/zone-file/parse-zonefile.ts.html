@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">27.1% </span>
+                <span class="strong">27.09% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>42/155</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">28.16% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>22/88</span>
+                <span class='fraction'>20/71</span>
             </div>
         
             
@@ -684,7 +684,7 @@ function parseRRs(text: string) {
     } else <span class="missing-if-branch" title="if path not taken" >I</span>if (/\s+SPF\s+/.test(uRR)) {
 <span class="cstat-no" title="statement not covered" >      ret.spf = ret.spf || [];</span>
 <span class="cstat-no" title="statement not covered" >      ret.spf.push(parseSPF(rr));</span>
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>if (/\s+URI\s+/.test(uRR)) {
+    } else if (/\s+URI\s+/.test(uRR)) {
       ret.uri = ret.uri || [];
       ret.uri.push(parseURI(rr));
     }
@@ -704,7 +704,7 @@ function <span class="fstat-no" title="function not covered" >parseSOA(</span>rr
 <span class="cstat-no" title="statement not covered" >  soa.serial = parseInt(rrTokens[l - 5], 10);</span>
 <span class="cstat-no" title="statement not covered" >  soa.rname = rrTokens[l - 6];</span>
 <span class="cstat-no" title="statement not covered" >  soa.mname = rrTokens[l - 7];</span>
-<span class="cstat-no" title="statement not covered" >  if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >soa.ttl = parseInt(rrTokens[1], 10);</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >soa.ttl = parseInt(rrTokens[1], 10);</span></span>
 <span class="cstat-no" title="statement not covered" >  return soa;</span>
 }
 &nbsp;
@@ -716,7 +716,7 @@ function <span class="fstat-no" title="function not covered" >parseNS(</span>rr:
     host: rrTokens[l - 1],
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
 <span class="cstat-no" title="statement not covered" >  return result;</span>
 }
 &nbsp;
@@ -729,7 +729,7 @@ function <span class="fstat-no" title="function not covered" >parseA(</span>rr: 
     ip: rrTokens[l - 1],
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (urrTokens.lastIndexOf('A') === 0) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (urrTokens.lastIndexOf('A') === 0) {</span>
 <span class="cstat-no" title="statement not covered" >    if (recordsSoFar.length) {</span>
 <span class="cstat-no" title="statement not covered" >      result.name = recordsSoFar[recordsSoFar.length - 1].name;</span>
     } else {
@@ -737,7 +737,7 @@ function <span class="fstat-no" title="function not covered" >parseA(</span>rr: 
     }
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
 <span class="cstat-no" title="statement not covered" >  return result;</span>
 }
 &nbsp;
@@ -749,7 +749,7 @@ function <span class="fstat-no" title="function not covered" >parseAAAA(</span>r
     ip: rrTokens[l - 1],
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
 <span class="cstat-no" title="statement not covered" >  return result;</span>
 }
 &nbsp;
@@ -761,7 +761,7 @@ function <span class="fstat-no" title="function not covered" >parseCNAME(</span>
     alias: rrTokens[l - 1],
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
 <span class="cstat-no" title="statement not covered" >  return result;</span>
 }
 &nbsp;
@@ -774,18 +774,18 @@ function <span class="fstat-no" title="function not covered" >parseMX(</span>rr:
     host: rrTokens[l - 1],
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
 <span class="cstat-no" title="statement not covered" >  return result;</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >parseTXT(</span>rr: string) {
   const rrTokens = <span class="cstat-no" title="statement not covered" >rr.trim().match(/[^\s"']+|"[^"]*"|'[^']*'/g);</span>
-<span class="cstat-no" title="statement not covered" >  if (!rrTokens) <span class="cstat-no" title="statement not covered" >throw new Error('Failure to tokenize TXT record');</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!rrTokens) <span class="cstat-no" title="statement not covered" >throw new Error('Failure to tokenize TXT record');</span></span>
   const l = <span class="cstat-no" title="statement not covered" >rrTokens.length;</span>
   const indexTXT = <span class="cstat-no" title="statement not covered" >rrTokens.indexOf('TXT');</span>
 &nbsp;
   function <span class="fstat-no" title="function not covered" >stripText(</span>txt: string) {
-<span class="cstat-no" title="statement not covered" >    if (txt.indexOf('"') &gt; -1) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (txt.indexOf('"') &gt; -1) {</span>
 <span class="cstat-no" title="statement not covered" >      txt = txt.split('"')[1];</span>
     }
 <span class="cstat-no" title="statement not covered" >    return txt;</span>
@@ -803,7 +803,7 @@ function <span class="fstat-no" title="function not covered" >parseTXT(</span>rr
     txt: tokenTxt,
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
 <span class="cstat-no" title="statement not covered" >  return result;</span>
 }
 &nbsp;
@@ -811,7 +811,7 @@ function <span class="fstat-no" title="function not covered" >parsePTR(</span>rr
   const rrTokens = <span class="cstat-no" title="statement not covered" >rr.trim().split(/\s+/g);</span>
   const urrTokens = <span class="cstat-no" title="statement not covered" >rr.trim().toUpperCase().split(/\s+/g);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (urrTokens.lastIndexOf('PTR') === 0 &amp;&amp; recordsSoFar[recordsSoFar.length - 1]) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (urrTokens.lastIndexOf('PTR') === 0 &amp;&amp; recordsSoFar[recordsSoFar.length - 1]) {</span>
 <span class="cstat-no" title="statement not covered" >    rrTokens.unshift(recordsSoFar[recordsSoFar.length - 1].name as string);</span>
   }
 &nbsp;
@@ -822,7 +822,7 @@ function <span class="fstat-no" title="function not covered" >parsePTR(</span>rr
     host: rrTokens[l - 1],
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
 <span class="cstat-no" title="statement not covered" >  return result;</span>
 }
 &nbsp;
@@ -837,7 +837,7 @@ function <span class="fstat-no" title="function not covered" >parseSRV(</span>rr
     port: parseInt(rrTokens[l - 2], 10),
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
 <span class="cstat-no" title="statement not covered" >  return result;</span>
 }
 &nbsp;
@@ -853,7 +853,7 @@ function <span class="fstat-no" title="function not covered" >parseSPF(</span>rr
 <span class="cstat-no" title="statement not covered" >    result.data = rrTokens[l] + ' ' + result.data.trim();</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isNaN(rrTokens[1] as unknown as number)) <span class="cstat-no" title="statement not covered" >result.ttl = parseInt(rrTokens[1], 10);</span></span>
 <span class="cstat-no" title="statement not covered" >  return result;</span>
 }
 &nbsp;
@@ -877,7 +877,7 @@ function parseURI(rr: string) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Oct 21 2021 13:53:56 GMT+0000 (Coordinated Universal Time)
+                at Thu Oct 21 2021 21:07:33 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>
