@@ -48,7 +48,7 @@ type MempoolTransactionsListParams = [
     | { sender_address: string }
 ];
 
-export const makeMempoolTransactionsListClient = atomFamilyWithInfiniteQuery<
+export const mempoolTransactionsListClient = atomFamilyWithInfiniteQuery<
   MempoolTransactionsListParams,
   MempoolTransactionListResponse
 >(
@@ -71,7 +71,7 @@ export const makeMempoolTransactionsListClient = atomFamilyWithInfiniteQuery<
   }
 );
 
-export const makeDroppedMempoolTransactionsListClient = atomFamilyWithInfiniteQuery<
+export const droppedMempoolTransactionsListClient = atomFamilyWithInfiniteQuery<
   [networkUrl: string, limit: number],
   MempoolTransactionListResponse
 >(
@@ -91,12 +91,12 @@ export const transactionClient = atomFamilyWithQuery<
   return fetchTransaction({ txid, url });
 });
 
-export const makeRawTransactionClient = atomFamilyWithQuery<
-  [networkUrl: string, txid: string],
-  string
->(TxClientKeys.TransactionRaw, async function queryFn(get, [url, txid]) {
-  return fetchRawTransaction({ txid, url });
-});
+export const rawTransactionClient = atomFamilyWithQuery<[networkUrl: string, txid: string], string>(
+  TxClientKeys.TransactionRaw,
+  async function queryFn(get, [url, txid]) {
+    return fetchRawTransaction({ txid, url });
+  }
+);
 
 export const transactionsListByBlockHashClient = atomFamilyWithInfiniteQuery<
   [networkUrl: string, block_hash: string, limit: number],

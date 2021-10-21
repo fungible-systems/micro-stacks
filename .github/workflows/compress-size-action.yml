@@ -1,4 +1,4 @@
-name: Compressed Size:w
+name: Compressed Size
 on: [ pull_request ]
 jobs:
   build:

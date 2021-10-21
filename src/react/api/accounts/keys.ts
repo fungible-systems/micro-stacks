@@ -3,7 +3,7 @@ import {
   PrincipalListHeightWithNetwork,
   PrincipalListWithNetwork,
   PrincipalWithNetwork,
-} from '../../../api/accounts/types';
+} from 'micro-stacks/api';
 
 export enum AccountClientKeys {
   Balances = 'accounts/Balances',
