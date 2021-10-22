@@ -1,5 +1,5 @@
 import { ContractDeployTxOptions, ContractDeployTxPayload, TransactionTypes } from './types';
-import { getPublicKey } from 'noble-secp256k1';
+import { getPublicKey } from 'micro-stacks/crypto';
 import { signTransactionPayload } from './sign';
 
 /**

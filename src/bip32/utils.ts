@@ -1,32 +1,5 @@
-import { bytesToHex, hexToBigInt, intToBytes, intToHexString } from 'micro-stacks/common';
-import { CURVE, Point } from 'noble-secp256k1';
 import { hashRipemd160 } from 'micro-stacks/crypto';
 import { hashSha256 } from 'micro-stacks/crypto-sha';
-
-const bytesToBigInt = (bytes: Uint8Array): bigint => hexToBigInt(bytesToHex(bytes));
-
-// Calculates a modulo b
-function mod(a: bigint, b: bigint = CURVE.P): bigint {
-  const result = a % b;
-  return result >= 0 ? result : b + result;
-}
-
-export const derivePrivateKey = (privateKey: Uint8Array, il: Uint8Array) =>
-  intToBytes(mod(bytesToBigInt(il) + bytesToBigInt(privateKey), CURVE.n), false, 32);
-
-const isCompressed = (bytes: Uint8Array) => {
-  const header = bytes[0];
-  return bytes.length === 32 || (bytes.length === 33 && (header === 0x02 || header === 0x03));
-};
-
-export const derivePublicKey = (pubKey: Uint8Array, il: Uint8Array) => {
-  const publicKeyPoint = Point.fromHex(bytesToHex(pubKey));
-  const ecCurvePoint = new Point(CURVE.Gx, CURVE.Gy)
-    .multiply(bytesToBigInt(il))
-    .add(publicKeyPoint);
-
-  return ecCurvePoint.toRawBytes(isCompressed(pubKey));
-};
 
 export function hash160(input: Uint8Array): Uint8Array {
   return hashRipemd160(hashSha256(input));

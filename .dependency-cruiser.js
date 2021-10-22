@@ -4,6 +4,12 @@ module.exports = {
 
   forbidden: [
     {
+      name: 'no-using-noble-directly',
+      severity: 'error',
+      from: { path: '^src', pathNot: ['^src/(crypto|crypto-extras|transactions)/*'] },
+      to: { path: 'noble-secp256k1' },
+    },
+    {
       name: 'must-not-import-transactions',
       severity: 'error',
       from: { pathNot: '^src/(transactions|connect)/*' },

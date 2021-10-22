@@ -1,4 +1,4 @@
-import { getPublicKey } from 'noble-secp256k1';
+import { getPublicKey } from 'micro-stacks/crypto';
 import { utf8ToBytes } from 'micro-stacks/common';
 import { encryptECIES } from './encrypt-ecies';
 import { signECDSA } from './sign';

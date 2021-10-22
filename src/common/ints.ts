@@ -57,3 +57,5 @@ export function intToBigInt(value: IntegerType, signed = false): bigint {
     `Invalid value type. Must be a number, bigint, integer-string, hex-string, BN.js instance, or Buffer, got: ${typeof value}.`
   );
 }
+
+export const bytesToBigInt = (bytes: Uint8Array): bigint => hexToBigInt(bytesToHex(bytes));

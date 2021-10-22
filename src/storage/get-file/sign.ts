@@ -1,4 +1,4 @@
-import { getPublicKey } from 'noble-secp256k1';
+import { getPublicKey } from 'micro-stacks/crypto';
 import { publicKeyToBase58Address, verifyECDSA, decryptContent } from 'micro-stacks/crypto';
 import { SignatureVerificationError } from '../gaia/errors';
 import { getGaiaAddress } from './getters';

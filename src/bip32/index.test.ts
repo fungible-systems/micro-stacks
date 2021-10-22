@@ -3,9 +3,8 @@ import { bytesToHex, hexToBytes } from 'micro-stacks/common';
 import { mnemonicToSeed } from 'micro-stacks/bip39';
 import * as bip39 from 'micro-stacks/bip39';
 import * as bip32 from 'bip32';
-import { privateKeyToStxAddress } from 'micro-stacks/crypto';
+import { privateKeyToStxAddress, derivePrivateKey, derivePublicKey } from 'micro-stacks/crypto';
 import BIP_32_FIXTURES from '../../tests/bip-32fixtures.json';
-import { derivePrivateKey, derivePublicKey } from './utils';
 
 const STX_DERIVATION_PATH = `m/44'/5757'/0'/0`;
 
