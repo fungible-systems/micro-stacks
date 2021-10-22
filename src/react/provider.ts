@@ -1,7 +1,7 @@
 import { FC, createElement, useMemo } from 'react';
+import { Provider } from 'jotai';
 import { defaultStorageAdapter } from 'micro-stacks/connect';
 import { StacksNetwork, StacksMainnet, StacksTestnet, StacksMocknet } from 'micro-stacks/network';
-import { Provider } from 'jotai';
 
 import { authOptionsAtom } from './store/auth';
 import { networkValueAtom } from './store/network';
