@@ -1,7 +1,7 @@
 {
   "name": "micro-stacks",
   "private": false,
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "Tiny libraries for building Stacks apps.",
   "main": "index.js",
   "module": "esm/index.js",
@@ -131,7 +131,7 @@
     }
   },
   "files": [
-    "dist"
+    "**"
   ],
   "sideEffects": false,
   "scripts": {
