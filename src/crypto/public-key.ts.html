@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/storage/delete/delete-file.ts</title>
+    <title>Code coverage report for src/crypto/public-key.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../prettify.css" />
-    <link rel="stylesheet" href="../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../sort-arrow-sprite.png);
+            background-image: url(../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/storage/delete</a> delete-file.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/crypto</a> public-key.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">71.42% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>5/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -83,58 +83,58 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">194x</span>
+<span class="cline-any cline-yes">41x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { GaiaHubConfig } from 'micro-stacks/storage';
-import { deleteFromGaiaHub } from './delete-from-gaia-hub';
-import { SIGNATURE_FILE_SUFFIX } from '../common/constants';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">132x</span>
+<span class="cline-any cline-yes">132x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">132x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { CURVE, Point } from <span class="branch-0 cbranch-no" title="branch not covered" >'noble-secp256k1';</span>
+import { bytesToBigInt, bytesToHex, intToBytes } from 'micro-stacks/common';
 &nbsp;
-/**
- * Deletes the specified file from the app's data store.
- * @param path - The path to the file to delete.
- * @param options - options object.
- * @param options.wasSigned - Set to true if the file was originally signed
- * in order for the corresponding signature file to also be deleted.
- * @returns Resolves when the file has been removed or rejects with an error.
- */
+export { getPublicKey } from 'noble-secp256k1';
 &nbsp;
-export async function deleteFile(
-  path: string,
-  options: {
-    wasSigned?: boolean;
-    gaiaHubConfig: GaiaHubConfig;
-  }
-) {
-  const { gaiaHubConfig, wasSigned } = options;
-  const promises: Promise&lt;void&gt;[] = [deleteFromGaiaHub(path, gaiaHubConfig)];
-  // If signed, delete both the content file and the .sig file
-  if (wasSigned) promises.push(deleteFromGaiaHub(`${path}${SIGNATURE_FILE_SUFFIX}`, gaiaHubConfig));
-  await Promise.all(promises);
+export const isCompressedPublicKey = (bytes: Uint8Array) =&gt; {
+  const header = bytes[0];
+  return bytes.length === 32 || (bytes.length === 33 &amp;&amp; (header === 0x02 || header === 0x03));
+};
+&nbsp;
+export const derivePublicKey = (pubKey: Uint8Array, il: Uint8Array) =&gt; {
+  const publicKeyPoint = Point.fromHex(bytesToHex(pubKey));
+  const ecCurvePoint = new Point(CURVE.Gx, CURVE.Gy)
+    .multiply(bytesToBigInt(il))
+    .add(publicKeyPoint);
+&nbsp;
+  return ecCurvePoint.toRawBytes(isCompressedPublicKey(pubKey));
+};
+&nbsp;
+function mod(a: bigint, b: bigint = CURVE.P): bigint {
+  const result = a % b;
+  return result &gt;= 0 ? result : <span class="branch-1 cbranch-no" title="branch not covered" >b + result;</span>
 }
+&nbsp;
+export const derivePrivateKey = (privateKey: Uint8Array, il: Uint8Array) =&gt;
+  intToBytes(mod(bytesToBigInt(il) + bytesToBigInt(privateKey), CURVE.n), false, 32);
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -145,14 +145,14 @@ export async function deleteFile(
                 at Fri Oct 22 2021 18:35:28 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
-        <script src="../../../prettify.js"></script>
+        <script src="../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../sorter.js"></script>
-        <script src="../../../block-navigation.js"></script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
     </body>
 </html>
     
