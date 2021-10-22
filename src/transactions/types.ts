@@ -25,7 +25,13 @@ import {
   TransactionVersion,
   utf8ToBytes,
 } from 'micro-stacks/common';
-import { hashP2PKH, hashP2SH, StacksNetworkVersion } from 'micro-stacks/crypto';
+import {
+  hashP2PKH,
+  hashP2SH,
+  hashP2WPKH,
+  hashP2WSH,
+  StacksNetworkVersion,
+} from 'micro-stacks/crypto';
 import { deserializePostCondition, PostCondition, serializePostCondition } from './postcondition';
 import {
   Address,
@@ -206,11 +212,14 @@ export function addressFromPublicKeys(
   switch (hashMode) {
     case AddressHashMode.SerializeP2PKH:
       return addressFromVersionHash(version, hashP2PKH(publicKeys[0].data));
+    case AddressHashMode.SerializeP2WPKH:
+      return addressFromVersionHash(version, hashP2WPKH(publicKeys[0].data));
     case AddressHashMode.SerializeP2SH:
       return addressFromVersionHash(version, hashP2SH(numSigs, publicKeys.map(serializePublicKey)));
-    default:
-      throw Error(
-        `Not yet implemented: address construction using public keys for hash mode: ${hashMode}`
+    case AddressHashMode.SerializeP2WSH:
+      return addressFromVersionHash(
+        version,
+        hashP2WSH(numSigs, publicKeys.map(serializePublicKey))
       );
   }
 }

@@ -321,6 +321,13 @@ export function deserializeSingleSigSpendingCondition(
   const keyEncoding = bufferReader.readUInt8Enum(PubKeyEncoding, n => {
     throw new DeserializationError(`Could not parse ${n} as PubKeyEncoding`);
   });
+
+  if (hashMode === AddressHashMode.SerializeP2WPKH && keyEncoding != PubKeyEncoding.Compressed) {
+    throw new DeserializationError(
+      'Failed to parse singlesig spending condition: incomaptible hash mode and key encoding'
+    );
+  }
+
   const signature = deserializeMessageSignature(bufferReader);
   return {
     hashMode,
@@ -343,7 +350,29 @@ export function deserializeMultiSigSpendingCondition(
   const fields = deserializeLPList(bufferReader, StacksMessageType.TransactionAuthField)
     .values as TransactionAuthField[];
 
+  let haveUncompressed = false;
+  let numSigs = 0;
+
+  for (const field of fields) {
+    switch (field.contents.type) {
+      case StacksMessageType.PublicKey:
+        if (!isCompressed(field.contents)) haveUncompressed = true;
+        break;
+      case StacksMessageType.MessageSignature:
+        if (field.pubKeyEncoding === PubKeyEncoding.Uncompressed) haveUncompressed = true;
+        numSigs += 1;
+        if (numSigs === 65536)
+          throw new TypeError('Failed to parse multisig spending condition: too many signatures');
+        break;
+    }
+  }
+
   const signaturesRequired = bufferReader.readUInt16BE();
+
+  if (numSigs !== signaturesRequired) throw new TypeError(`Incorrect number of signatures`);
+
+  if (haveUncompressed && hashMode === AddressHashMode.SerializeP2SH)
+    throw new TypeError('Uncompressed keys are not allowed in this hash mode');
 
   return {
     hashMode,
@@ -495,8 +524,7 @@ function verify(
   if (isSingleSig(condition)) {
     return verifySingleSig(condition, initialSigHash, authType);
   } else {
-    // TODO: verify multisig
-    return '';
+    return verifyMultiSig(condition, initialSigHash, authType);
   }
 }
 
@@ -505,7 +533,7 @@ function verifySingleSig(
   initialSigHash: string,
   authType: AuthType
 ): string {
-  const { nextSigHash } = nextVerification(
+  const { nextSigHash, pubKey } = nextVerification(
     initialSigHash,
     authType,
     condition.fee,
@@ -514,9 +542,73 @@ function verifySingleSig(
     condition.signature
   );
 
-  // TODO: verify pub key
+  const addrBytes = addressFromPublicKeys(0, condition.hashMode, 1, [pubKey]).hash160;
+
+  if (addrBytes !== condition.signer)
+    throw new TypeError(
+      `Signer hash does not equal hash of public key(s): ${addrBytes} != ${condition.signer}`
+    );
 
   return nextSigHash;
+}
+
+function verifyMultiSig(
+  condition: MultiSigSpendingConditionOpts,
+  initialSigHash: string,
+  authType: AuthType
+): string {
+  const publicKeys: StacksPublicKey[] = [];
+  let curSigHash = initialSigHash;
+  let haveUncompressed = false;
+  let numSigs = 0;
+
+  for (const field of condition.fields) {
+    let foundPubKey: StacksPublicKey;
+
+    switch (field.contents.type) {
+      case StacksMessageType.PublicKey:
+        if (!isCompressed(field.contents)) haveUncompressed = true;
+        foundPubKey = field.contents;
+        break;
+      case StacksMessageType.MessageSignature:
+        if (field.pubKeyEncoding === PubKeyEncoding.Uncompressed) haveUncompressed = true;
+        const { pubKey, nextSigHash } = nextVerification(
+          curSigHash,
+          authType,
+          condition.fee,
+          condition.nonce,
+          field.pubKeyEncoding,
+          field.contents
+        );
+        curSigHash = nextSigHash;
+        foundPubKey = pubKey;
+
+        numSigs += 1;
+        if (numSigs === 65536) throw new TypeError('Too many signatures');
+
+        break;
+    }
+    publicKeys.push(foundPubKey);
+  }
+
+  if (numSigs !== condition.signaturesRequired)
+    throw new TypeError('Incorrect number of signatures');
+
+  if (haveUncompressed && condition.hashMode === AddressHashMode.SerializeP2SH)
+    throw new TypeError('Uncompressed keys are not allowed in this hash mode');
+
+  const addrBytes = addressFromPublicKeys(
+    0,
+    condition.hashMode,
+    condition.signaturesRequired,
+    publicKeys
+  ).hash160;
+  if (addrBytes !== condition.signer)
+    throw new TypeError(
+      `Signer hash does not equal hash of public key(s): ${addrBytes} != ${condition.signer}`
+    );
+
+  return curSigHash;
 }
 
 export class Authorization extends Deserializable {
