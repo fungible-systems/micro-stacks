@@ -1,6 +1,6 @@
 import { Account } from '../types';
 import { publicKeyToBase58Address } from 'micro-stacks/crypto';
-import { getPublicKey } from 'noble-secp256k1';
+import { getPublicKey } from 'micro-stacks/crypto';
 
 /**
  * Get the gaia hub address (base58) for a given account

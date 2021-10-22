@@ -1,5 +1,5 @@
 import { ClarityValue, cvToHex } from 'micro-stacks/clarity';
-import { getPublicKey } from 'noble-secp256k1';
+import { getPublicKey } from 'micro-stacks/crypto';
 import { signTransactionPayload } from './sign';
 import { TransactionTypes } from './types';
 import type { ContractCallTxOptions, ContractCallTxPayload } from './types';

@@ -1,5 +1,9 @@
-import { getPublicKey as getPublicKeyFromPrivate } from 'noble-secp256k1';
-import { eciesGetJsonStringLength, signECDSA, encryptContent } from 'micro-stacks/crypto';
+import {
+  eciesGetJsonStringLength,
+  signECDSA,
+  encryptContent,
+  getPublicKey,
+} from 'micro-stacks/crypto';
 
 import { uploadToGaiaHub } from './gaia/hub';
 import { SIGNATURE_FILE_SUFFIX } from './common/constants';
@@ -96,9 +100,9 @@ export async function putFile(
       if (typeof encrypt === 'string') {
         publicKey = encrypt;
       } else if (typeof shouldSign === 'string') {
-        publicKey = getPublicKeyFromPrivate(shouldSign, true);
+        publicKey = getPublicKey(shouldSign, true);
       } else if (privateKey) {
-        publicKey = getPublicKeyFromPrivate(privateKey, true);
+        publicKey = getPublicKey(privateKey, true);
       } else {
         throw new Error('No private key passed');
       }
@@ -140,10 +144,11 @@ export async function putFile(
 
   try {
     return await uploadFn(gaiaHubConfig);
-  } catch (error) {
+  } catch (error: any) {
     // If the upload fails on first attempt, it could be due to a recoverable
     // error which may succeed by refreshing the config and retrying.
-    if (isRecoverableGaiaError(error as any)) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    if (isRecoverableGaiaError(error)) {
       console.error(error);
       console.error('Possible recoverable error during Gaia upload, retrying...');
       return await uploadFn(gaiaHubConfig);

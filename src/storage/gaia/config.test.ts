@@ -4,7 +4,7 @@ import {
   makeScopedGaiaAuthToken,
 } from 'micro-stacks/storage';
 import { TokenVerifier } from 'micro-stacks/crypto';
-import { getPublicKey } from 'noble-secp256k1';
+import { getPublicKey } from 'micro-stacks/crypto';
 
 const gaiaHubConfig: GaiaHubConfig = {
   address: '1NZNxhoxobqwsNvTb16pdeiqvFvce3Yg8U',

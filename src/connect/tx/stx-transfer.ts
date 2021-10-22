@@ -1,6 +1,6 @@
 import { StxTransferTxOptions, StxTransferTxPayload, TransactionTypes } from './types';
 import { signTransactionPayload } from './sign';
-import { getPublicKey } from 'noble-secp256k1';
+import { getPublicKey } from 'micro-stacks/crypto';
 
 export async function makeStxTransferToken({ privateKey, ...options }: StxTransferTxOptions) {
   const payload: StxTransferTxPayload = {

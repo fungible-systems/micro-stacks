@@ -9,7 +9,7 @@ import fetchMock from 'jest-fetch-mock';
 import * as hub from './gaia/hub';
 import * as jsdom from 'jsdom';
 import { bytesToUtf8, utf8ToBytes } from 'micro-stacks/common';
-import { getPublicKey } from 'noble-secp256k1';
+import { getPublicKey } from 'micro-stacks/crypto';
 import { encryptContent } from 'micro-stacks/crypto';
 
 describe(putFile.name, () => {

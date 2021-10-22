@@ -4,6 +4,7 @@ export * from './crypto/ripemd160/hashRipemd160';
 export { default as ripemd160 } from './crypto/ripemd160/ripemd160-minimal';
 export * from './crypto/common/shared-secret';
 export * from './crypto/common/random-bytes';
+export * from './crypto/public-key';
 
 // primary exports
 export * from './crypto/c32';

@@ -1,4 +1,4 @@
-import { getPublicKey } from 'noble-secp256k1';
+import { getPublicKey, derivePrivateKey, derivePublicKey } from 'micro-stacks/crypto';
 import {
   BufferReader,
   concatByteArrays,
@@ -12,8 +12,6 @@ import {
 import { hmacSha512 } from 'micro-stacks/crypto-hmac-sha';
 
 import {
-  derivePrivateKey,
-  derivePublicKey,
   hash160,
   makeChecksum,
   validateBIP32Path,

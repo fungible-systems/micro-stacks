@@ -1,6 +1,5 @@
-import { getPublicKey, utils } from 'noble-secp256k1';
 import { bytesToHex, getGlobalObject } from 'micro-stacks/common';
-import { TokenSigner } from 'micro-stacks/crypto';
+import { getPublicKey, getRandomBytes, TokenSigner } from 'micro-stacks/crypto';
 import { decodeAuthResponse } from './auth/decode-auth-response';
 import { getStacksProvider } from './common/get-stacks-provider';
 
@@ -23,7 +22,7 @@ export async function authenticate(
   }
   try {
     const Provider: StacksProvider | undefined = getStacksProvider();
-    const transitPrivateKey = bytesToHex(utils.randomPrivateKey());
+    const transitPrivateKey = bytesToHex(getRandomBytes());
     const transitPublicKey = getPublicKey(transitPrivateKey);
 
     const _scopes = authOptions.scopes || [];
@@ -47,6 +46,7 @@ export async function authenticate(
 
     return sessionState;
   } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     authOptions?.onCancel?.((e as any).message);
   }
 }

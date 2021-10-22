@@ -1,5 +1,5 @@
 import { getRandomBytes, TokenSigner, privateKeyToBase58Address } from 'micro-stacks/crypto';
-import { getPublicKey } from 'noble-secp256k1';
+import { getPublicKey } from 'micro-stacks/crypto';
 import type {
   GaiaHubConfig,
   GaiaAuthScope,
