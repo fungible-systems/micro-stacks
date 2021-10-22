@@ -1,24 +1,53 @@
 import { StacksTransaction } from './transaction';
 
 import { StacksPrivateKey, StacksPublicKey } from './keys';
-import { isSingleSig, SpendingConditionOpts } from './authorization';
+import { isSingleSig, nextVerification, SpendingConditionOpts } from './authorization';
 
-import { AuthType } from './common/constants';
+import { AuthType, PubKeyEncoding } from './common/constants';
 import { cloneDeep, SigningError } from 'micro-stacks/common';
+import { StacksMessageType } from 'micro-stacks/clarity';
 
 export class TransactionSigner {
   transaction: StacksTransaction;
-  sigHash: string | undefined;
+  sigHash: string;
   originDone: boolean;
   checkOversign: boolean;
   checkOverlap: boolean;
 
   constructor(transaction: StacksTransaction) {
     this.transaction = transaction;
+    this.sigHash = transaction.signBegin();
     this.originDone = false;
     this.checkOversign = true;
     this.checkOverlap = true;
-    this.sigHash = this.transaction.signBegin();
+
+    // If multi-sig spending condition exists, iterate over
+    // auth fields and reconstruct sigHash
+    const spendingCondition = transaction.auth.spendingCondition;
+    if (spendingCondition && !isSingleSig(spendingCondition)) {
+      if (
+        spendingCondition.fields.filter(
+          field => field.contents.type === StacksMessageType.MessageSignature
+        ).length >= spendingCondition.signaturesRequired
+      ) {
+        throw new Error('SpendingCondition has more signatures than are expected');
+      }
+
+      spendingCondition.fields.forEach(field => {
+        if (field.contents.type === StacksMessageType.MessageSignature) {
+          const signature = field.contents;
+          const nextVerify = nextVerification(
+            this.sigHash,
+            transaction.auth.authType!,
+            spendingCondition.fee,
+            spendingCondition.nonce,
+            PubKeyEncoding.Compressed, // always compressed for multisig
+            signature
+          );
+          this.sigHash = nextVerify.nextSigHash;
+        }
+      });
+    }
   }
 
   static createSponsorSigner(
@@ -40,55 +69,46 @@ export class TransactionSigner {
   }
 
   async signOrigin(privateKey: StacksPrivateKey) {
-    if (this.checkOverlap && this.originDone) {
+    if (this.checkOverlap && this.originDone)
       throw new SigningError('Cannot sign origin after sponsor key');
-    }
 
-    if (this.transaction.auth === undefined) {
+    if (this.transaction.auth === undefined)
       throw new SigningError('"transaction.auth" is undefined');
-    }
-    if (this.transaction.auth.spendingCondition === undefined) {
+
+    if (this.transaction.auth.spendingCondition === undefined)
       throw new SigningError('"transaction.auth.spendingCondition" is undefined');
-    }
 
     if (!isSingleSig(this.transaction.auth.spendingCondition)) {
       const spendingCondition = this.transaction.auth.spendingCondition;
       if (
         this.checkOversign &&
         spendingCondition.fields.length >= spendingCondition.signaturesRequired
-      ) {
+      )
         throw new Error('Origin would have too many signatures');
-      }
     }
-
-    const nextSighash = await this.transaction.signNextOrigin(this.sigHash!, privateKey);
-    this.sigHash = nextSighash;
+    // nextSigHash
+    this.sigHash = await this.transaction.signNextOrigin(this.sigHash!, privateKey);
   }
 
   appendOrigin(publicKey: StacksPublicKey) {
-    if (this.checkOverlap && this.originDone) {
+    if (this.checkOverlap && this.originDone)
       throw Error('Cannot append public key to origin after sponsor key');
-    }
 
-    if (this.transaction.auth === undefined) {
-      throw new Error('"transaction.auth" is undefined');
-    }
-    if (this.transaction.auth.spendingCondition === undefined) {
+    if (this.transaction.auth === undefined) throw new Error('"transaction.auth" is undefined');
+    if (this.transaction.auth.spendingCondition === undefined)
       throw new Error('"transaction.auth.spendingCondition" is undefined');
-    }
 
     this.transaction.appendPubkey(publicKey);
   }
 
   async signSponsor(privateKey: StacksPrivateKey) {
-    if (this.transaction.auth === undefined) {
+    if (this.transaction.auth === undefined)
       throw new SigningError('"transaction.auth" is undefined');
-    }
-    if (this.transaction.auth.sponsorSpendingCondition === undefined) {
+
+    if (this.transaction.auth.sponsorSpendingCondition === undefined)
       throw new SigningError('"transaction.auth.spendingCondition" is undefined');
-    }
-    const nextSighash = await this.transaction.signNextSponsor(this.sigHash!, privateKey);
-    this.sigHash = nextSighash;
+
+    this.sigHash = await this.transaction.signNextSponsor(this.sigHash!, privateKey);
     this.originDone = true;
   }
 

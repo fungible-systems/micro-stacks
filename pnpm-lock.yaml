@@ -44,6 +44,7 @@ specifiers:
   bip32: 2.0.6
   common-tags: 1.8.0
   concurrently: 6.3.0
+  cross-fetch: ^3.1.4
   dependency-cruiser: 10.5.0
   downlevel-dts: 0.7.0
   esbuild: 0.13.8
@@ -130,6 +131,7 @@ devDependencies:
   bip32: 2.0.6
   common-tags: 1.8.0
   concurrently: 6.3.0
+  cross-fetch: 3.1.4
   dependency-cruiser: 10.5.0
   downlevel-dts: 0.7.0
   esbuild: 0.13.8
