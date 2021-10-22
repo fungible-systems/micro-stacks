@@ -1,36 +1,12 @@
-import { AuthOptions, defaultStorageAdapter, StorageAdapter } from 'micro-stacks/connect';
-import { StacksMainnet, StacksNetwork, StacksTestnet } from 'micro-stacks/network';
-import { InitialValuesAtomBuilder } from 'jotai-query-toolkit/nextjs';
 import { authOptionsAtom } from './store/auth';
 import { storageAdapterAtom } from './store/storage-adapter';
 import { networkValueAtom } from './store/network';
-
-const getNetwork = (value?: StacksNetwork | 'mainnet' | 'testnet') => {
-  if (value) {
-    if (typeof value === 'string') {
-      switch (value) {
-        case 'testnet':
-          return new StacksTestnet();
-        case 'mainnet':
-      }
-    } else {
-      return value;
-    }
-  }
-  return new StacksMainnet();
-};
-
-interface AppProviderAtomBuilder {
-  /** Web wallet authOptions */
-  authOptions: AuthOptions;
-  /** a custom storage adapter */
-  storageAdapter?: StorageAdapter<unknown>;
-  /** the network for the app (testnet | mainnet) */
-  network?: StacksNetwork | 'mainnet' | 'testnet';
-}
+import { getNetwork, MicroStacksProviderAtoms } from './utils';
+import type { AppProviderAtomBuilder } from './types';
+import type { InitialValuesAtomBuilder } from 'jotai-query-toolkit/nextjs';
 
 /**
- * appProviderAtomBuilder
+ * buildMicroStacksAtoms
  *
  * This is used with `jotai-query-tookit` and next.js
  * This is a method to create InitialValuesAtomBuilder for `withInitialQueries`
@@ -38,7 +14,7 @@ interface AppProviderAtomBuilder {
  * @example
  *
  * ```tsx
- * const providerAtoms = appProviderAtomBuilder({
+ * const providerAtoms = buildMicroStacksAtoms({
  *   network: "testnet",
  *   authOptions: {
  *     appDetails: {
@@ -51,16 +27,33 @@ interface AppProviderAtomBuilder {
  * export default withInitialQueries(NextjsPageComponent, providerAtoms)(queries);
  *
  * ```
- * @param options - {@link AppProviderAtomBuilder}
+ * @param authOptions - {@link AppProviderAtomBuilder['authOptions']}
+ * @param network - {@link AppProviderAtomBuilder}
+ * @param storageAdapter - {@link AppProviderAtomBuilder}
  */
-export const appProviderAtomBuilder = ({
-  network,
-  storageAdapter = defaultStorageAdapter,
-  authOptions,
-}: AppProviderAtomBuilder): InitialValuesAtomBuilder[] => {
+export const buildMicroStacksAtoms = (
+  authOptions?: AppProviderAtomBuilder['authOptions'],
+  network?: AppProviderAtomBuilder['network'],
+  storageAdapter?: AppProviderAtomBuilder['storageAdapter']
+): InitialValuesAtomBuilder[] => {
   return [
-    ['authOptions', value => [authOptionsAtom, value || authOptions]],
-    ['storageAdapter', value => [storageAdapterAtom, value || storageAdapter]],
-    ['network', value => [networkValueAtom, getNetwork(value || network)]],
+    [
+      MicroStacksProviderAtoms.AuthOptions,
+      (value: AppProviderAtomBuilder['authOptions']) => [authOptionsAtom, value || authOptions],
+    ],
+    [
+      MicroStacksProviderAtoms.StorageAdapter,
+      (value: AppProviderAtomBuilder['storageAdapter']) => [
+        storageAdapterAtom,
+        value || storageAdapter,
+      ],
+    ],
+    [
+      MicroStacksProviderAtoms.Network,
+      (value: AppProviderAtomBuilder['network']) => [
+        networkValueAtom,
+        getNetwork(value || network),
+      ],
+    ],
   ];
 };

@@ -1,4 +1,8 @@
 // https://github.com/sindresorhus/type-fest
+import { AuthOptions, StorageAdapter } from 'micro-stacks/connect';
+import { Atom } from 'jotai';
+import { StacksNetwork } from 'micro-stacks/network';
+
 export type Except<ObjectType, KeysType extends keyof ObjectType> = Pick<
   ObjectType,
   Exclude<keyof ObjectType, KeysType>
@@ -21,3 +25,21 @@ declare function useCallback<T extends (...args: any[]) => any>(
   callback: T,
   deps: readonly any[]
 ): UseCallback<T>;
+
+export type NetworkType = StacksNetwork | 'mainnet' | 'testnet' | 'mocknet';
+
+export interface MicroStacksProviderProps {
+  authOptions: AuthOptions;
+  storageAdapter?: StorageAdapter<unknown>;
+  network?: NetworkType;
+  initialValues?: Iterable<readonly [Atom<unknown>, unknown]>;
+}
+
+export interface AppProviderAtomBuilder {
+  /** Web wallet authOptions */
+  authOptions: AuthOptions;
+  /** a custom storage adapter */
+  storageAdapter?: StorageAdapter<unknown>;
+  /** the network for the app (testnet | mainnet) */
+  network?: StacksNetwork | 'mainnet' | 'testnet';
+}
