@@ -1,5 +1,15 @@
 # micro-stacks
 
+## 0.0.35
+
+### Patch Changes
+
+- [`13283e5`](https://github.com/fungible-systems/micro-stacks/commit/13283e5e249f58a62d0cda2d1ed995a55dffb2cb) Thanks [@aulneau](https://github.com/aulneau)! - This is a minor refactor to avoid direct usage of any noble package ouside of the crypto/transactions modules.
+
+* [`e245489`](https://github.com/fungible-systems/micro-stacks/commit/e245489d0d11e01a42e6366aabf212958ab14517) Thanks [@aulneau](https://github.com/aulneau)! - verifySingleSig() and verifyMultiSig() work like the rust code
+
+- [#23](https://github.com/fungible-systems/micro-stacks/pull/23) [`dffd15c`](https://github.com/fungible-systems/micro-stacks/commit/dffd15cff093bce5d18e47ca9bf2dcd543fdb642) Thanks [@aulneau](https://github.com/aulneau)! - This update extends the MicroStacksProvider component to allow for the passing of additional initialValues to the underlying Jotai Provider component.
+
 ## 0.0.32
 
 ### Patch Changes
