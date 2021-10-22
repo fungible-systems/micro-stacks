@@ -1,7 +1,7 @@
 {
   "name": "micro-stacks",
   "private": false,
-  "version": "0.0.32",
+  "version": "0.0.33",
   "description": "Tiny libraries for building Stacks apps.",
   "main": "index.js",
   "module": "esm/index.js",
@@ -131,7 +131,7 @@
     }
   },
   "files": [
-    "**"
+    "dist"
   ],
   "sideEffects": false,
   "scripts": {
@@ -175,7 +175,7 @@
     "copy": "shx cp package.json dist && json -I -f dist/package.json -e \"this.private=false; this.devDependencies=undefined; this.optionalDependencies=undefined; this.scripts=undefined; this.husky=undefined; this.prettier=undefined; this.jest=undefined; this['lint-staged']=undefined;\"",
     "check:deps": "dependency-cruise  --config .dependency-cruiser.js \"src/**/*.{ts,tsx}\"",
     "bench": "node tests/bench/bench.js",
-    "ci:publish": "pnpm build && cd dist && pnpm publish --no-git-checks --access public",
+    "ci:publish": "pnpm build && npm publish ./dist --no-git-checks --access public",
     "ci:version": "pnpm changeset version && pnpm install --no-frozen-lockfile && git add ."
   },
   "husky": {
