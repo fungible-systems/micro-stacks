@@ -31,3 +31,4 @@ export * from './react/store/storage-adapter';
 export * from './react/store/gaia';
 
 export * from './react/nextjs';
+export { getNetwork } from './react/utils';
