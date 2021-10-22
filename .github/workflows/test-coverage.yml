@@ -12,6 +12,11 @@ jobs:
         node-version: [14.x, 16.x]
 
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@aec1e95348a6983270197ef14011414346269b77
+        with:
+          access_token: ${{ github.token }}
+
       - uses: actions/checkout@v2
 
       - name: Cache .pnpm-store

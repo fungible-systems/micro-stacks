@@ -4,6 +4,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@aec1e95348a6983270197ef14011414346269b77
+        with:
+          access_token: ${{ github.token }}
       - name: checkout code repository
         uses: actions/checkout@v2
         with:
