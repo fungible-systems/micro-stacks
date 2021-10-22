@@ -1,0 +1,28 @@
+## Introduction
+
+`micro-stacks` is a library of JavaScript modules that enable you to interact with
+the Stacks ecosystem. The primary goals of this library are as follows:
+
+- Core has no extra dependencies (just 2 dependencies: [noble-secp256k1](https://github.com/paulmillr/noble-secp256k1), [noble-hashes](https://github.com/paulmillr/noble-hashes)).
+- Modular: take what you need, leave what you don't.
+- ESM based, works with all modern bundlers.
+- 100% deno compatible.
+- Expo / React Native support.
+- Un-opinionated core.
+- Opinionated framework integrations.
+- Use with wallet based authenticators.
+- Highly typed -- written in typescript.
+- Well tested.
+
+### Differences from stacks.js
+
+`stacks.js` (previously known as `blockstack.js`) has years of use and maintenance behind it (which I have contributed
+towards), and it serves as a great foundation for building apps that use Gaia or interact with the Stacks Blockchain in
+some way. However, it has some (very well known and battle-tested) libraries that are huge in bundle-size which power
+its various cryptographic/blockchain functions. The most notable packages are: `elliptic`, `bitcoinjs-lib`, `bip39`,
+and `bn.js`.
+
+Outside the libraries and dependencies that `stacks.js` has, there are long-standing, opinionated choices that have been
+made around how things should be used, mostly related to authentication and storage. I've spent years building <s>Block</s>Stacks
+apps and `micro-stacks` is the culmination of my hopes and dreams when it comes to the future for building apps
+on the Stacks Blockchains.

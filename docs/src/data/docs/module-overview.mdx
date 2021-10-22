@@ -1,0 +1,65 @@
+## Module overview
+Each module within `micro-stacks` can be safely imported without polluting your application with code from other modules. This allows for very high levels of tree-shakeabiliy.
+### Core modules
+The core modules below are what make up the primary functionality that enables you to build Stacks based apps.
+#### API
+The API module `micro-stacks/api`, is the module that allows you to fetch data from the `stacks-blockchain-api`. It exports a set of fetchers that map to all available endpoints in the API.
+[Read the docs](#)
+#### Clarity
+The `micro-stacks/clarity` module includes all the code required to interact with Clarity in a JavaScript environment. This includes things like parsing and constructing Clarity Values.
+[Read the docs](#)
+
+#### Connect
+`micro-stacks/connect` is the module that handles all communication between a given application and any Stacks based wallet (currently only the Hiro Web Wallet is supported). This included functionality around authentication and signing transactions.
+[Read the docs](#)
+
+#### Crypto
+As the name implies, this module handles all of the crypto related functionality.
+[Read the docs](#)
+
+#### Crypto Extras
+This package should generally not be used by most clients, however sometimes it might be required. This module is a set of crypto dependencies that might change in implementation depending on the environment.
+[Read the docs](#)
+
+#### Network
+`micro-stacks/network` handles anything to do with constructing network objects related to Stacks.
+[Read the docs](#)
+
+#### Storage
+This module is how you would interact with Gaia. It allows for you to safely store your users data encrypted.
+[Read the docs](#)
+
+#### Transactions
+This module deals with constructing Stacks Transactions that then can be signed by a given wallet.
+[Read the docs](#)
+
+### Integrations
+
+#### React
+This is a highly opinionated integration with React.
+[Read the docs](#)
+
+### Extra modules
+
+#### Common
+This module exports helpful utilities that many of the other modules make use of.
+[Read the docs](#)
+
+#### BIP32
+This is a custom implementation of the BIP32 standard.
+[Read the docs](#)
+
+#### BIP39
+This is a custom implementation of the BIP39 standard.
+[Read the docs](#)
+
+#### Wallet SDK
+This is a WIP module that would enable the creation of new Stacks wallet software.
+[Read the docs](#)
+
+#### Zone file
+This module deals with zone files, which are elements of BNS and Atlas.
+[Read the docs](#)
+
+
+

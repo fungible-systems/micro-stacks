@@ -40,7 +40,9 @@ export const components = {
     />
   ),
 
-  p: props => <Text my="none" as="p" color={'text'} variant={'Body01'} {...props} />,
+  p: props => (
+    <Text maxWidth={'86ch'} my="none" as="p" color={'text'} variant={'Body01'} {...props} />
+  ),
   a: ({ href = '', ...props }) => {
     if (href.startsWith('http')) {
       return (
@@ -65,9 +67,14 @@ export const components = {
   ul: props => <Box {...props} as="ul" />,
   ol: props => <Box {...props} as="ol" />,
   li: props => (
-    <li>
-      <Text as="p" variant={'Body01'} {...props} />
-    </li>
+    <Box
+      as="li"
+      _notLast={{
+        mb: '$tight',
+      }}
+    >
+      <Text m={0} as="p" variant={'Body01'} {...props} />
+    </Box>
   ),
   strong: props => <Text {...props} />,
   img: ({ ...props }) => <Box as="img" {...props} />,
@@ -78,29 +85,48 @@ export const components = {
     if (isInlineCode) {
       return (
         <Box
+          fontSize="0.8rem"
+          lineHeight={'1.35rem'}
           display="inline-block"
-          borderRadius="small"
-          fontSize={'0'}
-          px="tight"
-          borderStyle="solid"
-          borderWidth={'1px'}
-          borderColor={'border'}
+          position={'relative'}
+          px={'4px'}
           as="code"
           className={className}
+          whiteSpace={'pre'}
+          css={
+            {
+              '&::before': {
+                // background: '$background-subdued',
+                display: 'inline-block',
+                position: 'absolute',
+                width: 'calc(100% + 4px)',
+                height: '100%',
+                content: `""`,
+                left: '-4px',
+                borderRadius: '4px',
+                px: '$tight',
+                borderStyle: 'solid',
+                borderWidth: '1px',
+                borderColor: '$border-subdued',
+                zIndex: 0,
+              },
+            } as any
+          }
         >
-          {children}
+          <Box as="span" position="relative" zIndex={1}>
+            {children}
+          </Box>
         </Box>
       );
     }
 
     return (
       <Box
-        fontSize={'1'}
         as="pre"
         className={className}
         id={id}
         data-line-numbers={showLineNumbers}
-        borderRadius={'medium'}
+        borderRadius={'$medium'}
       >
         <Box as="code" className={className}>
           {children}

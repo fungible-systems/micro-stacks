@@ -1,13 +1,4 @@
-const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
-const withVanillaExtract = createVanillaExtractPlugin();
-
-const remarkPlugins = [
-  import('remark-external-links'),
-  import('remark-squeeze-paragraphs'),
-  import('remark-unwrap-images'),
-];
-
-module.exports = withVanillaExtract({
+module.exports = {
   pageExtensions: ['mdx', 'tsx', 'ts', 'jsx', 'js'],
   future: {
     esmExternals: true,
@@ -19,7 +10,6 @@ module.exports = withVanillaExtract({
       fallback['crypto'] = false;
       fallback['stream'] = false;
     }
-
     return config;
   },
-});
+};

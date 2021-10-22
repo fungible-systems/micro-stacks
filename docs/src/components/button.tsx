@@ -10,17 +10,19 @@ const styles: Record<'default' | 'secondary', BoxProps['css']> = {
     py: '$tight',
     px: '$base',
     borderRadius: '$medium',
-    backgroundColor: '#FE4A25',
+    backgroundColor: '$surface-contrast',
     fontSize: '$1',
     color: '$text-onContrast',
+    textDecoration: 'none',
   },
   secondary: {
-    background: '$background',
+    background: '$background-subdued',
     borderRadius: '$medium',
-    fontSize: '$0',
+    fontSize: '$1',
     border: '1px solid $border',
-    px: '$base-tight',
     py: '$tight',
+    px: '$base',
+    textDecoration: 'none',
   },
 };
 

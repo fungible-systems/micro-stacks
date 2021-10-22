@@ -9,6 +9,7 @@ export const Header = () => {
       background={'$background'}
       width="100%"
       padding="$extra-loose"
+      right={0}
     >
       <Stack isInline>
         <Box color={'$text-dim'} fontSize={'$1'}>

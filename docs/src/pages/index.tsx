@@ -56,12 +56,9 @@ const guides = [
 const DataGrid = props => {
   return (
     <Box
-      background={'$background-subdued'}
-      borderRadius={'$extra-large'}
       gap="$extra-loose"
       mx="auto"
-      maxWidth={'calc(100% - 64px)'}
-      p="64px"
+      px={'$extra-loose'}
       width="100%"
       display="grid"
       style={{ gridTemplateColumns: 'repeat(3,1fr)' }}
@@ -70,7 +67,7 @@ const DataGrid = props => {
       {grid.map((item, key) => (
         <Stack isInline spacing="$base-loose" key={key} alignItems="flex-start">
           <Stack spacing="$tight">
-            <Text css={{ fontFamily: `'Neue Montreal'`, fontSize: '$2' }}>{item.title}</Text>
+            <Text css={{ fontFamily: `'Neue Montreal'`, fontSize: '$3' }}>{item.title}</Text>
             <Text
               color={'$text-subdued'}
               css={{
@@ -97,16 +94,20 @@ const PageTitleArea = () => {
       background={'$background'}
       borderRadius="$medium"
       pb="64px"
-      minHeight="480px"
+      pt={'96px'}
+      minHeight="380px"
       spacing="$loose"
+      textAlign={'center'}
     >
-      <Text fontFamily={`'Neue Montreal'`} fontSize={'$8'}>
+      <Text fontFamily={`'Neue Montreal'`} fontSize={'$9'}>
         micro-stacks
       </Text>
-      <Text css={{ fontFamily: `'Neue Montreal'`, fontSize: '$3' }}>
+      <Text
+        maxWidth={'28ch'}
+        css={{ fontFamily: `'Neue Montreal'`, fontSize: '$5', lineHeight: '1.35' }}
+      >
         Tiny libraries for building the next generation of Stacks apps.
       </Text>
-      <InstallExample />
       <PageTopActions />
     </Stack>
   );
@@ -128,28 +129,26 @@ const PageTopActions = () => {
 const InstallExample = () => {
   return (
     <Box
-      px="$loose"
-      py={'$base'}
+      px="$base"
+      py={'$tight'}
       background={'$surface-subdued'}
       color={'$text-subdued'}
       border={'1px solid $border-subdued'}
       borderRadius="$large"
     >
-      <Box as="code">yarn add micro-stacks</Box>
+      <Box fontSize={'$1'} as="code">
+        yarn add micro-stacks
+      </Box>
     </Box>
   );
 };
 
 const PageTop = () => {
-  return (
-    <Stack spacing="extra-loose">
-      <PageTitleArea />
-    </Stack>
-  );
+  return <PageTitleArea />;
 };
 const Guides = () => {
   return (
-    <Stack>
+    <Stack spacing={'$extra-loose'} px={'$extra-loose'}>
       <Box fontSize={'$5'}>Guides</Box>
       <Grid gridTemplateColumns={'repeat(3, 1fr)'} gap={'$extra-loose'}>
         {guides.map((item, index) => (
@@ -158,8 +157,14 @@ const Guides = () => {
             spacing={'$extra-loose'}
             minHeight={'350px'}
             borderRadius={'$extra-large'}
-            background={'$background'}
+            background={'$background-subdued'}
             p="$extra-loose"
+            transition={'$base'}
+            transform={'none'}
+            _hover={{
+              cursor: 'pointer',
+              transform: 'translateY(-5px)',
+            }}
           >
             <Box color={'$text-subdued'} fontSize={'$4'}>
               {(index + 1).toString().padStart(2, '0')}
@@ -178,9 +183,9 @@ const Guides = () => {
 };
 const Home = () => {
   return (
-    <Stack maxHeight={'calc(100% - 100px)'}>
+    <Stack>
       <PageTop />
-      <Stack spacing="0" transform="translateY(-100px)">
+      <Stack spacing="64px">
         <DataGrid />
         <Guides />
       </Stack>

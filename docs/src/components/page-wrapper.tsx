@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Text } from '@nelson-ui/react';
+import { Box, SpaceBetween, Stack, Text } from '@nelson-ui/react';
 import Link from 'next/link';
 import { routes } from '@common/routes';
 import { Header } from '@components/header';
@@ -7,33 +7,39 @@ import { Header } from '@components/header';
 export const PageWrapper: React.FC<{ isHome?: boolean }> = ({ isHome, children, ...rest }) => {
   return (
     <Stack
+      background={'$background'}
       color={'$text'}
       spacing="0"
       style={{ minHeight: '100vh' }}
       flexGrow={1}
       isInline
-      background={'$background-subdued'}
     >
       <Stack
-        maxHeight="calc(100vh - 64px)"
-        borderRadius={'$medium'}
         flexShrink={0}
-        p="$extra-loose"
         style={{ minWidth: '250px' }}
-        background={'$background'}
         spacing="$extra-loose"
         position="fixed"
         height={'100vh'}
-        top={'$extra-loose'}
-        left={'$extra-loose'}
+        top={'0'}
+        left={'0'}
+        borderRight={'1px solid $border-subdued'}
+        py={'$loose'}
       >
+        <SpaceBetween px="$loose">
+          <Stack isInline alignItems={'center'}>
+            <Text>micro-stacks</Text>
+            <Text opacity={0.5} fontSize={'$0'}>
+              BETA
+            </Text>
+          </Stack>
+        </SpaceBetween>
         {routes.map(section => {
           return (
-            <Stack spacing="$tight">
+            <Stack spacing="$base-tight">
               <Text
-                py={'extra-tight'}
+                px={'$loose'}
                 opacity={0.5}
-                css={{ fontFamily: `'Neue Montreal'`, fontSize: '$3' }}
+                css={{ fontFamily: `'Neue Montreal'`, fontSize: '$2' }}
               >
                 {section.label}
               </Text>
@@ -41,6 +47,7 @@ export const PageWrapper: React.FC<{ isHome?: boolean }> = ({ isHome, children, 
                 return (
                   <Link href={`/${page.slug}`} passHref>
                     <Text
+                      px={'$loose'}
                       css={{ fontFamily: `'Neue Montreal'`, fontSize: '$2' }}
                       as={'a'}
                       color={'$text'}
@@ -60,18 +67,37 @@ export const PageWrapper: React.FC<{ isHome?: boolean }> = ({ isHome, children, 
       </Stack>
 
       <Stack
-        px="extra-loose"
-        as="main"
-        p="$extra-loose"
+        minHeight={'100vh'}
         spacing="$extra-loose"
         flexDirection="column"
         flexGrow={1}
-        maxWidth={'calc(100% - 282px)'}
-        ml={'282px'}
+        maxWidth={'calc(100% - 250px)'}
+        ml="250px"
         justifyContent={'flex-start'}
+        width="100%"
       >
-        <Header />
-        {children}
+        <Stack
+          width="100%"
+          flexGrow={1}
+          spacing={'0'}
+          mx={'auto'}
+          maxWidth={'1200px'}
+          position={'relative'}
+        >
+          <Header />
+          <Box width="100%" flexGrow={1} as="main">
+            {children}
+          </Box>
+          <Box
+            px={'$extra-loose'}
+            mt={'64px'}
+            width={'100%'}
+            borderTop={'1px solid $border-subdued'}
+            py={'64px'}
+          >
+            <Text>A Fungible Systems project</Text>
+          </Box>
+        </Stack>
       </Stack>
     </Stack>
   );
