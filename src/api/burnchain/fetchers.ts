@@ -78,7 +78,7 @@ export async function fetchBurnchainRewardsByAddress({
  * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_burnchain_rewards_total_by_address
  */
 
-export async function fetchTotalBurnchainRewardsByAddress({
+export async function fetchBurnchainTotalRewardsByAddress({
   url,
   address,
 }: BaseListParams & { address: string }) {

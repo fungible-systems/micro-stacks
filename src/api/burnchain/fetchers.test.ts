@@ -9,7 +9,7 @@ import {
   fetchBurnchainRewardSlotHoldersByAddress,
   fetchBurnchainRewards,
   fetchBurnchainRewardsByAddress,
-  fetchTotalBurnchainRewardsByAddress,
+  fetchBurnchainTotalRewardsByAddress,
 } from './fetchers';
 import { burnchainEndpoint } from '../utils';
 import { HIRO_TESTNET_DEFAULT } from 'micro-stacks/network';
@@ -78,9 +78,9 @@ describe('burnchain fetchers', () => {
     expect(data).toEqual(BURNCHAIN_REWARD_LIST_200_RESPONSE);
   });
 
-  test(fetchTotalBurnchainRewardsByAddress.name, async () => {
+  test(fetchBurnchainTotalRewardsByAddress.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, address: address };
-    const data = await fetchTotalBurnchainRewardsByAddress(args);
+    const data = await fetchBurnchainTotalRewardsByAddress(args);
     expect(data).toEqual(BURNCHAIN_REWARDS_TOTAL_200_RESPONSE);
   });
 });
