@@ -1,6 +1,6 @@
 import { Queries } from 'jotai-query-toolkit/nextjs';
 import { makeSearchClientKeys } from './keys';
-import { fetchSearch } from './fetchers';
+import { fetchSearch } from '../../../api/search/fetchers';
 
 export interface SearchQueryParams {
   id: string;

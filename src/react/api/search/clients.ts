@@ -1,6 +1,6 @@
 import { makeAtomFamilyWithQuery } from 'jotai-query-toolkit';
 
-import { fetchSearch } from './fetchers';
+import { fetchSearch } from '../../../api/search/fetchers';
 import { SearchClientKeys } from './keys';
 
 import type { IdWithNetwork } from './types';
