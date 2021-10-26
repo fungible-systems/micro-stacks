@@ -21,3 +21,5 @@ declare function useCallback<T extends (...args: any[]) => any>(
   callback: T,
   deps: readonly any[]
 ): UseCallback<T>;
+
+export type IdWithNetwork = [id: string, networkUrl: string];
