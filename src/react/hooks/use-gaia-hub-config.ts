@@ -12,7 +12,8 @@ export function useMakeGaiaHubConfig() {
   const [session] = useSession();
   return useCallback(
     async (params?: Omit<GenerateGaiaHubConfigOptions, 'privateKey' | 'gaiaHubUrl'>) => {
-      if (!session) throw Error('useMakeGaiaHubConfig: no user session. Are they signed in?');
+      if (!session || !session.appPrivateKey || !session.hubUrl)
+        throw Error('useMakeGaiaHubConfig: no user session. Are they signed in?');
       return generateGaiaHubConfig({
         privateKey: session.appPrivateKey,
         gaiaHubUrl: session.hubUrl,

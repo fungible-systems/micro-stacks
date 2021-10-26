@@ -42,4 +42,13 @@ export interface AppProviderAtomBuilder {
   storageAdapter?: StorageAdapter<unknown>;
   /** the network for the app (testnet | mainnet) */
   network?: StacksNetwork | 'mainnet' | 'testnet';
+  partialStacksSession?: {
+    addresses: {
+      mainnet: string;
+      testnet: string;
+    };
+    identityAddress: string;
+    profile_url: string;
+    hubUrl: string;
+  };
 }

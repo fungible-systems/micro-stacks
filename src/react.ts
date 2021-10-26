@@ -28,7 +28,7 @@ export type { OnMountUpdate } from './react/store/common';
 export * from './react/store/network';
 export * from './react/store/storage';
 export * from './react/store/storage-adapter';
-export * from './react/store/gaia';
+export * from './react/store/cookies';
 
 export * from './react/nextjs';
 export { getNetwork } from './react/utils';

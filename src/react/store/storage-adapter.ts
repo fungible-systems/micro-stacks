@@ -1,7 +1,6 @@
 import { atom, Getter } from 'jotai';
 import { AsyncStorageAdapter, defaultStorageAdapter, StorageAdapter } from 'micro-stacks/connect';
 import { atomWithDefault } from 'jotai/utils';
-import memoize from 'micro-memoize';
 import { SetStateAction } from 'react';
 import { OnMountUpdate } from './common';
 
@@ -16,12 +15,11 @@ export function atomWithStorageAdapter<Value>(
   serialize: (val: Value) => string = JSON.stringify,
   deserialize: (str: string) => Value = JSON.parse
 ) {
-  const getInitialValue = memoize((get: Getter) =>
+  const getInitialValue = (get: Getter) =>
     typeof initialValue === 'function'
       ? (initialValue as GetInitialValue<Value>)(get)
-      : initialValue
-  );
-  const getWrappedStorage = memoize((get: Getter) => {
+      : initialValue;
+  const getWrappedStorage = (get: Getter) => {
     const storage = get(storageAdapterAtom);
     return {
       getItem: (key: string) => {
@@ -35,7 +33,7 @@ export function atomWithStorageAdapter<Value>(
         storage.setItem(key, serialize(newValue));
       },
     } as StorageAdapter<Value>;
-  });
+  };
 
   const getLocalItem = (get: Getter) => {
     const storage = getWrappedStorage(get);
@@ -83,12 +81,11 @@ export function atomWithAsyncStorageAdapter<Value>(
   serialize: (val: Value) => string = JSON.stringify,
   deserialize: (str: string) => Value = JSON.parse
 ) {
-  const getInitialValue = memoize((get: Getter) =>
+  const getInitialValue = (get: Getter) =>
     typeof initialValue === 'function'
       ? (initialValue as GetInitialValue<Value>)(get)
-      : initialValue
-  );
-  const getWrappedStorage = memoize((get: Getter) => {
+      : initialValue;
+  const getWrappedStorage = (get: Getter) => {
     const storage = get(storageAdapterAtom);
     return {
       getItem: (key: string) =>
@@ -105,7 +102,7 @@ export function atomWithAsyncStorageAdapter<Value>(
           resolve();
         }),
     } as AsyncStorageAdapter<Value>;
-  });
+  };
 
   const baseAtom = atomWithDefault(async get => {
     const storage = getWrappedStorage(get);

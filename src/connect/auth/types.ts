@@ -105,11 +105,7 @@ interface AppDetails {
   icon: string;
 }
 
-// minimum version
 export interface AuthOptions {
-  /** The URL you want the user to be redirected to after authentication. */
-  redirectTo?: string;
-  manifestPath?: string;
   /**
    * This callback is fired after authentication is finished.
    * `UserData`: the data for the newly authenticated user
@@ -117,8 +113,7 @@ export interface AuthOptions {
   onFinish?: (payload: StacksSessionState) => void;
   /** This callback is fired if the user exits before finishing */
   onCancel?: (error?: Error) => void;
-  /** If `sendToSignIn` is `true`, then the user will be sent through the sign in flow. */
-  sendToSignIn?: boolean;
+  onSignOut?: () => void;
   scopes?: AuthScope[];
   appDetails: AppDetails;
 }
