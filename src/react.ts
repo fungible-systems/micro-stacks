@@ -4,7 +4,6 @@ export * from './react/types';
 export * from './react/api/accounts/clients';
 export * from './react/api/accounts/queries';
 export * from './react/api/accounts/keys';
-export * from './react/api/search/types';
 export * from './react/api/search/clients';
 export * from './react/api/search/queries';
 export * from './react/api/search/keys';
