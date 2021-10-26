@@ -53,21 +53,28 @@ export const generateUrl = <Value = unknown>(
   baseUrl: string,
   params: { [key: string]: string[] | string | number | boolean | undefined }
 ): string => {
-  const url = new URL(baseUrl);
-  Object.keys(params).forEach(key => {
-    const value = params[key];
-    if (!value) return;
-    if (Array.isArray(value)) {
-      if (value.length === 0) return;
-      return url.searchParams.set(`${key}[]`, generateQueryStringFromArray<string>(key, value));
-    }
-    if (typeof value == 'boolean' || isNumber(value)) {
-      return url.searchParams.set(key, String(value));
-    } else {
-      url.searchParams.set(key, value);
-    }
-  });
-  return url.toString();
+  try {
+    console.log(baseUrl);
+    const url = new URL(baseUrl);
+    Object.keys(params).forEach(key => {
+      const value = params[key];
+      if (!value) return;
+      if (Array.isArray(value)) {
+        if (value.length === 0) return;
+        return url.searchParams.set(`${key}[]`, generateQueryStringFromArray<string>(key, value));
+      }
+      if (typeof value == 'boolean' || isNumber(value)) {
+        return url.searchParams.set(key, String(value));
+      } else {
+        url.searchParams.set(key, value);
+      }
+    });
+    return url.toString();
+  } catch (e) {
+    console.error('generateUrl');
+    console.error(e);
+    return baseUrl;
+  }
 };
 
 export function v1Endpoint(url: string) {

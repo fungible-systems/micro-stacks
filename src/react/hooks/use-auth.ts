@@ -1,6 +1,6 @@
-import { authenticate, SESSION_STORAGE_KEY } from 'micro-stacks/connect';
+import { authenticate, PersistedDataKeys } from 'micro-stacks/connect';
 import { useCallback } from 'react';
-import { useAuthOptions, useIsSignedIn, useSession } from './use-session';
+import { useAuthOptions, useIsSignedIn, useResetSessionCallback, useSession } from './use-session';
 import { useLoading } from './use-loading';
 import { LOADING_KEYS } from '../constants';
 import { useDefaultStorageAdapter } from './use-storage-adapter';
@@ -11,14 +11,13 @@ export function useAuth() {
   const authOptions = useAuthOptions();
   const [isLoading, setIsLoading] = useLoading(LOADING_KEYS.AUTHENTICATION);
   const storageAdapter = useDefaultStorageAdapter();
-
+  const resetSession = useResetSessionCallback();
   const handleSignIn = useCallback(
     async (onFinish?: (payload: any) => void) => {
       if (!authOptions) throw Error('[useAuthenticate] No authOptions provided.');
       setIsLoading(true);
       return authenticate(
         {
-          manifestPath: '/',
           ...authOptions,
           onFinish: payload => {
             if (onFinish) onFinish(payload);
@@ -39,10 +38,10 @@ export function useAuth() {
   );
 
   const handleSignOut = useCallback(() => {
-    storageAdapter.removeItem(SESSION_STORAGE_KEY);
-    setSessionState(null);
-    setIsSignedIn(false);
-  }, [setSessionState, setIsSignedIn, storageAdapter]);
+    storageAdapter.removeItem(PersistedDataKeys.SessionStorageKey);
+    resetSession();
+    authOptions?.onSignOut?.();
+  }, [resetSession, authOptions, storageAdapter]);
 
   return {
     isLoading,

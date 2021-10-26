@@ -1,6 +1,6 @@
 import { StacksMainnet, StacksNetwork, StacksRegtest, StacksTestnet } from 'micro-stacks/network';
 import { atomWithStorageAdapter } from './storage-adapter';
-import { NETWORK_STORAGE_KEY } from 'micro-stacks/connect';
+import { PersistedDataKeys } from 'micro-stacks/connect';
 
 import { atom } from 'jotai';
 import { ChainID } from 'micro-stacks/common';
@@ -35,7 +35,12 @@ networkValueAtom.debugLabel = 'networkValueAtom';
 
 export const networkAtom = atomWithStorageAdapter<
   StacksNetwork | StacksTestnet | StacksMainnet | StacksRegtest
->(NETWORK_STORAGE_KEY, get => get(networkValueAtom), serializeNetwork, deserializeNetwork);
+>(
+  PersistedDataKeys.NetworkStorageKey,
+  get => get(networkValueAtom),
+  serializeNetwork,
+  deserializeNetwork
+);
 
 networkAtom.debugLabel = 'networkAtom';
 

@@ -1,3 +1,9 @@
 {
-  "sandboxes": ["new", "vanilla"]
+  "sandboxes": [
+    "new",
+    "vanilla"
+  ],
+  "publishDirectory": {
+    "micro-stacks": "dist"
+  }
 }

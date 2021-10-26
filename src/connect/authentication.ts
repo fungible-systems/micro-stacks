@@ -3,7 +3,7 @@ import { getPublicKey, getRandomBytes, TokenSigner } from 'micro-stacks/crypto';
 import { decodeAuthResponse } from './auth/decode-auth-response';
 import { getStacksProvider } from './common/get-stacks-provider';
 
-import { SESSION_STORAGE_KEY } from './common/constants';
+import { PersistedDataKeys } from './common/constants';
 import { defaultStorageAdapter } from './common/utils';
 
 import type { StacksProvider } from './common/provider';
@@ -30,7 +30,7 @@ export async function authenticate(
     const origin = getGlobalObject('location', { returnEmptyObject: true })!.origin;
     const payload: AuthRequestPayload = {
       scopes: [...new Set(['store_write', ..._scopes])] as AuthScope[],
-      redirect_uri: authOptions.redirectTo || origin,
+      redirect_uri: origin,
       public_keys: [transitPublicKey],
       domain_name: origin,
       appDetails: authOptions.appDetails,
@@ -42,7 +42,7 @@ export async function authenticate(
     const sessionState = await decodeAuthResponse(authResponseToken, transitPrivateKey);
 
     authOptions?.onFinish?.(sessionState);
-    storageAdapter.setItem(SESSION_STORAGE_KEY, serialize(sessionState));
+    storageAdapter.setItem(PersistedDataKeys.SessionStorageKey, serialize(sessionState));
 
     return sessionState;
   } catch (e) {
