@@ -54,7 +54,6 @@ export const generateUrl = <Value = unknown>(
   params: { [key: string]: string[] | string | number | boolean | undefined }
 ): string => {
   try {
-    console.log(baseUrl);
     const url = new URL(baseUrl);
     Object.keys(params).forEach(key => {
       const value = params[key];
