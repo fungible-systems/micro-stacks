@@ -48,3 +48,5 @@ export type NetworkWithBurnBlockHeight = [networkUrl: string, burn_block_height:
 export type NetworkWithTransaction = [networkUrl: string, transaction: string];
 
 export type NetworkWithAddressStacking = [networkUrl: string, address: string, stacking?: boolean];
+
+export type NetworkWithContractId = [networkUrl: string, contractId: string];
