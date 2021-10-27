@@ -29,7 +29,23 @@ export type WithNetwork = [networkUrl: string];
 
 export type IdWithNetwork = [id: string, networkUrl: string];
 
+export type NetworkWithTld = [networkUrl: string, tld: string];
+
+export type NetworkWithName = [networkUrl: string, name: string];
+
 export type NetworkWithLimitOffset = [networkUrl: string, limit?: number, offset?: number];
+
+export type NetworkWithPage = [networkUrl: string, page: number];
+
+export type NetworkWithTxid = [networkUrl: string, txid: string];
+
+export type NetworkWithNameZoneFileHash = [networkUrl: string, name: string, zoneFileHash: string];
+
+export type NetworkWithBlockchainAddress = [
+  networkUrl: string,
+  blockchain: string,
+  address: string
+];
 
 export type NetworkWithAddressLimitOffset = [
   networkUrl: string,
