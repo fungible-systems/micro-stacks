@@ -1,6 +1,5 @@
 import { RunFaucetResponse } from '@stacks/stacks-blockchain-api-types';
-import { BaseListParams } from '../types';
-import { FetchStxTokensParams } from './types';
+import { BaseListParams, FetchTokensParams } from '../types';
 import { fetchJsonPost, generateUrl, stxFaucetEndpoint, btcFaucetEndpoint } from '../utils';
 
 /**
@@ -13,9 +12,9 @@ export async function fetchGetStxTokens({
   url,
   address,
   stacking = false,
-}: BaseListParams & FetchStxTokensParams) {
+}: BaseListParams & FetchTokensParams) {
   const path = generateUrl(stxFaucetEndpoint(url), {});
-  const body: FetchStxTokensParams = { address: address, stacking: stacking };
+  const body: FetchTokensParams = { address: address, stacking: stacking };
   return fetchJsonPost<RunFaucetResponse>(path, body);
 }
 
@@ -27,6 +26,6 @@ export async function fetchGetStxTokens({
 
 export async function fetchGetBtcTokens({ url, address }: BaseListParams & { address: string }) {
   const path = generateUrl(btcFaucetEndpoint(url), {});
-  const body: FetchStxTokensParams = { address: address };
+  const body: FetchTokensParams = { address: address };
   return fetchJsonPost<RunFaucetResponse>(path, body);
 }

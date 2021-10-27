@@ -9,3 +9,8 @@ export interface EventListParams {
   event_offset?: number;
   url: string;
 }
+
+export interface FetchTokensParams {
+  address: string;
+  stacking?: boolean;
+}

@@ -21,7 +21,6 @@ export * from './api/tx/fetchers';
 export * from './api/info/fetchers';
 //faucets
 export * from './api/faucets/fetchers';
-export * from './api/faucets/types';
 //feerate
 export * from './api/feerate/fetchers';
 export * from './api/feerate/types';
