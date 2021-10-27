@@ -1,21 +1,16 @@
-import {
-  _isSignedInAtom,
-  authOptionsAtom,
-  isSignedInAtom,
-  partialStacksSessionAtom,
-} from './store/auth';
-import { storageAdapterAtom } from './store/storage-adapter';
-import { networkValueAtom } from './store/network';
-import { getNetwork, MicroStacksProviderAtoms } from './utils';
-import type { AppProviderAtomBuilder } from './types';
-import type { InitialValuesAtomBuilder } from 'jotai-query-toolkit/nextjs';
+import { AppProviderAtomBuilder } from '../types';
+import { InitialValuesAtomBuilder } from 'jotai-query-toolkit/nextjs';
+import { getNetwork, MicroStacksProviderAtoms } from '../utils';
+import { _isSignedInAtom, authOptionsAtom, partialStacksSessionAtom } from '../store/auth';
+import { storageAdapterAtom } from '../store/storage-adapter';
 import { defaultStorageAdapter } from 'micro-stacks/connect';
-import { useCookiesAtom } from './store/cookies';
+import { networkValueAtom } from '../store/network';
+import { useCookiesAtom } from '../store/cookies';
 
 /**
  * buildMicroStacksAtoms
  *
- * This is used with `jotai-query-tookit` and next.js
+ * This is used with `jotai-query-toolkit` and next.js
  * This is a method to create InitialValuesAtomBuilder for `withInitialQueries`
  * Use this in place of `MicroStacksProvider`
  * @example

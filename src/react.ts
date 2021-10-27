@@ -32,3 +32,4 @@ export * from './react/store/cookies';
 
 export * from './react/nextjs';
 export { getNetwork } from './react/utils';
+export { buildMicroStacksAtoms } from './react/nextjs/build-micro-stacks-atoms';

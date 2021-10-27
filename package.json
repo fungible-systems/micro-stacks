@@ -108,13 +108,6 @@
       "react-native": "./transactions.js",
       "default": "./transactions.js"
     },
-    "./react": {
-      "types": "./react.d.ts",
-      "module": "./esm/react.js",
-      "import": "./esm/react.js",
-      "react-native": "./react.js",
-      "default": "./react.js"
-    },
     "./wallet-sdk": {
       "types": "./wallet-sdk.d.ts",
       "module": "./esm/wallet-sdk.js",
@@ -128,6 +121,13 @@
       "import": "./esm/zone-file.js",
       "react-native": "./zone-file.js",
       "default": "./zone-file.js"
+    },
+    "./react/nextjs": {
+      "types": "./nextjs.d.ts",
+      "module": "./esm/nextjs.js",
+      "import": "./esm/nextjs.js",
+      "react-native": "./nextjs.js",
+      "default": "./nextjs.js"
     }
   },
   "files": [
@@ -158,6 +158,7 @@
     "build:storage": "rollup -c \"./configs/rollup.config.js\" --config-storage",
     "build:transactions": "rollup -c \"./configs/rollup.config.js\" --config-transactions",
     "build:react": "rollup -c \"./configs/rollup.config.js\" --config-react",
+    "build:nextjs": "rollup -c \"./configs/rollup.config.js\" --config-nextjs",
     "build:wallet-sdk": "rollup -c \"./configs/rollup.config.js\" --config-wallet-sdk",
     "build:zone-file": "rollup -c \"./configs/rollup.config.js\" --config-zone-file",
     "dev:build": "pnpm build && pnpm postbuild && yalc publish dist --push",
@@ -263,7 +264,7 @@
     "jest": "27.3.1",
     "jest-fetch-mock": "3.0.3",
     "jotai": "1.4.0",
-    "jotai-query-toolkit": "file:.yalc/jotai-query-toolkit",
+    "jotai-query-toolkit": "0.1.13",
     "jsbi": "4.0.0",
     "json": "11.0.0",
     "jsontokens": "3.0.0",
@@ -271,6 +272,8 @@
     "micro-bmark": "0.1.3",
     "micro-memoize": "4.0.9",
     "msw": "0.35.0",
+    "next": "12.0.1",
+    "nookies": "2.5.2",
     "prettier": "2.4.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
