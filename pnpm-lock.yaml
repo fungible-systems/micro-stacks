@@ -60,7 +60,7 @@ specifiers:
   jest: 27.3.1
   jest-fetch-mock: 3.0.3
   jotai: 1.4.0
-  jotai-query-toolkit: file:.yalc/jotai-query-toolkit
+  jotai-query-toolkit: 0.1.13
   jsbi: 4.0.0
   json: 11.0.0
   jsontokens: 3.0.0
@@ -147,7 +147,7 @@ devDependencies:
   jest: 27.3.1_ts-node@10.3.1
   jest-fetch-mock: 3.0.3
   jotai: 1.4.0_99960f143b8ea3f40ea257a5fc6d9f80
-  jotai-query-toolkit: link:.yalc/jotai-query-toolkit
+  jotai-query-toolkit: 0.1.13_5d3b3a19a48c7fa8d0eeabf70ab4dd8f
   jsbi: 4.0.0
   json: 11.0.0
   jsontokens: 3.0.0
@@ -6736,6 +6736,33 @@ packages:
       - supports-color
       - ts-node
       - utf-8-validate
+    dev: true
+
+  /jotai-query-toolkit/0.1.13_5d3b3a19a48c7fa8d0eeabf70ab4dd8f:
+    resolution: {integrity: sha512-KkBFRtfEqyBw3Tuh+6nze47oFvCaX7BRt7NeB/2WzeeMdMCeF0SKIovIfPo4JEaJfgg5uv0jf79roCmcIhsStQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      next: '*'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      next:
+        optional: true
+    dependencies:
+      fast-deep-equal: 3.1.3
+      jotai: 1.4.0_99960f143b8ea3f40ea257a5fc6d9f80
+      react: 17.0.2
+      react-query: 3.27.0_react-dom@17.0.2+react@17.0.2
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@babel/template'
+      - '@urql/core'
+      - immer
+      - optics-ts
+      - react-dom
+      - react-native
+      - valtio
+      - wonka
+      - xstate
     dev: true
 
   /jotai/1.4.0_99960f143b8ea3f40ea257a5fc6d9f80:
