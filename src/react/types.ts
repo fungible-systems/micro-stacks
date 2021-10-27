@@ -1,3 +1,6 @@
+import { ClarityValue } from 'micro-stacks/clarity';
+import { StacksNetwork } from 'micro-stacks/network';
+
 // https://github.com/sindresorhus/type-fest
 export type Except<ObjectType, KeysType extends keyof ObjectType> = Pick<
   ObjectType,
@@ -50,3 +53,55 @@ export type NetworkWithTransaction = [networkUrl: string, transaction: string];
 export type NetworkWithAddressStacking = [networkUrl: string, address: string, stacking?: boolean];
 
 export type NetworkWithContractId = [networkUrl: string, contractId: string];
+
+export type NetworkWithContractIdUnanchored = [
+  networkUrl: string,
+  contractId: string,
+  unanchored: boolean
+];
+
+export type NetworkWithContractIdUnanchoredLimitOffset = [
+  networkUrl: string,
+  contractId: string,
+  unanchored: boolean,
+  limit?: number,
+  offset?: number
+];
+
+export type NetworkWithContractAddressContractNameTip = [
+  networkUrl: string,
+  contract_address: string,
+  contract_name: string,
+  tip: string
+];
+
+export type NetworkWithContractAddressContractNameMapNameProofTipLookupKey = [
+  networkUrl: string,
+  contract_address: string,
+  contract_name: string,
+  map_name: string,
+  proof: number,
+  tip: string,
+  lookup_key: string
+];
+
+export type NetworkWithContractAddressContractNameProofTip = [
+  networkUrl: string,
+  contract_address: string,
+  contract_name: string,
+  proof: number,
+  tip: string
+];
+
+export type ContractNameContractAddressFunctionNameFunctionArgsSenderAddressNetworkTip = [
+  networkUrl: string,
+  contractName: string,
+  contractAddress: string,
+  functionName: string,
+  functionArgs: string[],
+  senderAddress: string,
+  /** the network that the contract which contains the function is deployed to */
+  // TODO: add network to client
+  //network?: string,
+  tip?: string
+];

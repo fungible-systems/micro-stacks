@@ -11,7 +11,7 @@ import {
   MapEntryResponse,
 } from '@stacks/stacks-blockchain-api-types';
 import { cvToHex } from 'micro-stacks/clarity';
-import { BaseListParams } from '../types';
+import { BaseListParams, ReadOnlyFunctionFetcherOptions } from '../types';
 import {
   fetchJson,
   fetchJsonPost,
@@ -20,7 +20,6 @@ import {
   contractsEndpoint,
   v2Endpoint,
 } from '../utils';
-import { ReadOnlyFunctionFetcherOptions } from './types';
 
 /**
  * Get contract info using the contract ID
@@ -147,7 +146,7 @@ export async function fetchContractSource({
 /**
  * Call a read-only public function on a given smart contract.
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#tag/fee_rate
+ * @see https://blockstack.github.io/stacks-blockchain-api/#operation/call_read_only_function
  */
 export async function fetchReadOnlyFunction({
   url,
@@ -156,10 +155,11 @@ export async function fetchReadOnlyFunction({
   functionName,
   functionArgs,
   senderAddress,
+  network,
   tip,
 }: BaseListParams & ReadOnlyFunctionFetcherOptions) {
   const args = functionArgs.map(arg => cvToHex(arg));
-
+  // TODO: what is network for?
   const body = JSON.stringify({
     sender: senderAddress,
     arguments: args,
