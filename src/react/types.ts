@@ -22,6 +22,8 @@ declare function useCallback<T extends (...args: any[]) => any>(
   deps: readonly any[]
 ): UseCallback<T>;
 
+export type WithNetwork = [networkUrl: string];
+
 export type IdWithNetwork = [id: string, networkUrl: string];
 
 export type NetworkWithLimitOffset = [networkUrl: string, limit?: number, offset?: number];
