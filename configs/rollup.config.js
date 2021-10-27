@@ -64,12 +64,12 @@ function createDeclarationConfig(input) {
   };
 }
 
-function createESMConfig(input) {
+function createESMConfig(input, output) {
   return {
     input,
     output: {
       format: 'esm',
-      dir: 'dist/esm',
+      file: output,
     },
     external,
     plugins: [
@@ -98,7 +98,7 @@ function createCommonJSConfig(input) {
       }),
       babel(
         getBabelOptions(
-          { browsers: 'last 10 versions' },
+          { browsers: 'last 2 versions' },
           input.replace('src/', '').replace('.ts', '')
         )
       ),
