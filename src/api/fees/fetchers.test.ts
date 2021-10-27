@@ -2,7 +2,7 @@ import { setupServer } from 'msw/node';
 const FEES_TRANSFER_200_RESPONSE = '1';
 
 import { rest } from 'msw';
-import { feesSearch } from './fetchers';
+import { fetchFees } from './fetchers';
 import { feesEndpoint } from '../utils';
 import { HIRO_TESTNET_DEFAULT } from 'micro-stacks/network';
 
@@ -26,9 +26,9 @@ describe('fees fetchers', () => {
     server.close();
   });
 
-  test(feesSearch.name, async () => {
+  test(fetchFees.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT };
-    const data = await feesSearch(args);
+    const data = await fetchFees(args);
     expect(data).toEqual(FEES_TRANSFER_200_RESPONSE);
   });
 });

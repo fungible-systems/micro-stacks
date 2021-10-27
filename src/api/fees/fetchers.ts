@@ -8,7 +8,7 @@ import { fetchJson, generateUrl, feesEndpoint } from '../utils';
  * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_fee_transfer
  */
 
-export async function feesSearch({ url }: BaseListParams) {
+export async function fetchFees({ url }: BaseListParams) {
   const path = generateUrl(feesEndpoint(url), {});
   return fetchJson<CoreNodeFeeResponse>(path);
 }
