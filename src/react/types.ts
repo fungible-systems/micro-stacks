@@ -34,3 +34,11 @@ export type NetworkWithAddressLimitOffset = [
 ];
 
 export type NetworkWithAddress = [networkUrl: string, address: string];
+
+export type NetworkWithBlockHash = [networkUrl: string, hash: string];
+
+export type NetworkWithBlockHeight = [networkUrl: string, height: number];
+
+export type NetworkWithBurnBlockHash = [networkUrl: string, burn_block_hash: string];
+
+export type NetworkWithBurnBlockHeight = [networkUrl: string, burn_block_height: number];
