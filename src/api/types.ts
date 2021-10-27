@@ -10,6 +10,10 @@ export interface EventListParams {
   url: string;
 }
 
+export interface FetchFeeRateParams {
+  transaction: string;
+}
+
 export interface FetchTokensParams {
   address: string;
   stacking?: boolean;

@@ -1,6 +1,5 @@
 import { FeeRate } from '@stacks/stacks-blockchain-api-types';
-import { BaseListParams } from '../types';
-import { FetchFeeRateParams } from './types';
+import { BaseListParams, FetchFeeRateParams } from '../types';
 
 import { fetchJsonPost, generateUrl, feeRateEndpoint } from '../utils';
 

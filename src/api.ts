@@ -23,7 +23,6 @@ export * from './api/info/fetchers';
 export * from './api/faucets/fetchers';
 //feerate
 export * from './api/feerate/fetchers';
-export * from './api/feerate/types';
 //microblocks
 export * from './api/microblocks/fetchers';
 //utils
