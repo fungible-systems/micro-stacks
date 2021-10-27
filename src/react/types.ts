@@ -44,3 +44,5 @@ export type NetworkWithBlockHeight = [networkUrl: string, height: number];
 export type NetworkWithBurnBlockHash = [networkUrl: string, burn_block_hash: string];
 
 export type NetworkWithBurnBlockHeight = [networkUrl: string, burn_block_height: number];
+
+export type NetworkWithTransaction = [networkUrl: string, transaction: string];

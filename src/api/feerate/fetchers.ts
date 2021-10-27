@@ -10,7 +10,7 @@ import { fetchJsonPost, generateUrl, feeRateEndpoint } from '../utils';
  * @see https://blockstack.github.io/stacks-blockchain-api/#tag/fee_rate
  */
 
-export async function fetchFeeRate({ url, transaction }: BaseListParams & { transaction: string }) {
+export async function fetchFeerate({ url, transaction }: BaseListParams & { transaction: string }) {
   const path = generateUrl(feeRateEndpoint(url), {});
   const body: FetchFeeRateParams = { transaction: transaction };
   return fetchJsonPost<FeeRate>(path, body);

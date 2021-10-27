@@ -1,7 +1,7 @@
 import { setupServer } from 'msw/node';
 import * as FEE_RATE_RESPONSE from '../../../tests/mocks/api/feerate/FeeRate.json';
 import { rest } from 'msw';
-import { fetchFeeRate } from './fetchers';
+import { fetchFeerate } from './fetchers';
 import { feeRateEndpoint } from '../utils';
 import { HIRO_TESTNET_DEFAULT } from 'micro-stacks/network';
 
@@ -29,9 +29,9 @@ describe('feerate fetchers', () => {
   });
 
   // TODO: use real addresses here?
-  test(fetchFeeRate.name, async () => {
+  test(fetchFeerate.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, transaction: transaction };
-    const data = await fetchFeeRate(args);
+    const data = await fetchFeerate(args);
     expect(data).toEqual(FEE_RATE_RESPONSE);
   });
 });
