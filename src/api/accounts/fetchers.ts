@@ -1,6 +1,4 @@
 import { AccountBase, AccountListOptions } from './types';
-import { WithHeight } from '../../react/types';
-
 import {
   AddressBalanceResponse,
   AddressStxBalanceResponse,
@@ -11,6 +9,10 @@ import {
   MempoolTransaction,
 } from '@stacks/stacks-blockchain-api-types';
 import { addressEndpoint, fetchJson, generateUrl, txMempoolEndpoint, txEndpoint } from '../utils';
+
+type WithHeight<T> = T & {
+  height?: number;
+};
 
 // @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_account_balance
 export async function fetchAccountBalances({ url, principal }: AccountBase) {

@@ -10,7 +10,10 @@ import {
   CoreNodePoxResponse,
 } from '@stacks/stacks-blockchain-api-types';
 import { BaseListParams } from '../types';
-import { WithHeight } from '../../react/types';
+
+type WithHeight<T> = T & {
+  height?: number;
+};
 
 import {
   fetchJson,

@@ -6,7 +6,7 @@
   "main": "index.js",
   "module": "esm/index.js",
   "import": "esm/index.js",
-  "react-native": "esm/index.js",
+  "react-native": "index.js",
   "types": "index.d.ts",
   "exports": {
     "./package.json": "./package.json",
@@ -108,13 +108,6 @@
       "react-native": "./transactions.js",
       "default": "./transactions.js"
     },
-    "./react": {
-      "types": "./react.d.ts",
-      "module": "./esm/react.js",
-      "import": "./esm/react.js",
-      "react-native": "./react.js",
-      "default": "./react.js"
-    },
     "./wallet-sdk": {
       "types": "./wallet-sdk.d.ts",
       "module": "./esm/wallet-sdk.js",
@@ -157,7 +150,6 @@
     "build:network": "rollup -c \"./configs/rollup.config.js\" --config-network",
     "build:storage": "rollup -c \"./configs/rollup.config.js\" --config-storage",
     "build:transactions": "rollup -c \"./configs/rollup.config.js\" --config-transactions",
-    "build:react": "rollup -c \"./configs/rollup.config.js\" --config-react",
     "build:wallet-sdk": "rollup -c \"./configs/rollup.config.js\" --config-wallet-sdk",
     "build:zone-file": "rollup -c \"./configs/rollup.config.js\" --config-zone-file",
     "dev:build": "pnpm build && pnpm postbuild && yalc publish dist --push",
@@ -214,7 +206,6 @@
     "@babel/plugin-proposal-class-properties": "7.14.5",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.14.5",
     "@babel/plugin-syntax-bigint": "7.8.3",
-    "@babel/plugin-transform-react-jsx": "7.14.9",
     "@babel/plugin-transform-runtime": "7.15.8",
     "@babel/plugin-transform-typescript": "7.15.8",
     "@babel/preset-env": "7.15.8",
@@ -235,19 +226,16 @@
     "@stacks/stacks-blockchain-api-types": "0.70.0",
     "@stacks/transactions": "3.0.0-beta.0",
     "@swc-node/jest": "1.3.3",
-    "@testing-library/react": "12.1.2",
     "@types/common-tags": "1.8.1",
     "@types/jest": "27.0.2",
     "@types/jsdom": "16.2.13",
     "@types/randombytes": "2.0.0",
-    "@types/react": "17.0.31",
-    "@types/react-dom": "17.0.10",
     "@typescript-eslint/eslint-plugin": "5.1.0",
     "@typescript-eslint/parser": "5.1.0",
     "bip32": "2.0.6",
     "common-tags": "1.8.0",
     "concurrently": "6.3.0",
-    "cross-fetch": "^3.1.4",
+    "cross-fetch": "3.1.4",
     "dependency-cruiser": "10.5.0",
     "downlevel-dts": "0.7.0",
     "esbuild": "0.13.8",
@@ -257,13 +245,11 @@
     "eslint-plugin-import": "2.25.2",
     "eslint-plugin-jest": "25.2.2",
     "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-react": "7.26.1",
-    "eslint-plugin-react-hooks": "4.2.0",
     "husky": "7.0.4",
     "jest": "27.3.1",
     "jest-fetch-mock": "3.0.3",
     "jotai": "1.4.0",
-    "jotai-query-toolkit": "0.1.13",
+    "jotai-query-toolkit": "0.1.14",
     "jsbi": "4.0.0",
     "json": "11.0.0",
     "jsontokens": "3.0.0",
@@ -271,10 +257,9 @@
     "micro-bmark": "0.1.3",
     "micro-memoize": "4.0.9",
     "msw": "0.35.0",
+    "next": "12.0.1",
+    "nookies": "2.5.2",
     "prettier": "2.4.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-query": "3.27.0",
     "rollup": "2.58.0",
     "rollup-plugin-dts": "4.0.0",
     "rollup-plugin-esbuild": "4.6.0",
@@ -297,25 +282,5 @@
     "@typescript-eslint/eslint-plugin": "5.0.0-alpha.42",
     "@typescript-eslint/parser": "5.0.0-alpha.42",
     "eslint": "8.0.0"
-  },
-  "peerDependencies": {
-    "jotai": "*",
-    "jotai-query-toolkit": "*",
-    "react": ">=16.8",
-    "react-query": "*"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": true
-    },
-    "react-query": {
-      "optional": true
-    },
-    "jotai": {
-      "optional": true
-    },
-    "jotai-query-toolkit": {
-      "optional": true
-    }
   }
 }
