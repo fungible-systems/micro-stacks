@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.0.36
+
+### Patch Changes
+
+- [#25](https://github.com/fungible-systems/micro-stacks/pull/25) [`3f04cf1`](https://github.com/fungible-systems/micro-stacks/commit/3f04cf1f088431784108fa635c52b901a7571e90) Thanks [@aulneau](https://github.com/aulneau)! - This update starts work to improve the react integration of micro-stacks, making way for a nextjs specific export"
+
 ## 0.0.35
 
 ### Patch Changes
