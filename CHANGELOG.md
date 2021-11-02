@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.1.0
+
+### Minor Changes
+
+- [#31](https://github.com/fungible-systems/micro-stacks/pull/31) [`4a8c22e`](https://github.com/fungible-systems/micro-stacks/commit/4a8c22ed82d7892439fa934cb2a98b67eeb9f094) Thanks [@aulneau](https://github.com/aulneau)! - This update removes the `/react` sub-module, moving it to `@micro-stacks/react`. This is a BREAKING change for any react modules used in this package. With this change, we no longer have any optional peer deps.
+
 ## 0.0.36
 
 ### Patch Changes
