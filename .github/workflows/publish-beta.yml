@@ -1,0 +1,67 @@
+name: Publish beta version
+on: [pull_request, workflow_dispatch]
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+
+jobs:
+  check_fork:
+    name: Disable jobs for forks
+    runs-on: ubuntu-latest
+    outputs:
+      is_not_fork: ${{ steps.is_not_fork.outputs.is_not_fork }}
+    steps:
+      - name: Check for secret
+        id: is_not_fork
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "Is a fork: ${{ env.NPM_TOKEN == '' }}"
+          echo "::set-output name=is_not_fork::${{ env.NPM_TOKEN != '' }}"
+  publish_npm_betas:
+    name: Publish NPM beta versions
+    runs-on: ubuntu-latest
+    needs: [ check_fork ]
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@aec1e95348a6983270197ef14011414346269b77
+        with:
+          access_token: ${{ github.token }}
+      - name: checkout code repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: setup node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+      - name: Cache .pnpm-store
+        uses: actions/cache@v1
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Install pnpm
+        run: curl -f https://get.pnpm.io/v6.14.js | node - add --global pnpm@6
+      - name: pnpm Build
+        run: pnpm install
+      - name: Get git branch
+        id: git-branch
+        run: echo "::set-output name=branch::$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f2 )"
+      - name: Get git commit
+        id: git-commit
+        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+      - name: print preid
+        env:
+          BRANCH: ${{ steps.git-branch.outputs.branch }}
+          SHA: ${{ steps.git-commit.outputs.sha }}
+        run: echo $BRANCH.$SHA
+      - name: Setup git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      - name: Publish to NPM
+        env:
+          BRANCH: ${{ steps.git-branch.outputs.branch }}
+          SHA: ${{ steps.git-commit.outputs.sha }}
+        run: pnpm build && pnpm postbuild && pnpm publish ./dist --no-git-checks --access public --tag beta.$SHA
