@@ -16,7 +16,7 @@ export async function fetchGetStxTokens({
 }: BaseListParams & FetchStxTokensParams) {
   const path = generateUrl(stxFaucetEndpoint(url), {});
   const body: FetchStxTokensParams = { address: address, stacking: stacking };
-  return fetchJsonPost<RunFaucetResponse>(path, body);
+  return fetchJsonPost<RunFaucetResponse>(path, { body });
 }
 
 /**
@@ -28,5 +28,5 @@ export async function fetchGetStxTokens({
 export async function fetchGetBtcTokens({ url, address }: BaseListParams & { address: string }) {
   const path = generateUrl(btcFaucetEndpoint(url), {});
   const body: FetchStxTokensParams = { address: address };
-  return fetchJsonPost<RunFaucetResponse>(path, body);
+  return fetchJsonPost<RunFaucetResponse>(path, { body });
 }

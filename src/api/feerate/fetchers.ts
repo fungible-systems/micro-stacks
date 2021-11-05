@@ -13,5 +13,5 @@ import { fetchJsonPost, generateUrl, feeRateEndpoint } from '../utils';
 export async function fetchFeeRate({ url, transaction }: BaseListParams & { transaction: string }) {
   const path = generateUrl(feeRateEndpoint(url), {});
   const body: FetchFeeRateParams = { transaction: transaction };
-  return fetchJsonPost<FeeRate>(path, body);
+  return fetchJsonPost<FeeRate>(path, { body });
 }
