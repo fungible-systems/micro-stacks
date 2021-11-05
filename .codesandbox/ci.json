@@ -2,5 +2,9 @@
   "sandboxes": [
     "new",
     "vanilla"
-  ]
+  ],
+  "publishDirectory": {
+    "micro-stacks": "dist"
+  },
+  "node": "14"
 }
