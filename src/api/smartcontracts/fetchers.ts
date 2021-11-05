@@ -1,4 +1,4 @@
-import {
+import type {
   AbstractTransaction,
   ContractInterfaceResponse,
   TransactionEventSmartContractLog,
@@ -7,7 +7,6 @@ import {
   TransactionEventFungibleAsset,
   TransactionEventNonFungibleAsset,
   ContractSourceResponse,
-  ReadOnlyFunctionSuccessResponse,
   MapEntryResponse,
 } from '@stacks/stacks-blockchain-api-types';
 import { cvToHex } from 'micro-stacks/clarity';
@@ -20,7 +19,8 @@ import {
   contractsEndpoint,
   v2Endpoint,
 } from '../utils';
-import { ReadOnlyFunctionFetcherOptions } from './types';
+import { CallReadOnlyFunctionRequest } from './types';
+import { ReadOnlyFunctionArgsToJSON } from './utils';
 
 /**
  * Get contract info using the contract ID
@@ -113,7 +113,7 @@ export async function fetchContractDataMapEntry({
     `${v2Endpoint(url)}/map_entry/${contract_address}/${contract_name}/${map_name}`,
     { proof: proof, tip: tip }
   );
-  return fetchJsonPost<MapEntryResponse>(path, body);
+  return fetchJsonPost<MapEntryResponse>(path, { body });
 }
 
 /**
@@ -149,24 +149,33 @@ export async function fetchContractSource({
  *
  * @see https://blockstack.github.io/stacks-blockchain-api/#tag/fee_rate
  */
-export async function fetchReadOnlyFunction({
-  url,
-  contractName,
+export async function fetchReadOnlyFunction<T>({
   contractAddress,
-  functionName,
+  contractName,
   functionArgs,
-  senderAddress,
+  sender = contractAddress,
+  functionName,
   tip,
-}: BaseListParams & ReadOnlyFunctionFetcherOptions) {
-  const args = functionArgs.map(arg => cvToHex(arg));
+  url,
+}: CallReadOnlyFunctionRequest & { url: string }) {
+  if (!url) throw TypeError('[fetchReadOnlyFunction] no network url passed.');
 
-  const body = JSON.stringify({
-    sender: senderAddress,
-    arguments: args,
+  const pathArgs = `contracts/call-read/{contract_address}/{contract_name}/{function_name}`
+    .replace(`{contract_address}`, encodeURIComponent(String(contractAddress)))
+    .replace(`{contract_name}`, encodeURIComponent(String(contractName)))
+    .replace(`{function_name}`, encodeURIComponent(String(functionName)));
+
+  const path = `${v2Endpoint(url)}/${pathArgs}${typeof tip === 'string' ? `?tip=${tip}` : ''}`;
+
+  const args: string[] = functionArgs.map(arg => {
+    if (typeof arg !== 'string') return cvToHex(arg);
+    return arg;
   });
-  const path = generateUrl(
-    `${contractsEndpoint(url)}/call-read/${contractAddress}/${contractName}/${functionName}`,
-    { tip: tip }
-  );
-  return fetchJsonPost<ReadOnlyFunctionSuccessResponse>(path, body);
+
+  return fetchJsonPost<T>(path, {
+    body: ReadOnlyFunctionArgsToJSON({
+      sender,
+      arguments: args,
+    }),
+  });
 }

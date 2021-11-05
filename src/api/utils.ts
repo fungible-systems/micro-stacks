@@ -185,14 +185,18 @@ export async function fetchJson<T>(path: string) {
   return (await res.json()) as T;
 }
 
-export async function fetchJsonPost<T>(path: string, body: any) {
+export async function fetchJsonPost<T>(
+  path: string,
+  options: Omit<RequestInit, 'body'> & { body?: unknown } = {}
+) {
   const requestHeaders = {
     'Content-Type': 'application/json; charset=utf-8',
     Accept: 'application/json',
   };
 
-  const contents = JSON.stringify(body);
+  const contents = options.body ? JSON.stringify(options.body) : undefined;
   const fetchOptions = {
+    ...options,
     method: 'POST',
     body: contents,
     headers: requestHeaders,
@@ -211,7 +215,7 @@ export async function fetchText<T>(path: string): Promise<string> {
     headers: requestHeaders,
   };
   const res = await fetchPrivate(path, fetchOptions);
-  return await res.text();
+  return res.text();
 }
 
 export function getNextPageParam(options: { limit: number; offset: number; total: number }) {
