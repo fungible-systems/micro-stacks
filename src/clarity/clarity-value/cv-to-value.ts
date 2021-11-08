@@ -10,7 +10,7 @@ import { ClarityValue } from './types';
  * less than or equal to 53 bit length, otherwise string wrapped integers when larger than 53 bits.
  * If false, they are returned as js native `bigint`s which are _not_ JSON serializable.
  */
-export async function cvToValue(val: ClarityValue, strictJsonCompat = false): Promise<any> {
+export function cvToValue(val: ClarityValue, strictJsonCompat = false): any {
   switch (val.type) {
     case ClarityType.BoolTrue:
       return true;
@@ -34,16 +34,14 @@ export async function cvToValue(val: ClarityValue, strictJsonCompat = false): Pr
     case ClarityType.PrincipalContract:
       return principalToString(val);
     case ClarityType.List:
-      return Promise.all(val.list.map(v => cvToJSON(v)));
+      return val.list.map(v => cvToJSON(v));
     case ClarityType.Tuple:
       const result: { [key: string]: any } = {};
-      const arr = await Promise.all(
-        Object.keys(val.data).map(async key => {
-          return [key, await cvToJSON(val.data[key])];
-        })
-      );
+      const arr = Object.keys(val.data).map(key => {
+        return [key, cvToJSON(val.data[key])];
+      });
       arr.forEach(([key, value]) => {
-        result[key] = value;
+        result[key as any] = value;
       });
       return result;
     case ClarityType.StringASCII:

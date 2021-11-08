@@ -22,8 +22,7 @@ interface ContractPrincipalCV {
 
 function principalToString(principal: PrincipalCV): string {
   if (principal.type === ClarityType.PrincipalStandard) {
-    const address = addressToString(principal.address);
-    return address;
+    return addressToString(principal.address);
   } else if (principal.type === ClarityType.PrincipalContract) {
     const address = addressToString(principal.address);
     return `${address}.${principal.contractName.content}`;

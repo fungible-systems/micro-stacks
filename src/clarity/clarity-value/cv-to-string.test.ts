@@ -44,7 +44,7 @@ describe('Clarity Value To Clarity String Literal', () => {
       n: stringUtf8CV('hello \u{1234}'),
     });
 
-    const tupleString = await cvToString(tuple);
+    const tupleString = cvToString(tuple);
 
     expect(tupleString).toEqual(
       oneLineTrim`
@@ -67,8 +67,8 @@ describe('Clarity Value To Clarity String Literal', () => {
   });
 
   test('Hex Buffers', async () => {
-    expect(await cvToString(bufferCV(asciiToBytes('\n')))).toEqual('0x0a');
-    expect(await cvToString(bufferCV(hexToBytes('00')))).toEqual('0x00');
-    expect(await cvToString(bufferCV(Uint8Array.from([127])))).toEqual('0x7f');
+    expect(cvToString(bufferCV(asciiToBytes('\n')))).toEqual('0x0a');
+    expect(cvToString(bufferCV(hexToBytes('00')))).toEqual('0x00');
+    expect(cvToString(bufferCV(Uint8Array.from([127])))).toEqual('0x7f');
   });
 });

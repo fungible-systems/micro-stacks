@@ -3,10 +3,10 @@ import { bytesToAscii, bytesToHex } from 'micro-stacks/common';
 import { principalToString } from '../types/principalCV';
 import { ClarityValue } from './types';
 
-export async function cvToString(
+export function cvToString(
   val: ClarityValue,
   encoding: 'tryAscii' | 'hex' = 'hex'
-): Promise<string | bigint> {
+): string | bigint {
   switch (val.type) {
     case ClarityType.BoolTrue:
       return 'true';
@@ -27,26 +27,20 @@ export async function cvToString(
     case ClarityType.OptionalNone:
       return 'none';
     case ClarityType.OptionalSome:
-      return `(some ${await cvToString(val.value, encoding)})`;
+      return `(some ${cvToString(val.value, encoding)})`;
     case ClarityType.ResponseErr:
-      return `(err ${await cvToString(val.value, encoding)})`;
+      return `(err ${cvToString(val.value, encoding)})`;
     case ClarityType.ResponseOk:
-      return `(ok ${await cvToString(val.value, encoding)})`;
+      return `(ok ${cvToString(val.value, encoding)})`;
     case ClarityType.PrincipalStandard:
     case ClarityType.PrincipalContract:
       return principalToString(val);
     case ClarityType.List:
-      return `(list ${(await Promise.all(val.list.map(async v => cvToString(v, encoding)))).join(
-        ' '
-      )})`;
+      return `(list ${val.list.map(v => cvToString(v, encoding)).join(' ')})`;
     case ClarityType.Tuple:
-      return `(tuple ${(
-        await Promise.all(
-          Object.keys(val.data).map(
-            async key => `(${key} ${await cvToString(val.data[key], encoding)})`
-          )
-        )
-      ).join(' ')})`;
+      return `(tuple ${Object.keys(val.data)
+        .map(key => `(${key} ${cvToString(val.data[key], encoding)})`)
+        .join(' ')})`;
     case ClarityType.StringASCII:
       return `"${val.data}"`;
     case ClarityType.StringUTF8:
