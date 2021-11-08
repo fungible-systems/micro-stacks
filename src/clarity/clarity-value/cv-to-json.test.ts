@@ -46,7 +46,7 @@ describe('Clarity value to JSON', () => {
       n: stringUtf8CV('hello \u{1234}'),
     });
 
-    const json = await cvToJSON(tuple);
+    const json = cvToJSON(tuple);
     const tupleString = JSON.stringify(json);
 
     expect(tupleString).toEqual(
@@ -76,7 +76,7 @@ describe('Clarity value to JSON', () => {
   });
 
   test('Hex Buffer', async () => {
-    expect(JSON.stringify(await cvToJSON(bufferCV(asciiToBytes('\n'))))).toEqual(
+    expect(JSON.stringify(cvToJSON(bufferCV(asciiToBytes('\n'))))).toEqual(
       oneLineTrim`
         {"type":"(buff 1)",
         "value":"0x0a"}
