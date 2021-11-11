@@ -1,5 +1,13 @@
 # micro-stacks
 
+## 0.1.1
+
+### Patch Changes
+
+- [#34](https://github.com/fungible-systems/micro-stacks/pull/34) [`86d6c30`](https://github.com/fungible-systems/micro-stacks/commit/86d6c3058b1b5f3e644479a771d89e9c0617f5b5) Thanks [@aulneau](https://github.com/aulneau)! - This refactors some of the code for read only contract calls.
+
+* [#36](https://github.com/fungible-systems/micro-stacks/pull/36) [`b7e5f2e`](https://github.com/fungible-systems/micro-stacks/commit/b7e5f2e3db9817636edc433f2fe2e2920da071d9) Thanks [@aulneau](https://github.com/aulneau)! - This update adds a new version of `cvToValue` where it returns the true values for a given clarity value, rather than an object in some places. Additionally, all cvToX functions have been updated to be sync.
+
 ## 0.1.0
 
 ### Minor Changes
