@@ -1159,5 +1159,5 @@ export async function sponsorTransaction(
   );
   await signer.signSponsor(privKey);
 
-  return options.transaction;
+  return signer.transaction;
 }
