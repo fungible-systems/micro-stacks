@@ -611,181 +611,161 @@ function verifyMultiSig(
   return curSigHash;
 }
 
-export class Authorization extends Deserializable {
-  authType?: AuthType;
-  spendingCondition?: SpendingCondition;
-  sponsorSpendingCondition?: SpendingCondition;
+export type Authorization = StandardAuthorization | SponsoredAuthorization;
 
-  constructor(
-    authType?: AuthType,
-    spendingConditions?: SpendingConditionOpts,
-    sponsorSpendingCondition?: SpendingConditionOpts
-  ) {
-    super();
-    this.authType = authType;
-    if (spendingConditions) {
-      this.spendingCondition = {
-        ...spendingConditions,
-        nonce: intToBigInt(spendingConditions.nonce, false),
-        fee: intToBigInt(spendingConditions.fee, false),
-      };
-    }
-    if (sponsorSpendingCondition) {
-      this.sponsorSpendingCondition = {
-        ...sponsorSpendingCondition,
-        nonce: intToBigInt(sponsorSpendingCondition.nonce, false),
-        fee: intToBigInt(sponsorSpendingCondition.fee, false),
-      };
-    }
-  }
+export interface StandardAuthorization {
+  authType: AuthType.Standard;
+  spendingCondition: SpendingCondition;
+}
 
-  intoInitialSighashAuth(): StandardAuthorization | SponsoredAuthorization {
-    if (this.spendingCondition) {
-      switch (this.authType) {
-        case AuthType.Standard:
-          return new StandardAuthorization(clearCondition(this.spendingCondition));
-        case AuthType.Sponsored:
-          return new SponsoredAuthorization(
-            clearCondition(this.spendingCondition),
-            newInitialSigHash()
-          );
-        default:
-          throw new SigningError('Unexpected authorization type for signing');
-      }
-    }
+export interface SponsoredAuthorization {
+  authType: AuthType.Sponsored;
+  spendingCondition: SpendingCondition;
+  sponsorSpendingCondition: SpendingCondition;
+}
 
-    throw new Error('Authorization missing SpendingCondition');
-  }
+export function createStandardAuth(spendingCondition: SpendingCondition): StandardAuthorization {
+  return {
+    authType: AuthType.Standard,
+    spendingCondition,
+  };
+}
 
-  setFee(amount: IntegerType) {
-    switch (this.authType) {
+export function createSponsoredAuth(
+  spendingCondition: SpendingCondition,
+  sponsorSpendingCondition?: SpendingCondition
+): Authorization {
+  return {
+    authType: AuthType.Sponsored,
+    spendingCondition,
+    sponsorSpendingCondition: sponsorSpendingCondition
+      ? sponsorSpendingCondition
+      : createSingleSigSpendingCondition(AddressHashMode.SerializeP2PKH, '0'.repeat(66), 0, 0),
+  };
+}
+
+export function intoInitialSighashAuth(auth: Authorization): Authorization {
+  if (auth.spendingCondition) {
+    switch (auth.authType) {
       case AuthType.Standard:
-        this.spendingCondition!.fee = intToBigInt(amount, false);
-        break;
+        return createStandardAuth(clearCondition(auth.spendingCondition));
       case AuthType.Sponsored:
-        this.sponsorSpendingCondition!.fee = intToBigInt(amount, false);
-        break;
-    }
-  }
-
-  getFee(): bigint {
-    switch (this.authType) {
-      case AuthType.Standard:
-        return this.spendingCondition!.fee;
-      case AuthType.Sponsored:
-        return this.sponsorSpendingCondition!.fee;
+        return createSponsoredAuth(clearCondition(auth.spendingCondition), newInitialSigHash());
       default:
-        return BigInt(0);
+        throw new SigningError('Unexpected authorization type for signing');
     }
   }
 
-  setNonce(nonce: IntegerType) {
-    this.spendingCondition!.nonce = intToBigInt(nonce, false);
-  }
+  throw new Error('Authorization missing SpendingCondition');
+}
 
-  setSponsorNonce(nonce: IntegerType) {
-    this.sponsorSpendingCondition!.nonce = intToBigInt(nonce, false);
-  }
-
-  setSponsor(sponsorSpendingCondition: SpendingConditionOpts) {
-    this.sponsorSpendingCondition = {
-      ...sponsorSpendingCondition,
-      nonce: intToBigInt(sponsorSpendingCondition.nonce, false),
-      fee: intToBigInt(sponsorSpendingCondition.fee, false),
-    };
-  }
-
-  verifyOrigin(initialSigHash: string): string {
-    switch (this.authType) {
-      case AuthType.Standard:
-        return verify(this.spendingCondition!, initialSigHash, AuthType.Standard);
-      case AuthType.Sponsored:
-        return verify(this.spendingCondition!, initialSigHash, AuthType.Standard);
-      default:
-        throw new SigningError('Invalid origin auth type');
-    }
-  }
-
-  serialize(): Uint8Array {
-    const bufferArray: BufferArray = new BufferArray();
-    if (this.authType === undefined) {
-      throw new SerializationError('"authType" is undefined');
-    }
-    bufferArray.appendByte(this.authType);
-
-    switch (this.authType) {
-      case AuthType.Standard:
-        if (this.spendingCondition === undefined) {
-          throw new SerializationError('"spendingCondition" is undefined');
-        }
-        bufferArray.push(serializeSpendingCondition(this.spendingCondition));
-        break;
-      case AuthType.Sponsored:
-        if (this.spendingCondition === undefined) {
-          throw new SerializationError('"spendingCondition" is undefined');
-        }
-        if (this.sponsorSpendingCondition === undefined) {
-          throw new SerializationError('"spendingCondition" is undefined');
-        }
-        bufferArray.push(serializeSpendingCondition(this.spendingCondition));
-        bufferArray.push(serializeSpendingCondition(this.sponsorSpendingCondition));
-        break;
-      default:
-        throw new SerializationError(
-          `Unexpected transaction AuthType while serializing: ${JSON.stringify(this.authType)}`
-        );
-    }
-
-    return bufferArray.concatBuffer();
-  }
-
-  deserialize(bufferReader: BufferReader) {
-    this.authType = bufferReader.readUInt8Enum(AuthType, n => {
-      throw new DeserializationError(`Could not parse ${n} as AuthType`);
-    });
-
-    switch (this.authType) {
-      case AuthType.Standard:
-        this.spendingCondition = deserializeSpendingCondition(bufferReader);
-        break;
-      case AuthType.Sponsored:
-        this.spendingCondition = deserializeSpendingCondition(bufferReader);
-        this.sponsorSpendingCondition = deserializeSpendingCondition(bufferReader);
-        break;
-      // throw new DeserializationError('Not yet implemented: deserializing sponsored transactions');
-      default:
-        throw new DeserializationError(
-          `Unexpected transaction AuthType while deserializing: ${JSON.stringify(this.authType)}`
-        );
-    }
+export function verifyOrigin(auth: Authorization, initialSigHash: string): string {
+  switch (auth.authType) {
+    case AuthType.Standard:
+      return verify(auth.spendingCondition, initialSigHash, AuthType.Standard);
+    case AuthType.Sponsored:
+      return verify(auth.spendingCondition, initialSigHash, AuthType.Standard);
+    default:
+      throw new SigningError('Invalid origin auth type');
   }
 }
 
-export class StandardAuthorization extends Authorization {
-  constructor(spendingCondition: SpendingConditionOpts) {
-    super(AuthType.Standard, spendingCondition);
+export function setFee(auth: Authorization, amount: IntegerType): Authorization {
+  switch (auth.authType) {
+    case AuthType.Standard:
+      const spendingCondition = {
+        ...auth.spendingCondition,
+        fee: intToBigInt(amount, false),
+      };
+      return { ...auth, spendingCondition };
+    case AuthType.Sponsored:
+      const sponsorSpendingCondition = {
+        ...auth.sponsorSpendingCondition,
+        fee: intToBigInt(amount, false),
+      };
+      return { ...auth, sponsorSpendingCondition };
   }
 }
 
-const DEFAULT_SPONSOR_SPENDING_CONDITION: SpendingConditionOpts = {
-  hashMode: 0,
-  signer: '29cfc6376255a78451eeb4b129ed8eacffa2feef',
-  nonce: 0n,
-  fee: 0n,
-  keyEncoding: 0,
-  signature: {
-    type: 9,
-    data: '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-  },
-};
+export function getFee(auth: Authorization): bigint {
+  switch (auth.authType) {
+    case AuthType.Standard:
+      return auth.spendingCondition.fee;
+    case AuthType.Sponsored:
+      return auth.sponsorSpendingCondition.fee;
+  }
+}
 
-export class SponsoredAuthorization extends Authorization {
-  constructor(
-    originSpendingCondition: SpendingConditionOpts,
-    sponsorSpendingCondition?: SpendingConditionOpts
-  ) {
-    let sponsorSC = sponsorSpendingCondition;
-    if (!sponsorSC) sponsorSC = DEFAULT_SPONSOR_SPENDING_CONDITION;
-    super(AuthType.Sponsored, originSpendingCondition, sponsorSC);
+export function setNonce(auth: Authorization, nonce: IntegerType): Authorization {
+  const spendingCondition = {
+    ...auth.spendingCondition,
+    nonce: intToBigInt(nonce, false),
+  };
+
+  return {
+    ...auth,
+    spendingCondition,
+  };
+}
+
+export function setSponsorNonce(auth: SponsoredAuthorization, nonce: IntegerType): Authorization {
+  const sponsorSpendingCondition = {
+    ...auth.sponsorSpendingCondition,
+    nonce: intToBigInt(nonce, false),
+  };
+
+  return {
+    ...auth,
+    sponsorSpendingCondition,
+  };
+}
+
+export function setSponsor(
+  auth: SponsoredAuthorization,
+  sponsorSpendingCondition: SpendingConditionOpts
+): Authorization {
+  const sc = {
+    ...sponsorSpendingCondition,
+    nonce: intToBigInt(sponsorSpendingCondition.nonce, false),
+    fee: intToBigInt(sponsorSpendingCondition.fee, false),
+  };
+
+  return {
+    ...auth,
+    sponsorSpendingCondition: sc,
+  };
+}
+
+export function serializeAuthorization(auth: Authorization): Uint8Array {
+  const bufferArray: BufferArray = new BufferArray();
+  bufferArray.appendByte(auth.authType);
+
+  switch (auth.authType) {
+    case AuthType.Standard:
+      bufferArray.push(serializeSpendingCondition(auth.spendingCondition));
+      break;
+    case AuthType.Sponsored:
+      bufferArray.push(serializeSpendingCondition(auth.spendingCondition));
+      bufferArray.push(serializeSpendingCondition(auth.sponsorSpendingCondition));
+      break;
+  }
+
+  return bufferArray.concatBuffer();
+}
+
+export function deserializeAuthorization(bufferReader: BufferReader) {
+  const authType = bufferReader.readUInt8Enum(AuthType, n => {
+    throw new DeserializationError(`Could not parse ${n} as AuthType`);
+  });
+
+  let spendingCondition;
+  switch (authType) {
+    case AuthType.Standard:
+      spendingCondition = deserializeSpendingCondition(bufferReader);
+      return createStandardAuth(spendingCondition);
+    case AuthType.Sponsored:
+      spendingCondition = deserializeSpendingCondition(bufferReader);
+      const sponsorSpendingCondition = deserializeSpendingCondition(bufferReader);
+      return createSponsoredAuth(spendingCondition, sponsorSpendingCondition);
   }
 }
