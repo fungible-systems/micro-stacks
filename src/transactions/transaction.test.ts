@@ -7,6 +7,8 @@ import {
   createMultiSigSpendingCondition,
   MultiSigSpendingCondition,
   SponsoredAuthorization,
+  createStandardAuth,
+  createSponsoredAuth,
 } from './authorization';
 
 import { createTokenTransferPayload, TokenTransferPayload } from './payload';
@@ -58,7 +60,7 @@ describe('Single sig STX Token', function () {
     const secretKey = 'edf9aee84d9b7abc145504dde6726c64f369d37ee34ded868fabd876c26570bc01';
     const spendingCondition = createSingleSigSpendingCondition(addressHashMode, pubKey, nonce, fee);
     const authType = AuthType.Standard;
-    const authorization = new StandardAuthorization(spendingCondition);
+    const authorization = createStandardAuth(spendingCondition);
 
     const postCondition = createSTXPostCondition(recipient, FungibleConditionCode.GreaterEqual, 0);
 
@@ -134,7 +136,7 @@ describe('Single sig STX Token', function () {
     const secretKey = 'edf9aee84d9b7abc145504dde6726c64f369d37ee34ded868fabd876c26570bc01';
     const spendingCondition = createSingleSigSpendingCondition(addressHashMode, pubKey, nonce, fee);
     const authType = AuthType.Standard;
-    const authorization = new StandardAuthorization(spendingCondition);
+    const authorization = createStandardAuth(spendingCondition);
 
     const postCondition = createSTXPostCondition(recipient, FungibleConditionCode.GreaterEqual, 0);
 
@@ -209,7 +211,7 @@ describe('Multi sig STX Token', function () {
       fee
     );
     const authType = AuthType.Standard;
-    const originAuth = new StandardAuthorization(spendingCondition);
+    const originAuth = createStandardAuth(spendingCondition);
 
     const originAddress = originAuth.spendingCondition?.signer;
 
@@ -279,7 +281,7 @@ describe('Multi sig STX Token', function () {
       fee
     );
 
-    const originAuth = new StandardAuthorization(spendingCondition);
+    const originAuth = createStandardAuth(spendingCondition);
 
     const originAddress = originAuth.spendingCondition?.signer;
 
@@ -350,7 +352,7 @@ describe('Sponsored transactions', function () {
     );
 
     const authType = AuthType.Sponsored;
-    const authorization = new SponsoredAuthorization(spendingCondition, sponsorSpendingCondition);
+    const authorization = createSponsoredAuth(spendingCondition, sponsorSpendingCondition);
 
     const transaction = new StacksTransaction(transactionVersion, authorization, payload);
 
@@ -368,11 +370,11 @@ describe('Sponsored transactions', function () {
     expect(deserialized.auth.spendingCondition!.hashMode).toBe(addressHashMode);
     expect(deserialized.auth.spendingCondition!.nonce!.toString()).toBe(nonce.toString());
     expect(deserialized.auth.spendingCondition!.fee!.toString()).toBe(fee.toString());
-    expect(deserialized.auth.sponsorSpendingCondition!.hashMode).toBe(addressHashMode);
-    expect(deserialized.auth.sponsorSpendingCondition!.nonce!.toString()).toBe(
+    expect((deserialized.auth as SponsoredAuthorization).sponsorSpendingCondition!.hashMode).toBe(addressHashMode);
+    expect((deserialized.auth as SponsoredAuthorization).sponsorSpendingCondition!.nonce!.toString()).toBe(
       sponsorNonce.toString()
     );
-    expect(deserialized.auth.sponsorSpendingCondition!.fee!.toString()).toBe(fee.toString());
+    expect((deserialized.auth as SponsoredAuthorization).sponsorSpendingCondition!.fee!.toString()).toBe(fee.toString());
     expect(deserialized.anchorMode).toBe(anchorMode);
     expect(deserialized.postConditionMode).toBe(postConditionMode);
 

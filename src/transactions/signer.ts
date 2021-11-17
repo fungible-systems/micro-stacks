@@ -38,7 +38,7 @@ export class TransactionSigner {
           const signature = field.contents;
           const nextVerify = nextVerification(
             this.sigHash,
-            transaction.auth.authType!,
+            transaction.auth.authType,
             spendingCondition.fee,
             spendingCondition.nonce,
             PubKeyEncoding.Compressed, // always compressed for multisig
@@ -82,12 +82,15 @@ export class TransactionSigner {
       const spendingCondition = this.transaction.auth.spendingCondition;
       if (
         this.checkOversign &&
-        spendingCondition.fields.length >= spendingCondition.signaturesRequired
-      )
+        spendingCondition.fields.filter(
+          field => field.contents.type === StacksMessageType.MessageSignature
+        ).length >= spendingCondition.signaturesRequired
+      ) {
         throw new Error('Origin would have too many signatures');
+      }
     }
-    // nextSigHash
-    this.sigHash = await this.transaction.signNextOrigin(this.sigHash!, privateKey);
+
+    this.sigHash = await this.transaction.signNextOrigin(this.sigHash, privateKey);
   }
 
   appendOrigin(publicKey: StacksPublicKey) {
@@ -104,11 +107,10 @@ export class TransactionSigner {
   async signSponsor(privateKey: StacksPrivateKey) {
     if (this.transaction.auth === undefined)
       throw new SigningError('"transaction.auth" is undefined');
+    if (this.transaction.auth.authType !== AuthType.Sponsored)
+      throw new SigningError('"transaction.auth.authType" is not AuthType.Sponsored');
 
-    if (this.transaction.auth.sponsorSpendingCondition === undefined)
-      throw new SigningError('"transaction.auth.spendingCondition" is undefined');
-
-    this.sigHash = await this.transaction.signNextSponsor(this.sigHash!, privateKey);
+    this.sigHash = await this.transaction.signNextSponsor(this.sigHash, privateKey);
     this.originDone = true;
   }
 

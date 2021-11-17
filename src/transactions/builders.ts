@@ -59,6 +59,8 @@ import {
 import { createLPList, createStandardPrincipal, createContractPrincipal } from './types';
 import { parseReadOnlyResponse } from './common/utils';
 import { validateContractCall } from './contract-abi';
+import { createSponsoredAuth } from '.';
+import { createStandardAuth } from '.';
 
 /**
  * Lookup the nonce for an address from a core node
@@ -342,9 +344,9 @@ export async function makeUnsignedSTXTokenTransfer(
   }
 
   if (options.sponsored) {
-    authorization = new SponsoredAuthorization(spendingCondition);
+    authorization = createSponsoredAuth(spendingCondition);
   } else {
-    authorization = new StandardAuthorization(spendingCondition);
+    authorization = createStandardAuth(spendingCondition);
   }
 
   const postConditions: PostCondition[] = [];
@@ -546,9 +548,9 @@ export async function makeContractDeploy(
   );
 
   if (options.sponsored) {
-    authorization = new SponsoredAuthorization(spendingCondition);
+    authorization = createSponsoredAuth(spendingCondition);
   } else {
-    authorization = new StandardAuthorization(spendingCondition);
+    authorization = createStandardAuth(spendingCondition);
   }
 
   const postConditions: PostCondition[] = [];
@@ -759,9 +761,9 @@ export async function makeUnsignedContractCall(
   }
 
   if (options.sponsored) {
-    authorization = new SponsoredAuthorization(spendingCondition);
+    authorization = createSponsoredAuth(spendingCondition);
   } else {
-    authorization = new StandardAuthorization(spendingCondition);
+    authorization = createStandardAuth(spendingCondition);
   }
 
   const postConditions: PostCondition[] = [];
