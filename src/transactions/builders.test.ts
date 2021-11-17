@@ -20,15 +20,20 @@ import {
   makeUnsignedContractCall,
 } from './builders';
 
-import { deserializeTransaction } from './transaction';
+import { deserializeTransaction, StacksTransaction } from './transaction';
 
 import { createAssetInfo } from './types';
 
 import {
+  createSingleSigSpendingCondition,
+  createSponsoredAuth,
   createTransactionAuthField,
+  emptyMessageSignature,
   MultiSigSpendingCondition,
   nextSignature,
   SingleSigSpendingCondition,
+  SponsoredAuthorization,
+  StandardAuthorization,
 } from './authorization';
 
 import {
@@ -52,11 +57,11 @@ import {
   serializeCV,
   standardPrincipalCV,
 } from 'micro-stacks/clarity';
-import { BufferReader, bytesToHex } from 'micro-stacks/common';
+import { BufferReader, bytesToHex, TransactionVersion } from 'micro-stacks/common';
 import { StacksMainnet, StacksTestnet } from 'micro-stacks/network';
 import { PostCondition } from './postcondition';
 import { parseReadOnlyResponse } from './common/utils';
-import { TokenTransferPayload } from './payload';
+import { createTokenTransferPayload, TokenTransferPayload } from './payload';
 
 const KV_STORE_ABI: ClarityAbi = {
   functions: [
@@ -976,17 +981,66 @@ describe('tx builders', function () {
     const bufferReader = new BufferReader(sponsorSignedTxSerialized);
     const deserializedSponsorTx = deserializeTransaction(bufferReader);
 
+    // Create same sponsored transaction in steps to verify the signature contents with sponsorTransaction call
+    const payload = createTokenTransferPayload(recipient, amount, memo);
+    const baseSpendingCondition = createSingleSigSpendingCondition(
+      addressHashMode,
+      publicKeyToString(pubKeyfromPrivKey(senderKey)),
+      nonce,
+      fee
+    );
+    const sponsorSpendingCondition = createSingleSigSpendingCondition(
+      addressHashMode,
+      publicKeyToString(pubKeyfromPrivKey(sponsorKey)),
+      sponsorNonce,
+      sponsorFee
+    );
+    const authorization = createSponsoredAuth(baseSpendingCondition, sponsorSpendingCondition);
+    const transactionVersion = TransactionVersion.Mainnet;
+    const sponsoredTransaction = new StacksTransaction(transactionVersion, authorization, payload);
+
+    const signer = new TransactionSigner(sponsoredTransaction);
+    await signer.signOrigin(createStacksPrivateKey(senderKey));
+    await signer.signSponsor(createStacksPrivateKey(sponsorKey));
+
+    // Sponsored spending condition
+    const sponsoredTransactionClone = signer.getTxInComplete();
+    const sponsoredSpendingConditionClone = (sponsoredTransactionClone.auth as SponsoredAuthorization)
+      .sponsorSpendingCondition;
+    const sponsoredSpendingCondition = sponsoredSpendingConditionClone as SingleSigSpendingCondition;
+
+    // signer spending condition
+    const signerSpendingConditionClone = (sponsoredTransactionClone.auth as StandardAuthorization).spendingCondition;
+
+    const signerSpendingCondition = signerSpendingConditionClone as SingleSigSpendingCondition;
+
     expect(deserializedSponsorTx.auth.authType).toBe(authType);
 
     expect(deserializedSponsorTx.auth.spendingCondition!.hashMode).toBe(addressHashMode);
     expect(deserializedSponsorTx.auth.spendingCondition!.nonce!.toString()).toBe(nonce.toString());
     expect(deserializedSponsorTx.auth.spendingCondition!.fee!.toString()).toBe(fee.toString());
 
-    const deserializedSponsorSpendingCondition =
-      deserializedSponsorTx.auth.sponsorSpendingCondition!;
+    const deserializedSponsorSpendingCondition = (deserializedSponsorTx.auth as SponsoredAuthorization).sponsorSpendingCondition!;
     expect(deserializedSponsorSpendingCondition.hashMode).toBe(addressHashMode);
     expect(deserializedSponsorSpendingCondition.nonce!.toString()).toBe(sponsorNonce.toString());
     expect(deserializedSponsorSpendingCondition.fee!.toString()).toBe(sponsorFee.toString());
+
+    const spendingCondition = deserializedSponsorSpendingCondition as SingleSigSpendingCondition;
+    const emptySignature = emptyMessageSignature();
+    expect(spendingCondition.signature.data.toString()).not.toBe(emptySignature.data.toString());
+
+    // Verify sponsored signature contents
+    // test fails here:
+    expect(spendingCondition.signature.data.toString()).toBe(sponsoredSpendingCondition.signature.data.toString());
+    expect(spendingCondition.signature.type.toString()).toBe(sponsoredSpendingCondition.signature.type.toString());
+
+    const signerCreatedSpendingCondition = (sponsorSignedTx.auth as StandardAuthorization)
+      .spendingCondition;
+
+    const signersSpendingCondition = signerCreatedSpendingCondition as SingleSigSpendingCondition;
+    // Verify signers signature contents
+    expect(signersSpendingCondition.signature.data.toString()).toBe(signerSpendingCondition.signature.data.toString());
+    expect(signersSpendingCondition.signature.type.toString()).toBe(signerSpendingCondition.signature.type.toString());
 
     const deserializedPayload = deserializedSponsorTx.payload as TokenTransferPayload;
     expect(deserializedPayload.amount.toString()).toBe(amount.toString());
@@ -1045,8 +1099,7 @@ describe('tx builders', function () {
     expect(deserializedSponsorTx.auth.spendingCondition!.nonce!.toString()).toBe(nonce.toString());
     expect(deserializedSponsorTx.auth.spendingCondition!.fee!.toString()).toBe(fee.toString());
 
-    const deserializedSponsorSpendingCondition =
-      deserializedSponsorTx.auth.sponsorSpendingCondition!;
+    const deserializedSponsorSpendingCondition = (deserializedSponsorTx.auth as SponsoredAuthorization).sponsorSpendingCondition!;
     expect(deserializedSponsorSpendingCondition.hashMode).toBe(addressHashMode);
     expect(deserializedSponsorSpendingCondition.nonce!.toString()).toBe(sponsorNonce.toString());
     expect(deserializedSponsorSpendingCondition.fee!.toString()).toBe(sponsorFee.toString());
@@ -1098,8 +1151,7 @@ describe('tx builders', function () {
     expect(deserializedSponsorTx.auth.spendingCondition!.nonce!.toString()).toBe(nonce.toString());
     expect(deserializedSponsorTx.auth.spendingCondition!.fee!.toString()).toBe(fee.toString());
 
-    const deserializedSponsorSpendingCondition =
-      deserializedSponsorTx.auth.sponsorSpendingCondition!;
+    const deserializedSponsorSpendingCondition = (deserializedSponsorTx.auth as SponsoredAuthorization).sponsorSpendingCondition!;
     expect(deserializedSponsorSpendingCondition.nonce!.toString()).toBe(sponsorNonce.toString());
     expect(deserializedSponsorSpendingCondition.fee!.toString()).toBe(sponsorFee.toString());
 
@@ -1156,8 +1208,7 @@ describe('tx builders', function () {
     expect(deserializedSponsorTx.auth.spendingCondition!.nonce!.toString()).toBe(nonce.toString());
     expect(deserializedSponsorTx.auth.spendingCondition!.fee!.toString()).toBe(fee.toString());
 
-    const deserializedSponsorSpendingCondition =
-      deserializedSponsorTx.auth.sponsorSpendingCondition!;
+    const deserializedSponsorSpendingCondition = (deserializedSponsorTx.auth as SponsoredAuthorization).sponsorSpendingCondition!;
     expect(deserializedSponsorSpendingCondition.hashMode).toBe(addressHashMode);
     expect(deserializedSponsorSpendingCondition.nonce!.toString()).toBe(sponsorNonce.toString());
     expect(deserializedSponsorSpendingCondition.fee!.toString()).toBe(sponsorFee.toString());
@@ -1218,8 +1269,7 @@ describe('tx builders', function () {
     expect(deserializedSponsorTx.auth.spendingCondition!.nonce!.toString()).toBe(nonce.toString());
     expect(deserializedSponsorTx.auth.spendingCondition!.fee!.toString()).toBe(fee.toString());
 
-    const deserializedSponsorSpendingCondition =
-      deserializedSponsorTx.auth.sponsorSpendingCondition!;
+    const deserializedSponsorSpendingCondition = (deserializedSponsorTx.auth as SponsoredAuthorization).sponsorSpendingCondition!;
     expect(deserializedSponsorSpendingCondition.hashMode).toBe(addressHashMode);
     expect(deserializedSponsorSpendingCondition.nonce!.toString()).toBe(sponsorNonce.toString());
     expect(deserializedSponsorSpendingCondition.fee!.toString()).toBe(sponsorFee.toString());

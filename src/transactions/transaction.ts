@@ -20,10 +20,18 @@ import {
   Authorization,
   createMessageSignature,
   createTransactionAuthField,
+  intoInitialSighashAuth,
   isSingleSig,
   nextSignature,
+  setFee,
+  setNonce,
+  setSponsorNonce,
+  setSponsor,
   SingleSigSpendingCondition,
   SpendingConditionOpts,
+  verifyOrigin,
+  serializeAuthorization,
+  deserializeAuthorization,
 } from './authorization';
 
 import { txidFromData } from './common/utils';
@@ -94,13 +102,13 @@ export class StacksTransaction {
 
   signBegin() {
     const tx = cloneDeep(this);
-    tx.auth = tx.auth.intoInitialSighashAuth();
+    tx.auth = intoInitialSighashAuth(tx.auth);
     return tx.txid();
   }
 
   verifyBegin() {
     const tx = cloneDeep(this);
-    tx.auth = tx.auth.intoInitialSighashAuth();
+    tx.auth = intoInitialSighashAuth(tx.auth);
     return tx.txid();
   }
 
@@ -116,7 +124,7 @@ export class StacksTransaction {
   }
 
   verifyOrigin(): string {
-    return this.auth.verifyOrigin(this.verifyBegin());
+    return verifyOrigin(this.auth, this.verifyBegin());
   }
 
   async signNextOrigin(sigHash: string, privateKey: StacksPrivateKey): Promise<string> {
@@ -130,18 +138,17 @@ export class StacksTransaction {
   }
 
   async signNextSponsor(sigHash: string, privateKey: StacksPrivateKey): Promise<string> {
-    if (this.auth.sponsorSpendingCondition === undefined) {
-      throw new Error('"auth.spendingCondition" is undefined');
+    if (this.auth.authType === AuthType.Sponsored) {
+      const sig = await this.signAndAppend(
+        this.auth.sponsorSpendingCondition,
+        sigHash,
+        AuthType.Sponsored,
+        privateKey
+      );
+      return sig;
+    } else {
+      throw new Error('"auth.sponsorSpendingCondition" is undefined');
     }
-    if (this.auth.authType === undefined) {
-      throw new Error('"auth.authType" is undefined');
-    }
-    return this.signAndAppend(
-      this.auth.sponsorSpendingCondition,
-      sigHash,
-      AuthType.Sponsored,
-      privateKey
-    );
   }
 
   appendPubkey(publicKey: StacksPublicKey) {
@@ -197,7 +204,7 @@ export class StacksTransaction {
       throw new SigningError('Cannot sponsor sign a non-sponsored transaction');
     }
 
-    this.auth.setSponsor(sponsorSpendingCondition);
+    this.auth = setSponsor(this.auth, sponsorSpendingCondition);
   }
 
   /**
@@ -206,7 +213,7 @@ export class StacksTransaction {
    * @param fee - the fee amount in microstacks
    */
   setFee(amount: IntegerType) {
-    this.auth.setFee(amount);
+    this.auth = setFee(this.auth, amount);
   }
 
   /**
@@ -215,7 +222,7 @@ export class StacksTransaction {
    * @param nonce - the nonce value
    */
   setNonce(nonce: IntegerType) {
-    this.auth.setNonce(nonce);
+    this.auth = setNonce(this.auth, nonce);
   }
 
   /**
@@ -224,7 +231,11 @@ export class StacksTransaction {
    * @param nonce - the sponsor nonce value
    */
   setSponsorNonce(nonce: IntegerType) {
-    this.auth.setSponsorNonce(nonce);
+    if (this.auth.authType != AuthType.Sponsored) {
+      throw new SigningError('Cannot sponsor sign a non-sponsored transaction');
+    }
+
+    this.auth = setSponsorNonce(this.auth, nonce);
   }
 
   serialize(): Uint8Array {
@@ -250,7 +261,7 @@ export class StacksTransaction {
     const chainIdBuffer = new Uint8Array(4);
     writeUInt32BE(chainIdBuffer, this.chainId, 0);
     bufferArray.push(chainIdBuffer);
-    bufferArray.push(this.auth.serialize());
+    bufferArray.push(serializeAuthorization(this.auth));
     bufferArray.appendByte(this.anchorMode);
     bufferArray.appendByte(this.postConditionMode);
     bufferArray.push(serializeLPList(this.postConditions));
@@ -280,7 +291,7 @@ export function deserializeTransaction(data: BufferReader | Uint8Array | string)
     throw new Error(`Could not parse ${n} as TransactionVersion`);
   });
   const chainId = bufferReader.readUInt32BE();
-  const auth = Authorization.deserialize(bufferReader);
+  const auth = deserializeAuthorization(bufferReader);
 
   const anchorMode = bufferReader.readUInt8Enum(AnchorMode, n => {
     throw new Error(`Could not parse ${n} as AnchorMode`);
