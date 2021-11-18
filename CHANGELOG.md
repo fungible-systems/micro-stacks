@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.1.2
+
+### Patch Changes
+
+- [#40](https://github.com/fungible-systems/micro-stacks/pull/40) [`b3fedc9`](https://github.com/fungible-systems/micro-stacks/commit/b3fedc9c86bc00b368aa2472346380ef71b16455) Thanks [@aulneau](https://github.com/aulneau)! - Fixed an issue with `sponsorTransaction`, where the transaction's signature could not be validated when broadcasted.
+
 ## 0.1.1
 
 ### Patch Changes
