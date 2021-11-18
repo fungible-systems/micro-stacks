@@ -1,15 +1,9 @@
 export { StacksTransaction, deserializeTransaction } from './transaction';
 
 export type { SpendingCondition, MessageSignature } from './authorization';
+export type { Authorization, StandardAuthorization, SponsoredAuthorization } from './authorization';
 
-export {
-  Authorization,
-  StandardAuthorization,
-  SponsoredAuthorization,
-  createMessageSignature,
-  emptyMessageSignature,
-  isSingleSig,
-} from './authorization';
+export { createMessageSignature, emptyMessageSignature, isSingleSig } from './authorization';
 
 export {
   createFungiblePostCondition,
