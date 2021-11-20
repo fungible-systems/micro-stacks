@@ -42,6 +42,5 @@ const testnet: Network = {
 
 export const networks = {
   bitcoin,
-  regtest,
   testnet,
 };
