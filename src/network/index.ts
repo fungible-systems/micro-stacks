@@ -161,12 +161,3 @@ export class StacksMocknet extends StacksMainnet implements StacksNetwork {
     super(networkConfig);
   }
 }
-
-export class StacksRegtest extends StacksMainnet implements StacksNetwork {
-  version = TransactionVersion.Testnet;
-  chainId = ChainID.Testnet;
-
-  constructor(networkConfig: NetworkConfig = { url: HIRO_REGTEST_DEFAULT, fetcher: fetchPrivate }) {
-    super(networkConfig);
-  }
-}
