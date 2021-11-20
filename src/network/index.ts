@@ -3,7 +3,6 @@ import { ChainID, fetchPrivate, TransactionVersion } from 'micro-stacks/common';
 type Fetcher = (input: RequestInfo, init?: RequestInit) => Promise<Response>;
 
 export const HIRO_MAINNET_DEFAULT = 'https://stacks-node-api.mainnet.stacks.co';
-export const HIRO_REGTEST_DEFAULT = 'https://stacks-node-api.regtest.stacks.co';
 export const HIRO_TESTNET_DEFAULT = 'https://stacks-node-api.testnet.stacks.co';
 export const HIRO_MOCKNET_DEFAULT = 'http://localhost:3999';
 
