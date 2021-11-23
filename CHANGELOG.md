@@ -1,5 +1,13 @@
 # micro-stacks
 
+## 0.1.3
+
+### Patch Changes
+
+- [#42](https://github.com/fungible-systems/micro-stacks/pull/42) [`6e67723`](https://github.com/fungible-systems/micro-stacks/commit/6e67723342a7119d482320a8fa36d4436cff7b46) Thanks [@aviculturist](https://github.com/aviculturist)! - Removes the Regtest network settings as this node has been permanently deprecated
+
+* [`36a48de`](https://github.com/fungible-systems/micro-stacks/commit/36a48de1743d534af5c9d0bf1cf10ce92a4041ec) Thanks [@aulneau](https://github.com/aulneau)! - Exports `cvToTrueValue`.
+
 ## 0.1.2
 
 ### Patch Changes
