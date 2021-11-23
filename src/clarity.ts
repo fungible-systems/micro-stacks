@@ -14,6 +14,7 @@ export * from './clarity/abi';
 // clarity values
 export * from './clarity/clarity-value/cv-to-string';
 export * from './clarity/clarity-value/cv-to-value';
+export * from './clarity/clarity-value/cv-to-true-value';
 export * from './clarity/clarity-value/cv-to-json';
 export * from './clarity/clarity-value/hex';
 export * from './clarity/clarity-value/get-cv-type-string';
