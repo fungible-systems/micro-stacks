@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.1.5
+
+### Patch Changes
+
+- [#46](https://github.com/fungible-systems/micro-stacks/pull/46) [`57f27bc`](https://github.com/fungible-systems/micro-stacks/commit/57f27bcfcb05490877c37daaa0aeb0def63fa3a9) Thanks [@aulneau](https://github.com/aulneau)! - This updates our two dependencies on the noble packages to use the new `@noble` namespace versions.
+
 ## 0.1.4
 
 ### Patch Changes
