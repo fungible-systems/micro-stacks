@@ -1,5 +1,15 @@
 # micro-stacks
 
+## 0.1.4
+
+### Patch Changes
+
+- [#44](https://github.com/fungible-systems/micro-stacks/pull/44) [`843f48b`](https://github.com/fungible-systems/micro-stacks/commit/843f48b552d366518996a3dd7c15316ec8f2f539) Thanks [@aulneau](https://github.com/aulneau)! - This update makes two quality of life improvements to some of our clarity helper functions: `contractPrincipalCV` and the new `boolCV`.
+
+  With `contractPrincipalCV`, you can now pass only a `contract_id` (CONTRACT_ADDRESS.CONTRACT_NAME) and it will parse it automatically for you.
+
+  With the new `boolCV`, you can now pass a boolean value to it, and it will return the correct boolean clarity value. Previously we only had access to either a `trueCV` or `falseCV`.
+
 ## 0.1.3
 
 ### Patch Changes
