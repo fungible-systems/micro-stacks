@@ -1,5 +1,5 @@
-import { hmac } from 'noble-hashes/lib/hmac.js';
-import { sha512 } from 'noble-hashes/lib/sha512.js';
+import { hmac } from '@noble/hashes/lib/hmac.js';
+import { sha512 } from '@noble/hashes/lib/sha512.js';
 import { ensureUint8Array } from 'micro-stacks/common';
 
 export function hmacSha512(key: Uint8Array, ...messages: Uint8Array[]): Uint8Array {

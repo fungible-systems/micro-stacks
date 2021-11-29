@@ -1,4 +1,4 @@
-import { getPublicKey as getPublicKeyFromPrivate, verify, sign } from 'noble-secp256k1';
+import { getPublicKey as getPublicKeyFromPrivate, verify, sign } from '@noble/secp256k1';
 import { bytesToHex, arrayBufferToUint8, utf8ToBytes } from 'micro-stacks/common';
 import { hashSha256 } from 'micro-stacks/crypto-sha';
 

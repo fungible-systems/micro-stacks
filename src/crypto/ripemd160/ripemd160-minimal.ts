@@ -1,4 +1,4 @@
-import { ripemd160 as baseRipemd160 } from 'noble-hashes/lib/ripemd160.js';
+import { ripemd160 as baseRipemd160 } from '@noble/hashes/lib/ripemd160.js';
 import { ensureUint8Array } from 'micro-stacks/common';
 
 export default function ripemd160(message: Uint8Array): Uint8Array;

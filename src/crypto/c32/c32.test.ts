@@ -1,6 +1,6 @@
 import { sampleAddresses } from '../../../tests/mocks/sample-addresses';
 import { b58ToC32, c32ToB58, StacksNetworkVersion } from './index';
-import * as noble from 'noble-secp256k1';
+import * as noble from '@noble/secp256k1';
 import { getPublicKeyFromPrivate } from '@stacks/encryption';
 import { publicKeyToStxAddress } from 'micro-stacks/crypto';
 

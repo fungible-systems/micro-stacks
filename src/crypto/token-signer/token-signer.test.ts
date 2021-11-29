@@ -1,6 +1,6 @@
 import { decodeToken as _decodeToken, TokenVerifier as OldTokenVerifier } from 'jsontokens';
 import { TokenSigner } from './token-signer';
-import { getPublicKey, utils } from 'noble-secp256k1';
+import { getPublicKey, utils } from '@noble/secp256k1';
 import { bytesToHex, MissingParametersError } from 'micro-stacks/common';
 import { decodeToken } from 'micro-stacks/crypto';
 

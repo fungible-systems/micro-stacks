@@ -1,6 +1,6 @@
 import { decryptContent } from 'micro-stacks/crypto';
 import { bytesToHex } from 'micro-stacks/common';
-import { utils } from 'noble-secp256k1';
+import { utils } from '@noble/secp256k1';
 
 describe(decryptContent.name, () => {
   it('should throw when no private key passed', () => {
