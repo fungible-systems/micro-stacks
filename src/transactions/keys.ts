@@ -2,7 +2,7 @@ import { PubKeyEncoding } from './common/constants';
 
 import { leftPadHexToLength } from './common/utils';
 
-import { getPublicKey as nobleGetPublicKey, utils, Point, Signature, sign } from 'noble-secp256k1';
+import { getPublicKey as nobleGetPublicKey, utils, Point, Signature, sign } from '@noble/secp256k1';
 
 import { MessageSignature, createMessageSignature } from './authorization';
 

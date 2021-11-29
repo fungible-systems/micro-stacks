@@ -1,6 +1,6 @@
 import base64url from './base64url';
 import { hashSha256 } from 'micro-stacks/crypto-sha';
-import { sign } from 'noble-secp256k1';
+import { sign } from '@noble/secp256k1';
 import { derToJoseES256 } from './ecdsa-sig-formatter';
 import { Json, SignedToken } from './types';
 import { createSigningInput } from './create-signing-input';

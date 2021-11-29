@@ -1,4 +1,4 @@
-import { getPublicKey, utils } from 'noble-secp256k1';
+import { getPublicKey, utils } from '@noble/secp256k1';
 import { TokenSigner, TokenVerifier } from 'micro-stacks/crypto';
 import { bytesToHex } from 'micro-stacks/common';
 

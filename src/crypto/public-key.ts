@@ -1,7 +1,7 @@
-import { CURVE, Point } from 'noble-secp256k1';
+import { CURVE, Point } from '@noble/secp256k1';
 import { bytesToBigInt, bytesToHex, intToBytes } from 'micro-stacks/common';
 
-export { getPublicKey } from 'noble-secp256k1';
+export { getPublicKey } from '@noble/secp256k1';
 
 export const isCompressedPublicKey = (bytes: Uint8Array) => {
   const header = bytes[0];

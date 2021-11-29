@@ -1,4 +1,4 @@
-import { getSharedSecret } from 'noble-secp256k1';
+import { getSharedSecret } from '@noble/secp256k1';
 import { hexToBytes, base64ToBytes, concatByteArrays } from 'micro-stacks/common';
 import { aes256CbcDecrypt } from 'micro-stacks/crypto-aes';
 import { sharedSecretToKeys } from '../common/shared-secret';

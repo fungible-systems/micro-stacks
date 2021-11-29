@@ -1,6 +1,6 @@
 import { decryptECIES, encryptECIES } from 'micro-stacks/crypto';
 import { bytesToHex, utf8ToBytes } from 'micro-stacks/common';
-import * as noble from 'noble-secp256k1';
+import * as noble from '@noble/secp256k1';
 
 const privateKey = bytesToHex(noble.utils.randomPrivateKey());
 const publicKey = noble.getPublicKey(privateKey, true);

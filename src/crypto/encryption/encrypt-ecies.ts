@@ -1,4 +1,4 @@
-import { getPublicKey, getSharedSecret, utils } from 'noble-secp256k1';
+import { getPublicKey, getSharedSecret, utils } from '@noble/secp256k1';
 import { bytesToHex, bytesToBase64, concatByteArrays } from 'micro-stacks/common';
 import { getRandomBytes } from '../common/random-bytes';
 

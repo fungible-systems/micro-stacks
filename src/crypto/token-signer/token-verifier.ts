@@ -1,4 +1,4 @@
-import { verify } from 'noble-secp256k1';
+import { verify } from '@noble/secp256k1';
 import { base64ToBytes, bytesToHex, utf8ToBytes } from 'micro-stacks/common';
 import base64url from './base64url';
 import { joseToDerES256 } from './ecdsa-sig-formatter';

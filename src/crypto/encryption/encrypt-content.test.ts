@@ -4,7 +4,7 @@
 
 import { decryptContent, encryptContent, verifyECDSA } from 'micro-stacks/crypto';
 import { bytesToHex } from 'micro-stacks/common';
-import * as noble from 'noble-secp256k1';
+import * as noble from '@noble/secp256k1';
 import type { SignedCipherObject } from 'micro-stacks/crypto';
 import {
   encryptContent as legacy_encryptContent,
