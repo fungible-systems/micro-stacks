@@ -12,3 +12,4 @@ export interface FalseCV {
 
 export const trueCV = (): BooleanCV => ({ type: ClarityType.BoolTrue });
 export const falseCV = (): BooleanCV => ({ type: ClarityType.BoolFalse });
+export const boolCV = (value: boolean): BooleanCV => (value ? trueCV() : falseCV());

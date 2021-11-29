@@ -49,10 +49,25 @@ function standardPrincipalCVFromAddress(address: Address): StandardPrincipalCV {
   return { type: ClarityType.PrincipalStandard, address };
 }
 
-function contractPrincipalCV(addressString: string, contractName: string): ContractPrincipalCV {
-  const addr = createAddress(addressString);
+function _contractPrincipalCV(contractAddress: string, contractName: string): ContractPrincipalCV {
+  const addr = createAddress(contractAddress);
   const lengthPrefixedContractName = createLPString(contractName);
   return contractPrincipalCVFromAddress(addr, lengthPrefixedContractName);
+}
+
+function contractPrincipalCV(
+  /** pass either the contract_id or contract address */
+  addressOrContractId: string,
+  /** pass the contract name if the previous argument is only the address */
+  contractName?: string
+): ContractPrincipalCV {
+  if (addressOrContractId.includes('.')) {
+    const [address, name] = addressOrContractId.split('.');
+    return _contractPrincipalCV(address, name);
+  }
+  if (!contractName)
+    throw TypeError(`[micro-stacks] contractPrincipalCV requires contractName value`);
+  return _contractPrincipalCV(addressOrContractId, contractName);
 }
 
 function contractPrincipalCVFromAddress(
