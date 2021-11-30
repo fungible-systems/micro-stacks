@@ -41,10 +41,12 @@ export type ReadOnlyFunctionResponse =
  * Converts the response of a read-only function call into its Clarity Value
  * @param response - {@link ReadOnlyFunctionResponse}
  */
-export const parseReadOnlyResponse = (response: ReadOnlyFunctionResponse): ClarityValue => {
+export function parseReadOnlyResponse<T extends ClarityValue>(
+  response: ReadOnlyFunctionResponse
+): T {
   if (response.okay) {
     return hexToCV(response.result);
   } else {
     throw new Error(response.cause);
   }
-};
+}

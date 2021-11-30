@@ -7,13 +7,11 @@ import { PayloadType } from '../payload';
 import { publicKeyToStxAddress, StacksNetworkVersion } from 'micro-stacks/crypto';
 import { createSingleSigSpendingCondition } from '../authorization';
 import { TransactionSigner } from '../signer';
-import {
-  estimateContractDeploy,
-  estimateContractFunctionCall,
-  estimateTransfer,
-  getNonce,
-} from '../fetchers';
 import { SponsorOptionsOpts } from './types';
+import { getNonce } from '../fetchers/get-nonce';
+import { estimateTransfer } from '../fetchers/estimate-stx-transfer';
+import { estimateContractFunctionCall } from '../fetchers/estimate-contract-function-call';
+import { estimateContractDeploy } from '../fetchers/estimate-contract-deploy';
 
 /**
  * Constructs and signs a sponsored transaction as the sponsor

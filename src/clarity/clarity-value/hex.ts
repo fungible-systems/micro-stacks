@@ -15,6 +15,6 @@ export function cvToHex(cv: ClarityValue) {
  * Converts a hex encoded string to a clarity value
  * @param {string} hex - the hex encoded string with or without `0x` prefix
  */
-export function hexToCV(hex: string) {
-  return deserializeCV(hex);
+export function hexToCV<T extends ClarityValue>(hex: string) {
+  return deserializeCV(hex) as T;
 }

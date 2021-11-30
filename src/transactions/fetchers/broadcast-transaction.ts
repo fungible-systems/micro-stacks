@@ -2,6 +2,7 @@ import { bytesToHex, fetchPrivate } from 'micro-stacks/common';
 import { TxRejectedReason } from '../common/constants';
 import { StacksTransaction } from '../transaction';
 import { StacksNetwork } from 'micro-stacks/network';
+import { validateTxId } from '@stacks/transactions';
 
 export type TxBroadcastResultOk = string;
 export type TxBroadcastResultRejected = {
@@ -26,19 +27,15 @@ export async function broadcastTransaction(
   network: StacksNetwork,
   attachment?: Uint8Array
 ): Promise<TxBroadcastResult> {
-  const rawTx = transaction.serialize();
-  const url = network.getBroadcastApiUrl();
-
-  return broadcastRawTransaction(rawTx, url, attachment);
+  return broadcastRawTransaction(transaction.serialize(), network.getBroadcastApiUrl(), attachment);
 }
 
 /**
  * Broadcast the signed transaction to a core node
  *
- * @param {Buffer} rawTx - the raw serialized transaction buffer to broadcast
+ * @param {Uint8Array} rawTx - the raw serialized transaction buffer to broadcast
  * @param {string} url - the broadcast endpoint URL
- *
- * @param attachment
+ * @param {Uint8Array} attachment - optional attachment
  * @returns {Promise} that resolves to a response if the operation succeeds
  */
 export async function broadcastRawTransaction(
@@ -56,7 +53,6 @@ export async function broadcastRawTransaction(
         })
       : rawTx,
   };
-
   const response = await fetchPrivate(url, options);
   if (!response.ok) {
     try {
@@ -65,11 +61,14 @@ export async function broadcastRawTransaction(
       throw Error(`Failed to broadcast transaction: ${(e as Error).message}`);
     }
   }
-
   const text = await response.text();
-  try {
-    return JSON.parse(text) as TxBroadcastResult;
-  } catch (e) {
-    return text;
-  }
+  // Replace extra quotes around txid string
+  const txid = text.replace(/["]+/g, '');
+
+  if (validateTxId(txid))
+    return {
+      txid,
+    } as TxBroadcastResult;
+
+  throw new Error(text);
 }

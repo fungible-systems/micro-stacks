@@ -20,13 +20,14 @@ import {
 } from '../authorization';
 import { createLPList } from '../types';
 import { c32address, StacksNetworkVersion } from 'micro-stacks/crypto';
-import { estimateTransfer, getNonce } from '../fetchers';
 import {
   SignedMultiSigTokenTransferOptions,
   SignedTokenTransferOptions,
   UnsignedMultiSigTokenTransferOptions,
   UnsignedTokenTransferOptions,
 } from './types';
+import { getNonce } from '../fetchers/get-nonce';
+import { estimateTransfer } from '../fetchers/estimate-stx-transfer';
 
 /**
  * Generates an unsigned Stacks token transfer transaction
