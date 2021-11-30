@@ -1,30 +1,32 @@
 import { cvToValue } from './cv-to-value';
 import { ClarityType } from '../common/constants';
 import { getCVTypeString } from './get-cv-type-string';
-import { ClarityValue, ClarityValueNotResponse } from './types';
+import { ClarityValue } from './types';
 import { ResponseErrorCV, ResponseOkCV } from '../types/responseCV';
 
-interface ResponseErr {
+export interface CvToJsonResponseErr {
   type: string;
   value: any;
   success: false;
 }
 
-interface ResponseOk {
+export interface CvToJsonResponseOk {
   type: string;
   value: any;
   success: true;
 }
 
-interface CvObject {
+export interface CvToJsonCvObject {
   type: string;
   value: any;
 }
 
-export function cvToJSON(val: ResponseOkCV): ResponseOk;
-export function cvToJSON(val: ResponseErrorCV): ResponseErr;
-export function cvToJSON(val: ClarityValueNotResponse): CvObject;
-export function cvToJSON(val: ClarityValue): ResponseErr | ResponseOk | CvObject {
+export function cvToJSON(val: ResponseOkCV): CvToJsonResponseOk;
+export function cvToJSON(val: ResponseErrorCV): CvToJsonResponseErr;
+export function cvToJSON(val: ClarityValue): CvToJsonCvObject;
+export function cvToJSON(
+  val: ClarityValue
+): CvToJsonResponseErr | CvToJsonResponseOk | CvToJsonCvObject {
   const value = cvToValue(val, true);
   switch (val.type) {
     case ClarityType.ResponseErr:
