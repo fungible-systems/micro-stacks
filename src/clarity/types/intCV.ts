@@ -1,10 +1,12 @@
-import { ClarityType, CLARITY_INT_SIZE } from '../common/constants';
+import {
+  ClarityType,
+  CLARITY_INT_SIZE,
+  MAX_I128,
+  MIN_I128,
+  MIN_U128,
+  MAX_U128,
+} from '../common/constants';
 import { IntegerType, intToBigInt, intToBytes } from 'micro-stacks/common';
-
-const MAX_U128 = BigInt(2) ** BigInt(128) - BigInt(1);
-const MIN_U128 = BigInt(0);
-const MAX_I128 = BigInt(2) ** BigInt(127) - BigInt(1);
-const MIN_I128 = BigInt(-2) ** BigInt(127);
 
 interface IntCV {
   readonly type: ClarityType.Int;
