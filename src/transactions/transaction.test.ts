@@ -370,11 +370,15 @@ describe('Sponsored transactions', function () {
     expect(deserialized.auth.spendingCondition!.hashMode).toBe(addressHashMode);
     expect(deserialized.auth.spendingCondition!.nonce!.toString()).toBe(nonce.toString());
     expect(deserialized.auth.spendingCondition!.fee!.toString()).toBe(fee.toString());
-    expect((deserialized.auth as SponsoredAuthorization).sponsorSpendingCondition!.hashMode).toBe(addressHashMode);
-    expect((deserialized.auth as SponsoredAuthorization).sponsorSpendingCondition!.nonce!.toString()).toBe(
-      sponsorNonce.toString()
+    expect((deserialized.auth as SponsoredAuthorization).sponsorSpendingCondition!.hashMode).toBe(
+      addressHashMode
     );
-    expect((deserialized.auth as SponsoredAuthorization).sponsorSpendingCondition!.fee!.toString()).toBe(fee.toString());
+    expect(
+      (deserialized.auth as SponsoredAuthorization).sponsorSpendingCondition!.nonce!.toString()
+    ).toBe(sponsorNonce.toString());
+    expect(
+      (deserialized.auth as SponsoredAuthorization).sponsorSpendingCondition!.fee!.toString()
+    ).toBe(fee.toString());
     expect(deserialized.anchorMode).toBe(anchorMode);
     expect(deserialized.postConditionMode).toBe(postConditionMode);
 

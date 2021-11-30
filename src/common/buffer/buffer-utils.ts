@@ -116,9 +116,9 @@ export function readBuffer(buffer: Uint8Array, length?: number): Uint8Array {
   return buffer.slice(buffer.byteOffset, endPoint);
 }
 
-function createEnumChecker<T extends string, TEnumValue extends number>(
-  enumVariable: { [key in T]: TEnumValue }
-): (value: number) => value is TEnumValue {
+function createEnumChecker<T extends string, TEnumValue extends number>(enumVariable: {
+  [key in T]: TEnumValue;
+}): (value: number) => value is TEnumValue {
   // Create a set of valid enum number values.
   const enumValues = Object.values<number>(enumVariable).filter(v => typeof v === 'number');
   const enumValueSet = new Set<number>(enumValues);
