@@ -1,15 +1,24 @@
 export const MAX_STRING_LENGTH_BYTES = 128;
 export const CLARITY_INT_SIZE = 128;
+// clarity int values
+export const MAX_U128 = BigInt('0xffffffffffffffffffffffffffffffff'); // (2 ** 128 - 1)
+export const MIN_U128 = BigInt(0);
+export const MAX_I128 = BigInt('0x7fffffffffffffffffffffffffffffff'); // (2 ** 127 - 1)
+// no signed (negative) hex support in bigint constructor
+export const MIN_I128 = BigInt('-170141183460469231731687303715884105728'); // (-2 ** 127)
+
 export const COINBASE_BUFFER_LENGTH_BYTES = 32;
 export const RECOVERABLE_ECDSA_SIG_LENGTH_BYTES = 65;
 export const COMPRESSED_PUBKEY_LENGTH_BYTES = 32;
 export const UNCOMPRESSED_PUBKEY_LENGTH_BYTES = 64;
 export const MEMO_MAX_LENGTH_BYTES = 34;
+
 export enum PostConditionPrincipalID {
   Origin = 0x01,
   Standard = 0x02,
   Contract = 0x03,
 }
+
 /**
  * Type IDs corresponding to each of the Clarity value types as described here:
  * {@link https://github.com/blockstack/blockstack-core/blob/sip/sip-005/sip/sip-005-blocks-and-transactions.md#clarity-value-representation}
