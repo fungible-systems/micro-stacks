@@ -17,8 +17,9 @@ import {
 import { createLPList } from '../types';
 import { publicKeyToStxAddress, StacksNetworkVersion } from 'micro-stacks/crypto';
 import { TransactionSigner } from '../signer';
-import { estimateContractDeploy, getNonce } from '../fetchers';
 import { ContractDeployOptions } from './types';
+import { getNonce } from '../fetchers/get-nonce';
+import { estimateContractDeploy } from '../fetchers/estimate-contract-deploy';
 
 /**
  * Generates a Clarity smart contract deploy transaction

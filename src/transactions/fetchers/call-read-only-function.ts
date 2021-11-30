@@ -11,48 +11,47 @@ import { parseReadOnlyResponse } from '../common/utils';
  * @param  {String} functionName - name of the function to be called
  * @param  {[ClarityValue]} functionArgs - an array of Clarity values as arguments to the function call
  * @param  {StacksNetwork} network - the Stacks blockchain network this transaction is destined for
- * @param  {String} senderAddress - the c32check address of the sender
+ * @param  {String} senderAddress - the c32check address of the sender (can be left blank)
  */
 
 export interface ReadOnlyFunctionOptions {
   contractName: string;
   contractAddress: string;
   functionName: string;
-  functionArgs: ClarityValue[];
+  functionArgs: (string | ClarityValue)[];
   /** the network that the contract which contains the function is deployed to */
   network?: StacksNetwork;
-  /** address of the sender */
-  senderAddress: string;
+  /** address of the sender (can be left blank, will default to contract address) */
+  senderAddress?: string;
 }
 
 /**
  * Calls a read only function from a contract interface
  *
- * @param  {ReadOnlyFunctionOptions} readOnlyFunctionOptions - the options object
+ * @param  {ReadOnlyFunctionOptions} options - the options object
  *
  * Returns an object with a status bool (okay) and a result string that is a serialized clarity value in hex format.
  *
  * @return {ClarityValue}
  */
-export async function callReadOnlyFunction(
-  readOnlyFunctionOptions: ReadOnlyFunctionOptions
+export async function callReadOnlyFunction<T extends ClarityValue>(
+  options: ReadOnlyFunctionOptions
 ): Promise<ClarityValue> {
-  const defaultOptions = {
-    network: new StacksMainnet(),
-  };
+  const network = options.network || new StacksMainnet();
 
-  const options = Object.assign(defaultOptions, readOnlyFunctionOptions);
-
-  const { contractName, contractAddress, functionName, functionArgs, network, senderAddress } =
-    options;
+  const {
+    contractName,
+    contractAddress,
+    functionName,
+    functionArgs,
+    senderAddress = contractAddress,
+  } = options;
 
   const url = network.getReadOnlyFunctionCallApiUrl(contractAddress, contractName, functionName);
 
-  const args = functionArgs.map(arg => cvToHex(arg));
-
   const body = JSON.stringify({
     sender: senderAddress,
-    arguments: args,
+    arguments: functionArgs.map(arg => (typeof arg === 'string' ? arg : cvToHex(arg))),
   });
 
   const response = await fetchPrivate(url, {
@@ -73,6 +72,5 @@ export async function callReadOnlyFunction(
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  return response.json().then(responseJson => parseReadOnlyResponse(responseJson as any));
+  return parseReadOnlyResponse(await response.json()) as T;
 }

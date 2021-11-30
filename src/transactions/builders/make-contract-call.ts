@@ -22,13 +22,15 @@ import {
   publicKeyToString,
 } from '../keys';
 import { TransactionSigner } from '../signer';
-import { estimateContractFunctionCall, getAbi, getNonce } from '../fetchers';
 import {
   SignedContractCallOptions,
   SignedMultiSigContractCallOptions,
   UnsignedContractCallOptions,
   UnsignedMultiSigContractCallOptions,
 } from './types';
+import { getNonce } from '../fetchers/get-nonce';
+import { getAbi } from '../fetchers/get-abi';
+import { estimateContractFunctionCall } from '../fetchers/estimate-contract-function-call';
 
 /**
  * Generates an unsigned Clarity smart contract function call transaction

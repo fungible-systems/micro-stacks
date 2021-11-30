@@ -34,14 +34,6 @@ export { makeUnsignedSTXTokenTransfer } from './builders/make-stx-token-transfer
 export { broadcastRawTransaction } from './fetchers/broadcast-transaction';
 export { broadcastTransaction } from './fetchers/broadcast-transaction';
 
-export {
-  getAbi,
-  estimateTransfer,
-  getNonce,
-  estimateContractFunctionCall,
-  estimateContractDeploy,
-} from './fetchers';
-
 export type { StacksTransaction } from './transaction';
 export type { SpendingCondition, MessageSignature } from './authorization';
 export type { Authorization, StandardAuthorization, SponsoredAuthorization } from './authorization';
@@ -69,3 +61,8 @@ export type {
   TokenTransferOptions,
   SponsorOptionsOpts,
 } from './builders/types';
+export { getNonce } from './fetchers/get-nonce';
+export { estimateTransfer } from './fetchers/estimate-stx-transfer';
+export { getAbi } from './fetchers/get-abi';
+export { estimateContractFunctionCall } from './fetchers/estimate-contract-function-call';
+export { estimateContractDeploy } from './fetchers/estimate-contract-deploy';

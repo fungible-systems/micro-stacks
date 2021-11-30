@@ -64,7 +64,7 @@ import {
   TxBroadcastResultOk,
   TxBroadcastResultRejected,
 } from '../fetchers/broadcast-transaction';
-import { estimateTransfer, getNonce } from '../fetchers';
+import { estimateTransfer, getNonce } from 'micro-stacks/transactions';
 
 const KV_STORE_ABI: ClarityAbi = {
   functions: [
