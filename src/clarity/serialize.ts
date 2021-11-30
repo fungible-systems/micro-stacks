@@ -35,7 +35,7 @@ function serializeBoolCV(value: BooleanCV): Uint8Array {
   return Uint8Array.from([value.type]);
 }
 
-function serializeOptionalCV(cv: OptionalCV): Uint8Array {
+function serializeOptionalCV(cv: OptionalCV<ClarityValue>): Uint8Array {
   if (cv.type === ClarityType.OptionalNone) {
     return new Uint8Array([cv.type]);
   } else {

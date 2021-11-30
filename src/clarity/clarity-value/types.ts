@@ -8,9 +8,7 @@ import { ListCV } from '../types/listCV';
 import { TupleCV } from '../types/tupleCV';
 import { StringAsciiCV, StringUtf8CV } from '../types/stringCV';
 
-export type ClarityValueResponse = ResponseErrorCV | ResponseOkCV;
-
-export type ClarityValueNotResponse =
+export type ClarityValue =
   | BooleanCV
   | BufferCV
   | IntCV
@@ -25,5 +23,3 @@ export type ClarityValueNotResponse =
   | TupleCV
   | StringAsciiCV
   | StringUtf8CV;
-
-export type ClarityValue = ClarityValueNotResponse | ClarityValueResponse;

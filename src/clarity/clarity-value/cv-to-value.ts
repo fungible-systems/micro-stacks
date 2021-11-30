@@ -10,31 +10,31 @@ import { ClarityValue } from './types';
  * less than or equal to 53 bit length, otherwise string wrapped integers when larger than 53 bits.
  * If false, they are returned as js native `bigint`s which are _not_ JSON serializable.
  */
-export function cvToValue(val: ClarityValue, strictJsonCompat = false) {
+export function cvToValue<T = any>(val: ClarityValue, strictJsonCompat: boolean = false): T {
   switch (val.type) {
     case ClarityType.BoolTrue:
-      return true;
+      return true as unknown as T;
     case ClarityType.BoolFalse:
-      return false;
+      return false as unknown as T;
     case ClarityType.Int:
     case ClarityType.UInt:
-      if (strictJsonCompat) return val.value.toString();
-      return val.value;
+      if (strictJsonCompat) return val.value.toString() as unknown as T;
+      return val.value as unknown as T;
     case ClarityType.Buffer:
-      return `0x${bytesToHex(val.buffer)}`;
+      return `0x${bytesToHex(val.buffer)}` as unknown as T;
     case ClarityType.OptionalNone:
-      return null;
+      return null as unknown as T;
     case ClarityType.OptionalSome:
-      return cvToJSON(val.value);
+      return cvToJSON(val.value) as unknown as T;
     case ClarityType.ResponseErr:
-      return cvToJSON(val.value);
+      return cvToJSON(val.value) as unknown as T;
     case ClarityType.ResponseOk:
-      return cvToJSON(val.value);
+      return cvToJSON(val.value) as unknown as T;
     case ClarityType.PrincipalStandard:
     case ClarityType.PrincipalContract:
-      return principalToString(val);
+      return principalToString(val) as unknown as T;
     case ClarityType.List:
-      return val.list.map(v => cvToJSON(v));
+      return val.list.map(v => cvToJSON(v)) as unknown as T;
     case ClarityType.Tuple:
       const result: { [key: string]: any } = {};
       const arr = Object.keys(val.data).map(key => {
@@ -43,10 +43,10 @@ export function cvToValue(val: ClarityValue, strictJsonCompat = false) {
       arr.forEach(([key, value]) => {
         result[key as any] = value;
       });
-      return result;
+      return result as T;
     case ClarityType.StringASCII:
-      return val.data;
+      return val.data as unknown as T;
     case ClarityType.StringUTF8:
-      return val.data;
+      return val.data as unknown as T;
   }
 }
