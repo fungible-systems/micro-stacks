@@ -10,7 +10,7 @@ import { ClarityValue } from './types';
  * less than or equal to 53 bit length, otherwise string wrapped integers when larger than 53 bits.
  * If false, they are returned as js native `bigint`s which are _not_ JSON serializable.
  */
-export function cvToValue(val: ClarityValue, strictJsonCompat = false): any {
+export function cvToValue(val: ClarityValue, strictJsonCompat = false) {
   switch (val.type) {
     case ClarityType.BoolTrue:
       return true;
