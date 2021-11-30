@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/9</span>
+                <span class='fraction'>6/7</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.14% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/7</span>
+                <span class='fraction'>6/7</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -82,13 +82,7 @@
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">18x</span>
+<a name='L26'></a><a href='#L26'>26</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -99,57 +93,45 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ClarityType } from '../common/constants';
 import { ClarityValue } from '../clarity-value/types';
 &nbsp;
-type OptionalCV&lt;T extends ClarityValue = ClarityValue&gt; = NoneCV | SomeCV&lt;T&gt;;
+export type OptionalCV&lt;T extends ClarityValue&gt; = NoneCV | SomeCV&lt;T&gt;;
 &nbsp;
-interface NoneCV {
+export interface NoneCV {
   readonly type: ClarityType.OptionalNone;
 }
 &nbsp;
-interface SomeCV&lt;T extends ClarityValue = ClarityValue&gt; {
+export interface SomeCV&lt;T extends ClarityValue = ClarityValue&gt; {
   readonly type: ClarityType.OptionalSome;
   readonly value: T;
 }
 &nbsp;
-function noneCV(): NoneCV {
+export function noneCV(): NoneCV {
   return { type: ClarityType.OptionalNone };
 }
 &nbsp;
-function someCV&lt;T extends ClarityValue = ClarityValue&gt;(value: T): OptionalCV&lt;T&gt; {
+export function someCV&lt;T extends ClarityValue = ClarityValue&gt;(value: T): OptionalCV&lt;T&gt; {
   return { type: ClarityType.OptionalSome, value };
 }
 &nbsp;
-function <span class="fstat-no" title="function not covered" >optionalCVOf&lt;</span>T extends ClarityValue = ClarityValue&gt;(value?: T): OptionalCV&lt;T&gt; {
-<span class="cstat-no" title="statement not covered" >  if (value) {</span>
-<span class="cstat-no" title="statement not covered" >    return someCV(value);</span>
-  } else {
-<span class="cstat-no" title="statement not covered" >    return noneCV();</span>
-  }
+export function <span class="fstat-no" title="function not covered" >optionalCVOf&lt;</span>T extends ClarityValue = ClarityValue&gt;(value?: T): OptionalCV&lt;T&gt; {
+<span class="cstat-no" title="statement not covered" >  return value ? someCV(value) : noneCV();</span>
 }
-&nbsp;
-export { OptionalCV, NoneCV, SomeCV, noneCV, someCV, optionalCVOf };
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -157,7 +139,7 @@ export { OptionalCV, NoneCV, SomeCV, noneCV, someCV, optionalCVOf };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Nov 29 2021 15:26:01 GMT+0000 (Coordinated Universal Time)
+                at Tue Nov 30 2021 18:49:25 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>
