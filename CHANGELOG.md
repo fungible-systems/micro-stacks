@@ -1,5 +1,13 @@
 # micro-stacks
 
+## 0.1.6
+
+### Patch Changes
+
+- [#48](https://github.com/fungible-systems/micro-stacks/pull/48) [`dad0118`](https://github.com/fungible-systems/micro-stacks/commit/dad0118e07261f6c97ba9bf8b43ba6f523cc5112) Thanks [@aulneau](https://github.com/aulneau)! - This update adds a couple helper functions to `micro-stacks/clarity`: `hexToValue` and `hexToCvValue`.
+
+* [#48](https://github.com/fungible-systems/micro-stacks/pull/48) [`866fbfc`](https://github.com/fungible-systems/micro-stacks/commit/866fbfc0e276b071293547616c2a40c57366b9aa) Thanks [@aulneau](https://github.com/aulneau)! - This updates the math used for some default clarity value limits related to ints, this should fix any BigInt bugs that users might have when using micro-stacks/clarity. Additionally, the code for the micro-stacks/transactions lib has been cleaned up and better organized.
+
 ## 0.1.5
 
 ### Patch Changes
