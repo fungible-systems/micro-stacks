@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.1.7
+
+### Patch Changes
+
+- [#50](https://github.com/fungible-systems/micro-stacks/pull/50) [`ee6ecb9`](https://github.com/fungible-systems/micro-stacks/commit/ee6ecb94aee7ac27f7204ba9142d2ee0f2aef4e9) Thanks [@aulneau](https://github.com/aulneau)! - This removes an accidental inclusion of a dependency that is not needed.
+
 ## 0.1.6
 
 ### Patch Changes
