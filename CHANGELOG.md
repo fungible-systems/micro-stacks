@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.1.8
+
+### Patch Changes
+
+- [#52](https://github.com/fungible-systems/micro-stacks/pull/52) [`0bbb167`](https://github.com/fungible-systems/micro-stacks/commit/0bbb1673bea3c06d8d3b9657de75c214c5beea72) Thanks [@aulneau](https://github.com/aulneau)! - Updates the @noble/hashes dep to its latest version (fixes some ESM compat issues)
+
 ## 0.1.7
 
 ### Patch Changes
