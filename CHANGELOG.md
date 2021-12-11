@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.1.9
+
+### Patch Changes
+
+- [#54](https://github.com/fungible-systems/micro-stacks/pull/54) [`b062e33`](https://github.com/fungible-systems/micro-stacks/commit/b062e3308884353f1bd5894eb693387804835d8d) Thanks [@aulneau](https://github.com/aulneau)! - Updates `@noble` deps again :)
+
 ## 0.1.8
 
 ### Patch Changes
