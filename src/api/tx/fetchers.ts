@@ -11,7 +11,7 @@ import { fetchJson, generateUrl, txEndpoint, txMempoolEndpoint, validateTxTypes 
 /**
  * Get transactions list
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_transaction_list
+ * @see https://docs.micro-stacks.dev/modules/core/api/transactions#fetchtransactionslist
  */
 
 export async function fetchTransactionsList({
@@ -31,7 +31,7 @@ export async function fetchTransactionsList({
 /**
  * Get mempool transactions list
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_mempool_transaction_list
+ * @see https://docs.micro-stacks.dev/modules/core/api/transactions#fetchmempooltransactionslist
  */
 
 export async function fetchMempoolTransactionsList({
@@ -55,7 +55,7 @@ export async function fetchMempoolTransactionsList({
 /**
  * Get dropped mempool transactions list
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_dropped_mempool_transaction_list
+ * @see https://docs.micro-stacks.dev/modules/core/api/transactions#fetchdroppedmempooltransactionslist
  */
 
 export async function fetchDroppedMempoolTransactionsList({ limit, offset, url }: BaseListParams) {
@@ -69,7 +69,7 @@ export async function fetchDroppedMempoolTransactionsList({ limit, offset, url }
 /**
  * Get transaction by txid
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_transaction_by_id
+ * @see https://docs.micro-stacks.dev/modules/core/api/transactions#fetchtransaction
  */
 export async function fetchTransaction({
   txid,
@@ -87,7 +87,7 @@ export async function fetchTransaction({
 /**
  * Get raw transaction by id
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_raw_transaction_by_id
+ * @see https://docs.micro-stacks.dev/modules/core/api/transactions#fetchrawtransaction
  */
 export async function fetchRawTransaction({ txid, url }: { txid: string; url: string }) {
   const path = `${txEndpoint(url)}/${txid}/raw`;
@@ -97,7 +97,7 @@ export async function fetchRawTransaction({ txid, url }: { txid: string; url: st
 /**
  * Get transactions in a block by hash
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_transactions_by_block_hash
+ * @see https://docs.micro-stacks.dev/modules/core/api/transactions#fetchtransactionsbyblockhash
  */
 export async function fetchTransactionsByBlockHash({
   block_hash,
@@ -114,7 +114,7 @@ export async function fetchTransactionsByBlockHash({
 /**
  * Get transactions in a block by height
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_transactions_by_block_height
+ * @see https://docs.micro-stacks.dev/modules/core/api/transactions#fetchtransactionsbyblockheight
  */
 export async function fetchTransactionsByBlockHeight({
   block_height,

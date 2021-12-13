@@ -9,7 +9,7 @@ import { fetchJson, generateUrl, microblockEndpoint } from '../utils';
 /**
  * Get recent microblocks
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_microblock_list
+ * @see https://docs.micro-stacks.dev/modules/core/api/microblocks#fetchmicroblocks
  */
 
 export async function fetchMicroblocks({ url, limit, offset }: BaseListParams) {
@@ -23,7 +23,7 @@ export async function fetchMicroblocks({ url, limit, offset }: BaseListParams) {
 /**
  * Get microblock
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_microblock_by_hash
+ * @see https://docs.micro-stacks.dev/modules/core/api/microblocks#fetchmicroblock
  */
 
 export async function fetchMicroblock({ url, hash }: BaseListParams & { hash: string }) {
@@ -34,7 +34,7 @@ export async function fetchMicroblock({ url, hash }: BaseListParams & { hash: st
 /**
  * Get the list of current transactions that belong to unanchored microblocks
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_unanchored_txs
+ * @see https://docs.micro-stacks.dev/modules/core/api/microblocks#fetchmicroblocksunanchoredtransactions
  */
 
 export async function fetchMicroblocksUnanchoredTransactions({ url }: BaseListParams) {

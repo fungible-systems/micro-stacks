@@ -5,7 +5,7 @@ import { fetchJson, generateUrl, blockEndpoint } from '../utils';
 /**
  * Get recent blocks
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_block_list
+ * @see https://docs.micro-stacks.dev/modules/core/api/blocks#fetchblocks
  */
 
 export async function fetchBlocks({ url, limit, offset }: BaseListParams) {
@@ -19,7 +19,7 @@ export async function fetchBlocks({ url, limit, offset }: BaseListParams) {
 /**
  * Get a specific block by hash
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_block_by_hash
+ * @see https://docs.micro-stacks.dev/modules/core/api/blocks#fetchblock
  */
 
 export async function fetchBlock({ url, hash }: BaseListParams & { hash: string }) {
@@ -30,7 +30,7 @@ export async function fetchBlock({ url, hash }: BaseListParams & { hash: string 
 /**
  * Get a specific block by height
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_block_by_height
+ * @see https://docs.micro-stacks.dev/modules/core/api/blocks#fetchblockbyheight
  */
 
 export async function fetchBlockByHeight({ url, height }: BaseListParams & { height: number }) {
@@ -41,7 +41,7 @@ export async function fetchBlockByHeight({ url, height }: BaseListParams & { hei
 /**
  * Get a specific block by burnchain block hash
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_block_by_burn_block_hash
+ * @see https://docs.micro-stacks.dev/modules/core/api/blocks#fetchblockbyburnblockhash
  */
 
 export async function fetchBlockByBurnBlockHash({
@@ -55,7 +55,7 @@ export async function fetchBlockByBurnBlockHash({
 /**
  * Get a specific block by burn chain height
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_block_by_burn_block_height
+ * @see https://docs.micro-stacks.dev/modules/core/api/blocks#fetchblockbyburnblockheight
  */
 
 export async function fetchBlockByBurnBlockHeight({

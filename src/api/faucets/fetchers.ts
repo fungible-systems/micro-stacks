@@ -6,7 +6,7 @@ import { fetchJsonPost, generateUrl, stxFaucetEndpoint, btcFaucetEndpoint } from
 /**
  * Get STX tokens
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/run_faucet_stx
+ * @see https://docs.micro-stacks.dev/modules/core/api/faucets#fetchgetstxtokens
  */
 
 export async function fetchGetStxTokens({
@@ -22,7 +22,7 @@ export async function fetchGetStxTokens({
 /**
  * Get BTC tokens
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/run_faucet_btc
+ * @see https://docs.micro-stacks.dev/modules/core/api/faucets#fetchgetbtctokens
  */
 
 export async function fetchGetBtcTokens({ url, address }: BaseListParams & { address: string }) {

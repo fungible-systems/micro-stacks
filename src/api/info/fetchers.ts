@@ -33,7 +33,7 @@ import {
 /**
  * Get Core API information
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_core_api_info
+ * @see https://docs.micro-stacks.dev/modules/core/api/info#fetchcoreapiinfo
  */
 
 export async function fetchCoreApiInfo({ url }: BaseListParams) {
@@ -44,7 +44,7 @@ export async function fetchCoreApiInfo({ url }: BaseListParams) {
 /**
  * Get Blockchain API status
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_status
+ * @see https://docs.micro-stacks.dev/modules/core/api/info#fetchstatus
  */
 
 export async function fetchStatus({ url }: BaseListParams) {
@@ -55,7 +55,7 @@ export async function fetchStatus({ url }: BaseListParams) {
 /**
  * Get the network target block time
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_network_block_times
+ * @see https://docs.micro-stacks.dev/modules/core/api/info#fetchnetworkblocktimes
  */
 
 export async function fetchNetworkBlockTimes({ url }: BaseListParams) {
@@ -66,7 +66,7 @@ export async function fetchNetworkBlockTimes({ url }: BaseListParams) {
 /**
  * Get a given network's target block time
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_network_block_time_by_network
+ * @see https://docs.micro-stacks.dev/modules/core/api/info#fetchnetworkblocktime
  */
 
 export async function fetchNetworkBlockTime({
@@ -80,7 +80,7 @@ export async function fetchNetworkBlockTime({
 /**
  * Get total and unlocked STX supply
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_stx_supply
+ * @see https://docs.micro-stacks.dev/modules/core/api/info#fetchstxsupply
  */
 
 export async function fetchStxSupply({ url, height }: WithHeight<BaseListParams>) {
@@ -91,7 +91,7 @@ export async function fetchStxSupply({ url, height }: WithHeight<BaseListParams>
 /**
  * Get total STX supply in plain text format
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_stx_supply_total_supply_plain
+ * @see https://docs.micro-stacks.dev/modules/core/api/info#fetchstxsupplyplain
  */
 
 export async function fetchStxSupplyPlain({ url }: BaseListParams) {
@@ -102,7 +102,7 @@ export async function fetchStxSupplyPlain({ url }: BaseListParams) {
 /**
  * Get circulating STX supply in plain text format
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_stx_supply_circulating_plain
+ * @see https://docs.micro-stacks.dev/modules/core/api/info#fetchstxsupplycirculatingplain
  */
 
 export async function fetchStxSupplyCirculatingPlain({ url }: BaseListParams) {
@@ -113,7 +113,7 @@ export async function fetchStxSupplyCirculatingPlain({ url }: BaseListParams) {
 /**
  * Get total and unlocked STX supply (results formatted the same as the legacy 1.0 API)
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_total_stx_supply_legacy_format
+ * @see https://docs.micro-stacks.dev/modules/core/api/info#fetchstxsupplylegacyformat
  */
 
 export async function fetchStxSupplyLegacyFormat({ url, height }: WithHeight<BaseListParams>) {
@@ -124,7 +124,7 @@ export async function fetchStxSupplyLegacyFormat({ url, height }: WithHeight<Bas
 /**
  * Get PoX details
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_pox_info
+ * @see https://docs.micro-stacks.dev/modules/core/api/info#fetchpox
  */
 
 export async function fetchPox({ url }: BaseListParams) {

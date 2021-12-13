@@ -15,7 +15,7 @@ import { fetchJson, generateUrl, v1Endpoint, v2Endpoint } from '../utils';
 /**
  * Get the price of a namespace. The amount given will be in the smallest possible units of the currency.
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_namespace_price
+ * @see https://docs.micro-stacks.dev/modules/core/api/bns#fetchnamespaceprice
  */
 
 export async function fetchNamespacePrice({ url, tld }: BaseListParams & { tld: string }) {
@@ -26,7 +26,7 @@ export async function fetchNamespacePrice({ url, tld }: BaseListParams & { tld: 
 /**
  * Get the price of a name. The amount given will be in the smallest possible units of the currency.
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_name_price
+ * @see https://docs.micro-stacks.dev/modules/core/api/bns#fetchnameprice
  */
 
 export async function fetchNamePrice({ url, name }: BaseListParams & { name: string }) {
@@ -37,7 +37,7 @@ export async function fetchNamePrice({ url, name }: BaseListParams & { name: str
 /**
  * Fetch a list of all namespaces known to the node.
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_all_namespaces
+ * @see https://docs.micro-stacks.dev/modules/core/api/bns#fetchnamespaces
  */
 
 export async function fetchNamespaces({ url }: BaseListParams) {
@@ -48,7 +48,7 @@ export async function fetchNamespaces({ url }: BaseListParams) {
 /**
  * Fetch a list of names from the namespace.
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_namespace_names
+ * @see https://docs.micro-stacks.dev/modules/core/api/bns#fetchnamesfromnamespaces
  */
 
 export async function fetchNamesFromNamespaces({ url, tld }: BaseListParams & { tld: string }) {
@@ -60,7 +60,7 @@ export async function fetchNamesFromNamespaces({ url, tld }: BaseListParams & { 
 /**
  * Fetch a list of all names known to the node.
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_all_names
+ * @see https://docs.micro-stacks.dev/modules/core/api/bns#fetchnames
  */
 
 export async function fetchNames({ url, page }: BaseListParams & { page: number }) {
@@ -72,7 +72,7 @@ export async function fetchNames({ url, page }: BaseListParams & { page: number 
 /**
  * Get Name Details
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_name_info
+ * @see https://docs.micro-stacks.dev/modules/core/api/bns#fetchname
  */
 
 export async function fetchName({ url, name }: BaseListParams & { name: string }) {
@@ -83,7 +83,7 @@ export async function fetchName({ url, name }: BaseListParams & { name: string }
 /**
  * Get a history of all blockchain records of a registered name.
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_name_history
+ * @see https://docs.micro-stacks.dev/modules/core/api/bns#fetchnamehistory
  */
 
 export async function fetchNameHistory({ url, name }: BaseListParams & { name: string }) {
@@ -94,7 +94,7 @@ export async function fetchNameHistory({ url, name }: BaseListParams & { name: s
 /**
  * Fetch Zone File
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/fetch_zone_file
+ * @see https://docs.micro-stacks.dev/modules/core/api/bns#fetchzonefile
  */
 
 export async function fetchZoneFile({ url, name }: BaseListParams & { name: string }) {
@@ -105,7 +105,7 @@ export async function fetchZoneFile({ url, name }: BaseListParams & { name: stri
 /**
  * Get Historical Zone File
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_historical_zone_file
+ * @see https://docs.micro-stacks.dev/modules/core/api/bns#fetchhistoricalzonefile
  */
 
 export async function fetchHistoricalZoneFile({
@@ -120,7 +120,7 @@ export async function fetchHistoricalZoneFile({
 /**
  * Retrieves a list of names owned by the address provided.
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_names_owned_by_address
+ * @see https://docs.micro-stacks.dev/modules/core/api/bns#fetchnamesbyaddress
  */
 
 export async function fetchNamesByAddress({
@@ -135,7 +135,7 @@ export async function fetchNamesByAddress({
 /**
  * Fetch a list of all subdomains known to the node.
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_all_subdomains
+ * @see https://docs.micro-stacks.dev/modules/core/api/bns#fetchallsubdomains
  */
 
 export async function fetchAllSubdomains({ url, page }: BaseListParams & { page: number }) {
@@ -146,7 +146,7 @@ export async function fetchAllSubdomains({ url, page }: BaseListParams & { page:
 /**
  * Get Subdomain at Transaction
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_subdomain_at_transaction
+ * @see https://docs.micro-stacks.dev/modules/core/api/bns#fetchsubdomainattransaction
  */
 
 export async function fetchSubdomainAtTransaction({

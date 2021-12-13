@@ -25,7 +25,7 @@ import { ReadOnlyFunctionArgsToJSON } from './utils';
 /**
  * Get contract info using the contract ID
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_contract_by_id
+ * @see https://docs.micro-stacks.dev/modules/core/api/smart-contracts#fetchcontractbyid
  */
 
 export async function fetchContractById({
@@ -40,7 +40,7 @@ export async function fetchContractById({
 /**
  * Get contract events using a contract ID
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_contract_events_by_id
+ * @see https://docs.micro-stacks.dev/modules/core/api/smart-contracts#fetchcontracteventsbyid
  */
 
 export async function fetchContractEventsById({
@@ -69,7 +69,7 @@ export async function fetchContractEventsById({
 /**
  * Get contract interface using a contract_address and contract name
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_contract_interface
+ * @see https://docs.micro-stacks.dev/modules/core/api/smart-contracts#fetchcontractinterface
  */
 
 export async function fetchContractInterface({
@@ -90,7 +90,7 @@ export async function fetchContractInterface({
 /**
  * Get specific data-map inside a contract
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_contract_data_map_entry
+ * @see https://docs.micro-stacks.dev/modules/core/api/smart-contracts#fetchcontractdatamapentry
  */
 export async function fetchContractDataMapEntry({
   url,
@@ -119,7 +119,7 @@ export async function fetchContractDataMapEntry({
 /**
  * Get contract source
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_contract_source
+ * @see https://docs.micro-stacks.dev/modules/core/api/smart-contracts#fetchcontractsource
  */
 
 export async function fetchContractSource({
@@ -147,7 +147,7 @@ export async function fetchContractSource({
 /**
  * Call a read-only public function on a given smart contract.
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#tag/fee_rate
+ * @see https://docs.micro-stacks.dev/modules/core/api/smart-contracts#fetchreadonlyfunction
  */
 export async function fetchReadOnlyFunction<T>({
   contractAddress,
