@@ -2,8 +2,8 @@ import { getCryptoLib } from 'micro-stacks/crypto-aes';
 import { ensureUint8Array, utf8ToBytes } from 'micro-stacks/common';
 import { NodeCryptoPbkdf2 } from './node';
 import { WebCryptoPbkdf2 } from './web';
-import { pbkdf2Async } from '@noble/hashes/lib/pbkdf2.js';
-import { sha512 } from '@noble/hashes/lib/sha512.js';
+import { pbkdf2Async } from '@noble/hashes/lib/pbkdf2';
+import { sha512 } from '@noble/hashes/lib/sha512';
 
 import type { Pbkdf2, Pbkdf2Digests } from './types';
 
