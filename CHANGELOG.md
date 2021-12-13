@@ -1,5 +1,13 @@
 # micro-stacks
 
+## 0.1.10
+
+### Patch Changes
+
+- [#57](https://github.com/fungible-systems/micro-stacks/pull/57) [`9ffa8b5`](https://github.com/fungible-systems/micro-stacks/commit/9ffa8b5662abe7261ee7d7b9c68d728643bcd4da) Thanks [@aulneau](https://github.com/aulneau)! - Fixes import paths for `@noble/hashes` package
+
+* [#56](https://github.com/fungible-systems/micro-stacks/pull/56) [`09874e3`](https://github.com/fungible-systems/micro-stacks/commit/09874e3a26f6beff3062a2d2408823d7bba81c16) Thanks [@aviculturist](https://github.com/aviculturist)! - This update adds support for the 'unanchored' param to accounts fetchers, and fixes the see docs links to point to the new micro-stacks docs site https://docs.micro-stacks.dev
+
 ## 0.1.9
 
 ### Patch Changes
