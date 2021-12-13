@@ -14,68 +14,74 @@ type WithHeight<T> = T & {
   height?: number;
 };
 
-// @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_account_balance
+// @see https://docs.micro-stacks.dev/modules/core/api/accounts#fetchaccountbalances
 export async function fetchAccountBalances({ url, principal }: AccountBase) {
   const path = `${addressEndpoint(url)}/${principal}/balances`;
   return fetchJson<AddressBalanceResponse>(path);
 }
 
-// @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_account_stx_balance
+// @see https://docs.micro-stacks.dev/modules/core/api/accounts#fetchaccountstxbalance
 export async function fetchAccountStxBalance({ url, principal }: AccountBase) {
   const path = `${addressEndpoint(url)}/${principal}/stx`;
   return fetchJson<AddressStxBalanceResponse>(path);
 }
 
-// @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_account_transactions
+// @see https://docs.micro-stacks.dev/modules/core/api/accounts#fetchaccounttransactions
 export async function fetchAccountTransactions({
   url,
   principal,
   limit,
   offset = 0,
   height,
+  unanchored,
 }: WithHeight<AccountListOptions>) {
   const basePath = `${addressEndpoint(url)}/${principal}/transactions`;
   const path = generateUrl(basePath, {
     limit,
     offset,
     height,
+    unanchored,
   });
   return fetchJson<AddressTransactionsListResponse>(path);
 }
 
-// @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_account_transactions_with_transfers
+// @see https://docs.micro-stacks.dev/modules/core/api/accounts#fetchaccounttransactionswithtransfers
 export async function fetchAccountTransactionsWithTransfers({
   url,
   principal,
   limit,
   offset = 0,
   height,
+  unanchored,
 }: WithHeight<AccountListOptions>) {
   const basePath = `${addressEndpoint(url)}/${principal}/transactions_with_transfers`;
   const path = generateUrl(basePath, {
     limit,
     offset,
     height,
+    unanchored,
   });
   return fetchJson<AddressTransactionsWithTransfersListResponse>(path);
 }
 
-// @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_account_assets
+// @see https://docs.micro-stacks.dev/modules/core/api/accounts#fetchaccountassets
 export async function fetchAccountAssets({
   url,
   principal,
   limit,
   offset = 0,
+  unanchored,
 }: AccountListOptions) {
   const basePath = `${addressEndpoint(url)}/${principal}/assets`;
   const path = generateUrl(basePath, {
     limit,
     offset,
+    unanchored,
   });
   return fetchJson<AddressAssetsListResponse>(path);
 }
 
-// @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_mempool_transaction_list
+// @see https://docs.micro-stacks.dev/modules/core/api/accounts#fetchaccountmempooltransactions
 export async function fetchAccountMempoolTransactions({
   url,
   principal,

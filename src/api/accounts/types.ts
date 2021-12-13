@@ -1,6 +1,7 @@
 export interface AccountBase {
   url: string;
   principal: string;
+  unanchored?: boolean;
 }
 
 export interface ListEndpointBase {
