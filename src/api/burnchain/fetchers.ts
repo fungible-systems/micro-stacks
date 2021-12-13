@@ -9,7 +9,7 @@ import { fetchJson, generateUrl, burnchainEndpoint } from '../utils';
 /**
  * Get recent reward slot holders
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_burnchain_reward_slot_holders
+ * @see https://docs.micro-stacks.dev/modules/core/api/burnchain#fetchburnchainrewardslotholders
  */
 
 export async function fetchBurnchainRewardSlotHolders({ url, limit, offset }: BaseListParams) {
@@ -23,7 +23,7 @@ export async function fetchBurnchainRewardSlotHolders({ url, limit, offset }: Ba
 /**
  * Get recent reward slot holder entries for the given address
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_burnchain_reward_slot_holders_by_address
+ * @see https://docs.micro-stacks.dev/modules/core/api/burnchain#fetchburnchainrewardslotholdersbyaddress
  */
 
 export async function fetchBurnchainRewardSlotHoldersByAddress({
@@ -42,7 +42,7 @@ export async function fetchBurnchainRewardSlotHoldersByAddress({
 /**
  * Get recent burnchain reward recipients
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_burnchain_reward_list
+ * @see https://docs.micro-stacks.dev/modules/core/api/burnchain#fetchburnchainrewards
  */
 
 export async function fetchBurnchainRewards({ url, limit, offset }: BaseListParams) {
@@ -56,7 +56,7 @@ export async function fetchBurnchainRewards({ url, limit, offset }: BaseListPara
 /**
  * Get recent burnchain reward for the given recipient
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_burnchain_reward_slot_holders_by_address
+ * @see https://docs.micro-stacks.dev/modules/core/api/burnchain#fetchburnchainrewardsbyaddress
  */
 
 export async function fetchBurnchainRewardsByAddress({
@@ -75,7 +75,7 @@ export async function fetchBurnchainRewardsByAddress({
 /**
  * Get total burnchain rewards for the given recipient
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_burnchain_rewards_total_by_address
+ * @see https://docs.micro-stacks.dev/modules/core/api/burnchain#fetchtotalburnchainrewardsbyaddress
  */
 
 export async function fetchTotalBurnchainRewardsByAddress({

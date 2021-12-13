@@ -5,7 +5,7 @@ import { fetchJson, generateUrl, feesEndpoint } from '../utils';
 /**
  * Get an estimated fee rate for STX transfer transactions. This a a fee rate / byte, and is returned as a JSON integer
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_fee_transfer
+ * @see https://docs.micro-stacks.dev/modules/core/api/fees#feessearch
  */
 
 export async function feesSearch({ url }: BaseListParams) {

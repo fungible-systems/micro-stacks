@@ -7,7 +7,7 @@ import { fetchJsonPost, generateUrl, feeRateEndpoint } from '../utils';
 /**
  * Fetch fee rate information.
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#tag/fee_rate
+ * @see https://docs.micro-stacks.dev/modules/core/api/fee-rate#fetchfeerate
  */
 
 export async function fetchFeeRate({ url, transaction }: BaseListParams & { transaction: string }) {

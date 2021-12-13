@@ -5,7 +5,7 @@ import { fetchJson, generateUrl, searchEndpoint } from '../utils';
 /**
  * Search blocks, transactions, contracts, or accounts by hash/ID
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/search_by_id
+ * @see https://docs.micro-stacks.dev/modules/core/api/search#fetchsearch
  */
 
 export async function fetchSearch({ url, id }: BaseListParams & { id: string }) {

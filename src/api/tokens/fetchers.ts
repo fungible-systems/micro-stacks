@@ -10,7 +10,7 @@ import { fetchJson, generateUrl, tokensEndpoint } from '../utils';
 /**
  * Get list of fungible tokens metadata
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_ft_metadata_list
+ * @see https://docs.micro-stacks.dev/modules/core/api/tokens#fetchftmetadatalist
  */
 
 export async function fetchFtMetadataList({ url }: BaseListParams) {
@@ -21,7 +21,7 @@ export async function fetchFtMetadataList({ url }: BaseListParams) {
 /**
  * Get list of non fungible tokens metadata
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_nft_metadata_list
+ * @see https://docs.micro-stacks.dev/modules/core/api/tokens#fetchnftmetadatalist
  */
 
 export async function fetchNftMetadataList({ url }: BaseListParams) {
@@ -32,7 +32,7 @@ export async function fetchNftMetadataList({ url }: BaseListParams) {
 /**
  * Non fungible tokens metadata for contract id
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_contract_nft_metadata
+ * @see https://docs.micro-stacks.dev/modules/core/api/tokens#fetchnftmetadataforcontractid
  */
 
 export async function fetchNftMetadataForContractId({
@@ -46,7 +46,7 @@ export async function fetchNftMetadataForContractId({
 /**
  * Fungible tokens metadata for contract id
  *
- * @see https://blockstack.github.io/stacks-blockchain-api/#operation/get_contract_ft_metadata
+ * @see https://docs.micro-stacks.dev/modules/core/api/tokens#fetchftmetadataforcontractid
  */
 
 export async function fetchFtMetadataForContractId({
