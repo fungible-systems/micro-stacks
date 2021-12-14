@@ -39,7 +39,6 @@ export type { SpendingCondition, MessageSignature } from './authorization';
 export type { Authorization, StandardAuthorization, SponsoredAuthorization } from './authorization';
 export type { PostCondition } from './postcondition';
 
-export type { ReadOnlyFunctionOptions } from './fetchers/call-read-only-function';
 export type {
   TxBroadcastResult,
   TxBroadcastResultRejected,

@@ -1,5 +1,5 @@
-import { ClarityValue } from 'micro-stacks/clarity';
-import { StacksNetwork } from 'micro-stacks/network';
+import type { ClarityValue } from 'micro-stacks/clarity';
+import type { StacksNetwork } from 'micro-stacks/network';
 
 export interface ReadOnlyFunctionSuccessResponse {
   okay: true;
