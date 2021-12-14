@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.1.13
+
+### Patch Changes
+
+- [#64](https://github.com/fungible-systems/micro-stacks/pull/64) [`caa64be`](https://github.com/fungible-systems/micro-stacks/commit/caa64be5458fcf924b0da772b983577a11fe6994) Thanks [@aulneau](https://github.com/aulneau)! - Passes strictJsonCompat to all recursive calls.
+
 ## 0.1.12
 
 ### Patch Changes
