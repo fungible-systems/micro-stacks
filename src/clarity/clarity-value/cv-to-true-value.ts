@@ -1,6 +1,7 @@
 import { ClarityType } from '../common/constants';
 import { principalToString } from '../types/principalCV';
 import { ClarityValue } from './types';
+
 /**
  * @param val - ClarityValue
  * @param strictJsonCompat If true then ints and uints are returned as JSON serializable numbers when
@@ -22,20 +23,20 @@ export function cvToTrueValue<T = unknown>(val: ClarityValue, strictJsonCompat =
     case ClarityType.OptionalNone:
       return null as unknown as T;
     case ClarityType.OptionalSome:
-      return cvToTrueValue(val.value);
+      return cvToTrueValue(val.value, strictJsonCompat);
     case ClarityType.ResponseErr:
-      return cvToTrueValue(val.value);
+      return cvToTrueValue(val.value, strictJsonCompat);
     case ClarityType.ResponseOk:
-      return cvToTrueValue(val.value);
+      return cvToTrueValue(val.value, strictJsonCompat);
     case ClarityType.PrincipalStandard:
     case ClarityType.PrincipalContract:
       return principalToString(val) as unknown as T;
     case ClarityType.List:
-      return val.list.map(v => cvToTrueValue<T>(v)) as unknown as T;
+      return val.list.map(v => cvToTrueValue<T>(v, strictJsonCompat)) as unknown as T;
     case ClarityType.Tuple:
       const result: { [key: string]: any } = {};
       Object.keys(val.data).forEach(key => {
-        result[key] = cvToTrueValue<T>(val.data[key]);
+        result[key] = cvToTrueValue<T>(val.data[key], strictJsonCompat);
       });
       return result as T;
     case ClarityType.StringASCII:
