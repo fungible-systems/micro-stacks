@@ -8,6 +8,7 @@ import * as TRANSACTION_EVENT_SMART_CONTRACT_LOG_200_RESPONSE from '../../../tes
 //import * as TRANSACTION_EVENT_FUNGIBLE_ASSET_200_RESPONSE from '../../../../tests/mocks/api/smartcontracts/TransactionEventFungibleAsset200.json';
 //import * as TRANSACTION_EVENT_NON_FUNGIBLE_ASSET_200_RESPONSE from '../../../../tests/mocks/api/smartcontracts/TransactionEventNonFungibleAsset200.json';
 import * as CONTRACT_SOURCE_200_RESPONSE from '../../../tests/mocks/api/smartcontracts/ContractSourceResponse200.json';
+
 const CONTRACT_DATA_MAP_ENTRY = {
   data: '0x0a0c000000010a6d6f6e737465722d69640100000000000000000000000000000001',
   proof: '0x123',
@@ -19,7 +20,6 @@ import {
   fetchContractEventsById,
   fetchContractInterface,
   fetchContractSource,
-  fetchReadOnlyFunction,
 } from './fetchers';
 import { contractEndpoint, contractsEndpoint, v2Endpoint } from '../utils';
 import { HIRO_TESTNET_DEFAULT } from 'micro-stacks/network';
@@ -147,16 +147,16 @@ describe('smartcontracts fetchers', () => {
   });
 
   // TODO: the spec returns 'null'
-  test(fetchReadOnlyFunction.name, async () => {
-    const args = {
-      url: HIRO_TESTNET_DEFAULT,
-      contractName: contract_name,
-      contractAddress: contract_address,
-      functionName: functionName,
-      functionArgs: functionArgs,
-      senderAddress: senderAddress,
-    };
-    const data = await fetchReadOnlyFunction(args);
-    expect(data).toEqual({ body: null });
-  });
+  // test(callReadOnlyFunction.name, async () => {
+  //   const args = {
+  //     url: HIRO_TESTNET_DEFAULT,
+  //     contractName: contract_name,
+  //     contractAddress: contract_address,
+  //     functionName: functionName,
+  //     functionArgs: functionArgs,
+  //     senderAddress: senderAddress,
+  //   };
+  //   const data = await callReadOnlyFunction(args);
+  //   expect(data).toEqual({ body: null });
+  // });
 });

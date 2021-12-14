@@ -19,7 +19,7 @@ import type { ReadOnlyFunctionOptions, ReadOnlyFunctionResponse } from './types'
  */
 export async function callReadOnlyFunction<T extends ClarityValue>(
   options: ReadOnlyFunctionOptions
-): Promise<ClarityValue> {
+): Promise<T> {
   const {
     contractName,
     contractAddress,
@@ -28,16 +28,19 @@ export async function callReadOnlyFunction<T extends ClarityValue>(
     senderAddress = contractAddress,
   } = options;
 
-  let isMainnet = true;
-  try {
-    isMainnet = isMainnetAddress(contractAddress);
-  } catch (e) {
-    throw new Error(
-      '[micro-stacks] callReadOnlyFunction -> Incorrect Stacks addressed passed to contractAddress'
-    );
+  let network = options.network;
+  if (!options.network) {
+    try {
+      network = isMainnetAddress(contractAddress) ? new StacksMainnet() : new StacksTestnet();
+    } catch (e) {
+      console.error(e);
+      throw new Error(
+        '[micro-stacks] callReadOnlyFunction -> Incorrect Stacks addressed passed to contractAddress'
+      );
+    }
   }
 
-  const network = options.network || isMainnet ? new StacksMainnet() : new StacksTestnet();
+  if (!network) throw Error('[micro-stacks] callReadOnlyFunction -> no network defined');
 
   const url = network.getReadOnlyFunctionCallApiUrl(contractAddress, contractName, functionName);
 

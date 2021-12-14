@@ -7,7 +7,10 @@ export const HIRO_TESTNET_DEFAULT = 'https://stacks-node-api.testnet.stacks.co';
 export const HIRO_MOCKNET_DEFAULT = 'http://localhost:3999';
 
 export interface NetworkConfig {
-  url: string;
+  // TODO: deprecate
+  url?: string;
+  coreApiUrl?: string;
+  bnsLookupUrl?: string;
   fetcher?: Fetcher;
 }
 
@@ -55,12 +58,12 @@ export interface StacksNetwork {
 export class StacksMainnet implements StacksNetwork {
   version = TransactionVersion.Mainnet;
   chainId = ChainID.Mainnet;
-  bnsLookupUrl = 'https://stacks-node-api.mainnet.stacks.co';
   broadcastEndpoint = '/v2/transactions';
   transferFeeEstimateEndpoint = '/v2/fees/transfer';
   accountEndpoint = '/v2/accounts';
   contractAbiEndpoint = '/v2/contracts/interface';
   readOnlyFunctionCallEndpoint = '/v2/contracts/call-read';
+  bnsLookupUrl: string;
   private _coreApiUrl: string;
   private fetcher: Fetcher;
 
@@ -73,47 +76,52 @@ export class StacksMainnet implements StacksNetwork {
   }
 
   constructor(networkConfig: NetworkConfig = { url: HIRO_MAINNET_DEFAULT }) {
-    this._coreApiUrl = networkConfig.url;
+    if (!networkConfig.url && !networkConfig.coreApiUrl)
+      throw Error('[miro-stacks] Network initialized with no api url');
+    this._coreApiUrl = (networkConfig.url || networkConfig.coreApiUrl) as string;
+    this.bnsLookupUrl = (networkConfig.bnsLookupUrl ||
+      networkConfig.url ||
+      networkConfig.coreApiUrl) as string;
     this.fetcher = networkConfig.fetcher || fetchPrivate;
   }
 
   getCoreApiUrl = () => this._coreApiUrl;
   isMainnet = () => this.version === TransactionVersion.Mainnet;
-  getBroadcastApiUrl = () => `${this.coreApiUrl}${this.broadcastEndpoint}`;
-  getTransferFeeEstimateApiUrl = () => `${this.coreApiUrl}${this.transferFeeEstimateEndpoint}`;
+  getBroadcastApiUrl = () => `${this.getCoreApiUrl()}${this.broadcastEndpoint}`;
+  getTransferFeeEstimateApiUrl = () => `${this.getCoreApiUrl()}${this.transferFeeEstimateEndpoint}`;
   getAccountApiUrl = (address: string) =>
-    `${this.coreApiUrl}${this.accountEndpoint}/${address}?proof=0`;
+    `${this.getCoreApiUrl()}${this.accountEndpoint}/${address}?proof=0`;
   getAbiApiUrl = (address: string, contract: string) =>
-    `${this.coreApiUrl}${this.contractAbiEndpoint}/${address}/${contract}`;
+    `${this.getCoreApiUrl()}${this.contractAbiEndpoint}/${address}/${contract}`;
   getReadOnlyFunctionCallApiUrl = (
     contractAddress: string,
     contractName: string,
     functionName: string
   ) =>
-    `${this.coreApiUrl}${
+    `${this.getCoreApiUrl()}${
       this.readOnlyFunctionCallEndpoint
     }/${contractAddress}/${contractName}/${encodeURIComponent(functionName)}`;
-  getInfoUrl = () => `${this.coreApiUrl}/v2/info`;
-  getBlockTimeInfoUrl = () => `${this.coreApiUrl}/extended/v1/info/network_block_times`;
-  getPoxInfoUrl = () => `${this.coreApiUrl}/v2/pox`;
+  getInfoUrl = () => `${this.getCoreApiUrl()}/v2/info`;
+  getBlockTimeInfoUrl = () => `${this.getCoreApiUrl()}/extended/v1/info/network_block_times`;
+  getPoxInfoUrl = () => `${this.getCoreApiUrl()}/v2/pox`;
   getRewardsUrl = (address: string, options?: any) => {
-    let url = `${this.coreApiUrl}/extended/v1/burnchain/rewards/${address}`;
+    let url = `${this.getCoreApiUrl()}/extended/v1/burnchain/rewards/${address}`;
     if (options) {
       url = `${url}?limit=${options.limit}&offset=${options.offset}`;
     }
     return url;
   };
   getRewardsTotalUrl = (address: string) =>
-    `${this.coreApiUrl}/extended/v1/burnchain/rewards/${address}/total`;
+    `${this.getCoreApiUrl()}/extended/v1/burnchain/rewards/${address}/total`;
   getRewardHoldersUrl = (address: string, options?: any) => {
-    let url = `${this.coreApiUrl}/extended/v1/burnchain/reward_slot_holders/${address}`;
+    let url = `${this.getCoreApiUrl()}/extended/v1/burnchain/reward_slot_holders/${address}`;
     if (options) {
       url = `${url}?limit=${options.limit}&offset=${options.offset}`;
     }
     return url;
   };
   getStackerInfoUrl = (contractAddress: string, contractName: string) =>
-    `${this.coreApiUrl}${this.readOnlyFunctionCallEndpoint}
+    `${this.getCoreApiUrl()}${this.readOnlyFunctionCallEndpoint}
     ${contractAddress}/${contractName}/get-stacker-info`;
 
   getNameInfo(fullyQualifiedName: string) {

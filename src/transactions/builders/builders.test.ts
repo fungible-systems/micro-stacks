@@ -1537,12 +1537,14 @@ describe('tx builders', function () {
       network,
       senderAddress,
     };
-    fetchMock.mockOnce(`{"okay": true, "result": "0x${mockResult}"}`);
     const apiUrl = network.getReadOnlyFunctionCallApiUrl(
       contractAddress,
       contractName,
       functionName
     );
+
+    fetchMock.mockOnce(`{"okay": true, "result": "0x${mockResult}"}`, { url: apiUrl });
+
     const result = await callReadOnlyFunction(options);
     expect(fetchMock.mock.calls.length).toEqual(1);
     expect(fetchMock.mock.calls[0][0]).toEqual(apiUrl);
