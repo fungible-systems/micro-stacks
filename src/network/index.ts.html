@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">59.32% </span>
+                <span class="strong">60.65% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>35/59</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">38.46% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>5/13</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">38.88% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>7/18</span>
+                <span class='fraction'>37/61</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">42.85% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>9/21</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">44.44% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>8/18</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">47.72% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/42</span>
+                <span class='fraction'>21/44</span>
             </div>
         
             
@@ -220,13 +220,24 @@
 <a name='L161'></a><a href='#L161'>161</a>
 <a name='L162'></a><a href='#L162'>162</a>
 <a name='L163'></a><a href='#L163'>163</a>
-<a name='L164'></a><a href='#L164'>164</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">18x</span>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -287,7 +298,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -296,10 +307,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">68x</span>
 <span class="cline-any cline-yes">68x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">68x</span>
+<span class="cline-any cline-yes">68x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -383,7 +399,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ChainID, fetchPrivate, TransactionVersion } from 'micro-stacks/common';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ChainID, fetchPrivate, TransactionVersion } from 'micro-stacks/common'<span class="branch-2 cbranch-no" title="branch not covered" >;</span>
 &nbsp;
 type Fetcher = (input: RequestInfo, init?: RequestInit) =&gt; Promise&lt;Response&gt;;
 &nbsp;
@@ -392,7 +408,10 @@ export const HIRO_TESTNET_DEFAULT = 'https://stacks-node-api.testnet.stacks.co';
 export const HIRO_MOCKNET_DEFAULT = 'http://localhost:3999';
 &nbsp;
 export interface NetworkConfig {
-  url: string;
+  // TODO: deprecate
+  url?: string;
+  coreApiUrl?: string;
+  bnsLookupUrl?: string;
   fetcher?: Fetcher;
 }
 &nbsp;
@@ -440,12 +459,12 @@ export interface StacksNetwork {
 export class StacksMainnet implements StacksNetwork {
   version = TransactionVersion.Mainnet;
   chainId = ChainID.Mainnet;
-  bnsLookupUrl = 'https://stacks-node-api.mainnet.stacks.co';
   broadcastEndpoint = '/v2/transactions';
   transferFeeEstimateEndpoint = '/v2/fees/transfer';
   accountEndpoint = '/v2/accounts';
   contractAbiEndpoint = '/v2/contracts/interface';
   readOnlyFunctionCallEndpoint = '/v2/contracts/call-read';
+  bnsLookupUrl: string;
   private _coreApiUrl: string;
   private fetcher: Fetcher;
 &nbsp;
@@ -458,47 +477,52 @@ export class StacksMainnet implements StacksNetwork {
   }
 &nbsp;
   constructor(networkConfig: NetworkConfig = { url: HIRO_MAINNET_DEFAULT }) {
-    this._coreApiUrl = networkConfig.url;
+    if (!networkConfig.url &amp;&amp; !networkConfig.coreApiUrl)
+      throw Error('[miro-stacks] Network initialized with no api url');
+    <span class="missing-if-branch" title="if path not taken" >I</span>this._coreApiUrl = (<span class="branch-1 cbranch-no" title="branch not covered" >networkConfig.url || networkConfig<span class="cstat-no" title="statement not covered" >.</span>coreApiUrl) as string;</span>
+    this.bnsLookupUrl = (networkConfig.<span class="branch-1 cbranch-no" title="branch not covered" >bnsLookupUrl ||</span>
+      networkConfig.url ||
+      networkConfig.coreApiUrl) as string;
     this.fetcher = networkConfig.fetcher || fetchPrivate;
   }
 &nbsp;
-  getCoreApiUrl<span class="fstat-no" title="function not covered" > = () =&gt; <span class="cstat-no" title="statement not covered" >t</span>his._coreApiUrl;</span>
+  getCoreApiUrl = () =&gt; this._coreApiUrl;
   isMainnet<span class="fstat-no" title="function not covered" > = () =&gt; <span class="cstat-no" title="statement not covered" >t</span>his.version === TransactionVersion.Mainnet;</span>
-  getBroadcastApiUrl = () =&gt; `${this.coreApiUrl}${this.broadcastEndpoint}`;
-  getTransferFeeEstimateApiUrl = () =&gt; `${this.coreApiUrl}${this.transferFeeEstimateEndpoint}`;
+  getBroadcastApiUrl = () =&gt; `${this.getCoreApiUrl()}${this.broadcastEndpoint}`;
+  getTransferFeeEstimateApiUrl = () =&gt; `${this.getCoreApiUrl()}${this.transferFeeEstimateEndpoint}`;
   getAccountApiUrl = (address: string) =&gt;
-    `${this.coreApiUrl}${this.accountEndpoint}/${address}?proof=0`;
+    `${this.getCoreApiUrl()}${this.accountEndpoint}/${address}?proof=0`;
   getAbiApiUrl = (address: string, contract: string) =&gt;
-    `${this.coreApiUrl}${this.contractAbiEndpoint}/${address}/${contract}`;
+    `${this.getCoreApiUrl()}${this.contractAbiEndpoint}/${address}/${contract}`;
   getReadOnlyFunctionCallApiUrl = (
     contractAddress: string,
     contractName: string,
     functionName: string
   ) =&gt;
-    `${this.coreApiUrl}${
+    `${this.getCoreApiUrl()}${
       this.readOnlyFunctionCallEndpoint
     }/${contractAddress}/${contractName}/${encodeURIComponent(functionName)}`;
-  getInfoUrl<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > = () =&gt; `${t</span>his.coreApiUrl}/v2/info`;</span>
-  getBlockTimeInfoUrl<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > = () =&gt; `${t</span>his.coreApiUrl}/extended/v1/info/network_block_times`;</span>
-  getPoxInfoUrl<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > = () =&gt; `${t</span>his.coreApiUrl}/v2/pox`;</span>
+  getInfoUrl<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > = () =&gt; `${t</span>his.getCoreApiUrl()}/v2/info`;</span>
+  getBlockTimeInfoUrl<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > = () =&gt; `${t</span>his.getCoreApiUrl()}/extended/v1/info/network_block_times`;</span>
+  getPoxInfoUrl<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > = () =&gt; `${t</span>his.getCoreApiUrl()}/v2/pox`;</span>
   getRewardsUrl<span class="fstat-no" title="function not covered" > = (a</span>ddress: string, options?: any) =&gt; {
-    let url<span class="cstat-no" title="statement not covered" > = `${this.coreApiUrl}/extended/v1/burnchain/rewards/${address}`;</span>
+    let url<span class="cstat-no" title="statement not covered" > = `${this.getCoreApiUrl()}/extended/v1/burnchain/rewards/${address}`;</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (options) {</span>
 <span class="cstat-no" title="statement not covered" >      url = `${url}?limit=${options.limit}&amp;offset=${options.offset}`;</span>
     }
 <span class="cstat-no" title="statement not covered" >    return url;</span>
   };
   getRewardsTotalUrl<span class="fstat-no" title="function not covered" > = (a</span>ddress: string<span class="cstat-no" title="statement not covered" >) =&gt;</span>
-    `${this.coreApiUrl}/extended/v1/burnchain/rewards/${address}/total`;
+    `${this.getCoreApiUrl()}/extended/v1/burnchain/rewards/${address}/total`;
   getRewardHoldersUrl<span class="fstat-no" title="function not covered" > = (a</span>ddress: string, options?: any) =&gt; {
-    let url<span class="cstat-no" title="statement not covered" > = `${this.coreApiUrl}/extended/v1/burnchain/reward_slot_holders/${address}`;</span>
+    let url<span class="cstat-no" title="statement not covered" > = `${this.getCoreApiUrl()}/extended/v1/burnchain/reward_slot_holders/${address}`;</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (options) {</span>
 <span class="cstat-no" title="statement not covered" >      url = `${url}?limit=${options.limit}&amp;offset=${options.offset}`;</span>
     }
 <span class="cstat-no" title="statement not covered" >    return url;</span>
   };
   getStackerInfoUrl = (contractAddress: string, contractName: string) =&gt;
-    `${this.coreApiUrl}${this.readOnlyFunctionCallEndpoint}
+    `${this.getCoreApiUrl()}${this.readOnlyFunctionCallEndpoint}
     ${contractAddress}/${contractName}/get-stacker-info`;
 &nbsp;
 <span class="fstat-no" title="function not covered" >  getNameInfo(</span>fullyQualifiedName: string) {
@@ -553,7 +577,7 @@ export class StacksMocknet extends StacksMainnet implements StacksNetwork {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Dec 13 2021 18:36:46 GMT+0000 (Coordinated Universal Time)
+                at Tue Dec 14 2021 14:05:40 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>
