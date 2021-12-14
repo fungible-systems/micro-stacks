@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.1.11
+
+### Patch Changes
+
+- [#60](https://github.com/fungible-systems/micro-stacks/pull/60) [`6e84dff`](https://github.com/fungible-systems/micro-stacks/commit/6e84dff4108dc303c9da7891e3f4b4eb7636385b) Thanks [@aulneau](https://github.com/aulneau)! - This update removes the duplicate callReadOnlyFunction methods and adds a new fetchReadOnlyFunction which handles parsing the clarity values for you automatically.
+
 ## 0.1.10
 
 ### Patch Changes
