@@ -14,5 +14,5 @@ module.exports = {
     browser: true,
     context: true,
   },
-  plugins: ['react-hooks', '@typescript-eslint'],
+  plugins: ['@typescript-eslint'],
 };
