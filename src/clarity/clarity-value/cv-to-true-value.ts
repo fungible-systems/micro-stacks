@@ -1,7 +1,12 @@
 import { ClarityType } from '../common/constants';
 import { principalToString } from '../types/principalCV';
 import { ClarityValue } from './types';
-
+/**
+ * @param val - ClarityValue
+ * @param strictJsonCompat If true then ints and uints are returned as JSON serializable numbers when
+ * less than or equal to 53 bit length, otherwise string wrapped integers when larger than 53 bits.
+ * If false, they are returned as js native `bigint`s which are _not_ JSON serializable.
+ */
 export function cvToTrueValue<T = unknown>(val: ClarityValue, strictJsonCompat = false): T {
   switch (val.type) {
     case ClarityType.BoolTrue:
