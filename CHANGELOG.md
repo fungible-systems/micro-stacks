@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.1.12
+
+### Patch Changes
+
+- [#62](https://github.com/fungible-systems/micro-stacks/pull/62) [`d60c6d1`](https://github.com/fungible-systems/micro-stacks/commit/d60c6d1e066eb48c988877e67daa4ffb2090f1ab) Thanks [@aulneau](https://github.com/aulneau)! - This adds the ability to pass strictJsonCompat to `fetchReadOnlyFunction` to the underlying cvToTrueValue helper.
+
 ## 0.1.11
 
 ### Patch Changes
