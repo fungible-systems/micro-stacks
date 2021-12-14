@@ -29,3 +29,9 @@ export * from './api/feerate/types';
 export * from './api/microblocks/fetchers';
 //utils
 export * from './api/utils';
+
+// read only calls
+export * from './api/read-only/call-read-only-function';
+export * from './api/read-only/fetch-read-only-function';
+export * from './api/read-only/types';
+export * from './api/read-only/utils';

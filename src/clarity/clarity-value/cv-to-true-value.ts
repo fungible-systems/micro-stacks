@@ -2,20 +2,20 @@ import { ClarityType } from '../common/constants';
 import { principalToString } from '../types/principalCV';
 import { ClarityValue } from './types';
 
-export function cvToTrueValue(val: ClarityValue, strictJsonCompat = false): any {
+export function cvToTrueValue<T = unknown>(val: ClarityValue, strictJsonCompat = false): T {
   switch (val.type) {
     case ClarityType.BoolTrue:
-      return true;
+      return true as unknown as T;
     case ClarityType.BoolFalse:
-      return false;
+      return false as unknown as T;
     case ClarityType.Int:
     case ClarityType.UInt:
-      if (strictJsonCompat) return val.value.toString();
-      return val.value;
+      if (strictJsonCompat) return val.value.toString() as unknown as T;
+      return val.value as unknown as T;
     case ClarityType.Buffer:
-      return val.buffer;
+      return val.buffer as unknown as T;
     case ClarityType.OptionalNone:
-      return null;
+      return null as unknown as T;
     case ClarityType.OptionalSome:
       return cvToTrueValue(val.value);
     case ClarityType.ResponseErr:
@@ -24,18 +24,18 @@ export function cvToTrueValue(val: ClarityValue, strictJsonCompat = false): any 
       return cvToTrueValue(val.value);
     case ClarityType.PrincipalStandard:
     case ClarityType.PrincipalContract:
-      return principalToString(val);
+      return principalToString(val) as unknown as T;
     case ClarityType.List:
-      return val.list.map(v => cvToTrueValue(v));
+      return val.list.map(v => cvToTrueValue<T>(v)) as unknown as T;
     case ClarityType.Tuple:
       const result: { [key: string]: any } = {};
       Object.keys(val.data).forEach(key => {
-        result[key] = cvToTrueValue(val.data[key]);
+        result[key] = cvToTrueValue<T>(val.data[key]);
       });
-      return result;
+      return result as T;
     case ClarityType.StringASCII:
-      return val.data;
+      return val.data as unknown as T;
     case ClarityType.StringUTF8:
-      return val.data;
+      return val.data as unknown as T;
   }
 }

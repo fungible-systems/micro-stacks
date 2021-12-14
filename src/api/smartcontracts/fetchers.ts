@@ -9,7 +9,6 @@ import type {
   ContractSourceResponse,
   MapEntryResponse,
 } from '@stacks/stacks-blockchain-api-types';
-import { cvToHex } from 'micro-stacks/clarity';
 import { BaseListParams } from '../types';
 import {
   fetchJson,
@@ -19,8 +18,6 @@ import {
   contractsEndpoint,
   v2Endpoint,
 } from '../utils';
-import { CallReadOnlyFunctionRequest } from './types';
-import { ReadOnlyFunctionArgsToJSON } from './utils';
 
 /**
  * Get contract info using the contract ID
@@ -142,40 +139,4 @@ export async function fetchContractSource({
     }
   );
   return fetchJson<ContractSourceResponse>(path);
-}
-
-/**
- * Call a read-only public function on a given smart contract.
- *
- * @see https://docs.micro-stacks.dev/modules/core/api/smart-contracts#fetchreadonlyfunction
- */
-export async function fetchReadOnlyFunction<T>({
-  contractAddress,
-  contractName,
-  functionArgs,
-  sender = contractAddress,
-  functionName,
-  tip,
-  url,
-}: CallReadOnlyFunctionRequest & { url: string }) {
-  if (!url) throw TypeError('[fetchReadOnlyFunction] no network url passed.');
-
-  const pathArgs = `contracts/call-read/{contract_address}/{contract_name}/{function_name}`
-    .replace(`{contract_address}`, encodeURIComponent(String(contractAddress)))
-    .replace(`{contract_name}`, encodeURIComponent(String(contractName)))
-    .replace(`{function_name}`, encodeURIComponent(String(functionName)));
-
-  const path = `${v2Endpoint(url)}/${pathArgs}${typeof tip === 'string' ? `?tip=${tip}` : ''}`;
-
-  const args: string[] = functionArgs.map(arg => {
-    if (typeof arg !== 'string') return cvToHex(arg);
-    return arg;
-  });
-
-  return fetchJsonPost<T>(path, {
-    body: ReadOnlyFunctionArgsToJSON({
-      sender,
-      arguments: args,
-    }),
-  });
 }
