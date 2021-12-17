@@ -7,6 +7,11 @@ import {
   AddressAssetsListResponse,
   MempoolTransactionListResponse,
   MempoolTransaction,
+  AddressTransactionWithTransfers,
+  AddressNonces,
+  AddressStxInboundListResponse,
+  AddressNftListResponse,
+  AccountDataResponse,
 } from '@stacks/stacks-blockchain-api-types';
 import { addressEndpoint, fetchJson, generateUrl, txMempoolEndpoint, txEndpoint } from '../utils';
 
@@ -45,6 +50,26 @@ export async function fetchAccountTransactions({
   return fetchJson<AddressTransactionsListResponse>(path);
 }
 
+//See https://docs.hiro.so/api#operation/get_single_transaction_with_transfers
+export async function fetchAccountTransactionWithTransfers({
+  url,
+  principal,
+  tx_id,
+  limit,
+  offset = 0,
+  height,
+  unanchored,
+}: { tx_id: string } & WithHeight<AccountListOptions>) {
+  const basePath = `${addressEndpoint(url)}/${principal}/${tx_id}/transactions_with_transfers`;
+  const path = generateUrl(basePath, {
+    limit,
+    offset,
+    height,
+    unanchored,
+  });
+  return fetchJson<AddressTransactionWithTransfers>(path);
+}
+
 // @see https://docs.micro-stacks.dev/modules/core/api/accounts#fetchaccounttransactionswithtransfers
 export async function fetchAccountTransactionsWithTransfers({
   url,
@@ -64,6 +89,12 @@ export async function fetchAccountTransactionsWithTransfers({
   return fetchJson<AddressTransactionsWithTransfersListResponse>(path);
 }
 
+// https://docs.hiro.so/api#operation/get_account_nonces
+export async function fetchAccountNonces({ url, principal }: AccountBase) {
+  const path = `${addressEndpoint(url)}/${principal}/nonces`;
+  return fetchJson<AddressNonces>(path);
+}
+
 // @see https://docs.micro-stacks.dev/modules/core/api/accounts#fetchaccountassets
 export async function fetchAccountAssets({
   url,
@@ -81,6 +112,25 @@ export async function fetchAccountAssets({
   return fetchJson<AddressAssetsListResponse>(path);
 }
 
+// https://docs.hiro.so/api#operation/get_account_inbound (does this replaces the fetchaccountmempooltransactions endpoint ? )
+export async function fetchAccountStxInbound({ url, principal }: AccountBase) {
+  const path = `${addressEndpoint(url)}/${principal}/stx_inbound`;
+  return fetchJson<AddressStxInboundListResponse>(path);
+}
+
+// https://docs.hiro.so/api#operation/get_account_nft
+export async function fetchAccountNftEvents({ url, principal }: AccountBase) {
+  const path = `${addressEndpoint(url)}/${principal}/nft_events`;
+  return fetchJson<AddressNftListResponse>(path);
+}
+
+// https://docs.hiro.so/api#operation/get_account_info
+export async function fetchAccountInfo({ url, principal }: AccountBase) {
+  const path = `${addressEndpoint(url)}/${principal}`;
+  return fetchJson<AccountDataResponse>(path);
+}
+
+// DEPRECATED?
 // @see https://docs.micro-stacks.dev/modules/core/api/accounts#fetchaccountmempooltransactions
 export async function fetchAccountMempoolTransactions({
   url,
