@@ -63,7 +63,6 @@ specifiers:
   lint-staged: 11.2.3
   micro-bmark: 0.1.3
   micro-memoize: 4.0.9
-  micro-stacks: ^0.1.13
   msw: 0.35.0
   next: 12.0.1
   nookies: 2.5.2
@@ -144,7 +143,6 @@ devDependencies:
   lint-staged: 11.2.3
   micro-bmark: 0.1.3
   micro-memoize: 4.0.9
-  micro-stacks: 0.1.13
   msw: 0.35.0
   next: 12.0.1_@babel+core@7.15.8
   nookies: 2.5.2
@@ -2056,9 +2054,11 @@ packages:
 
   /@noble/hashes/0.4.4:
     resolution: {integrity: sha512-crq2J2g8nIcczVZjYjIQ73GafloqJ6sSual8I/iC8iacMyHwI/ZVskR8Jn8ZmYBq48VC4G+16d2R0SYWVARYGg==}
+    dev: false
 
   /@noble/secp256k1/1.3.3:
     resolution: {integrity: sha512-uzKQA9AzoypXGQusSQahpZbNYYnzZblOgr4AjNjI9s3cGy15V+exxmEnjcC6L/slVKMR30NC+srp00Ch6Pm2hg==}
+    dev: false
 
   /@node-rs/helper/1.2.1:
     resolution: {integrity: sha512-R5wEmm8nbuQU0YGGmYVjEc0OHtYsuXdpRG+Ut/3wZ9XAvQWyThN08bTh2cBJgoZxHQUPtvRfeQuxcAgLuiBISg==}
@@ -7903,14 +7903,6 @@ packages:
 
   /micro-memoize/4.0.9:
     resolution: {integrity: sha512-Z2uZi/IUMGQDCXASdujXRqrXXEwSY0XffUrAOllhqzQI3wpUyZbiZTiE2JuYC0HSG2G7DbCS5jZmsEKEGZuemg==}
-    dev: true
-
-  /micro-stacks/0.1.13:
-    resolution: {integrity: sha512-4wwcCYoPwj/qEGunob+ynJ4GGK7mn8k/VcsvSdYVbqyZ98Z2CbdvzasI9CbiDJ1iFJP3pnQ2RFRYe5wfSsJS1g==}
-    engines: {node: '>=12'}
-    dependencies:
-      '@noble/hashes': 0.4.4
-      '@noble/secp256k1': 1.3.3
     dev: true
 
   /micromatch/3.1.10:
