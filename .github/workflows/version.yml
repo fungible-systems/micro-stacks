@@ -35,7 +35,7 @@ jobs:
       - name: pnpm Build
         run: pnpm install
       - name: create and publish versions
-        uses: changesets/action@master
+        uses: changesets/action@21240c3cd1d2efa2672d64e0235a03cf139b83e6
         with:
           commit: "chore: update versions"
           title: "chore: update versions"
