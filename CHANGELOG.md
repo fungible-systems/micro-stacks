@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.1.15
+
+### Patch Changes
+
+- [#68](https://github.com/fungible-systems/micro-stacks/pull/68) [`1744101b`](https://github.com/fungible-systems/micro-stacks/commit/1744101bb5bb2041023a2e519d150237d55335f2) Thanks [@aulneau](https://github.com/aulneau)! - This fixes a small enum export issue related to building external libs.
+
 ## 0.1.13
 
 ### Patch Changes
