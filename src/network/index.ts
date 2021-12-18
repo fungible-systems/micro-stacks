@@ -169,3 +169,5 @@ export class StacksMocknet extends StacksMainnet implements StacksNetwork {
     super(networkConfig);
   }
 }
+
+export { ChainID, TransactionVersion };
