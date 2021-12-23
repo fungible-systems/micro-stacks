@@ -6,6 +6,7 @@ import {
   createLPString,
 } from '../common/utils';
 import { ClarityType } from '../common/constants';
+import { utf8ToBytes } from 'micro-stacks/common';
 
 type PrincipalCV = StandardPrincipalCV | ContractPrincipalCV;
 
@@ -74,7 +75,7 @@ function contractPrincipalCVFromAddress(
   address: Address,
   contractName: LengthPrefixedString
 ): ContractPrincipalCV {
-  if (Buffer.byteLength(contractName.content) >= 128) {
+  if (utf8ToBytes(contractName.content).byteLength >= 128) {
     throw new Error('Contract name must be less than 128 bytes');
   }
   return { type: ClarityType.PrincipalContract, address, contractName };
