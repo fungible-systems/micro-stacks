@@ -19,8 +19,8 @@ specifiers:
   '@changesets/changelog-github': 0.4.2
   '@changesets/cli': 2.19.0
   '@fungible-systems/eslint-config': 0.0.1
-  '@noble/hashes': 0.4.4
-  '@noble/secp256k1': 1.3.3
+  '@noble/hashes': 0.5.5
+  '@noble/secp256k1': 1.3.4
   '@rollup/plugin-babel': 5.3.0
   '@rollup/plugin-commonjs': 21.0.1
   '@rollup/plugin-json': 4.1.0
@@ -83,8 +83,8 @@ specifiers:
   typescript: 4.4.4
 
 dependencies:
-  '@noble/hashes': 0.4.4
-  '@noble/secp256k1': 1.3.3
+  '@noble/hashes': 0.5.5
+  '@noble/secp256k1': 1.3.4
 
 devDependencies:
   '@babel/core': 7.15.8
@@ -2039,12 +2039,12 @@ packages:
     dev: true
     optional: true
 
-  /@noble/hashes/0.4.4:
-    resolution: {integrity: sha512-crq2J2g8nIcczVZjYjIQ73GafloqJ6sSual8I/iC8iacMyHwI/ZVskR8Jn8ZmYBq48VC4G+16d2R0SYWVARYGg==}
+  /@noble/hashes/0.5.5:
+    resolution: {integrity: sha512-RoQFap5Fgb9ZZnUivFT9JXXoX65UBxhnOPGYLZL/j3vuFkB7xfssVIAREuBMt/GQ8dlV1VdUqAezNZPiW1P4dA==}
     dev: false
 
-  /@noble/secp256k1/1.3.3:
-    resolution: {integrity: sha512-uzKQA9AzoypXGQusSQahpZbNYYnzZblOgr4AjNjI9s3cGy15V+exxmEnjcC6L/slVKMR30NC+srp00Ch6Pm2hg==}
+  /@noble/secp256k1/1.3.4:
+    resolution: {integrity: sha512-ZVRouDO5mbdCiDg4zCd3ZZABduRtpy4tCnB33Gh9upHe9tRzpiqbRSN1VTjrj/2g8u2c6MBi0YLNnNQpBYOiWg==}
     dev: false
 
   /@node-rs/helper/1.2.1:
