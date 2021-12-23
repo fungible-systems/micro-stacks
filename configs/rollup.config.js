@@ -1,5 +1,4 @@
 import path from 'path';
-import babel from '@rollup/plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 import dts from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
@@ -96,12 +95,7 @@ function createCommonJSConfig(input) {
       json({
         compact: true,
       }),
-      babel(
-        getBabelOptions(
-          { browsers: 'last 2 versions' },
-          input.replace('src/', '').replace('.ts', '')
-        )
-      ),
+      getEsbuild('node12'),
     ].filter(Boolean),
   };
 }
