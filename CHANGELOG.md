@@ -1,5 +1,13 @@
 # micro-stacks
 
+## 0.1.16
+
+### Patch Changes
+
+- [#71](https://github.com/fungible-systems/micro-stacks/pull/71) [`496b9074`](https://github.com/fungible-systems/micro-stacks/commit/496b90747dccf2bc0b0bbe2e44b4101603a364b4) Thanks [@aulneau](https://github.com/aulneau)! - This removes a hidden usage of Buffer, and reverts the build changes"
+
+* [#66](https://github.com/fungible-systems/micro-stacks/pull/66) [`a6d30cb6`](https://github.com/fungible-systems/micro-stacks/commit/a6d30cb609687d18ef82435e58916f1123797c1e) Thanks [@aviculturist](https://github.com/aviculturist)! - Adds a number of missing accounts api fetchers and tests for: fetchAccountTransactionWithTransfers, fetchAccountNonces, fetchAccountAssets, fetchAccountStxInbound, fetchAccountNftEvents, fetchAccountInfo
+
 ## 0.1.15
 
 ### Patch Changes
