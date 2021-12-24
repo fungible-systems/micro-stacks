@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.1.17
+
+### Patch Changes
+
+- [#72](https://github.com/fungible-systems/micro-stacks/pull/72) [`65a04522`](https://github.com/fungible-systems/micro-stacks/commit/65a045225995301ce2c3e7443defb1a8613d676a) Thanks [@aulneau](https://github.com/aulneau)! - Fixes the top level import for @noble/hashes, bumps versions
+
 ## 0.1.16
 
 ### Patch Changes
