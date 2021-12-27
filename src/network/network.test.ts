@@ -1,13 +1,19 @@
-import { StacksMainnet, StacksMocknet, StacksTestnet } from 'micro-stacks/network';
+import { StacksMainnet, StacksMocknet, StacksTestnet, SyvitaMainnet } from 'micro-stacks/network';
 
 export const HIRO_MAINNET_DEFAULT = 'https://stacks-node-api.mainnet.stacks.co';
 export const HIRO_TESTNET_DEFAULT = 'https://stacks-node-api.testnet.stacks.co';
 export const HIRO_MOCKNET_DEFAULT = 'http://localhost:3999';
 
+export const SYVITA_MAINNET_DEFAULT = 'https://mainnet.syvita.org';
+
 describe('Setting coreApiUrl', () => {
-  test('it sets mainnet default url', () => {
+  test('it sets hiro mainnet default url', () => {
     const mainnet = new StacksMainnet();
     expect(mainnet.coreApiUrl).toEqual(HIRO_MAINNET_DEFAULT);
+  });
+  test('it sets syvita mainnet default url', () => {
+    const mainnet = new SyvitaMainnet();
+    expect(mainnet.coreApiUrl).toEqual(SYVITA_MAINNET_DEFAULT);
   });
   test('it sets testnet url', () => {
     const testnet = new StacksTestnet();
