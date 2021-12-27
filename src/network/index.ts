@@ -172,8 +172,10 @@ export class StacksMocknet extends StacksMainnet implements StacksNetwork {
   }
 }
 
-export class SyvitaMainnet extends StacksMainnet implements StacksNetwork {
-  constructor(networkConfig: NetworkConfig = { url: SYVIREAN_MAINNET_DEFAULT, fetcher: fetchPrivate }) {
+export class SyvireanMainnet extends StacksMainnet implements StacksNetwork {
+  constructor(
+    networkConfig: NetworkConfig = { url: SYVIREAN_MAINNET_DEFAULT, fetcher: fetchPrivate }
+  ) {
     super(networkConfig);
   }
 }
