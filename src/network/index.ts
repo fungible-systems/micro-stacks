@@ -6,7 +6,7 @@ export const HIRO_MAINNET_DEFAULT = 'https://stacks-node-api.mainnet.stacks.co';
 export const HIRO_TESTNET_DEFAULT = 'https://stacks-node-api.testnet.stacks.co';
 export const HIRO_MOCKNET_DEFAULT = 'http://localhost:3999';
 
-export const SYVITA_MAINNET_DEFAULT = 'https://mainnet.syvita.org';
+export const SYVIREAN_MAINNET_DEFAULT = 'https://mainnet.syvita.org';
 
 export interface NetworkConfig {
   // TODO: deprecate
@@ -173,7 +173,7 @@ export class StacksMocknet extends StacksMainnet implements StacksNetwork {
 }
 
 export class SyvitaMainnet extends StacksMainnet implements StacksNetwork {
-  constructor(networkConfig: NetworkConfig = { url: SYVITA_MAINNET_DEFAULT, fetcher: fetchPrivate }) {
+  constructor(networkConfig: NetworkConfig = { url: SYVIREAN_MAINNET_DEFAULT, fetcher: fetchPrivate }) {
     super(networkConfig);
   }
 }
