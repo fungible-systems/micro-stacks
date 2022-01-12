@@ -1408,7 +1408,7 @@ describe('tx builders', function () {
     expect((result as TxBroadcastResultRejected).reason_data).toEqual(rejection.reason_data);
   });
 
-  test('Transaction broadcast fails', async () => {
+  test('Transaction broadcast throws if non-json response', async () => {
     const recipient = standardPrincipalCV('SP3FGQ8Z7JY9BWYZ5WM53E0M9NK7WHJF0691NZ159');
     const amount = 12345;
     const fee = 0;
