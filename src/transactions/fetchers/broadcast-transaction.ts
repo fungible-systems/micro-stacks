@@ -14,7 +14,7 @@ const validateTxId = (txid: string): boolean => {
   return with0x(BigInt(value).toString(16).padStart(64, '0')) === value;
 };
 
-export type TxBroadcastResultOk = string;
+export type TxBroadcastResultOk = { txid: string };
 export type TxBroadcastResultRejected = {
   error: string;
   reason: TxRejectedReason;
@@ -66,7 +66,7 @@ export async function broadcastRawTransaction(
   const response = await fetchPrivate(url, options);
   if (!response.ok) {
     try {
-      return (await response.json()) as TxBroadcastResult;
+      return (await response.json()) as TxBroadcastResultRejected;
     } catch (e) {
       throw Error(`Failed to broadcast transaction: ${(e as Error).message}`);
     }
@@ -78,7 +78,7 @@ export async function broadcastRawTransaction(
   if (validateTxId(txid))
     return {
       txid,
-    } as TxBroadcastResult;
+    } as TxBroadcastResultOk;
 
   throw new Error(text);
 }
