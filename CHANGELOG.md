@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.2.0
+
+### Minor Changes
+
+- [#75](https://github.com/fungible-systems/micro-stacks/pull/75) [`d5d72a44`](https://github.com/fungible-systems/micro-stacks/commit/d5d72a4481414b23685d7e321210bc26bb752600) Thanks [@hstove](https://github.com/hstove)! - fix: return correct type for successful broadcasts for `broadcastTransaction`
+
 ## 0.1.17
 
 ### Patch Changes
