@@ -293,7 +293,7 @@
   },
   "dependencies": {
     "@noble/hashes": "1.0.0",
-    "@noble/secp256k1": "1.5.1"
+    "@noble/secp256k1": "1.5.2"
   },
   "resolutions": {
     "@typescript-eslint/eslint-plugin": "5.0.0-alpha.42",
