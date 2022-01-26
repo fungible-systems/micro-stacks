@@ -3,7 +3,7 @@ import { getPublicKey } from 'micro-stacks/crypto';
 import { signTransactionPayload } from './sign';
 import { TransactionTypes } from './types';
 import type { ContractCallTxOptions, ContractCallTxPayload } from './types';
-import { cleanHex } from 'micro-stacks/common';
+import { bytesToHex, cleanHex } from 'micro-stacks/common';
 
 /**
  * makeContractCallToken
@@ -18,7 +18,7 @@ export async function makeContractCallToken({
   privateKey,
   ...options
 }: ContractCallTxOptions) {
-  const publicKey = getPublicKey(privateKey, true);
+  const publicKey = bytesToHex(getPublicKey(privateKey, true));
 
   const payload: ContractCallTxPayload = {
     ...options,

@@ -21,24 +21,8 @@ export async function authenticate(
     );
   }
   try {
-    const Provider: StacksProvider | undefined = getStacksProvider();
     const transitPrivateKey = bytesToHex(getRandomBytes());
-    const transitPublicKey = getPublicKey(transitPrivateKey);
-
-    const _scopes = authOptions.scopes || [];
-
-    const origin = getGlobalObject('location', { returnEmptyObject: true })!.origin;
-    const payload: AuthRequestPayload = {
-      scopes: [...new Set(['store_write', ..._scopes])] as AuthScope[],
-      redirect_uri: origin,
-      public_keys: [transitPublicKey],
-      domain_name: origin,
-      appDetails: authOptions.appDetails,
-    };
-
-    const signer = new TokenSigner('ES256k', transitPrivateKey);
-    const authRequest = await signer.sign(payload as unknown as Json);
-    const authResponseToken = await Provider!.authenticationRequest(authRequest);
+    const authResponseToken = await handleAuthResponse(authOptions, transitPrivateKey);
     const sessionState = await decodeAuthResponse(authResponseToken, transitPrivateKey);
 
     authOptions?.onFinish?.(sessionState);
@@ -49,6 +33,50 @@ export async function authenticate(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     authOptions?.onCancel?.((e as any).message);
   }
+}
+
+export function generateAuthRequestPayload(authOptions: AuthOptions, transitPublicKey: string) {
+  if (!authOptions.appDetails) {
+    throw Error(
+      '[micro-stacks] authenticate error: `authOptions.appDetails` are required for authentication'
+    );
+  }
+  const _scopes = authOptions.scopes || [];
+
+  const origin = getGlobalObject('location', { returnEmptyObject: true })!.origin;
+  const payload: AuthRequestPayload = {
+    scopes: [...new Set(['store_write', ..._scopes])] as AuthScope[],
+    redirect_uri: origin,
+    public_keys: [transitPublicKey],
+    domain_name: origin,
+    appDetails: authOptions.appDetails,
+  };
+
+  return payload;
+}
+
+export async function signAuthRequest(payload: unknown, transitPrivateKey: string) {
+  const signer = new TokenSigner('ES256k', transitPrivateKey);
+  return signer.sign(payload as unknown as Json);
+}
+
+export async function generateSignedAuthRequest(
+  authOptions: AuthOptions,
+  transitPrivateKey: string
+) {
+  const transitPublicKey = bytesToHex(getPublicKey(transitPrivateKey));
+  const payload = generateAuthRequestPayload(authOptions, transitPublicKey);
+  return signAuthRequest(payload, transitPrivateKey);
+}
+
+export async function handleAuthResponse(authOptions: AuthOptions, transitPrivateKey: string) {
+  const Provider: StacksProvider | undefined = getStacksProvider();
+  if (!Provider)
+    throw Error(
+      'This function can only be called on the client, and with the presence of StacksProvider'
+    );
+  const authRequest = await generateSignedAuthRequest(authOptions, transitPrivateKey);
+  return Provider!.authenticationRequest(authRequest);
 }
 
 declare global {
