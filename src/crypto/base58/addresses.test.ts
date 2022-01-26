@@ -18,7 +18,7 @@ describe('micro-stacks/crypto', () => {
     expect(() =>
       hashP2SH(
         999,
-        new Array(16).map(() => hexToBytes(publicKey))
+        new Array(16).map(() => publicKey)
       )
     ).toThrow('P2SH multisig address can only contain up to 15 public keys');
   });

@@ -36,8 +36,8 @@ describe(TokenVerifier.name, () => {
       },
     };
     const token = await tokenSigner.sign(payload);
-    const verifier = new TokenVerifier('ES256k', publicKey);
-    const isValid = await verifier.verify(token);
+    const verifier = new TokenVerifier('ES256k', bytesToHex(publicKey));
+    const isValid = verifier.verify(token);
     expect(isValid).toEqual(true);
   });
 
@@ -45,14 +45,14 @@ describe(TokenVerifier.name, () => {
     const tokenVerifier = new TokenVerifier('ES256K', rawPublicKey);
     expect(tokenVerifier).toBeTruthy();
 
-    const verified1 = await tokenVerifier.verify(sampleToken);
+    const verified1 = tokenVerifier.verify(sampleToken);
     expect(verified1).toBe(true);
 
     const tokenSigner = new TokenSigner('ES256K', rawPrivateKey);
     const newToken = await tokenSigner.sign(sampleDecodedToken.payload, false);
     expect(newToken).toBeTruthy();
 
-    const newTokenVerified = await tokenVerifier.verify(newToken);
+    const newTokenVerified = tokenVerifier.verify(newToken);
     expect(newTokenVerified).toBe(true);
   });
 
@@ -64,7 +64,7 @@ describe(TokenVerifier.name, () => {
     expect(token).toBeTruthy();
     expect(typeof token).toBe('object');
 
-    const verified = await tokenVerifier.verify(token);
+    const verified = tokenVerifier.verify(token);
     expect(verified).toBe(true);
 
     const signedToken = await tokenSigner.sign(sampleDecodedToken.payload, true);

@@ -5,6 +5,7 @@ import {
 } from 'micro-stacks/storage';
 import { TokenVerifier } from 'micro-stacks/crypto';
 import { getPublicKey } from 'micro-stacks/crypto';
+import { bytesToHex } from 'micro-stacks/common';
 
 const gaiaHubConfig: GaiaHubConfig = {
   address: '1NZNxhoxobqwsNvTb16pdeiqvFvce3Yg8U',
@@ -34,7 +35,7 @@ describe(makeScopedGaiaAuthToken.name, () => {
       gaiaHubUrl: gaiaHubConfig.server,
       privateKey,
     });
-    const publicKey = getPublicKey(privateKey);
+    const publicKey = bytesToHex(getPublicKey(privateKey));
     const verifier = new TokenVerifier('ES256k', publicKey);
     const isValid = await verifier.verify(config.token.split('v1:')[1]);
     expect(isValid).toEqual(true);

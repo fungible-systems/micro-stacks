@@ -39,7 +39,8 @@ import { estimateTransfer } from '../fetchers/estimate-stx-transfer';
  * @return {Promise<StacksTransaction>}
  */
 export async function makeUnsignedSTXTokenTransfer(
-  txOptions: UnsignedTokenTransferOptions | UnsignedMultiSigTokenTransferOptions
+  txOptions: UnsignedTokenTransferOptions | UnsignedMultiSigTokenTransferOptions,
+  sync?: boolean
 ): Promise<StacksTransaction> {
   const defaultOptions = {
     fee: BigInt(0),
@@ -100,22 +101,27 @@ export async function makeUnsignedSTXTokenTransfer(
     options.network.chainId
   );
 
-  if (txOptions.fee === undefined || txOptions.fee === null) {
-    const txFee = await estimateTransfer(transaction, options.network);
-    transaction.setFee(txFee);
-  }
+  if (sync) {
+    transaction.setFee(0);
+    transaction.setNonce(0);
+  } else {
+    if (txOptions.fee === undefined || txOptions.fee === null) {
+      const txFee = await estimateTransfer(transaction, options.network);
+      transaction.setFee(txFee);
+    }
 
-  if (txOptions.nonce === undefined || txOptions.nonce === null) {
-    const addressVersion =
-      options.network.version === TransactionVersion.Mainnet
-        ? StacksNetworkVersion.mainnetP2PKH
-        : StacksNetworkVersion.testnetP2PKH;
-    const senderAddress = c32address(
-      addressVersion,
-      hexToBytes(transaction.auth.spendingCondition!.signer)
-    );
-    const txNonce = await getNonce(senderAddress, options.network);
-    transaction.setNonce(txNonce);
+    if (txOptions.nonce === undefined || txOptions.nonce === null) {
+      const addressVersion =
+        options.network.version === TransactionVersion.Mainnet
+          ? StacksNetworkVersion.mainnetP2PKH
+          : StacksNetworkVersion.testnetP2PKH;
+      const senderAddress = c32address(
+        addressVersion,
+        hexToBytes(transaction.auth.spendingCondition!.signer)
+      );
+      const txNonce = await getNonce(senderAddress, options.network);
+      transaction.setNonce(txNonce);
+    }
   }
 
   return transaction;

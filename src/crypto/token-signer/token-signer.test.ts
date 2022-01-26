@@ -41,7 +41,7 @@ describe(TokenSigner.name, () => {
     const token = await tokenSigner.sign(payload);
     const decoded = _decodeToken(token);
     expect(decoded.payload).toEqual(payload);
-    const verifier = new OldTokenVerifier('ES256k', publicKey);
+    const verifier = new OldTokenVerifier('ES256k', bytesToHex(publicKey));
     const isValid = await verifier.verifyAsync(token);
     expect(isValid).toEqual(true);
   });

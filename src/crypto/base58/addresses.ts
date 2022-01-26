@@ -27,13 +27,14 @@ export function publicKeyToStxAddress(
 
 export function privateKeyToBase58Address(privateKey: string) {
   const publicKey = getPublicKey(privateKey, true);
-  const sha256 = hashSha256(hexToBytes(publicKey));
+  const sha256 = hashSha256(publicKey);
   const hash160 = hashRipemd160(sha256);
   return base58checkEncode(hash160, networks.bitcoin.pubKeyHash);
 }
 
-export function publicKeyToBase58Address(publicKey: string) {
-  const sha256 = hashSha256(hexToBytes(publicKey));
+export function publicKeyToBase58Address(publicKey: string | Uint8Array) {
+  const pk = typeof publicKey === 'string' ? publicKey : bytesToHex(publicKey);
+  const sha256 = hashSha256(hexToBytes(pk));
   const hash160 = hashRipemd160(sha256);
   return base58checkEncode(hash160, networks.bitcoin.pubKeyHash);
 }

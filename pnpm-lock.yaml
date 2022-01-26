@@ -19,8 +19,8 @@ specifiers:
   '@changesets/changelog-github': 0.4.2
   '@changesets/cli': 2.19.0
   '@fungible-systems/eslint-config': 0.0.1
-  '@noble/hashes': 0.5.5
-  '@noble/secp256k1': 1.3.4
+  '@noble/hashes': 1.0.0
+  '@noble/secp256k1': 1.5.1
   '@rollup/plugin-babel': 5.3.0
   '@rollup/plugin-commonjs': 21.0.1
   '@rollup/plugin-json': 4.1.0
@@ -83,8 +83,8 @@ specifiers:
   typescript: 4.4.4
 
 dependencies:
-  '@noble/hashes': 0.5.5
-  '@noble/secp256k1': 1.3.4
+  '@noble/hashes': 1.0.0
+  '@noble/secp256k1': 1.5.1
 
 devDependencies:
   '@babel/core': 7.15.8
@@ -2039,12 +2039,12 @@ packages:
     dev: true
     optional: true
 
-  /@noble/hashes/0.5.5:
-    resolution: {integrity: sha512-RoQFap5Fgb9ZZnUivFT9JXXoX65UBxhnOPGYLZL/j3vuFkB7xfssVIAREuBMt/GQ8dlV1VdUqAezNZPiW1P4dA==}
+  /@noble/hashes/1.0.0:
+    resolution: {integrity: sha512-DZVbtY62kc3kkBtMHqwCOfXrT/hnoORy5BJ4+HU1IR59X0KWAOqsfzQPcUl/lQLlG7qXbe/fZ3r/emxtAl+sqg==}
     dev: false
 
-  /@noble/secp256k1/1.3.4:
-    resolution: {integrity: sha512-ZVRouDO5mbdCiDg4zCd3ZZABduRtpy4tCnB33Gh9upHe9tRzpiqbRSN1VTjrj/2g8u2c6MBi0YLNnNQpBYOiWg==}
+  /@noble/secp256k1/1.5.1:
+    resolution: {integrity: sha512-KJJ36KR3VAxo4TbpjcDGLXx1/Z4AzUIdxs/3QDOG8TtNuDBUVz7KYDpV+qK/ClBkOPFAPfOzrIsI1/ulAkmHag==}
     dev: false
 
   /@node-rs/helper/1.2.1:
@@ -6479,9 +6479,9 @@ packages:
         optional: true
     dependencies:
       fast-deep-equal: 3.1.3
-      jotai: 1.4.9_e0d67359c5debde81b457e86eafc3b05
+      jotai: 1.5.3_8337c7cefc757989d3115b44d86b245e
       next: 12.0.1_@babel+core@7.15.8
-      react-query: 3.34.6
+      react-query: 3.34.12
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/template'
@@ -6532,8 +6532,8 @@ packages:
       '@babel/template': 7.15.4
     dev: true
 
-  /jotai/1.4.9_e0d67359c5debde81b457e86eafc3b05:
-    resolution: {integrity: sha512-NHh3UIIelfUBUjcJi+oXHoL9rISkj8LZu3eeXR5KL1VBYLOuPVK0TTTDfbgdwm5B83zpxNAhTlhb/aKlJBtP0g==}
+  /jotai/1.5.3_8337c7cefc757989d3115b44d86b245e:
+    resolution: {integrity: sha512-iD8MkbehxTjfRUtIJJdyQcjbAe2MqjW1+oFc5lvfgRjLHwjRQyWnZC3gdGAOQCOqUSPZHOBGgWyP/8gBDckaNQ==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       '@babel/core': '*'
@@ -6568,7 +6568,7 @@ packages:
     dependencies:
       '@babel/core': 7.15.8
       '@babel/template': 7.15.4
-      react-query: 3.34.6
+      react-query: 3.34.12
     dev: true
 
   /joycon/3.1.0:
@@ -7866,8 +7866,8 @@ packages:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
     dev: true
 
-  /react-query/3.34.6:
-    resolution: {integrity: sha512-2UKldH8T2PjmLxaOzANok7yITQn9FF1pBbrZFF1hvukBjYefHtCjUur+GOVAWMhrsskcCoKRviei4hcpvj9wLQ==}
+  /react-query/3.34.12:
+    resolution: {integrity: sha512-flDdudQVH4CqE+kNYYYyo4g2Yjek3H/36G3b9bK5oe26jD5gFnx+PPwnq0gayq5z2dcSfr2z4+drvuyeZ3A5QQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0
       react-dom: '*'

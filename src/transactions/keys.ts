@@ -139,6 +139,10 @@ export async function signWithKey(
   const [rawSignature, recoveryParam] = await sign(input, privateKey.data.slice(0, 32), {
     canonical: true,
     recovered: true,
+    // https://github.com/paulmillr/noble-secp256k1#signmsghash-privatekey
+    // additional entropy k' for deterministic signature, follows section 3.6 of RFC6979. When true, it would automatically be filled with 32 bytes of cryptographically secure entropy
+    // TODO: how can we make this default true?
+    // extraEntropy: false,
   });
 
   const signature = Signature.fromHex(rawSignature);

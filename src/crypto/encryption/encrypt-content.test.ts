@@ -24,7 +24,7 @@ it('Will throw if no keys passed', async () => {
 
 test('Encrypt content and decrypt content with no wasString passed', async () => {
   const privateKey = bytesToHex(noble.utils.randomPrivateKey());
-  const publicKey = noble.getPublicKey(privateKey, true);
+  const publicKey = bytesToHex(noble.getPublicKey(privateKey, true));
 
   const original = 'hello world';
 
@@ -71,7 +71,7 @@ test('Encrypt content and decrypt content with private key passed as sign', asyn
 
 test('Encrypt content and decrypt content', async () => {
   const privateKey = bytesToHex(noble.utils.randomPrivateKey());
-  const publicKey = noble.getPublicKey(privateKey, true);
+  const publicKey = bytesToHex(noble.getPublicKey(privateKey, true));
 
   const original = 'hello world';
 
@@ -90,7 +90,7 @@ test('Encrypt content and decrypt content', async () => {
 
 test(`Encrypt and decrypted signed`, async () => {
   const privateKey = bytesToHex(noble.utils.randomPrivateKey());
-  const publicKey = noble.getPublicKey(privateKey, true);
+  const publicKey = bytesToHex(noble.getPublicKey(privateKey, true));
   const original = 'hello world';
 
   const cipherObject = await encryptContent(original, {
@@ -114,7 +114,7 @@ test(`Encrypt and decrypted signed`, async () => {
 
 test(`[legacy] encrypt signed can be decrypted by micro-stacks`, async () => {
   const privateKey = bytesToHex(noble.utils.randomPrivateKey());
-  const publicKey = noble.getPublicKey(privateKey, true);
+  const publicKey = bytesToHex(noble.getPublicKey(privateKey, true));
   const original = 'hello world';
 
   const cipherObject = await legacy_encryptContent(original, {
@@ -139,7 +139,7 @@ test(`[legacy] encrypt signed can be decrypted by micro-stacks`, async () => {
 
 test(`[legacy] decrypt and signed from micro-stacks`, async () => {
   const privateKey = bytesToHex(noble.utils.randomPrivateKey());
-  const publicKey = noble.getPublicKey(privateKey, true);
+  const publicKey = bytesToHex(noble.getPublicKey(privateKey, true));
   const original = 'hello world';
 
   const cipherObject = await encryptContent(original, {

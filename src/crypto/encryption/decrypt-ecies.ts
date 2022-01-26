@@ -34,7 +34,7 @@ export async function decryptECIES(options: DecryptECIESOptions): Promise<Uint8A
 
   if (!cipherObject.ephemeralPK) throw Error('No ephemeralPK found in cipher object');
   const ephemeralPK = cipherObject.ephemeralPK;
-  let sharedSecret = hexToBytes(getSharedSecret(privateKey, ephemeralPK, true) as string);
+  let sharedSecret = getSharedSecret(privateKey, ephemeralPK, true);
   // Trim the compressed mode prefix byte
   sharedSecret = sharedSecret.slice(1);
   const sharedKeys = sharedSecretToKeys(sharedSecret);
@@ -51,7 +51,7 @@ export async function decryptECIES(options: DecryptECIESOptions): Promise<Uint8A
   }
 
   const macData = concatByteArrays([ivBuffer, hexToBytes(ephemeralPK), cipherTextBuffer]);
-  const actualMac = await hmacSha256(sharedKeys.hmacKey, macData);
+  const actualMac = hmacSha256(sharedKeys.hmacKey, macData);
   const expectedMac = hexToBytes(cipherObject.mac);
 
   if (!equalConstTime(expectedMac, actualMac)) {
