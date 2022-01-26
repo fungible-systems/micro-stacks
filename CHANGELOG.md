@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.2.1
+
+### Patch Changes
+
+- [#77](https://github.com/fungible-systems/micro-stacks/pull/77) [`b1b8fbb5`](https://github.com/fungible-systems/micro-stacks/commit/b1b8fbb5bd8b7067f6edf3af5ffbbcd1cd93392f) Thanks [@aulneau](https://github.com/aulneau)! - This updates breaks apart the functions that are used to generate and validate an authRequest/Response from the wallet. This makes it easier to use in different contexts (eg on the server). Additionally, the noble dependencies have been updated.
+
 ## 0.2.0
 
 ### Minor Changes
