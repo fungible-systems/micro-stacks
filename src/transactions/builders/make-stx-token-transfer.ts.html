@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.35% </span>
+                <span class="strong">79.03% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>48/59</span>
+                <span class='fraction'>49/62</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.23% </span>
+                <span class="strong">84.21% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>15/17</span>
+                <span class='fraction'>16/19</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.35% </span>
+                <span class="strong">79.03% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>48/59</span>
+                <span class='fraction'>49/62</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -222,7 +222,13 @@
 <a name='L163'></a><a href='#L163'>163</a>
 <a name='L164'></a><a href='#L164'>164</a>
 <a name='L165'></a><a href='#L165'>165</a>
-<a name='L166'></a><a href='#L166'>166</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -263,6 +269,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">18x</span>
@@ -325,6 +332,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -340,6 +351,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">18x</span>
@@ -428,7 +440,8 @@ import { estimateTransfer } from '../fetchers/estimate-stx-transfer';
  * @return {Promise&lt;StacksTransaction&gt;}
  */
 export async function makeUnsignedSTXTokenTransfer(
-  txOptions: UnsignedTokenTransferOptions | UnsignedMultiSigTokenTransferOptions
+  txOptions: UnsignedTokenTransferOptions | UnsignedMultiSigTokenTransferOptions,
+  sync?: boolean
 ): Promise&lt;StacksTransaction&gt; {
   const defaultOptions = {
     fee: BigInt(0),
@@ -489,22 +502,27 @@ export async function makeUnsignedSTXTokenTransfer(
     options.network.chainId
   );
 &nbsp;
-  if (txOptions.fee === undefined || txOptions.fee === null) {
-    const txFee = await estimateTransfer(transaction, options.network);
-    transaction.setFee(txFee);
-  }
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (sync) {
+<span class="cstat-no" title="statement not covered" >    transaction.setFee(0);</span>
+<span class="cstat-no" title="statement not covered" >    transaction.setNonce(0);</span>
+  } else {
+    if (txOptions.fee === undefined || txOptions.fee === null) {
+      const txFee = await estimateTransfer(transaction, options.network);
+      transaction.setFee(txFee);
+    }
 &nbsp;
-  if (txOptions.nonce === undefined || txOptions.nonce === null) {
-    const addressVersion =
-      options.network.version === TransactionVersion.Mainnet
-        ? StacksNetworkVersion.mainnetP2PKH
-        : StacksNetworkVersion.testnetP2PKH;
-    const senderAddress = c32address(
-      addressVersion,
-      hexToBytes(transaction.auth.spendingCondition!.signer)
-    );
-    const txNonce = await getNonce(senderAddress, options.network);
-    transaction.setNonce(txNonce);
+    if (txOptions.nonce === undefined || txOptions.nonce === null) {
+      const addressVersion =
+        options.network.version === TransactionVersion.Mainnet
+          ? StacksNetworkVersion.mainnetP2PKH
+          : StacksNetworkVersion.testnetP2PKH;
+      const senderAddress = c32address(
+        addressVersion,
+        hexToBytes(transaction.auth.spendingCondition!.signer)
+      );
+      const txNonce = await getNonce(senderAddress, options.network);
+      transaction.setNonce(txNonce);
+    }
   }
 &nbsp;
   return transaction;
@@ -559,7 +577,7 @@ export async function makeSTXTokenTransfer(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Jan 14 2022 01:08:33 GMT+0000 (Coordinated Universal Time)
+                at Wed Jan 26 2022 20:59:28 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>
