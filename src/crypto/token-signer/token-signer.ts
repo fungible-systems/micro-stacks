@@ -38,7 +38,7 @@ export class TokenSigner {
     customHeader: Json = {}
   ): Promise<SignedToken | string> {
     // generate the token header
-    const header = this.header(customHeader as any);
+    const header = this.header(customHeader as unknown as {});
 
     // prepare the message to be signed
     const signingInput = createSigningInput(payload, header);
@@ -53,7 +53,16 @@ export class TokenSigner {
     signingInput: string,
     signingInputHash: Uint8Array
   ): Promise<SignedToken | string> {
-    const sig = await sign(signingInputHash, this.rawPrivateKey);
+    const sig = await sign(signingInputHash, this.rawPrivateKey, {
+      // whether a signature s should be no more than 1/2 prime order.
+      // true makes signatures compatible with libsecp256k1
+      // false makes signatures compatible with openssl <-- stacks currently uses this
+      canonical: false,
+      // https://github.com/paulmillr/noble-secp256k1#signmsghash-privatekey
+      // additional entropy k' for deterministic signature, follows section 3.6 of RFC6979. When true, it would automatically be filled with 32 bytes of cryptographically secure entropy
+      // TODO: how can we make this default true?
+      // extraEntropy: false,
+    });
     const formatted: string = derToJoseES256(sig);
 
     if (expanded) {

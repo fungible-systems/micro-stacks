@@ -1,5 +1,5 @@
 import { getPublicKey } from 'micro-stacks/crypto';
-import { utf8ToBytes } from 'micro-stacks/common';
+import { bytesToHex, utf8ToBytes } from 'micro-stacks/common';
 import { encryptECIES } from './encrypt-ecies';
 import { signECDSA } from './sign';
 import type { EncryptContentOptions } from '../common/types';
@@ -14,7 +14,7 @@ export async function encryptContent(
   if (!privateKey && !publicKey)
     throw new Error('Either public key or private key must be supplied for encryption.');
 
-  if (!publicKey && privateKey) publicKey = getPublicKey(privateKey, true);
+  if (!publicKey && privateKey) publicKey = bytesToHex(getPublicKey(privateKey, true));
 
   if (typeof wasString !== 'boolean') wasString = typeof content === 'string';
 
