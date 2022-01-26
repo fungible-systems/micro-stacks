@@ -8,7 +8,7 @@ import {
 import fetchMock from 'jest-fetch-mock';
 import * as hub from './gaia/hub';
 import * as jsdom from 'jsdom';
-import { bytesToUtf8, utf8ToBytes } from 'micro-stacks/common';
+import { bytesToHex, bytesToUtf8, utf8ToBytes } from 'micro-stacks/common';
 import { getPublicKey } from 'micro-stacks/crypto';
 import { encryptContent } from 'micro-stacks/crypto';
 
@@ -178,7 +178,7 @@ describe(putFile.name, () => {
   });
   test('putFile encrypt/no-sign using specifying public key & getFile decrypt', async () => {
     const privateKey = 'a5c61c6ca7b3e7e55edee68566aeab22e4da26baa285c7bd10e8d2218aa3b229';
-    const publicKey = getPublicKey(privateKey, true);
+    const publicKey = bytesToHex(getPublicKey(privateKey, true));
 
     const fileContent = JSON.stringify({ test: 'test' });
 

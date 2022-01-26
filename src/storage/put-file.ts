@@ -12,6 +12,7 @@ import { isRecoverableGaiaError, megabytesToBytes, PayloadTooLargeError } from '
 
 import type { GaiaHubConfig } from './gaia/types';
 import type { PutFileOptions } from './common/types';
+import { bytesToHex } from 'micro-stacks/common';
 
 export async function putFile(
   path: string,
@@ -100,9 +101,9 @@ export async function putFile(
       if (typeof encrypt === 'string') {
         publicKey = encrypt;
       } else if (typeof shouldSign === 'string') {
-        publicKey = getPublicKey(shouldSign, true);
+        publicKey = bytesToHex(getPublicKey(shouldSign, true));
       } else if (privateKey) {
-        publicKey = getPublicKey(privateKey, true);
+        publicKey = bytesToHex(getPublicKey(privateKey, true));
       } else {
         throw new Error('No private key passed');
       }

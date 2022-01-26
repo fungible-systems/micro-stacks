@@ -14,17 +14,22 @@ export class TokenVerifier {
     this.rawPublicKey = rawPublicKey;
   }
 
-  async verify(token: string | SignedToken): Promise<boolean> {
+  verify(
+    token: string | SignedToken,
+    // @param {Boolean} strict - whether a signature s should be no more than 1/2 prime order.
+    // true makes signatures compatible with libsecp256k1, false makes signatures compatible with openssl
+    strict = false
+  ): boolean {
     if (typeof token === 'string') {
-      return this.verifyCompact(token);
+      return this.verifyCompact(token, strict);
     } else if (typeof token === 'object') {
-      return this.verifyExpanded(token);
+      return this.verifyExpanded(token, strict);
     } else {
       return false;
     }
   }
 
-  verifyCompact(token: string): boolean {
+  verifyCompact(token: string, strict?: boolean): boolean {
     // decompose the token into parts
     const tokenParts = token.split('.');
 
@@ -39,7 +44,13 @@ export class TokenVerifier {
       return verify(
         bytesToHex(base64ToBytes(formatted)),
         bytesToHex(signingInputHash),
-        this.rawPublicKey
+        this.rawPublicKey,
+        {
+          // TODO: this should be true default
+          // is not compat with legacy tokens.
+          // change reflected here https://github.com/paulmillr/noble-secp256k1/releases/tag/1.4.0
+          strict,
+        }
       );
     };
 
@@ -47,7 +58,7 @@ export class TokenVerifier {
     return performVerify(signingInputHash);
   }
 
-  verifyExpanded(token: SignedToken): boolean {
+  verifyExpanded(token: SignedToken, strict?: boolean): boolean {
     const signingInput = [token['header'].join('.'), base64url.encode(token['payload'])].join('.');
     let verified = true;
 
@@ -58,7 +69,10 @@ export class TokenVerifier {
         const signatureVerified = verify(
           bytesToHex(base64ToBytes(formatted)),
           bytesToHex(signingInputHash),
-          this.rawPublicKey
+          this.rawPublicKey,
+          {
+            strict,
+          }
         );
         if (!signatureVerified) {
           verified = false;
