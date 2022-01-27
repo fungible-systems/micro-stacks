@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.2.2
+
+### Patch Changes
+
+- [#80](https://github.com/fungible-systems/micro-stacks/pull/80) [`69d9c984`](https://github.com/fungible-systems/micro-stacks/commit/69d9c9840aa4fad005b2ecc6fdc333cbe1bbda0b) Thanks [@aulneau](https://github.com/aulneau)! - This fixes a small bug where the public key for iss in the gaia hub config was set as a Uint8Array, rather than a hex string. Additionally, this cleans up that function to not have any type casting.
+
 ## 0.2.1
 
 ### Patch Changes
