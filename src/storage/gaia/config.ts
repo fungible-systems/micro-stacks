@@ -1,4 +1,5 @@
-import { getRandomBytes, TokenSigner, privateKeyToBase58Address } from 'micro-stacks/crypto';
+import { getRandomBytes, TokenSigner, privateKeyToBase58Address, Json } from 'micro-stacks/crypto';
+import { bytesToHex, fetchPrivate } from 'micro-stacks/common';
 import { getPublicKey } from 'micro-stacks/crypto';
 import type {
   GaiaHubConfig,
@@ -7,13 +8,12 @@ import type {
   ScopedGaiaTokenOptions,
   GenerateGaiaHubConfigOptions,
 } from './types';
-import { fetchPrivate } from 'micro-stacks/common';
 
 /**
  * Gaia takes the key 'domain' but 'path' makes more sense to someone implementing this
  */
-function transformScopePath(scopes: GaiaAuthScope[]) {
-  return scopes.map(scope => ({ ...scope, domain: scope.path }));
+function transformScopePath(scopes?: GaiaAuthScope[]) {
+  return scopes?.map(scope => ({ ...scope, domain: scope.path })) ?? null;
 }
 
 function makeDefaultScope(path: string): GaiaAuthScope {
@@ -27,21 +27,21 @@ function makeDefaultScope(path: string): GaiaAuthScope {
  * Generate a scoped gaia auth token
  */
 export async function makeScopedGaiaAuthToken(options: ScopedGaiaTokenOptions): Promise<string> {
-  const { hubInfo, privateKey, gaiaHubUrl, associationToken, scopes } = options;
+  const { hubInfo, privateKey, gaiaHubUrl, associationToken = null, scopes } = options;
   const { challenge_text: gaiaChallenge } = hubInfo;
-  const iss = getPublicKey(privateKey, true);
+  const iss = bytesToHex(getPublicKey(privateKey, true));
 
   const salt = getRandomBytes(16).toString();
-  const payload = {
+  const payload: Json = {
     gaiaChallenge,
     hubUrl: gaiaHubUrl,
     iss,
     salt,
     associationToken,
-    scopes: scopes ? transformScopePath(scopes) : undefined,
+    scopes: transformScopePath(scopes),
   };
   const signer = new TokenSigner('ES256K', privateKey);
-  const token = await signer.sign(payload as any);
+  const token = await signer.sign(payload);
   return `v1:${token}`;
 }
 
