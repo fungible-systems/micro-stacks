@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.2.3
+
+### Patch Changes
+
+- [#82](https://github.com/fungible-systems/micro-stacks/pull/82) [`5cf18117`](https://github.com/fungible-systems/micro-stacks/commit/5cf18117b7783304fcef2a1e1aa5ea40e0bfc2a8) Thanks [@hstove](https://github.com/hstove)! - Adds the `tip` query parameter to read-only API calls. `tip` was already a parameter to the `callReadOnlyFunction` function, but it wasn't actually passed to the API call.
+
 ## 0.2.2
 
 ### Patch Changes
