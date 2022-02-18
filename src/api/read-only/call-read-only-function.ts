@@ -26,6 +26,7 @@ export async function callReadOnlyFunction<T extends ClarityValue>(
     functionName,
     functionArgs,
     senderAddress = contractAddress,
+    tip,
   } = options;
 
   let network = options.network;
@@ -42,7 +43,10 @@ export async function callReadOnlyFunction<T extends ClarityValue>(
 
   if (!network) throw Error('[micro-stacks] callReadOnlyFunction -> no network defined');
 
-  const url = network.getReadOnlyFunctionCallApiUrl(contractAddress, contractName, functionName);
+  let url = network.getReadOnlyFunctionCallApiUrl(contractAddress, contractName, functionName);
+  if (tip) {
+    url += `?tip=${tip}`;
+  }
 
   const body = JSON.stringify({
     sender: senderAddress,
