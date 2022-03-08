@@ -1,16 +1,20 @@
+const _0n = BigInt(0);
+const _1n = BigInt(1);
+const _128n = BigInt(128);
+
 export function toTwos(value: bigint) {
   // make sure its in range given the number of bits
-  if (value < -(1n << (128n - 1n)) || value > (1n << (128n - 1n)) - 1n)
+  if (value < -(_1n << (_128n - _1n)) || value > (_1n << (_128n - _1n)) - _1n)
     throw 'Integer out of range given 128 bits to represent.';
 
   // if positive, return the positive value
-  if (value >= 0n) return value;
+  if (value >= _0n) return value;
 
   // if negative, convert to twos complement representation
-  return ~((-value - 1n) | ~((1n << 128n) - 1n));
+  return ~((-value - _1n) | ~((_1n << _128n) - _1n));
 }
 
 export function fromTwos(value: bigint) {
-  if ((value & (1n << (128n - 1n))) > 0n) value = value - (1n << 128n);
+  if ((value & (_1n << (_128n - _1n))) > _0n) value = value - (_1n << _128n);
   return value;
 }

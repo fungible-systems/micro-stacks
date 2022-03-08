@@ -6,6 +6,8 @@ import { bytesToHex } from './encoding-hex';
 
 const B58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 
+const _58n = BigInt(58);
+
 export function encodeB58(source: string | Uint8Array) {
   if (source.length === 0) return '';
   if (typeof source === 'string') {
@@ -19,11 +21,12 @@ export function encodeB58(source: string | Uint8Array) {
 
   // Convert Uint8Array to BigInt, Big Endian.
   let x = BigInt('0x' + bytesToHex(source));
+
   const output = [];
 
   while (x > 0) {
-    const mod = Number(x % 58n);
-    x = x / 58n;
+    const mod = Number(x % _58n);
+    x = x / _58n;
     output.push(B58_ALPHABET[mod]);
   }
 
