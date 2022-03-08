@@ -1,5 +1,15 @@
 # micro-stacks
 
+## 0.2.4
+
+### Patch Changes
+
+- [#88](https://github.com/fungible-systems/micro-stacks/pull/88) [`8d9e2493`](https://github.com/fungible-systems/micro-stacks/commit/8d9e2493e0ed751bb64a7a7cd574b692c068f8d7) Thanks [@aulneau](https://github.com/aulneau)! - This adds some testing to our twos compliment functions.
+
+* [#87](https://github.com/fungible-systems/micro-stacks/pull/87) [`6dfb12b0`](https://github.com/fungible-systems/micro-stacks/commit/6dfb12b0b4cf88030a7b7533e50a005638385016) Thanks [@aulneau](https://github.com/aulneau)! - This update removes the couple usages of bigint literals in the codebase. This makes it easier to polyfil BigInt when needed in consumer applications.
+
+- [#84](https://github.com/fungible-systems/micro-stacks/pull/84) [`e760e6ad`](https://github.com/fungible-systems/micro-stacks/commit/e760e6ad957dd5f8f82368d709277b8da48070c1) Thanks [@aulneau](https://github.com/aulneau)! - chore: update noble dep
+
 ## 0.2.3
 
 ### Patch Changes
