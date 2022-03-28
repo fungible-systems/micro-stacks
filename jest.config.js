@@ -2,7 +2,7 @@ const { pathsToModuleNameMapper } = require('ts-jest/utils');
 const { compilerOptions } = require('./tsconfig');
 
 module.exports = {
-  testEnvironment: 'jsdom',
+  testEnvironment: 'node',
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
   transform: {
     '^.+\\.(t|j)sx?$': ['@swc-node/jest', { sourcemap: 'inline', dynamicImport: true }],

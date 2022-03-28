@@ -1,10 +1,12 @@
 import { generateGaiaHubConfig } from 'micro-stacks/storage';
-import { Wallet } from '../types';
 import { DEFAULT_GAIA_HUB_URL } from '../constants';
 
-export function createWalletConfigGaiaHubConfig(wallet: Wallet) {
+export function createWalletConfigGaiaHubConfig(
+  privateKey: string,
+  gaiaHubUrl: string = DEFAULT_GAIA_HUB_URL
+) {
   return generateGaiaHubConfig({
-    gaiaHubUrl: DEFAULT_GAIA_HUB_URL,
-    privateKey: wallet.configPrivateKey,
+    gaiaHubUrl,
+    privateKey,
   });
 }

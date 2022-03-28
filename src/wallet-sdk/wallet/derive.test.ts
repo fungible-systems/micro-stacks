@@ -1,9 +1,9 @@
-import { mnemonicToSeed } from 'micro-stacks/bip39';
-import { HDKeychain } from 'micro-stacks/bip32';
 import { deriveLegacyConfigPrivateKey, deriveWalletKeys } from './derive';
 import { privateKeyToStxAddress } from 'micro-stacks/crypto';
 import { Wallet } from '../types';
 import { deriveAccount } from '../account/derive-account';
+import { HDKey } from '@scure/bip32';
+import { mnemonicToSeed } from '@scure/bip39';
 
 const SECRET_KEY =
   'sound idle panel often situate develop unit text design antenna ' +
@@ -58,10 +58,10 @@ const TEST_WALLET: Wallet = {
 
 test('keys are serialized, and can be deserialized properly', async () => {
   const rootPrivateKey = await mnemonicToSeed(SECRET_KEY);
-  const rootNode1 = await HDKeychain.fromSeed(rootPrivateKey);
-  const derived = await deriveWalletKeys(rootNode1);
-  const rootNode = HDKeychain.fromBase58(derived.rootKey);
-  const account = await deriveAccount(rootNode, 0, derived.salt);
+  const rootNode1 = HDKey.fromMasterSeed(rootPrivateKey);
+  const derived = deriveWalletKeys(rootNode1);
+  const rootNode = HDKey.fromExtendedKey(derived.rootKey);
+  const account = deriveAccount(rootNode, 0, derived.salt);
   expect(privateKeyToStxAddress(account.stxPrivateKey.slice(0, 64), undefined, true)).toEqual(
     'SP384CVPNDTYA0E92TKJZQTYXQHNZSWGCAG7SAPVB'
   );
@@ -69,19 +69,19 @@ test('keys are serialized, and can be deserialized properly', async () => {
 
 test('backwards compatible legacy config private key derivation', async () => {
   const rootPrivateKey = await mnemonicToSeed(SECRET_KEY);
-  const rootNode = await HDKeychain.fromSeed(rootPrivateKey);
-  const legacyKey = await deriveLegacyConfigPrivateKey(rootNode.toBase58());
+  const rootNode = HDKey.fromMasterSeed(rootPrivateKey);
+  const legacyKey = deriveLegacyConfigPrivateKey(rootNode.privateExtendedKey);
   expect(legacyKey).toEqual('767b51d866d068b02ce126afe3737896f4d0c486263d9b932f2822109565a3c6');
 });
 
-test('legacy', async () => {
-  const rootNode = HDKeychain.fromBase58(TEST_WALLET.rootKey);
-  const keys = await deriveWalletKeys(rootNode);
+test('legacy', () => {
+  const rootNode = HDKey.fromExtendedKey(TEST_WALLET.rootKey);
+  const keys = deriveWalletKeys(rootNode);
   expect(keys.salt).toEqual(TEST_WALLET.salt);
   expect(keys.configPrivateKey).toEqual(TEST_WALLET.configPrivateKey);
   expect(keys.rootKey).toEqual(TEST_WALLET.rootKey);
   for (const c of TEST_WALLET.accounts) {
-    const childKeys = await deriveAccount(rootNode, c.index, keys.salt);
+    const childKeys = deriveAccount(rootNode, c.index, keys.salt);
     expect(childKeys.salt).toEqual(c.salt);
     expect(childKeys.index).toEqual(c.index);
     expect(childKeys.appsKey).toEqual(c.appsKey);

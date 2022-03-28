@@ -1,8 +1,8 @@
-import { HDKeychain } from 'micro-stacks/bip32';
+import { HDKey } from '@scure/bip32';
 import { bytesToHex, utf8ToBytes } from 'micro-stacks/common';
 import { hashSha256 } from 'micro-stacks/crypto-sha';
 import { DATA_DERIVATION_PATH, WALLET_CONFIG_PATH } from '../constants';
-
+import { isHardened } from '../utils';
 import type { WalletKeys } from '../types';
 
 /**
@@ -19,8 +19,8 @@ import type { WalletKeys } from '../types';
  *
  * @param rootNode A keychain that was created using the wallet mnemonic phrase
  */
-export const deriveConfigPrivateKey = async (rootNode: HDKeychain): Promise<string> => {
-  const derivedConfigKey = (await rootNode.deriveFromPath(WALLET_CONFIG_PATH)).privateKey;
+export const deriveConfigPrivateKey = (rootNode: HDKey): string => {
+  const derivedConfigKey = rootNode.derive(WALLET_CONFIG_PATH).privateKey;
   if (!derivedConfigKey) throw new TypeError('Unable to derive config key for wallet identities');
   return bytesToHex(derivedConfigKey);
 };
@@ -33,9 +33,10 @@ export const deriveConfigPrivateKey = async (rootNode: HDKeychain): Promise<stri
  * @param rootKey A base64 encoded HDKeychain (BIP32) that was created using the wallet mnemonic phrase
  * @return privateKey Hex encoded legacy private key
  */
-export const deriveLegacyConfigPrivateKey = async (rootKey: string): Promise<string> => {
-  const rootNode = HDKeychain.fromBase58(rootKey);
-  const derivedLegacyPrivateKey = (await rootNode.deriveChild(45, true)).privateKey;
+export const deriveLegacyConfigPrivateKey = (rootKey: string): string => {
+  const rootNode = HDKey.fromExtendedKey(rootKey);
+  const legacyNode = rootNode.deriveChild(isHardened(45));
+  const derivedLegacyPrivateKey = legacyNode.privateKey;
   if (!derivedLegacyPrivateKey)
     throw new TypeError('Unable to derive config key for wallet identities');
   return bytesToHex(derivedLegacyPrivateKey);
@@ -47,22 +48,18 @@ export const deriveLegacyConfigPrivateKey = async (rootKey: string): Promise<str
  * @param rootNode A keychain that was created using the wallet mnemonic phrase
  * @return salt A hex encoded hash
  */
-export async function deriveSalt(rootNode: HDKeychain): Promise<string> {
-  return bytesToHex(
-    hashSha256(
-      utf8ToBytes(bytesToHex((await rootNode.deriveFromPath(DATA_DERIVATION_PATH)).publicKey))
-    )
-  );
+export function deriveSalt(rootNode: HDKey): string {
+  const publicKey = rootNode.derive(DATA_DERIVATION_PATH).publicKey;
+  if (!publicKey) throw new TypeError('Unable to derive public key from data derivation path');
+  return bytesToHex(hashSha256(utf8ToBytes(bytesToHex(publicKey))));
 }
 
-export async function deriveWalletKeys(rootNode: HDKeychain): Promise<WalletKeys> {
+export function deriveWalletKeys(rootNode: HDKey): WalletKeys {
   if (!rootNode.privateKey) throw Error('no private key');
 
-  const [salt, rootKey, configPrivateKey] = await Promise.all([
-    deriveSalt(rootNode),
-    rootNode.toBase58(),
-    deriveConfigPrivateKey(rootNode),
-  ]);
+  const salt = deriveSalt(rootNode);
+  const rootKey = rootNode.privateExtendedKey;
+  const configPrivateKey = deriveConfigPrivateKey(rootNode);
 
   return {
     salt,

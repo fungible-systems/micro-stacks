@@ -1,9 +1,10 @@
-import { validateMnemonic } from 'micro-stacks/bip39';
 import { generateSecretKey, generateWallet } from './generate';
 import { getStxAddressFromAccount } from '../account/get-stx-address-from-account';
 import { StacksNetworkVersion } from 'micro-stacks/crypto';
 import { getAppPrivateKey } from '../account/get-app-private-key';
 import { getGaiaAddress } from '../account/get-gaia-address';
+import { validateMnemonic } from '@scure/bip39';
+import { wordlist } from '@scure/bip39/wordlists/english';
 
 describe(generateSecretKey, () => {
   test('generates a 24 word phrase by default', () => {
@@ -18,8 +19,8 @@ describe(generateSecretKey, () => {
   });
 
   test('generates a valid mnemonic', () => {
-    expect(validateMnemonic(generateSecretKey())).toBeTruthy();
-    expect(validateMnemonic(generateSecretKey(128))).toBeTruthy();
+    expect(validateMnemonic(generateSecretKey(), wordlist)).toBeTruthy();
+    expect(validateMnemonic(generateSecretKey(128), wordlist)).toBeTruthy();
   });
 });
 
@@ -60,7 +61,7 @@ describe(generateWallet, () => {
 
     expect(getGaiaAddress(account)).toEqual('1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk');
 
-    expect(await getAppPrivateKey(account, 'https://banter.pub', true)).toEqual(
+    expect(getAppPrivateKey(account, 'https://banter.pub', true)).toEqual(
       '6f8b6a170f8b2ee57df5ead49b0f4c8acde05f9e1c4c6ef8223d6a42fabfa314'
     );
   });

@@ -1,10 +1,11 @@
-import { generateMnemonic, mnemonicToSeed } from 'micro-stacks/bip39';
+import { generateMnemonic, mnemonicToSeed } from '@scure/bip39';
+import { HDKey } from '@scure/bip32';
+import { wordlist } from '@scure/bip39/wordlists/english';
 import { bytesToHex } from 'micro-stacks/common';
-import { HDKeychain } from 'micro-stacks/bip32';
 
 import { deriveWalletKeys } from './derive';
 import { encryptMnemonic } from '../encryption/encrypt-mnemonic';
-import { deriveAccountFromWallet } from '../account/derive-account';
+import { deriveNextAccountFromWallet } from '../account/derive-account';
 
 import type { AllowedKeyEntropyBits, Wallet } from '../types';
 
@@ -25,7 +26,7 @@ export function generateSecretKey(entropy: AllowedKeyEntropyBits = 256): string 
         entropy
       )}".`
     );
-  return generateMnemonic(entropy);
+  return generateMnemonic(wordlist, entropy);
 }
 
 /**
@@ -34,10 +35,12 @@ export function generateSecretKey(entropy: AllowedKeyEntropyBits = 256): string 
  * @param password A password used to encrypt the wallet
  */
 export async function generateWallet(mnemonic: string, password: string): Promise<Wallet> {
-  const encryptedSecretKey = bytesToHex(await encryptMnemonic(mnemonic, password));
-  const walletKeys = await deriveWalletKeys(
-    await HDKeychain.fromSeed(await mnemonicToSeed(mnemonic))
-  );
+  const [seed, encryptedBytes] = await Promise.all([
+    mnemonicToSeed(mnemonic),
+    encryptMnemonic(mnemonic, password),
+  ]);
+  const encryptedSecretKey = bytesToHex(encryptedBytes);
+  const walletKeys = deriveWalletKeys(HDKey.fromMasterSeed(seed));
 
   return generateAndInsertNewAccount({
     ...walletKeys,
@@ -46,9 +49,9 @@ export async function generateWallet(mnemonic: string, password: string): Promis
   });
 }
 
-export async function generateAndInsertNewAccount(wallet: Wallet): Promise<Wallet> {
+export function generateAndInsertNewAccount(wallet: Wallet): Wallet {
   return {
     ...wallet,
-    accounts: [...wallet.accounts, await deriveAccountFromWallet(wallet)],
+    accounts: [...wallet.accounts, deriveNextAccountFromWallet(wallet)],
   };
 }

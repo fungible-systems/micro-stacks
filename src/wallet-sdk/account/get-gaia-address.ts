@@ -1,6 +1,6 @@
-import { Account } from '../types';
-import { publicKeyToBase58Address } from 'micro-stacks/crypto';
-import { getPublicKey } from 'micro-stacks/crypto';
+import { getPublicKey, publicKeyToBase58Address } from 'micro-stacks/crypto';
+
+import type { Account } from '../types';
 
 /**
  * Get the gaia hub address (base58) for a given account

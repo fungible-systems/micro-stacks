@@ -4,7 +4,7 @@ export const DATA_DERIVATION_PATH = `m/888'/0'`;
  * > m / purpose' / coin_type' / account' / change / address_index
  * @see https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
  */
-// This should be `m/44'/5757'/0'/1`, but it sadly was not set to be.
+// This should be `m/44'/5757'/0'/1` (note hardened 44 vs not), but it sadly was not set to be.
 // it's generally okay, but non-standard. This is only used for the wallet-config.json file
 export const WALLET_CONFIG_PATH = `m/44/5757'/0'/1`;
 
