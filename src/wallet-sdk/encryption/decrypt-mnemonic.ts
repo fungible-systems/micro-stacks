@@ -1,5 +1,8 @@
 import { bytesToHex, concatByteArrays, hexToBytes } from 'micro-stacks/common';
-import { entropyToMnemonic, validateMnemonic } from 'micro-stacks/bip39';
+import { entropyToMnemonic, validateMnemonic } from '@scure/bip39';
+import { wordlist } from '@scure/bip39/wordlists/english';
+
+// micro-stacks crypto
 import { aes128CbcDecrypt } from 'micro-stacks/crypto-aes';
 import { hashSha256 } from 'micro-stacks/crypto-sha';
 import { hmacSha256 } from 'micro-stacks/crypto-hmac-sha';
@@ -41,13 +44,13 @@ export async function decryptMnemonic(
 
   let mnemonic: string;
   try {
-    mnemonic = entropyToMnemonic(decryptedResult);
+    mnemonic = entropyToMnemonic(decryptedResult, wordlist);
   } catch (error) {
     console.error('Error thrown by `entropyToMnemonic`');
     console.error(error);
     throw new Error('Wrong password (invalid plaintext)');
   }
-  if (!validateMnemonic(mnemonic)) {
+  if (!validateMnemonic(mnemonic, wordlist)) {
     throw new Error('Wrong password (invalid plaintext)');
   }
 

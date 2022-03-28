@@ -1,8 +1,9 @@
-import { Account } from '../types';
 import { privateKeyToStxAddress, StacksNetworkVersion } from 'micro-stacks/crypto';
 
+import type { Account } from '../types';
+
 /**
- * convert a compressed or uncompressed `stxPrivateKey` to a STX address of a given network version
+ * convert a compressed or uncompressed `stxPrivateKey` to a Stacks address for a given network version (mainnet / testnet)
  * @param account {Account}
  * @param networkVersion {StacksNetworkVersion}
  */
