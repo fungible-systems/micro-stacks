@@ -9,7 +9,7 @@ import { fetchPrivate } from 'micro-stacks/common';
  * @param zoneFile - the string zonefile to parse
  * @param publicKeyOrAddress - the public key or address of the keypair that is thought to have signed the token
  */
-export async function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress: string) {
+export async function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress?: string) {
   let zoneFileJson: ZoneFileObject | null = parseZoneFile(zoneFile);
   if (!zoneFileJson.hasOwnProperty('$origin')) zoneFileJson = null;
 
