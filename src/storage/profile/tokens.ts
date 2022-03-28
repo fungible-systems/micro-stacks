@@ -80,10 +80,7 @@ export function verifyProfileToken(token: string, publicKeyOrAddress: string): T
  * @throws {Error} - if the token isn't signed by the provided `publicKeyOrAddress`
  */
 
-export function extractProfile(
-  token: string,
-  publicKeyOrAddress: string | null = null
-): Record<string, any> {
+export function extractProfile(token: string, publicKeyOrAddress?: string): Record<string, any> {
   const decodedToken = publicKeyOrAddress
     ? verifyProfileToken(token, publicKeyOrAddress)
     : decodeToken(token);

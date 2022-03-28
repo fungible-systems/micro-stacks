@@ -17,10 +17,10 @@ export async function lookupProfile(
   const res = await fetchPrivate(url);
   const payload: { zonefile: string; address: string } = await res.json();
   if (payload.hasOwnProperty('zonefile') && payload.hasOwnProperty('address')) {
-    return (await resolveZoneFileToProfile(payload.zonefile, payload.address)) as Record<
-      string,
-      any
-    > | null;
+    return (await resolveZoneFileToProfile(
+      payload.zonefile,
+      options.verify ? payload.address : undefined
+    )) as Record<string, any> | null;
   } else {
     throw new Error(
       'Invalid zonefile lookup response: did not contain `address`' + ' or `zonefile` field'

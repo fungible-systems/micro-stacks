@@ -64,5 +64,6 @@ export interface GetFileOptions extends GetFileUrlOptions {
 
 export interface ProfileLookupOptions {
   username: string;
+  verify?: boolean;
   zoneFileLookupURL?: string;
 }
