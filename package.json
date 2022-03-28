@@ -153,8 +153,6 @@
     "deno:types": "concurrently 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-clarity' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-connect' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-common' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-crypto' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-crypto-aes' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-network' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-storage' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-transactions' 'rollup -c \"./configs/rollup.config.deno-types.js\" --config-zone-file'",
     "build": "concurrently 'pnpm:build:*'",
     "build:api": "rollup -c \"./configs/rollup.config.js\" --config-api",
-    "build:bip39": "rollup -c \"./configs/rollup.config.js\" --config-bip39",
-    "build:bip32": "rollup -c \"./configs/rollup.config.js\" --config-bip32",
     "build:clarity": "rollup -c \"./configs/rollup.config.js\" --config-clarity",
     "build:connect": "rollup -c \"./configs/rollup.config.js\" --config-connect",
     "build:common": "rollup -c \"./configs/rollup.config.js\" --config-common",
