@@ -54,8 +54,11 @@ export async function encryptECIES(options: EncryptECIESOptions): Promise<Cipher
     cipherText: cipherTextString,
     mac: bytesToHex(mac),
     wasString,
-    cipherTextEncoding,
   };
+
+  if (cipherTextEncoding && cipherTextEncoding !== 'hex') {
+    result.cipherTextEncoding = cipherTextEncoding;
+  }
 
   return result;
 }
