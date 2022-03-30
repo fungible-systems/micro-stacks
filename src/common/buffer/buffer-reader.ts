@@ -66,14 +66,17 @@ export class BufferReader {
   }
 
   readUInt32BE(offset?: number): number {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     return this._readNumberValue(this.view.getUint32, 4, offset);
   }
 
   readUInt8(offset?: number): number {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     return this._readNumberValue(this.view.getUint8, 1, offset);
   }
 
   readUInt16BE(offset?: number): number {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     return this._readNumberValue(this.view.getUint16, 2, offset);
   }
 
@@ -93,6 +96,7 @@ export class BufferReader {
     if (typeof BigInt === 'undefined') {
       throw new Error('Platform does not support JS BigInt type.');
     }
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     return this._readNumberValue(this.view.getBigUint64, 8, offset);
   }
 

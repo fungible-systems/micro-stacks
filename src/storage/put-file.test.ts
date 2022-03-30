@@ -97,6 +97,7 @@ describe(putFile.name, () => {
       const publicURL = await putFile(path, fileContent, encryptOptions);
       expect(publicURL).toEqual(fullReadUrl);
       const encryptedContent = uploadToGaiaHub.mock.calls[0][0].contents;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       fetchMock.once(encryptedContent);
       const readContent = await getFile(path, decryptOptions);
       const readContentStr = bytesToUtf8(readContent as Uint8Array);
@@ -129,6 +130,7 @@ describe(putFile.name, () => {
       const publicURL = await putFile(path, fileContent, encryptOptions);
       const postedContent = uploadToGaiaHub.mock.calls[0][0].contents;
       expect(publicURL).toEqual(fullReadUrl);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       fetchMock.once(postedContent, {
         headers: {
           'Content-Type': 'text/plain; charset=utf-8',
@@ -165,6 +167,7 @@ describe(putFile.name, () => {
       const publicURL = await putFile(path, fileContent, encryptOptions);
       const postedContent = uploadToGaiaHub.mock.calls[0][0].contents;
       expect(publicURL).toEqual(fullReadUrl);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       fetchMock.once(postedContent, {
         headers: {
           'Content-Type': 'text/plain; charset=utf-8',

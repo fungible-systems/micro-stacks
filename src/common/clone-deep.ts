@@ -34,9 +34,10 @@ function deepCopy(obj: any) {
   }
 
   if (obj instanceof Object) {
-    return Object.keys(obj).reduce((newObj: Record<string, any>, key) => {
+    return Object.keys(obj as object).reduce((newObj: Record<string, any>, key) => {
       newObj[key] = deepCopy(obj[key]);
       return newObj;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     }, Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj)));
   }
 }

@@ -31,7 +31,11 @@ export class WebCryptoAesCipher implements AesCipher {
       false,
       ['encrypt']
     );
-    const result = await this.webCrypto.subtle.encrypt({ name: algo, iv }, cryptoKey, data);
+    const result: ArrayBuffer = await this.webCrypto.subtle.encrypt(
+      { name: algo, iv },
+      cryptoKey,
+      data
+    );
     return new Uint8Array(result);
   }
 
@@ -59,7 +63,11 @@ export class WebCryptoAesCipher implements AesCipher {
       false,
       ['decrypt']
     );
-    const result = await this.webCrypto.subtle.decrypt({ name: algo, iv }, cryptoKey, data);
+    const result: ArrayBuffer = await this.webCrypto.subtle.decrypt(
+      { name: algo, iv },
+      cryptoKey,
+      data
+    );
     return new Uint8Array(result);
   }
 }

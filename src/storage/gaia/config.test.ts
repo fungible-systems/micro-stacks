@@ -37,7 +37,7 @@ describe(makeScopedGaiaAuthToken.name, () => {
     });
     const publicKey = bytesToHex(getPublicKey(privateKey));
     const verifier = new TokenVerifier('ES256k', publicKey);
-    const isValid = await verifier.verify(config.token.split('v1:')[1]);
+    const isValid = verifier.verify(config.token.split('v1:')[1]);
     expect(isValid).toEqual(true);
   });
 });

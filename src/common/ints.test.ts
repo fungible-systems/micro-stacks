@@ -1,7 +1,8 @@
 import { intToBigInt } from 'micro-stacks/common';
 import BN from 'bn.js';
 
-const bn = new BN(10);
+const bn: any = new BN(10);
+
 describe(intToBigInt.name, () => {
   test('can convert hex', () => {
     const value = intToBigInt(0x01);
@@ -32,7 +33,7 @@ describe(intToBigInt.name, () => {
   });
 
   it('can convert BN', () => {
-    const value = intToBigInt(bn as any);
+    const value = intToBigInt(bn as unknown as number);
     expect(value).toBe(10n);
   });
 });

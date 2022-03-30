@@ -22,7 +22,8 @@ export async function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddr
   if (tokenFileUrl) {
     try {
       const response = await fetchPrivate(tokenFileUrl);
-      const tokenRecords = await response.json();
+      const tokenRecords: any[] = await response.json();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       return extractProfile(tokenRecords[0].token, publicKeyOrAddress);
     } catch (e) {
       console.error(
