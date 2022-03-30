@@ -1,4 +1,4 @@
-import { getPublicKey } from 'micro-stacks/crypto';
+import { getPublicKey } from '../public-key';
 import { BufferArray, bytesToHex, ensureHexBytes, hexToBytes } from 'micro-stacks/common';
 import { hashSha256 } from 'micro-stacks/crypto-sha';
 
