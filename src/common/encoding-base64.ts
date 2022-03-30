@@ -119,7 +119,10 @@ function encodeChunk(uint8: Uint8Array, start: number, end: number, code: string
 
 const cacheMap = new Map();
 
-function getBase64Lookup(code: string) {
+function getBase64Lookup(code: string): {
+  lookup: string[];
+  revLookup: number[];
+} {
   if (cacheMap.has(code)) return cacheMap.get(code);
   const lookup: string[] = [];
   const revLookup: number[] = [];

@@ -23,7 +23,7 @@ import { cvToString } from './cv-to-string';
 const ADDRESS = 'SP2JXKMSH007NPYAQHKJPQMAQYAD90NQGTVJVQ02B';
 
 describe('Clarity Value To Clarity String Literal', () => {
-  test('Complex Tuple', async () => {
+  test('Complex Tuple', () => {
     const tuple = tupleCV({
       a: intCV(-1),
       b: uintCV(1),
@@ -66,7 +66,7 @@ describe('Clarity Value To Clarity String Literal', () => {
     );
   });
 
-  test('Hex Buffers', async () => {
+  test('Hex Buffers', () => {
     expect(cvToString(bufferCV(asciiToBytes('\n')))).toEqual('0x0a');
     expect(cvToString(bufferCV(hexToBytes('00')))).toEqual('0x00');
     expect(cvToString(bufferCV(Uint8Array.from([127])))).toEqual('0x7f');

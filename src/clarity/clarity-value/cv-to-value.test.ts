@@ -1,6 +1,6 @@
 import { cvToValue, intCV, uintCV } from 'micro-stacks/clarity';
 
-test('Clarity integer to JSON value', async () => {
+test('Clarity integer to JSON value', () => {
   // 53 bits is max safe integer and max supported by bn.js `toNumber()`
 
   const maxSafeInt = 2n ** 53n - 1n;

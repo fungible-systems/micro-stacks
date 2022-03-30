@@ -23,7 +23,7 @@ import { cvToJSON } from './cv-to-json';
 const ADDRESS = 'SP2JXKMSH007NPYAQHKJPQMAQYAD90NQGTVJVQ02B';
 
 describe('Clarity value to JSON', () => {
-  test('Complex Tuple', async () => {
+  test('Complex Tuple', () => {
     const g = standardPrincipalCV(ADDRESS);
     const h = contractPrincipalCV(ADDRESS, 'test');
     const tuple = tupleCV({
@@ -75,7 +75,7 @@ describe('Clarity value to JSON', () => {
     );
   });
 
-  test('Hex Buffer', async () => {
+  test('Hex Buffer', () => {
     expect(JSON.stringify(cvToJSON(bufferCV(asciiToBytes('\n'))))).toEqual(
       oneLineTrim`
         {"type":"(buff 1)",

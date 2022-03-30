@@ -13,10 +13,7 @@ import {
  * @returns {Object} - the verified, decoded profile token
  * @throws {Error} - throws an error if token verification fails
  */
-export async function verifyProfileToken(
-  token: string,
-  publicKeyOrAddress: string
-): Promise<TokenInterface> {
+export function verifyProfileToken(token: string, publicKeyOrAddress: string): TokenInterface {
   const decodedToken = decodeToken(token);
   if (!decodedToken) throw Error('no decoded token');
 
@@ -64,7 +61,7 @@ export async function verifyProfileToken(
     throw new Error('Invalid token verifier');
   }
 
-  const tokenVerified = await tokenVerifier.verify(token);
+  const tokenVerified = tokenVerifier.verify(token);
   if (!tokenVerified) {
     throw new Error('Token verification failed');
   }
@@ -83,12 +80,12 @@ export async function verifyProfileToken(
  * @throws {Error} - if the token isn't signed by the provided `publicKeyOrAddress`
  */
 
-export async function extractProfile(
+export function extractProfile(
   token: string,
   publicKeyOrAddress: string | null = null
-): Promise<Record<string, any>> {
+): Record<string, any> {
   const decodedToken = publicKeyOrAddress
-    ? await verifyProfileToken(token, publicKeyOrAddress)
+    ? verifyProfileToken(token, publicKeyOrAddress)
     : decodeToken(token);
 
   if (decodedToken && decodedToken.hasOwnProperty('payload')) {

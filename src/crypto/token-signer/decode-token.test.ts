@@ -1,6 +1,7 @@
 import { decodeToken as _decodeToken } from 'jsontokens';
 import { decodeToken } from './decode-token';
 import base64url from './base64url';
+import { TokenInterface } from 'micro-stacks/crypto';
 
 const sampleDecodedToken = {
   header: { typ: 'JWT', alg: 'ES256K' },
@@ -32,7 +33,7 @@ describe('Decode tokens', () => {
   });
   it('errors if object is passed', () => {
     expect(() => {
-      decodeToken({} as any);
+      decodeToken({} as unknown as TokenInterface);
     }).toThrow('Expected token payload to be a base64 or json string');
   });
 

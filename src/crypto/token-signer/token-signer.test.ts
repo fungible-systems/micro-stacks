@@ -69,6 +69,8 @@ describe(TokenSigner.name, () => {
     );
 
     expect(JSON.stringify(decodedToken.payload)).toBe(JSON.stringify(sampleDecodedToken.payload));
-    expect(() => new TokenSigner('ES256K', undefined as any)).toThrowError(MissingParametersError);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    expect(() => new TokenSigner('ES256K', undefined)).toThrowError(MissingParametersError);
   });
 });

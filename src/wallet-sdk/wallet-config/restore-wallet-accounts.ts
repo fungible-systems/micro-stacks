@@ -8,17 +8,17 @@ import { deriveManyAccountsForWallet } from '../account/derive-account';
  * @param wallet
  * @param walletConfig
  */
-export async function restoreWalletAccountsFromWalletConfig({
+export function restoreWalletAccountsFromWalletConfig({
   wallet,
   walletConfig,
 }: {
   wallet: Wallet;
   walletConfig: WalletConfig;
-}): Promise<Wallet> {
+}): Wallet {
   // if there is no wallet config, or no accounts, just return the wallet as-is
   if (!walletConfig || walletConfig.accounts.length === 0) return wallet;
   const total_accounts = walletConfig.accounts.length;
-  const accounts = await deriveManyAccountsForWallet(wallet, total_accounts);
+  const accounts = deriveManyAccountsForWallet(wallet, total_accounts);
   return {
     ...wallet,
     accounts,

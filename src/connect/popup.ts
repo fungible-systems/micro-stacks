@@ -21,7 +21,8 @@ export async function openTransactionPopup(options: {
     onFinish?.(data);
   } catch (e) {
     console.error(e);
-    onCancel?.((e as any).message);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    onCancel?.((e as unknown as any)?.message);
   }
 }
 
@@ -40,6 +41,7 @@ export async function openProfileUpdatePopup(options: {
     onFinish?.(data);
   } catch (e) {
     console.error(e);
-    onCancel?.((e as any).message);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    onCancel?.((e as unknown as any)?.message);
   }
 }

@@ -13,15 +13,9 @@ export function isNodeCryptoAvailable<T>(
     if (!resolvedResult) {
       return false;
     }
-    // eslint-disable-next-line import/no-nodejs-modules,no-restricted-modules,global-require
     const cryptoModule = require('crypto') as typeof import('crypto');
-    if (!cryptoModule) {
-      return false;
-    }
-    if (withFeature) {
-      const features = withFeature(cryptoModule);
-      return features;
-    }
+    if (!cryptoModule) return false;
+    if (withFeature) return withFeature(cryptoModule);
     return true;
   } catch (error) {
     return false;
@@ -51,8 +45,6 @@ export async function getCryptoLib(): Promise<WebCryptoLib | NodeCryptoLib> {
     };
   } else {
     try {
-      // eslint-disable-next-line max-len,import/no-nodejs-modules
-      // eslint-disable-next-line import/no-nodejs-modules,no-restricted-modules,global-require,@typescript-eslint/no-var-requires
       const nodeCrypto = require('crypto') as typeof import('crypto');
       return {
         lib: nodeCrypto,

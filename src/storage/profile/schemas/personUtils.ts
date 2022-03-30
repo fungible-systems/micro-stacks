@@ -238,6 +238,7 @@ export function getBirthDate(profile: any) {
   let birthDateString = null;
 
   if (profile.hasOwnProperty('birthDate')) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const date = new Date(profile.birthDate);
     birthDateString = `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   }

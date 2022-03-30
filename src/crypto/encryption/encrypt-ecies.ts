@@ -7,11 +7,23 @@ import { aes256CbcEncrypt } from 'micro-stacks/crypto-aes';
 import { sharedSecretToKeys } from '../common/shared-secret';
 import { hmacSha256 } from 'micro-stacks/crypto-hmac-sha';
 
+/**
+ * Encrypt content to elliptic curve publicKey using ECIES
+ * @return Object containing:
+ *  iv (initialization vector, hex encoding),
+ *  cipherText (cipher text either hex or base64 encoded),
+ *  mac (message authentication code, hex encoded),
+ *  ephemeral public key (hex encoded),
+ *  wasString (boolean indicating with or not to return a buffer or string on decrypt)
+ * @see https://cryptobook.nakov.com/asymmetric-key-ciphers/ecies-public-key-encryption
+ */
 export async function encryptECIES(options: EncryptECIESOptions): Promise<CipherObject> {
-  const { publicKey, content, cipherTextEncoding, wasString } = options;
+  const { publicKey, content, cipherTextEncoding = 'hex', wasString } = options;
   const ephemeralPrivateKey = utils.randomPrivateKey();
   const ephemeralPublicKey = getPublicKey(ephemeralPrivateKey, true);
+
   let sharedSecret = getSharedSecret(ephemeralPrivateKey, publicKey, true) as Uint8Array;
+
   // Trim the compressed mode prefix byte
   sharedSecret = sharedSecret.slice(1);
   const sharedKeys = sharedSecretToKeys(sharedSecret);
@@ -24,7 +36,7 @@ export async function encryptECIES(options: EncryptECIESOptions): Promise<Cipher
   );
 
   const macData = concatByteArrays([initializationVector, ephemeralPublicKey, cipherText]);
-  const mac = await hmacSha256(sharedKeys.hmacKey, macData);
+  const mac = hmacSha256(sharedKeys.hmacKey, macData);
 
   let cipherTextString: string;
 
@@ -42,9 +54,8 @@ export async function encryptECIES(options: EncryptECIESOptions): Promise<Cipher
     cipherText: cipherTextString,
     mac: bytesToHex(mac),
     wasString,
+    cipherTextEncoding,
   };
-  if (cipherTextEncoding && cipherTextEncoding !== 'hex') {
-    result.cipherTextEncoding = cipherTextEncoding;
-  }
+
   return result;
 }

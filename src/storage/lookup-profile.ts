@@ -15,7 +15,7 @@ export async function lookupProfile(
   if (!username) return Promise.reject();
   const url = `${zoneFileLookupURL.replace(/\/$/, '')}/${options.username}`;
   const res = await fetchPrivate(url);
-  const payload = await res.json();
+  const payload: { zonefile: string; address: string } = await res.json();
   if (payload.hasOwnProperty('zonefile') && payload.hasOwnProperty('address')) {
     return (await resolveZoneFileToProfile(payload.zonefile, payload.address)) as Record<
       string,
