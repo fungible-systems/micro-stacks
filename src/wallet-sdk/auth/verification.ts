@@ -13,11 +13,9 @@ import {
   decodeToken,
   Json,
   publicKeyToStxAddress,
-  TokenInterface,
   TokenVerifier,
 } from 'micro-stacks/crypto';
 import { getAddressFromDID } from 'micro-stacks/connect';
-import { publicKeyToBase58Address } from '../../../dist/crypto';
 import { fetchPrivate } from 'micro-stacks/common';
 
 /**
