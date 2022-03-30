@@ -1,4 +1,4 @@
-import { getPublicKey } from 'micro-stacks/crypto';
+import { getPublicKey } from '../public-key';
 import { bytesToHex, utf8ToBytes } from 'micro-stacks/common';
 import { encryptECIES } from './encrypt-ecies';
 import { signECDSA } from './sign';
