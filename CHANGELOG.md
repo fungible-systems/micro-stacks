@@ -1,5 +1,19 @@
 # micro-stacks
 
+## 0.3.0
+
+### Minor Changes
+
+- [#89](https://github.com/fungible-systems/micro-stacks/pull/89) [`b9899fd1`](https://github.com/fungible-systems/micro-stacks/commit/b9899fd1ba91e4019eb0c492fb14acae5d86accb) Thanks [@aulneau](https://github.com/aulneau)! - This update removes in the internal libraries bip32 and bip39 with https://github.com/paulmillr/scure-bip32 and https://github.com/paulmillr/scure-bip39. These packages have been adutied and are very small in size. They are now listed as peer deps, so if you want to make use of the `micro-stacks/wallet-sdk` module, you'll need to install these dependencies.
+
+  Additionally, this update adds a lot of addition wallet related functionality.
+
+### Patch Changes
+
+- [#90](https://github.com/fungible-systems/micro-stacks/pull/90) [`6498b147`](https://github.com/fungible-systems/micro-stacks/commit/6498b147bfbd37c33179e1ce68544d9f01699790) Thanks [@aulneau](https://github.com/aulneau)! - This update makes it so you can lookup a profile but not have to validate any signatures to get access to the data.
+
+* [#91](https://github.com/fungible-systems/micro-stacks/pull/91) [`7e3eff1d`](https://github.com/fungible-systems/micro-stacks/commit/7e3eff1d8c893ec5b787376a88a292cbcd3de135) Thanks [@hstove](https://github.com/hstove)! - Fixed an issue where requiring "micro-stacks/crypto" would throw a recursive require error in node.js contexts.
+
 ## 0.2.4
 
 ### Patch Changes
