@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.42% </span>
+                <span class="strong">68.75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>20/28</span>
+                <span class='fraction'>22/32</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">16.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>1/6</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">73.07% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/24</span>
+                <span class='fraction'>19/26</span>
             </div>
         
             
@@ -104,9 +104,13 @@
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -121,10 +125,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -135,6 +135,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -146,7 +148,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -154,7 +156,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Account } from '../types';
 import { bytesToHex, utf8ToBytes } from 'micro-stacks/common';
 import { hashSha256 } from 'micro-stacks/crypto-sha';
-import { HDKeychain } from <span class="cstat-no" title="statement not covered" >'micro-stacks/bip32';</span>
+import { HDKey, Versions } from <span class="cstat-no" title="statement not covered" >'@scure/bip32';</span>
+import { isHardened } from '../utils';
+&nbsp;
+const BITCOIN_VERSIONS: Versions = { private: 0x0488ade4, public: 0x0488b21e };
 &nbsp;
 function hashCode(string: string): number {
   let hash = 0;
@@ -167,11 +172,7 @@ function hashCode(string: string): number {
   return hash &amp; 0x7fffffff;
 }
 &nbsp;
-export async function getAppPrivateKey(
-  account: Account,
-  appDomain: string,
-  legacy = <span class="branch-0 cbranch-no" title="branch not covered" >true</span>
-): Promise&lt;string&gt; {
+export function getAppPrivateKey(account: Account, appDomain: string, legacy = <span class="branch-0 cbranch-no" title="branch not covered" >true)</span>: string {
   if (legacy) return getLegacyAppPrivateKey(account, appDomain);
   // Rather than using the `hashCode` function to derive an index for the child
   // which makes it so there's a unreasonable high probability that someone can
@@ -180,20 +181,22 @@ export async function getAppPrivateKey(
   // we want to use the `appDomain` + `salt` to generate a sha256 hash that is
   // then used as the chaincode for the new app keychain
   const chainCode<span class="cstat-no" title="statement not covered" > = hashSha256(utf8ToBytes(`${appDomain}${account.salt}`));</span>
-  const rootNode = HDKeychain.fromBase58(account.appsKey);
-  const appKeychain = <span class="cstat-no" title="statement not covered" >await HDKeychain.fromPrivateKey(rootNode.privateKey, chainCode).deriveChild(</span>
-    0,
-    true
-  );
+  const rootNode = HDKey.fromExtendedKey(account.appsKey);
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!rootNode.privateKey) <span class="cstat-no" title="statement not covered" >throw Error('no rootNode.privateKey');</span></span>
+  const appKeychain = <span class="cstat-no" title="statement not covered" >new HDKey({</span>
+    privateKey: rootNode.privateKey,
+    chainCode,
+    versions: BITCOIN_VERSIONS,
+  }).deriveChild(isHardened(0));
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!appKeychain.privateKey)</span>
 <span class="cstat-no" title="statement not covered" >    throw new Error('[micro-stacks/wallet-sdk] getAppPrivateKey: No private key found');</span>
 <span class="cstat-no" title="statement not covered" >  return bytesToHex(appKeychain.privateKey);</span>
 }
 &nbsp;
-export async function getLegacyAppPrivateKey(account: Account, appDomain: string): Promise&lt;string&gt; {
+export function getLegacyAppPrivateKey(account: Account, appDomain: string): string {
   const hashBuffer = bytesToHex(hashSha256(utf8ToBytes(`${appDomain}${account.salt}`)));
   const appIndex = hashCode(hashBuffer);
-  const appKeychain = await HDKeychain.fromBase58(account.appsKey).deriveChild(appIndex, true);
+  const appKeychain = HDKey.fromExtendedKey(account.appsKey).deriveChild(isHardened(appIndex));
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!appKeychain.privateKey)
 <span class="cstat-no" title="statement not covered" >    throw new Error('[micro-stacks/wallet-sdk] getLegacyAppPrivateKey: No private key found');</span>
   return bytesToHex(appKeychain.privateKey);
@@ -205,7 +208,7 @@ export async function getLegacyAppPrivateKey(account: Account, appDomain: string
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Mar 26 2022 14:18:13 GMT+0000 (Coordinated Universal Time)
+                at Sun Apr 03 2022 15:03:09 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

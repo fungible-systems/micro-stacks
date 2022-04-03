@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">90% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/9</span>
+                <span class='fraction'>9/10</span>
             </div>
         
             
@@ -107,20 +107,46 @@
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-yes">38x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-yes">38x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">38x</span>
 <span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-yes">23x</span>
@@ -152,8 +178,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -166,11 +194,23 @@ import { aes256CbcEncrypt } from 'micro-stacks/crypto-aes';
 import { sharedSecretToKeys } from '../common/shared-secret';
 import { hmacSha256 } from 'micro-stacks/crypto-hmac-sha';
 &nbsp;
+/**
+ * Encrypt content to elliptic curve publicKey using ECIES
+ * @return Object containing:
+ *  iv (initialization vector, hex encoding),
+ *  cipherText (cipher text either hex or base64 encoded),
+ *  mac (message authentication code, hex encoded),
+ *  ephemeral public key (hex encoded),
+ *  wasString (boolean indicating with or not to return a buffer or string on decrypt)
+ * @see https://cryptobook.nakov.com/asymmetric-key-ciphers/ecies-public-key-encryption
+ */
 export async function encryptECIES(options: EncryptECIESOptions): Promise&lt;CipherObject&gt; {
-  const { publicKey, content, cipherTextEncoding, wasString } = options;
+  const { publicKey, content, cipherTextEncoding = 'hex', wasString } = options;
   const ephemeralPrivateKey = utils.randomPrivateKey();
   const ephemeralPublicKey = getPublicKey(ephemeralPrivateKey, true);
+&nbsp;
   let sharedSecret = getSharedSecret(ephemeralPrivateKey, publicKey, true) as Uint8Array;
+&nbsp;
   // Trim the compressed mode prefix byte
   sharedSecret = sharedSecret.slice(1);
   const sharedKeys = sharedSecretToKeys(sharedSecret);
@@ -183,7 +223,7 @@ export async function encryptECIES(options: EncryptECIESOptions): Promise&lt;Cip
   );
 &nbsp;
   const macData = concatByteArrays([initializationVector, ephemeralPublicKey, cipherText]);
-  const mac = await hmacSha256(sharedKeys.hmacKey, macData);
+  const mac = hmacSha256(sharedKeys.hmacKey, macData);
 &nbsp;
   let cipherTextString: string;
 &nbsp;
@@ -202,9 +242,11 @@ export async function encryptECIES(options: EncryptECIESOptions): Promise&lt;Cip
     mac: bytesToHex(mac),
     wasString,
   };
+&nbsp;
   if (cipherTextEncoding &amp;&amp; cipherTextEncoding !== 'hex') {
     result.cipherTextEncoding = cipherTextEncoding;
   }
+&nbsp;
   return result;
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -214,7 +256,7 @@ export async function encryptECIES(options: EncryptECIESOptions): Promise&lt;Cip
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Mar 26 2022 14:18:13 GMT+0000 (Coordinated Universal Time)
+                at Sun Apr 03 2022 15:03:09 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.85% </span>
+                <span class="strong">93.75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/14</span>
+                <span class='fraction'>15/16</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.85% </span>
+                <span class="strong">93.75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/14</span>
+                <span class='fraction'>15/16</span>
             </div>
         
             
@@ -111,7 +111,11 @@
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -148,6 +152,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -157,21 +165,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { generateMnemonic, mnemonicToSeed } from 'micro-stacks/bip39';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { generateMnemonic, mnemonicToSeed } from '@scure/bip39';
+import { HDKey } from '@scure/bip32';
+import { wordlist } from '@scure/bip39/wordlists/english';
 import { bytesToHex } from 'micro-stacks/common';
-import { HDKeychain } from 'micro-stacks/bip32';
 &nbsp;
 import { deriveWalletKeys } from './derive';
 import { encryptMnemonic } from '../encryption/encrypt-mnemonic';
-import { deriveAccountFromWallet } from '../account/derive-account';
+import { deriveNextAccountFromWallet } from '../account/derive-account';
 &nbsp;
 import type { AllowedKeyEntropyBits, Wallet } from '../types';
 &nbsp;
@@ -192,7 +199,7 @@ export function generateSecretKey(entropy: AllowedKeyEntropyBits = 256): string 
         entropy
       )}".`
     );
-  return generateMnemonic(entropy);
+  return generateMnemonic(wordlist, entropy);
 }
 &nbsp;
 /**
@@ -201,10 +208,12 @@ export function generateSecretKey(entropy: AllowedKeyEntropyBits = 256): string 
  * @param password A password used to encrypt the wallet
  */
 export async function generateWallet(mnemonic: string, password: string): Promise&lt;Wallet&gt; {
-  const encryptedSecretKey = bytesToHex(await encryptMnemonic(mnemonic, password));
-  const walletKeys = await deriveWalletKeys(
-    await HDKeychain.fromSeed(await mnemonicToSeed(mnemonic))
-  );
+  const [seed, encryptedBytes] = await Promise.all([
+    mnemonicToSeed(mnemonic),
+    encryptMnemonic(mnemonic, password),
+  ]);
+  const encryptedSecretKey = bytesToHex(encryptedBytes);
+  const walletKeys = deriveWalletKeys(HDKey.fromMasterSeed(seed));
 &nbsp;
   return generateAndInsertNewAccount({
     ...walletKeys,
@@ -213,10 +222,10 @@ export async function generateWallet(mnemonic: string, password: string): Promis
   });
 }
 &nbsp;
-export async function generateAndInsertNewAccount(wallet: Wallet): Promise&lt;Wallet&gt; {
+export function generateAndInsertNewAccount(wallet: Wallet): Wallet {
   return {
     ...wallet,
-    accounts: [...wallet.accounts, await deriveAccountFromWallet(wallet)],
+    accounts: [...wallet.accounts, deriveNextAccountFromWallet(wallet)],
   };
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -226,7 +235,7 @@ export async function generateAndInsertNewAccount(wallet: Wallet): Promise&lt;Wa
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Mar 26 2022 14:18:13 GMT+0000 (Coordinated Universal Time)
+                at Sun Apr 03 2022 15:03:09 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>
