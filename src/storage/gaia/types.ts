@@ -17,7 +17,7 @@ export interface UploadResponse {
 export interface HubInfo {
   challenge_text: string;
   latest_auth_version: string;
-  max_file_upload_size_megabytes: null;
+  max_file_upload_size_megabytes: number | null;
   read_url_prefix: string;
 }
 

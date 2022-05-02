@@ -17,7 +17,7 @@ export * from './crypto/encryption/decrypt-content';
 export * from './crypto/encryption/encrypt-content';
 
 export type { SignedToken } from './crypto/token-signer/types';
-export type { Json } from './crypto/token-signer/types';
+export type { Json, JSONObject } from './crypto/token-signer/types';
 export type { TokenInterface } from './crypto/token-signer/types';
 export type {
   DecryptECIESOptions,
