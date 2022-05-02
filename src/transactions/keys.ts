@@ -22,6 +22,7 @@ import {
   StacksMessageType,
   UNCOMPRESSED_PUBKEY_LENGTH_BYTES,
 } from 'micro-stacks/clarity';
+import { isCompressedPublicKey } from 'micro-stacks/crypto';
 
 export interface StacksPublicKey {
   readonly type: StacksMessageType.PublicKey;
@@ -57,7 +58,7 @@ export function publicKeyToString(key: StacksPublicKey): string {
 }
 
 export function isCompressed(key: StacksPublicKey): boolean {
-  return !publicKeyToString(key).startsWith('04');
+  return isCompressedPublicKey(key.data);
 }
 
 export function isPrivateKeyCompressed(key: string | Uint8Array) {
