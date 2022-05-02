@@ -405,8 +405,9 @@ describe('tx builders', function () {
 
     const bufferReader = new BufferReader(serializedTx);
 
-    // Should not be able to deserializeTransaction due to missing signatures.
-    expect(() => deserializeTransaction(bufferReader)).toThrow('Incorrect number of signatures');
+    // Partially signed multi-sig tx can be serialized and deserialized without exception (Incorrect number of signatures)
+    // Should be able to deserialize as number of signatures are less than signatures required
+    expect(() => deserializeTransaction(bufferReader)).not.toThrowError();
 
     // Now add the required signatures in the original transactions
     const signer = new TransactionSigner(transaction);
@@ -542,7 +543,7 @@ describe('tx builders', function () {
 
     // deserialize
     const bufferReader2 = new BufferReader(partiallySignedSerialized);
-    expect(() => deserializeTransaction(bufferReader2)).toThrow('Incorrect number of signatures');
+    expect(() => deserializeTransaction(bufferReader2)).not.toThrowError();
 
     // finish signing with new TransactionSigner
     const signer2 = new TransactionSigner(transaction);
