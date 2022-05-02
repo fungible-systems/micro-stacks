@@ -376,7 +376,7 @@ export function deserializeMultiSigSpendingCondition(
   // SerializeP2SH would allow it, but it does not follow the standard
   // SerializeP2WSH (segwit) does _not_ allow for it
   if (haveUncompressed && hashMode === AddressHashMode.SerializeP2WSH)
-    throw new TypeError('Uncompressed keys are not allowed in this hash mode');
+    throw new TypeError('Public keys must be compressed for segwit');
 
   return {
     hashMode,
