@@ -369,9 +369,13 @@ export function deserializeMultiSigSpendingCondition(
 
   const signaturesRequired = bufferReader.readUInt16BE();
 
-  if (numSigs !== signaturesRequired) throw new TypeError(`Incorrect number of signatures`);
+  // Partially signed multi-sig tx can be serialized and deserialized without exception (Incorrect number of signatures)
+  // No need to check numSigs !== signaturesRequired to throw Incorrect number of signatures error
 
-  if (haveUncompressed && hashMode === AddressHashMode.SerializeP2SH)
+  // Uncompressed keys are incompatible with BIP067 @see https://github.com/bitcoin/bips/blob/master/bip-0067.mediawiki
+  // SerializeP2SH would allow it, but it does not follow the standard
+  // SerializeP2WSH (segwit) does _not_ allow for it
+  if (haveUncompressed && hashMode === AddressHashMode.SerializeP2WSH)
     throw new TypeError('Uncompressed keys are not allowed in this hash mode');
 
   return {
@@ -594,7 +598,10 @@ function verifyMultiSig(
   if (numSigs !== condition.signaturesRequired)
     throw new TypeError('Incorrect number of signatures');
 
-  if (haveUncompressed && condition.hashMode === AddressHashMode.SerializeP2SH)
+  // Uncompressed keys are incompatible with BIP067 @see https://github.com/bitcoin/bips/blob/master/bip-0067.mediawiki
+  // SerializeP2SH would allow it, but it does not follow the standard
+  // SerializeP2WSH (segwit) does _not_ allow for it
+  if (haveUncompressed && condition.hashMode === AddressHashMode.SerializeP2WSH)
     throw new TypeError('Uncompressed keys are not allowed in this hash mode');
 
   const addrBytes = addressFromPublicKeys(
