@@ -1,6 +1,6 @@
 // Derived from https://github.com/Brightspace/node-ecdsa-sig-formatter
 
-import { base64ToBytes, bytesToBase64, copy } from 'micro-stacks/common';
+import { base64ToBytes, bytesToBase64Url, copy } from 'micro-stacks/common';
 
 const MAX_OCTET = 0x80;
 const CLASS_UNIVERSAL = 0;
@@ -121,7 +121,7 @@ export function derToJoseES256(sig: string | Uint8Array) {
   }
   dst.set(signature.slice(sOffset + Math.max(-sPadding, 0), sOffset + sLength), offset);
 
-  return bytesToBase64(dst).replace(/=/g, '');
+  return bytesToBase64Url(dst).replace(/=/g, '');
 }
 
 function countPadding(buf: Uint8Array, start: number, stop: number) {
@@ -184,5 +184,5 @@ export function joseToDerES256(sig: string | Uint8Array) {
     copy(signature, dst, offset, paramBytes + sPadding);
   }
 
-  return bytesToBase64(dst).replace(/=/g, '');
+  return bytesToBase64Url(dst).replace(/=/g, '');
 }

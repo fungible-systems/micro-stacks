@@ -38,13 +38,14 @@ export function createStacksPublicKey(key: string): StacksPublicKey {
 export function publicKeyFromSignature(
   message: string,
   messageSignature: MessageSignature,
-  pubKeyEncoding = PubKeyEncoding.Compressed
+  pubKeyEncoding = PubKeyEncoding.Compressed,
+  mode = 'vrs' as 'vrs' | 'rsv'
 ): string {
-  const parsedSignature = parseRecoverableSignature(messageSignature.data);
+  const parsedSignature = parseRecoverableSignature(messageSignature.data, mode);
   const signature = new Signature(hexToBigInt(parsedSignature.r), hexToBigInt(parsedSignature.s));
   const point = Point.fromSignature(message, signature, parsedSignature.recoveryParam);
-  const compressed = pubKeyEncoding === PubKeyEncoding.Compressed;
-  return point.toHex(compressed);
+  const isCompressed = pubKeyEncoding === PubKeyEncoding.Compressed;
+  return point.toHex(isCompressed);
 }
 
 export function publicKeyFromBuffer(data: Uint8Array): StacksPublicKey {
@@ -168,18 +169,28 @@ export function getSignatureRecoveryParam(signature: string) {
   return hexStringToInt(recoveryParamHex);
 }
 
-export function parseRecoverableSignature(signature: string) {
+export function parseRecoverableSignature(signature: string, mode = 'vrs' as 'vrs' | 'rsv') {
   const coordinateValueBytes = 32;
   if (signature.length < coordinateValueBytes * 2 * 2 + 1) {
     throw new Error('Invalid signature');
   }
-  const recoveryParamHex = signature.substr(0, 2);
-  const r = signature.substr(2, coordinateValueBytes * 2);
-  const s = signature.substr(2 + coordinateValueBytes * 2, coordinateValueBytes * 2);
+  if (mode === 'vrs') {
+    const recoveryParamHex = signature.substr(0, 2);
+    const r = signature.substr(2, coordinateValueBytes * 2);
+    const s = signature.substr(2 + coordinateValueBytes * 2, coordinateValueBytes * 2);
+    return {
+      recoveryParam: hexStringToInt(recoveryParamHex),
+      r,
+      s,
+    };
+  }
+  const r = signature.substr(0, coordinateValueBytes * 2);
+  const s = signature.substr(coordinateValueBytes * 2, coordinateValueBytes * 2);
+  const recoveryParamHex = signature.substr(coordinateValueBytes * 2 * 2, 2);
   return {
-    recoveryParam: hexStringToInt(recoveryParamHex),
     r,
     s,
+    recoveryParam: hexStringToInt(recoveryParamHex),
   };
 }
 

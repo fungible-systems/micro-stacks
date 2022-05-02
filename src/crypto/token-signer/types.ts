@@ -1,3 +1,9 @@
+export type Json = string | number | boolean | null | Json[] | { [key: string]: Json };
+
+export interface JSONObject {
+  [key: string]: Json;
+}
+
 export interface TokenInterface {
   header: {
     [key: string]: string | Json;
@@ -21,8 +27,6 @@ export interface TokenInterfaceEncodedObject {
   payload: string;
   signature: string;
 }
-
-export type Json = string | number | boolean | null | { [property: string]: Json } | Json[];
 
 export interface SignedToken {
   header: string[];

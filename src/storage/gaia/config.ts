@@ -45,16 +45,27 @@ export async function makeScopedGaiaAuthToken(options: ScopedGaiaTokenOptions): 
   return `v1:${token}`;
 }
 
+const DEFAULT_PAYLOAD: HubInfo = {
+  challenge_text: '["gaiahub","0","storage2.blockstack.org","blockstack_storage_please_sign"]',
+  latest_auth_version: 'v1',
+  max_file_upload_size_megabytes: 20,
+  read_url_prefix: 'https://gaia.blockstack.org/hub/',
+};
+
 /**
  * Generates a gaia hub config to share with someone so they can edit a file
  */
 export async function generateGaiaHubConfig(
-  options: GenerateGaiaHubConfigOptions
+  options: GenerateGaiaHubConfigOptions,
+  fetchHubInfo = false
 ): Promise<GaiaHubConfig> {
   const { gaiaHubUrl, privateKey, associationToken, scopes } = options;
+  let hubInfo = DEFAULT_PAYLOAD;
 
-  const response = await fetchPrivate(`${gaiaHubUrl}/hub_info`);
-  const hubInfo: HubInfo = await response.json();
+  if (fetchHubInfo) {
+    const response = await fetchPrivate(`${gaiaHubUrl}/hub_info`);
+    hubInfo = await response.json();
+  }
 
   const { read_url_prefix: url_prefix, max_file_upload_size_megabytes } = hubInfo;
 
@@ -73,6 +84,6 @@ export async function generateGaiaHubConfig(
     url_prefix,
     token,
     server: gaiaHubUrl,
-    max_file_upload_size_megabytes: max_file_upload_size_megabytes as any,
+    max_file_upload_size_megabytes: max_file_upload_size_megabytes ?? 20,
   };
 }

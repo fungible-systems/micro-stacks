@@ -1,4 +1,4 @@
-import { FinishedTxData } from '../popup';
+import { FinishedTxData, SignatureData } from '../popup';
 
 export interface StacksProvider {
   /**
@@ -25,6 +25,19 @@ export interface StacksProvider {
    * @returns an authResponse string in the form of a JSON web token
    */
   authenticationRequest(payload: string): Promise<string>;
+
+  /**
+   * Request to sign a message
+   *
+   * @param payload - a JSON web token representing a transaction request
+   */
+  signatureRequest(payload: string): Promise<SignatureData>;
+  /**
+   * Request to sign a clarity message
+   *
+   * @param payload - a JSON web token representing a transaction request
+   */
+  structuredDataSignatureRequest(payload: string): Promise<SignatureData>;
 
   getProductInfo:
     | undefined
