@@ -7,3 +7,4 @@ export * from './connect/authentication';
 export * from './connect/auth/types';
 export * from './connect/auth/decode-auth-response';
 export * from './connect/popup';
+export { genericTransactionPopupFactory } from './connect/popup-helper';
