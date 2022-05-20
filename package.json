@@ -238,7 +238,7 @@
     "@scure/bip39": "1.0.0",
     "@stacks/auth": "4.1.0",
     "@stacks/connect": "6.7.0",
-    "@stacks/encryption": "3.0.0-beta.0",
+    "@stacks/encryption": "4.1.0",
     "@stacks/prettier-config": "0.0.9",
     "@stacks/stacks-blockchain-api-types": "0.70.0",
     "@stacks/transactions": "3.0.0-beta.0",
@@ -302,7 +302,8 @@
   "resolutions": {
     "@typescript-eslint/eslint-plugin": "5.0.0-alpha.42",
     "@typescript-eslint/parser": "5.0.0-alpha.42",
-    "eslint": "8.0.0"
+    "eslint": "8.0.0",
+    "@stacks/encryption": "4.1.0"
   },
   "peerDependencies": {
     "@scure/bip32": "1.0.1",

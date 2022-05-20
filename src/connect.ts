@@ -19,7 +19,8 @@ export {
   handleSignStructuredDataRequest,
   generateSignStructuredDataPayload,
 } from './connect/message-signing/structured-message';
-export { verifySignedMessage, hashMessage } from './connect/message-signing/verify';
+export { hashMessage, encodeMessage, decodeMessage } from './connect/message-signing/encoding';
+export { verifyMessageSignature, extractSignatureParts } from './connect/message-signing/verify';
 export type {
   SignatureRequestOptions,
   StructuredSignatureRequestOptions,

@@ -4,6 +4,7 @@ overrides:
   '@typescript-eslint/eslint-plugin': 5.0.0-alpha.42
   '@typescript-eslint/parser': 5.0.0-alpha.42
   eslint: 8.0.0
+  '@stacks/encryption': 4.1.0
 
 specifiers:
   '@babel/core': 7.15.8
@@ -31,7 +32,7 @@ specifiers:
   '@scure/bip39': 1.0.0
   '@stacks/auth': 4.1.0
   '@stacks/connect': 6.7.0
-  '@stacks/encryption': 3.0.0-beta.0
+  '@stacks/encryption': 4.1.0
   '@stacks/prettier-config': 0.0.9
   '@stacks/stacks-blockchain-api-types': 0.70.0
   '@stacks/transactions': 3.0.0-beta.0
@@ -116,7 +117,7 @@ devDependencies:
   '@scure/bip39': 1.0.0
   '@stacks/auth': 4.1.0
   '@stacks/connect': 6.7.0
-  '@stacks/encryption': 3.0.0-beta.0
+  '@stacks/encryption': 4.1.0
   '@stacks/prettier-config': 0.0.9
   '@stacks/stacks-blockchain-api-types': 0.70.0
   '@stacks/transactions': 3.0.0-beta.0
@@ -2296,22 +2297,6 @@ packages:
       - encoding
     dev: true
 
-  /@stacks/encryption/3.0.0-beta.0:
-    resolution: {integrity: sha512-A1d8ElCeTTMZmdQ+wIW9m91IbFt5+Io3EoLj7dUGM3moaVdmsErR2aWzl30EbaWloIweRI1ZPJaZ8N3X5llzfA==}
-    deprecated: published by mistake
-    dependencies:
-      '@stacks/common': 3.0.0-beta.0
-      '@types/bn.js': 4.11.6
-      '@types/node': 14.17.34
-      bip39: 3.0.4
-      bitcoinjs-lib: 5.2.0
-      bn.js: 4.12.0
-      elliptic: 6.5.4
-      randombytes: 2.1.0
-      ripemd160-min: 0.0.6
-      sha.js: 2.4.11
-    dev: true
-
   /@stacks/encryption/4.1.0:
     resolution: {integrity: sha512-3zbLk1AKShn/+mkSrMS8UXtyd4rXdtr7tjPfJLSF2Q+IfZiPNqP5oQdbXAOp0t8uehno/pOKnttmNIgLZTnwVg==}
     dependencies:
@@ -2734,10 +2719,6 @@ packages:
 
   /@types/node/10.12.18:
     resolution: {integrity: sha512-fh+pAqt4xRzPfqA6eh3Z2y6fyZavRIumvjhaCL753+TVkGKGhpPeyrJG2JftD0T9q4GF00KjefsQ+PQNDdWQaQ==}
-    dev: true
-
-  /@types/node/11.11.6:
-    resolution: {integrity: sha512-Exw4yUWMBXM3X+8oqzJNRqZSwUAaS4+7NdvHqQuFi/d+synz++xmX3QIf+BFqneW8N31R8Ky+sikfZUXq07ggQ==}
     dev: true
 
   /@types/node/12.20.37:
@@ -3381,10 +3362,6 @@ packages:
     engines: {node: '>=6.0.0'}
     dev: true
 
-  /bech32/1.1.4:
-    resolution: {integrity: sha512-s0IrSOzLlbvX7yp4WBfPITzpAU8sqQcpsmwXDiKwrG4r491vwCO/XpejasRNl0piBMe/DvP4Tz0mIS/X1DPJBQ==}
-    dev: true
-
   /better-path-resolve/1.0.0:
     resolution: {integrity: sha512-pbnl5XzGBdrFU/wT4jqmJVPn2B6UHPBOhzMQkY/SPUPB6QtUXtmBHBIwCbXJol93mOpGMnQyP/+BB19q04xj7g==}
     engines: {node: '>=4'}
@@ -3412,11 +3389,6 @@ packages:
       file-uri-to-path: 1.0.0
     dev: true
 
-  /bip174/2.0.1:
-    resolution: {integrity: sha512-i3X26uKJOkDTAalYAp0Er+qGMDhrbbh2o93/xiPyAN2s25KrClSpe3VXo/7mNJoqA5qfko8rLS2l3RWZgYmjKQ==}
-    engines: {node: '>=8.0.0'}
-    dev: true
-
   /bip32/2.0.6:
     resolution: {integrity: sha512-HpV5OMLLGTjSVblmrtYRfFFKuQB+GArM0+XP8HGWfJ5vxYBqo+DesvJwOdC2WJ3bCkZShGf0QIfoIpeomVzVdA==}
     engines: {node: '>=6.0.0'}
@@ -3427,46 +3399,6 @@ packages:
       create-hmac: 1.1.7
       tiny-secp256k1: 1.1.6
       typeforce: 1.18.0
-      wif: 2.0.6
-    dev: true
-
-  /bip39/3.0.4:
-    resolution: {integrity: sha512-YZKQlb752TrUWqHWj7XAwCSjYEgGAk+/Aas3V7NyjQeZYsztO8JnQUaCWhcnL4T+jL8nvB8typ2jRPzTlgugNw==}
-    dependencies:
-      '@types/node': 11.11.6
-      create-hash: 1.2.0
-      pbkdf2: 3.1.2
-      randombytes: 2.1.0
-    dev: true
-
-  /bip66/1.1.5:
-    resolution: {integrity: sha1-AfqHSHhcpwlV1QESF9GzE5lpyiI=}
-    dependencies:
-      safe-buffer: 5.2.1
-    dev: true
-
-  /bitcoin-ops/1.4.1:
-    resolution: {integrity: sha512-pef6gxZFztEhaE9RY9HmWVmiIHqCb2OyS4HPKkpc6CIiiOa3Qmuoylxc5P2EkU3w+5eTSifI9SEZC88idAIGow==}
-    dev: true
-
-  /bitcoinjs-lib/5.2.0:
-    resolution: {integrity: sha512-5DcLxGUDejgNBYcieMIUfjORtUeNWl828VWLHJGVKZCb4zIS1oOySTUr0LGmcqJBQgTBz3bGbRQla4FgrdQEIQ==}
-    engines: {node: '>=8.0.0'}
-    dependencies:
-      bech32: 1.1.4
-      bip174: 2.0.1
-      bip32: 2.0.6
-      bip66: 1.1.5
-      bitcoin-ops: 1.4.1
-      bs58check: 2.1.2
-      create-hash: 1.2.0
-      create-hmac: 1.1.7
-      merkle-lib: 2.0.10
-      pushdata-bitcoin: 1.0.1
-      randombytes: 2.1.0
-      tiny-secp256k1: 1.1.6
-      typeforce: 1.18.0
-      varuint-bitcoin: 1.1.2
       wif: 2.0.6
     dev: true
 
@@ -7100,10 +7032,6 @@ packages:
     engines: {node: '>= 8'}
     dev: true
 
-  /merkle-lib/2.0.10:
-    resolution: {integrity: sha1-grjbrnXieneFOItz+ddyXQ9vMyY=}
-    dev: true
-
   /micro-bmark/0.1.3:
     resolution: {integrity: sha512-vZ/B9WET+y4cWwfAOGdj3u5W31Ts2wxjLeCVvd7iNXJYONX6DAEBJCuXrdzzMWQHWJQTXgGEryrdNhY2JUz4Uw==}
     dev: true
@@ -7906,12 +7834,6 @@ packages:
   /punycode/2.1.1:
     resolution: {integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==}
     engines: {node: '>=6'}
-    dev: true
-
-  /pushdata-bitcoin/1.0.1:
-    resolution: {integrity: sha1-FZMdPNlnreUiBvUjqnMxrvfUOvc=}
-    dependencies:
-      bitcoin-ops: 1.4.1
     dev: true
 
   /query-string/6.14.1:
