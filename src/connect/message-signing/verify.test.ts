@@ -1,6 +1,5 @@
 import { bytesToHex, hexToBytes } from 'micro-stacks/common';
-import { cvToHex, uintCV } from '@stacks/transactions';
-import { tupleCV } from 'micro-stacks/clarity';
+import { tupleCV, cvToHex, uintCV } from 'micro-stacks/clarity';
 import { verifyMessageSignature, extractSignatureParts } from './verify';
 import { hashMessage } from './encoding';
 
