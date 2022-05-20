@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.5.0
+
+### Minor Changes
+
+- [#96](https://github.com/fungible-systems/micro-stacks/pull/96) [`7f94bc66`](https://github.com/fungible-systems/micro-stacks/commit/7f94bc66152898920b149fb7adde95b4b60704a2) Thanks [@aulneau](https://github.com/aulneau)! - This fixes some of the implementation around message signing to include the message prefix.
+
 ## 0.4.0
 
 ### Minor Changes
