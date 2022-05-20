@@ -23,3 +23,7 @@ export interface SignatureData {
 
 export const openSignMessagePopup =
   genericTransactionPopupFactory<SignatureData>('signatureRequest');
+
+export const openSignStructuredDataPopup = genericTransactionPopupFactory<SignatureData>(
+  'structuredDataSignatureRequest'
+);

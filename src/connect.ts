@@ -4,6 +4,7 @@ export * from './connect/common/utils';
 export * from './connect/tx/index';
 export * from './connect/tx/types';
 export * from './connect/authentication';
+export * from './connect/message-signing';
 export * from './connect/auth/types';
 export * from './connect/auth/decode-auth-response';
 export * from './connect/popup';
