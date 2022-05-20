@@ -7,6 +7,14 @@ export function writeUInt8(buffer: Uint8Array, value: number, offset: number): n
   return offset + 1;
 }
 
+export function writeUInt16LE(buffer: Uint8Array, value: number, offset: number): number {
+  value = +value;
+  offset = offset >>> 0;
+  buffer[offset] = value & 0xff;
+  buffer[offset + 1] = value >>> 8;
+  return offset + 2;
+}
+
 export function writeUInt16BE(buffer: Uint8Array, value: number, offset: number): number {
   value = +value;
   offset = offset >>> 0;
@@ -20,6 +28,11 @@ export function readUInt8(buffer: Uint8Array, offset: number) {
   return buffer[offset];
 }
 
+export function readUInt16LE(buffer: Uint8Array, offset: number) {
+  offset = offset >>> 0;
+  return buffer[offset] | (buffer[offset + 1] << 8);
+}
+
 export function readInt32LE(buffer: Uint8Array, offset: number): number {
   offset >>>= 0;
   return (
@@ -27,6 +40,15 @@ export function readInt32LE(buffer: Uint8Array, offset: number): number {
     (buffer[offset + 1] << 8) |
     (buffer[offset + 2] << 16) |
     (buffer[offset + 3] << 24)
+  );
+}
+
+export function readUInt32LE(buffer: Uint8Array, offset: number): number {
+  offset = offset >>> 0;
+
+  return (
+    (buffer[offset] | (buffer[offset + 1] << 8) | (buffer[offset + 2] << 16)) +
+    buffer[offset + 3] * 0x1000000
   );
 }
 

@@ -1,37 +1,47 @@
 import { parseRecoverableSignature } from 'micro-stacks/transactions';
 import { recoverPublicKey, Signature, verify } from '@noble/secp256k1';
-import { bytesToHex, hexToBigInt } from 'micro-stacks/common';
-import { hashSha256 } from 'micro-stacks/crypto-sha';
-import { utf8ToBytes } from '@noble/hashes/utils';
+import { hexToBigInt } from 'micro-stacks/common';
+import { hashMessage } from './encoding';
 
-export const hashMessage = (message: string) => bytesToHex(hashSha256(utf8ToBytes(message)));
-export const extractSignatureParts = (
-  hash: string,
-  recoverableSignature: string,
-  mode = 'vrs' as 'vrs' | 'rsv'
-) => {
-  const recovery = parseRecoverableSignature(recoverableSignature, mode);
+export const extractSignatureParts = (options: {
+  // sha256 hash
+  hash: string | Uint8Array;
+  signature: string;
+  mode?: 'vrs' | 'rsv';
+}) => {
+  const { hash, signature, mode = 'vrs' } = options;
+  const recovery = parseRecoverableSignature(signature, mode);
   const publicKey = recoverPublicKey(
     hash,
     new Signature(hexToBigInt(recovery.r), hexToBigInt(recovery.s)),
-    recovery.recoveryParam
+    recovery.recoveryParam,
+    true
   );
-  const signature = new Signature(hexToBigInt(recovery.r), hexToBigInt(recovery.s));
   return {
-    signature,
+    signature: new Signature(hexToBigInt(recovery.r), hexToBigInt(recovery.s)),
     publicKey,
     recoveryBytes: recovery.recoveryParam,
   };
 };
 
-export const verifySignedMessage = (
-  hash: string,
-  recoverableSignature: string,
-  mode = 'vrs' as 'vrs' | 'rsv'
-) => {
+export const verifyMessageSignature = (options: {
+  // string = message, bytes = hash
+  message: string | Uint8Array;
+  signature: string;
+  publicKey?: string;
+  mode?: 'vrs' | 'rsv';
+}) => {
+  const { message, signature, mode = 'vrs', publicKey } = options;
   try {
-    const { signature, publicKey } = extractSignatureParts(hash, recoverableSignature, mode);
-    return verify(signature, hash, publicKey);
+    const hash = typeof message === 'string' ? hashMessage(message) : message;
+
+    const recovery = extractSignatureParts({
+      hash,
+      signature,
+      mode,
+    });
+
+    return verify(recovery.signature, hash, publicKey ?? recovery.publicKey);
   } catch (e) {
     return false;
   }

@@ -3,7 +3,7 @@ import {
   generateSignMessagePayload,
   generateSignStructuredDataPayload,
   hashMessage,
-  verifySignedMessage,
+  verifyMessageSignature,
 } from 'micro-stacks/connect';
 import { utils } from '@noble/secp256k1';
 import { getAddressFromPrivateKey } from '@stacks/transactions';
@@ -70,17 +70,23 @@ describe('Signed message', () => {
 
   test('signWithKey', async () => {
     const stacksPrivateKey = utils.randomPrivateKey();
-    const publicKey = bytesToHex(getPublicKey(stacksPrivateKey));
+    const publicKey = bytesToHex(getPublicKey(stacksPrivateKey, true));
     const hash = hashMessage('hello');
     const signatureVrs = await signWithKey(
       {
         data: stacksPrivateKey,
         compressed: false,
       },
-      hash
+      bytesToHex(hash)
     );
-    const verify = verifySignedMessage(hash, signatureVrs.data);
-    const parts = extractSignatureParts(hash, signatureVrs.data);
+    const verify = verifyMessageSignature({
+      message: hash,
+      signature: signatureVrs.data,
+    });
+    const parts = extractSignatureParts({
+      hash,
+      signature: signatureVrs.data,
+    });
 
     expect(bytesToHex(parts.publicKey)).toEqual(publicKey);
     expect(intToHexString(parts.recoveryBytes, 1) + parts.signature.toCompactHex()).toEqual(
