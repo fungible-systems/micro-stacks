@@ -22,7 +22,6 @@ export function genericTransactionPopupFactory<OnFinishedPayload, ErrorMessagePa
 
       onFinish?.(responsePayload as unknown as OnFinishedPayload);
     } catch (e) {
-      console.error(e);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       onCancel?.((e as unknown as any)?.message);
     }

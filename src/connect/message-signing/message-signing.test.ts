@@ -6,15 +6,15 @@ import {
   verifyMessageSignature,
 } from 'micro-stacks/connect';
 import { utils } from '@noble/secp256k1';
-import { getAddressFromPrivateKey } from '@stacks/transactions';
+
 import { stringAsciiCV, tupleCV } from 'micro-stacks/clarity';
-import { getPublicKey } from 'micro-stacks/crypto';
+import { getPublicKey, privateKeyToStxAddress } from 'micro-stacks/crypto';
 import { signWithKey } from 'micro-stacks/transactions';
 import { extractSignatureParts } from './verify';
 import { bytesToHex, intToHexString } from 'micro-stacks/common';
 
 const privateKey = '82db81f7710be42e5bbbab151801d41101c0af55f3b772cbaeae80cab7bd5b8f';
-const stxAddress = getAddressFromPrivateKey(privateKey);
+const stxAddress = privateKeyToStxAddress(privateKey);
 
 const baseOpts = {
   stxAddress,
