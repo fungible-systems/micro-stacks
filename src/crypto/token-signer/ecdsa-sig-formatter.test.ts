@@ -177,8 +177,9 @@ describe(derToJoseES256.name, function () {
 describe('ES256', function () {
   it('should jose -> der -> jose', function () {
     // Made with WebCrypto
+    // converted from base64 to base64url
     const expected =
-      'hZcxeeUZb6O0SuUP0ov/95+siZtQ6Ok9Z9dxhhw0PbcmuqkgQwnLyVzFt0aOzvLZZp7iP/H+jjpP1dCeaHZaOA';
+      'hZcxeeUZb6O0SuUP0ov_95-siZtQ6Ok9Z9dxhhw0PbcmuqkgQwnLyVzFt0aOzvLZZp7iP_H-jjpP1dCeaHZaOA';
     const der = joseToDerES256(expected);
     const actual = derToJoseES256(der);
     expect(actual).toEqual(expected);
@@ -186,8 +187,9 @@ describe('ES256', function () {
 
   it('should der -> jose -> der', function () {
     // Made with OpenSSL
+    // converted from base64 to base64url
     const expected =
-      'MEUCIQCFlzF55Rlvo7RK5Q/Si//3n6yJm1Do6T1n13GGHDQ9twIgJrqpIEMJy8lcxbdGjs7y2Wae4j/x/o46T9XQnmh2Wjg';
+      'MEUCIQCFlzF55Rlvo7RK5Q_Si__3n6yJm1Do6T1n13GGHDQ9twIgJrqpIEMJy8lcxbdGjs7y2Wae4j_x_o46T9XQnmh2Wjg';
     const jose = derToJoseES256(expected);
     const actual = joseToDerES256(jose);
 

@@ -25,6 +25,6 @@ jobs:
       - name: Install pnpm
         run: curl -f https://get.pnpm.io/v6.14.js | node - add --global pnpm@6
       - name: compressed size action
-        uses: fungible-systems/compressed-size-action@v2.0.3
+        uses: preactjs/compressed-size-action@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
