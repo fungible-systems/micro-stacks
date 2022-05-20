@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.4.0
+
+### Minor Changes
+
+- [#94](https://github.com/fungible-systems/micro-stacks/pull/94) [`ab417091`](https://github.com/fungible-systems/micro-stacks/commit/ab4170917293b4ee61fecf6329fad34d421c9290) Thanks [@aulneau](https://github.com/aulneau)! - This update introduces the signed messages functionality that is now supported in the Hiro web wallet.
+
 ## 0.3.0
 
 ### Minor Changes
