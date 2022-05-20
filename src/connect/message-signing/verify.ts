@@ -5,7 +5,7 @@ import { hashSha256 } from 'micro-stacks/crypto-sha';
 import { utf8ToBytes } from '@noble/hashes/utils';
 
 export const hashMessage = (message: string) => bytesToHex(hashSha256(utf8ToBytes(message)));
-export const verifySignedMessage = (
+export const extractSignatureParts = (
   hash: string,
   recoverableSignature: string,
   mode = 'vrs' as 'vrs' | 'rsv'
@@ -14,9 +14,25 @@ export const verifySignedMessage = (
   const publicKey = recoverPublicKey(
     hash,
     new Signature(hexToBigInt(recovery.r), hexToBigInt(recovery.s)),
-    recovery.recoveryParam,
-    true
+    recovery.recoveryParam
   );
   const signature = new Signature(hexToBigInt(recovery.r), hexToBigInt(recovery.s));
-  return verify(signature, hash, publicKey);
+  return {
+    signature,
+    publicKey,
+    recoveryBytes: recovery.recoveryParam,
+  };
+};
+
+export const verifySignedMessage = (
+  hash: string,
+  recoverableSignature: string,
+  mode = 'vrs' as 'vrs' | 'rsv'
+) => {
+  try {
+    const { signature, publicKey } = extractSignatureParts(hash, recoverableSignature, mode);
+    return verify(signature, hash, publicKey);
+  } catch (e) {
+    return false;
+  }
 };

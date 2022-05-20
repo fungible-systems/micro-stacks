@@ -2,12 +2,20 @@ import { SignatureRequestOptions, signMessage, signStructuredMessage } from '@st
 import {
   generateSignMessagePayload,
   generateSignStructuredDataPayload,
+  hashMessage,
+  verifySignedMessage,
 } from 'micro-stacks/connect';
+import { utils } from '@noble/secp256k1';
 import { getAddressFromPrivateKey } from '@stacks/transactions';
 import { stringAsciiCV, tupleCV } from 'micro-stacks/clarity';
+import { getPublicKey } from 'micro-stacks/crypto';
+import { signWithKey } from 'micro-stacks/transactions';
+import { extractSignatureParts } from './verify';
+import { bytesToHex, intToHexString } from 'micro-stacks/common';
 
 const privateKey = '82db81f7710be42e5bbbab151801d41101c0af55f3b772cbaeae80cab7bd5b8f';
 const stxAddress = getAddressFromPrivateKey(privateKey);
+
 const baseOpts = {
   stxAddress,
   message: 'hello world',
@@ -58,5 +66,27 @@ describe('Signed message', () => {
       privateKey,
     });
     expect(token).toEqual(token_2);
+  });
+
+  test('signWithKey', async () => {
+    const stacksPrivateKey = utils.randomPrivateKey();
+    const publicKey = bytesToHex(getPublicKey(stacksPrivateKey));
+    const hash = hashMessage('hello');
+    const signatureVrs = await signWithKey(
+      {
+        data: stacksPrivateKey,
+        compressed: false,
+      },
+      hash
+    );
+    const verify = verifySignedMessage(hash, signatureVrs.data);
+    const parts = extractSignatureParts(hash, signatureVrs.data);
+
+    expect(bytesToHex(parts.publicKey)).toEqual(publicKey);
+    expect(intToHexString(parts.recoveryBytes, 1) + parts.signature.toCompactHex()).toEqual(
+      signatureVrs.data
+    );
+
+    expect(verify).toEqual(true);
   });
 });
