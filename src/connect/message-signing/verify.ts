@@ -43,6 +43,7 @@ export const verifyMessageSignature = (options: {
 
     return verify(recovery.signature, hash, publicKey ?? recovery.publicKey);
   } catch (e) {
+    console.error('[micro-stacks] verifyMessageSignature failed', e);
     return false;
   }
 };
