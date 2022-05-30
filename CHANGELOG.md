@@ -1,5 +1,13 @@
 # micro-stacks
 
+## 0.5.1
+
+### Patch Changes
+
+- [#100](https://github.com/fungible-systems/micro-stacks/pull/100) [`7265154d`](https://github.com/fungible-systems/micro-stacks/commit/7265154d4aa8bc69f7adf62a83fbff7e866e4011) Thanks [@aulneau](https://github.com/aulneau)! - This update changes the underlying build tooling to make esm/cjs bundles work better in more applications (such as sveltekit).
+
+* [#99](https://github.com/fungible-systems/micro-stacks/pull/99) [`ccdfe6d5`](https://github.com/fungible-systems/micro-stacks/commit/ccdfe6d5c4e3ae4ca06903087bf0e831063d7511) Thanks [@aulneau](https://github.com/aulneau)! - Adds SIP-018 compatability to structured data signing. see https://github.com/stacksgov/sips/pull/57/commits/318bad31f09fb60b02181f1d1c81b26ba8254408 for more details
+
 ## 0.5.0
 
 ### Minor Changes
