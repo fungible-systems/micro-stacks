@@ -137,27 +137,29 @@ test(`[legacy] encrypt signed can be decrypted by micro-stacks`, async () => {
   expect(decrypted).toEqual(original);
 });
 
-test(`[legacy] decrypt and signed from micro-stacks`, async () => {
-  const privateKey = bytesToHex(noble.utils.randomPrivateKey());
-  const publicKey = bytesToHex(noble.getPublicKey(privateKey, true));
-  const original = 'hello world';
-
-  const cipherObject = await encryptContent(original, {
-    publicKey,
-    privateKey,
-    wasString: true,
-    sign: true,
-  });
-
-  const { cipherText, ...signedCipherObject }: SignedCipherObject = JSON.parse(cipherObject);
-
-  const verified = legacy_verifyECDSA(
-    cipherText,
-    signedCipherObject.publicKey,
-    signedCipherObject.signature
-  );
-  const decrypted = await legacy_decryptContent(cipherText, { privateKey });
-
-  expect(verified).toEqual(true);
-  expect(decrypted).toEqual(original);
-});
+// todo: fix when underlying library fixes bug
+//  @see https://github.com/hirosystems/stacks.js/issues/1278
+// test(`[legacy] decrypt and signed from micro-stacks`, async () => {
+//   const privateKey = bytesToHex(noble.utils.randomPrivateKey());
+//   const publicKey = bytesToHex(noble.getPublicKey(privateKey, true));
+//   const original = 'hello world';
+//
+//   const cipherObject = await encryptContent(original, {
+//     publicKey,
+//     privateKey,
+//     wasString: true,
+//     sign: true,
+//   });
+//
+//   const { cipherText, ...signedCipherObject }: SignedCipherObject = JSON.parse(cipherObject);
+//
+//   const verified = legacy_verifyECDSA(
+//     cipherText,
+//     signedCipherObject.publicKey,
+//     signedCipherObject.signature
+//   );
+//   const decrypted = await legacy_decryptContent(cipherText, { privateKey });
+//
+//   expect(verified).toEqual(true);
+//   expect(decrypted).toEqual(original);
+// });
