@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/clarity/types/bufferCV.ts</title>
+    <title>Code coverage report for src/connect/message-signing/encoding.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/clarity/types</a> bufferCV.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/connect/message-signing</a> encoding.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/10</span>
+                <span class='fraction'>12/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/7</span>
+                <span class='fraction'>12/16</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -74,40 +74,67 @@
 <a name='L15'></a><a href='#L15'>15</a>
 <a name='L16'></a><a href='#L16'>16</a>
 <a name='L17'></a><a href='#L17'>17</a>
-<a name='L18'></a><a href='#L18'>18</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">21x</span>
-<span class="cline-any cline-yes">21x</span>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">21x</span>
-<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">42x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ClarityType } from '../common/constants';
-import { utf8ToBytes } from 'micro-stacks/common';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { hashSha256 } from 'micro-stacks/crypto-sha';
+import { decode, encode, encodingLength } from './varuint';
+import { utf8ToBytes } from '@noble/hashes/utils';
+import { concatByteArrays } from 'micro-stacks/common';
 &nbsp;
-export interface BufferCV {
-  readonly type: ClarityType.Buffer;
-  readonly buffer: Uint8Array;
+const chainPrefix = '\x18Stacks Message Signing:\n';
+&nbsp;
+export function hashMessage(message: string | Uint8Array) {
+  return hashSha256(encodeMessage(message));
 }
 &nbsp;
-export const bufferCV = (buffer: Uint8Array): BufferCV =&gt; {
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (buffer.length &gt; 1000000) {
-<span class="cstat-no" title="statement not covered" >    throw new Error('Cannot construct clarity buffer that is greater than 1MB');</span>
-  }
+export function encodeMessage(message: string | Uint8Array): Uint8Array {
+  const bytes = typeof message === 'string' ? utf8ToBytes(message) : <span class="branch-1 cbranch-no" title="branch not covered" >message;</span>
+  const encoded = encode(bytes.length);
+  return concatByteArrays([utf8ToBytes(chainPrefix), encoded, bytes]);
+}
 &nbsp;
-  return { type: ClarityType.Buffer, buffer: Uint8Array.from(buffer) };
-};
-&nbsp;
-export const bufferCVFromString = (string: string): BufferCV =&gt; bufferCV(utf8ToBytes(string));
+export function <span class="fstat-no" title="function not covered" >decodeMessage(</span>encodedMessage: Uint8Array): Uint8Array {
+  // Remove the chain prefix: 1 for the varint and 24 for the length of the string
+  // 'Stacks Message Signing:\n'
+  const messageWithoutChainPrefix = <span class="cstat-no" title="statement not covered" >encodedMessage.subarray(1 + 24);</span>
+  const decoded<span class="cstat-no" title="statement not covered" > = decode(messageWithoutChainPrefix);</span>
+  const varIntLength<span class="cstat-no" title="statement not covered" > = encodingLength(decoded);</span>
+  // Remove the varuint prefix
+<span class="cstat-no" title="statement not covered" >  return messageWithoutChainPrefix.slice(varIntLength);</span>
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
