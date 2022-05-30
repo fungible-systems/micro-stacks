@@ -13,9 +13,7 @@ import { openSignStructuredDataPopup } from '../popup';
 import type { StructuredSignatureRequestOptions, SignedOptionsWithOnHandlers } from './types';
 import { sha256 } from '@noble/hashes/sha256';
 
-// TODO: use this when it has been added to the SIP
-// Uint8Array.from([0x53, 0x49, 0x50, 0x30, 0x31, 0x38]); // SIP018
-const structuredDataPrefix = Uint8Array.from([0xc0]);
+const structuredDataPrefix = Uint8Array.from([0x53, 0x49, 0x50, 0x30, 0x31, 0x38]); // SIP018
 
 export const makeClarityHash = (clarityValue: ClarityValue) => sha256(serializeCV(clarityValue));
 
