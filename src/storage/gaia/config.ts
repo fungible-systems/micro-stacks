@@ -23,10 +23,7 @@ function makeDefaultScope(path: string): GaiaAuthScope {
   };
 }
 
-/**
- * Generate a scoped gaia auth token
- */
-export async function makeScopedGaiaAuthToken(options: ScopedGaiaTokenOptions): Promise<string> {
+export function makeScopedGaiaAuthTokenPayload(options: ScopedGaiaTokenOptions): Json {
   const { hubInfo, privateKey, gaiaHubUrl, associationToken = null, scopes } = options;
   const { challenge_text: gaiaChallenge } = hubInfo;
   const iss = bytesToHex(getPublicKey(privateKey, true));
@@ -40,8 +37,24 @@ export async function makeScopedGaiaAuthToken(options: ScopedGaiaTokenOptions): 
     associationToken,
     scopes: transformScopePath(scopes),
   };
-  const signer = new TokenSigner('ES256K', privateKey);
+  return payload;
+}
+
+/**
+ * Generate a scoped gaia auth token
+ */
+
+export async function makeScopedGaiaAuthToken(options: ScopedGaiaTokenOptions): Promise<string> {
+  const payload = makeScopedGaiaAuthTokenPayload(options);
+  const signer = new TokenSigner('ES256K', options.privateKey);
   const token = await signer.sign(payload);
+  return `v1:${token}`;
+}
+
+export function makeScopedGaiaAuthTokenSync(options: ScopedGaiaTokenOptions): string {
+  const payload = makeScopedGaiaAuthTokenPayload(options);
+  const signer = new TokenSigner('ES256K', options.privateKey);
+  const token = signer.signSync(payload);
   return `v1:${token}`;
 }
 
@@ -70,6 +83,32 @@ export async function generateGaiaHubConfig(
   const { read_url_prefix: url_prefix, max_file_upload_size_megabytes } = hubInfo;
 
   const token = await makeScopedGaiaAuthToken({
+    hubInfo,
+    privateKey,
+    gaiaHubUrl,
+    associationToken,
+    scopes,
+  });
+
+  const address = privateKeyToBase58Address(privateKey);
+
+  return {
+    address,
+    url_prefix,
+    token,
+    server: gaiaHubUrl,
+    max_file_upload_size_megabytes: max_file_upload_size_megabytes ?? 20,
+  };
+}
+
+// sync version
+export function generateGaiaHubConfigSync(options: GenerateGaiaHubConfigOptions): GaiaHubConfig {
+  const { gaiaHubUrl, privateKey, associationToken, scopes } = options;
+  const hubInfo = DEFAULT_PAYLOAD;
+
+  const { read_url_prefix: url_prefix, max_file_upload_size_megabytes } = hubInfo;
+
+  const token = makeScopedGaiaAuthTokenSync({
     hubInfo,
     privateKey,
     gaiaHubUrl,
