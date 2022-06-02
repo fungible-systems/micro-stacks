@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.5.2
+
+### Patch Changes
+
+- [#102](https://github.com/fungible-systems/micro-stacks/pull/102) [`c4cc2a8e`](https://github.com/fungible-systems/micro-stacks/commit/c4cc2a8e69c95db67b13db4a2b16c56fb5db0688) Thanks [@aulneau](https://github.com/aulneau)! - This update adds some sync versions of functions for generating gaia hub configs, so you don't need to do it in an async context.
+
 ## 0.5.1
 
 ### Patch Changes
