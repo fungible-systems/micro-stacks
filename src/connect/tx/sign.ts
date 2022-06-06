@@ -1,14 +1,15 @@
-import { Json, TokenSigner } from 'micro-stacks/crypto';
+import { Json } from 'micro-stacks/crypto';
 import { ContractCallTxPayload, ContractDeployTxPayload, StxTransferTxPayload } from './types';
 import { getOrFormatPostConditions } from './shared';
+import { createWalletJWT } from '../common/create-wallet-jwt';
 
 export const signTransactionPayload = async (
   payload: ContractCallTxPayload | StxTransferTxPayload | ContractDeployTxPayload,
-  privateKey: string
+  privateKey?: string
 ) => {
-  const signer = new TokenSigner('ES256k', privateKey);
-  return signer.sign({
+  const tokenPayload = {
     ...payload,
     postConditions: getOrFormatPostConditions(payload.postConditions),
-  } as unknown as Json);
+  } as unknown as Json;
+  return createWalletJWT(tokenPayload, privateKey);
 };

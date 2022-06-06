@@ -1,7 +1,6 @@
 import { ContractDeployTxOptions, ContractDeployTxPayload, TransactionTypes } from './types';
-import { getPublicKey } from 'micro-stacks/crypto';
 import { signTransactionPayload } from './sign';
-import { bytesToHex } from 'micro-stacks/common';
+import { safeGetPublicKey } from '../common/utils';
 
 /**
  * makeContractDeployToken
@@ -13,7 +12,7 @@ import { bytesToHex } from 'micro-stacks/common';
 export async function makeContractDeployToken({ privateKey, ...options }: ContractDeployTxOptions) {
   const payload: ContractDeployTxPayload = {
     ...options,
-    publicKey: bytesToHex(getPublicKey(privateKey, true)),
+    publicKey: safeGetPublicKey(privateKey),
     txType: TransactionTypes.ContractDeploy,
   };
   return signTransactionPayload(payload, privateKey);

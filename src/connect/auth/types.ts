@@ -3,7 +3,8 @@ import { Json } from 'micro-stacks/crypto';
 
 // this is what comes from the extension
 export interface AuthResponsePayload {
-  private_key: string;
+  // not always available
+  private_key?: string;
   username: string | null;
   hubUrl: string;
   associationToken: string;
@@ -70,15 +71,15 @@ export interface StacksSessionState {
     testnet: string;
     mainnet: string;
   };
-  appPrivateKey: string;
-  associationToken: string;
+  appPrivateKey?: string;
+  associationToken?: string;
   hubUrl: string;
   public_keys?: string[];
   profile: Profile;
   profile_url: string;
   username: string | null;
   version?: string;
-  decentralizedID: string;
+  decentralizedID?: string;
   identityAddress?: string;
 }
 

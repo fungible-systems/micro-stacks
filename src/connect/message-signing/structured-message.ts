@@ -7,11 +7,12 @@ import {
   uintCV,
 } from 'micro-stacks/clarity';
 import { bytesToHex, ChainID, concatByteArrays } from 'micro-stacks/common';
-import { getPublicKey } from '@noble/secp256k1';
-import { Json, TokenSigner } from 'micro-stacks/crypto';
+import { Json } from 'micro-stacks/crypto';
 import { openSignMessagePopup } from '../popup';
 import type { SignedOptionsWithOnHandlers, StructuredSignatureRequestOptions } from './types';
 import { sha256 } from '@noble/hashes/sha256';
+import { safeGetPublicKey } from '../common/utils';
+import { createWalletJWT } from '../common/create-wallet-jwt';
 
 const structuredDataPrefix = Uint8Array.from([0x53, 0x49, 0x50, 0x30, 0x31, 0x38]); // SIP018
 
@@ -51,16 +52,15 @@ export const generateSignStructuredDataPayload = async (
 
   const hash = makeStructuredDataHash(makeClarityHash(domainTuple), makeClarityHash(message));
 
-  const payload = {
+  const payload: Json = {
     stxAddress: options.stxAddress,
     message: bytesToHex(hash),
     appDetails: options.appDetails,
-    publicKey: bytesToHex(getPublicKey(options.privateKey, true)),
-    network: options.network,
+    publicKey: safeGetPublicKey(options.privateKey),
+    network: options.network as any,
   };
 
-  const tokenSigner = new TokenSigner('ES256k', options.privateKey);
-  return tokenSigner.sign(payload as unknown as Json);
+  return createWalletJWT(payload, options?.privateKey);
 };
 
 export const handleSignStructuredDataRequest = async (

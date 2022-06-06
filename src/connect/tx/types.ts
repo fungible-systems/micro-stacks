@@ -9,7 +9,7 @@ export enum TransactionTypes {
 }
 
 export interface TransactionOptionsBase {
-  privateKey: string;
+  privateKey?: string;
   appDetails?: {
     name: string;
     icon: string;
@@ -29,7 +29,7 @@ export interface TransactionPayloadBase {
   };
   stxAddress?: string;
   network?: StacksNetwork;
-  publicKey: string;
+  publicKey?: string | null;
   postConditionMode?: PostConditionMode;
   postConditions?: (string | PostCondition)[];
   onFinish?: (data: any) => void;
@@ -83,7 +83,7 @@ export interface StxTransferTxOptions extends TransactionOptionsBase {
 
 export interface StxTransferTxPayload extends TransactionPayloadBase {
   recipient: string;
-  publicKey: string;
+  publicKey?: string;
   amount: string;
   memo?: string;
   txType: TransactionTypes.STXTransfer;

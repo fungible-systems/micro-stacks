@@ -1,5 +1,6 @@
-import { getGlobalObject } from 'micro-stacks/common';
+import { bytesToHex, getGlobalObject } from 'micro-stacks/common';
 import { IS_BROWSER } from './constants';
+import { getPublicKey } from 'micro-stacks/crypto';
 
 const _localStorage = getGlobalObject('localStorage', { returnEmptyObject: true });
 
@@ -39,4 +40,9 @@ export const defaultStorageAdapter: StorageAdapter<string> = {
   removeItem: (key: string) => {
     if (IS_BROWSER) return _localStorage?.removeItem(key);
   },
+};
+
+export const safeGetPublicKey = (privateKey?: string) => {
+  if (!privateKey) return null;
+  return bytesToHex(getPublicKey(privateKey, true));
 };

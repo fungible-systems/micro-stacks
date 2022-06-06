@@ -1,9 +1,10 @@
-import { ClarityValue, cvToHex } from 'micro-stacks/clarity';
-import { getPublicKey } from 'micro-stacks/crypto';
+import type { ContractCallTxOptions, ContractCallTxPayload } from './types';
+import type { ClarityValue } from 'micro-stacks/clarity';
+import { cvToHex } from 'micro-stacks/clarity';
 import { signTransactionPayload } from './sign';
 import { TransactionTypes } from './types';
-import type { ContractCallTxOptions, ContractCallTxPayload } from './types';
-import { bytesToHex, cleanHex } from 'micro-stacks/common';
+import { cleanHex } from 'micro-stacks/common';
+import { safeGetPublicKey } from '../common/utils';
 
 /**
  * makeContractCallToken
@@ -18,7 +19,7 @@ export async function makeContractCallToken({
   privateKey,
   ...options
 }: ContractCallTxOptions) {
-  const publicKey = bytesToHex(getPublicKey(privateKey, true));
+  const publicKey = safeGetPublicKey(privateKey);
 
   const payload: ContractCallTxPayload = {
     ...options,

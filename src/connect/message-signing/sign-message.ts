@@ -1,19 +1,20 @@
 import { SignatureRequestOptions, SignedOptionsWithOnHandlers } from './types';
 import { openSignMessagePopup } from '../popup';
-import { bytesToHex } from 'micro-stacks/common';
-import { getPublicKey } from '@noble/secp256k1';
-import { Json, TokenSigner } from 'micro-stacks/crypto';
+import { Json } from 'micro-stacks/crypto';
+import { safeGetPublicKey } from '../common/utils';
+import { createWalletJWT } from '../common/create-wallet-jwt';
 
 export const generateSignMessagePayload = async (options: SignatureRequestOptions) => {
-  const payload = {
+  const payload: Json = {
     stxAddress: options.stxAddress,
     message: options.message,
-    appDetails: options.appDetails,
-    publicKey: bytesToHex(getPublicKey(options.privateKey, true)),
-    network: options.network,
+    appDetails: options.appDetails ?? null,
+    publicKey: safeGetPublicKey(options.privateKey),
+    network: options.network as any,
   };
-  const tokenSigner = new TokenSigner('ES256k', options.privateKey);
-  return tokenSigner.sign(payload as unknown as Json);
+
+  // will sign it or create unsigned JWT
+  return createWalletJWT(payload, options.privateKey);
 };
 
 export const handleSignMessageRequest = async (
