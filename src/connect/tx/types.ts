@@ -83,7 +83,6 @@ export interface StxTransferTxOptions extends TransactionOptionsBase {
 
 export interface StxTransferTxPayload extends TransactionPayloadBase {
   recipient: string;
-  publicKey?: string;
   amount: string;
   memo?: string;
   txType: TransactionTypes.STXTransfer;
