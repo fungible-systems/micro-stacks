@@ -24,12 +24,20 @@ export async function decodeAuthResponse(
   const token = decodeToken(authResponseToken);
   const payload = token?.payload;
   const authResponse = payload as unknown as AuthResponsePayload;
-  const { private_key: hexedEncryptedKey } = authResponse;
-  const cipherObject = hexToJSON(hexedEncryptedKey);
-  const appPrivateKey = (await decryptECIES({
-    privateKey: transitPrivateKey,
-    cipherObject,
-  })) as string;
+
+  let appPrivateKey;
+
+  if (authResponse.private_key) {
+    try {
+      const cipherObject = hexToJSON(authResponse.private_key);
+      appPrivateKey = (await decryptECIES({
+        privateKey: transitPrivateKey,
+        cipherObject,
+      })) as string;
+    } catch (e) {
+      console.error('[micro-stacks] failed to decrypt appPrivateKey');
+    }
+  }
 
   const sessionState: StacksSessionState = {
     addresses: authResponse.profile.stxAddress,

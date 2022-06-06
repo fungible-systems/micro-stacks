@@ -12,11 +12,12 @@ export function genericTransactionPopupFactory<OnFinishedPayload, ErrorMessagePa
     const { token, onFinish, onCancel } = options;
     try {
       const Provider: StacksProvider | undefined = getStacksProvider();
-      if (!Provider) throw new Error('No provider');
+      if (!Provider) throw new Error('[micro-stacks/connect] No Stacks provider');
 
       const fn = Provider[method];
 
-      if (typeof fn !== 'function') throw new Error('StacksProvider method not found');
+      if (typeof fn !== 'function')
+        throw new Error(`[micro-stacks/connect] StacksProvider method ${method} not found`);
 
       const responsePayload = await fn(token);
 

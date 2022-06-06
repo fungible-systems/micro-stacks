@@ -1,14 +1,16 @@
-import { AuthOptions } from '../auth/types';
 import { ChainID, StacksNetwork } from 'micro-stacks/network';
 import { ClarityValue } from 'micro-stacks/clarity';
 import { SignatureData } from '../popup';
 
 export interface SignatureRequestOptions {
   message: string;
-  appDetails: AuthOptions['appDetails'];
+  appDetails: {
+    name: string;
+    icon: string;
+  };
   authOrigin?: string;
   stxAddress: string;
-  privateKey: string;
+  privateKey?: string;
   network?: StacksNetwork;
 }
 
