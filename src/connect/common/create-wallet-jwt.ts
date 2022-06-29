@@ -1,5 +1,4 @@
-import { Json, TokenSigner } from 'micro-stacks/crypto';
-import { createUnsecuredToken } from 'jsontokens';
+import { createUnsecuredToken, Json, TokenSigner } from 'micro-stacks/crypto';
 
 export const createWalletJWT = (payload: Json, privateKey?: string) => {
   if (!privateKey) return createUnsecuredToken(payload);
