@@ -1,5 +1,15 @@
 # micro-stacks
 
+## 0.5.3
+
+### Patch Changes
+
+- [#104](https://github.com/fungible-systems/micro-stacks/pull/104) [`aa358dcb`](https://github.com/fungible-systems/micro-stacks/commit/aa358dcb06e564863b13717b1c7a447ee5a4f33a) Thanks [@aulneau](https://github.com/aulneau)! - fix: add support for no appPrivateKey
+
+  This update improves compatibility with wallets that allow for the passing of unsigned JWTs to interact with a hardware based wallet connection in something like the Hiro web wallet
+
+* [#93](https://github.com/fungible-systems/micro-stacks/pull/93) [`79754b24`](https://github.com/fungible-systems/micro-stacks/commit/79754b2477ccd591886b5fda84fb2151cb8938e9) Thanks [@aulneau](https://github.com/aulneau)! - fix: uncompressed in SerializeP2WSH not SerializeP2SH
+
 ## 0.5.2
 
 ### Patch Changes
