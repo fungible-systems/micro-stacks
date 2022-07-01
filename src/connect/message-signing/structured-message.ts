@@ -1,6 +1,7 @@
 import {
   ClarityValue,
   cvToHex,
+  hexToCV,
   serializeCV,
   stringAsciiCV,
   tupleCV,
@@ -30,6 +31,25 @@ export const makeStructuredDataHash = (
   structuredMessageHash: Uint8Array
 ) => {
   return sha256(concatByteArrays([structuredDataPrefix, domainHash, structuredMessageHash]));
+};
+
+export const getStructuredDataHashes = (options: {
+  message: StructuredSignatureRequestOptions['message'];
+  domain: StructuredSignatureRequestOptions['domain'];
+}) => {
+  const message: ClarityValue =
+    typeof options.message === 'string' ? hexToCV(options.message) : options.message;
+
+  const domain = makeDomainTuple(
+    options.domain.name,
+    options.domain.version,
+    options.domain.chainId ?? ChainID.Mainnet
+  );
+
+  return {
+    message: makeClarityHash(message),
+    domain: makeClarityHash(domain),
+  };
 };
 
 export const generateSignStructuredDataPayload = async (
