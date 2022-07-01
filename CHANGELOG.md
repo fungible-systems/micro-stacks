@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.6.1
+
+### Patch Changes
+
+- [#110](https://github.com/fungible-systems/micro-stacks/pull/110) [`29d80ca8`](https://github.com/fungible-systems/micro-stacks/commit/29d80ca84f252525280a3498a77ddb26d3bf87aa) Thanks [@aulneau](https://github.com/aulneau)! - Exports the method getPublicKeyFromSignature
+
 ## 0.6.0
 
 ### Minor Changes
