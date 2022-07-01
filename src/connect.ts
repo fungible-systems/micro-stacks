@@ -20,7 +20,7 @@ export {
   generateSignStructuredDataPayload,
 } from './connect/message-signing/structured-message';
 export { hashMessage, encodeMessage, decodeMessage } from './connect/message-signing/encoding';
-export { verifyMessageSignature, extractSignatureParts } from './connect/message-signing/verify';
+export { verifyMessageSignature, recoverSignature } from './connect/message-signing/verify';
 export type {
   SignatureRequestOptions,
   StructuredSignatureRequestOptions,
