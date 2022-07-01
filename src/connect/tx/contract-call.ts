@@ -3,7 +3,7 @@ import type { ClarityValue } from 'micro-stacks/clarity';
 import { cvToHex } from 'micro-stacks/clarity';
 import { signTransactionPayload } from './sign';
 import { TransactionTypes } from './types';
-import { cleanHex } from 'micro-stacks/common';
+import { cleanHex, validateClarityAsciiValue } from 'micro-stacks/common';
 import { safeGetPublicKey } from '../common/utils';
 
 /**
@@ -19,6 +19,13 @@ export async function makeContractCallToken({
   privateKey,
   ...options
 }: ContractCallTxOptions) {
+  const contractNameValidation = validateClarityAsciiValue(options.contractName);
+
+  if (!contractNameValidation.valid)
+    throw TypeError(
+      `[micro-stacks/react] Contract name failed validation. Reason: ${contractNameValidation.reason}`
+    );
+
   const publicKey = safeGetPublicKey(privateKey);
 
   const payload: ContractCallTxPayload = {
