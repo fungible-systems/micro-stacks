@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 0.5.4
+
+### Patch Changes
+
+- [#106](https://github.com/fungible-systems/micro-stacks/pull/106) [`5b9f6bca`](https://github.com/fungible-systems/micro-stacks/commit/5b9f6bca79ade04464a83cd38583801e1559143b) Thanks [@aulneau](https://github.com/aulneau)! - This update reverts some changes to the SIP 018 structured data signing code.
+
 ## 0.5.3
 
 ### Patch Changes
