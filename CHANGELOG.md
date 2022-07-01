@@ -1,5 +1,15 @@
 # micro-stacks
 
+## 0.6.0
+
+### Minor Changes
+
+- [#108](https://github.com/fungible-systems/micro-stacks/pull/108) [`f5a339bc`](https://github.com/fungible-systems/micro-stacks/commit/f5a339bcbadf7f2acc1ea029515bb0f9b3be76f7) Thanks [@aulneau](https://github.com/aulneau)! - This update changes the required params for our functions to verify a signature and message. Previously, you would be able to pass a signature with no public key and it would verify correctly. However, this was incorrect. If you passed any arbitrary message with this signature, it will always return valid, and that is expected. The reason this is expected is because the public key is expected to be trusted. Often times you are recovering a public key from a signature because you only have access to a Stacks address, but not their public key. With this, I've made it such that you need to pass the expected Stacks address of the account that signed the message, OR the public key.
+
+### Patch Changes
+
+- [#108](https://github.com/fungible-systems/micro-stacks/pull/108) [`fe1dbfa4`](https://github.com/fungible-systems/micro-stacks/commit/fe1dbfa4621abd71386219c801f994c6c2c92fa2) Thanks [@aulneau](https://github.com/aulneau)! - This changes the default verification mode from vrs to rsv, to reflect the updates to the wallet.
+
 ## 0.5.4
 
 ### Patch Changes
