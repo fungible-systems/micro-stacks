@@ -1,4 +1,5 @@
 import { getGlobalScope } from '../storage/common';
+import { asciiToBytes } from './encoding-ascii';
 
 export function arrayBufferToUint8(content: ArrayBuffer): Uint8Array {
   if (ArrayBuffer.isView(content)) {
@@ -87,4 +88,16 @@ export function concatByteArrays(byteArrays: Uint8Array[]): Uint8Array {
 export function ensureUint8Array(bytes: Uint8Array): Uint8Array {
   if (typeof bytes === 'object') bytes = Uint8Array.from(bytes);
   return bytes;
+}
+
+export function validateClarityAsciiValue(value: string): { valid: true };
+export function validateClarityAsciiValue(value: string): { valid: false; reason: string };
+export function validateClarityAsciiValue(value: string): { valid: boolean; reason?: string } {
+  // A 1-byte length prefix, up to 128
+  // A variable-length string of valid ASCII characters (up to 128 bytes). This string must be accepted by the regex ^[a-zA-Z]([a-zA-Z0-9]|[-_])*$.
+  // contract names, asset names, etc
+  const REGEX = /^[a-zA-Z]([a-zA-Z0-9]|[-_])*$/;
+  if (!REGEX.test(value)) return { valid: false, reason: 'Non-ascii characters found' };
+  if (asciiToBytes(value).byteLength > 128) return { valid: false, reason: 'Too many bytes' };
+  return { valid: true };
 }
