@@ -9,7 +9,7 @@ export const extractSignatureParts = (options: {
   signature: string;
   mode?: 'vrs' | 'rsv';
 }) => {
-  const { hash, signature, mode = 'vrs' } = options;
+  const { hash, signature, mode = 'rsv' } = options;
   const recovery = parseRecoverableSignature(signature, mode);
   const publicKey = recoverPublicKey(
     hash,
@@ -31,7 +31,7 @@ export const verifyMessageSignature = (options: {
   publicKey?: string;
   mode?: 'vrs' | 'rsv';
 }) => {
-  const { message, signature, mode = 'vrs', publicKey } = options;
+  const { message, signature, mode = 'rsv', publicKey } = options;
   try {
     const hash = typeof message === 'string' ? hashMessage(message) : message;
 
