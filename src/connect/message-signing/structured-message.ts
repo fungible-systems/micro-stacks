@@ -6,7 +6,7 @@ import {
   tupleCV,
   uintCV,
 } from 'micro-stacks/clarity';
-import { ChainID, concatByteArrays } from 'micro-stacks/common';
+import { ChainID, cleanHex, concatByteArrays } from 'micro-stacks/common';
 import { Json } from 'micro-stacks/crypto';
 import { openSignStructuredDataPopup } from '../popup';
 import type { SignedOptionsWithOnHandlers, StructuredSignatureRequestOptions } from './types';
@@ -48,8 +48,8 @@ export const generateSignStructuredDataPayload = async (
 
   const payload: Json = {
     stxAddress: options.stxAddress,
-    message,
-    domain,
+    message: cleanHex(message),
+    domain: cleanHex(domain),
     appDetails: options.appDetails,
     publicKey: safeGetPublicKey(options.privateKey),
     network: options.network as any,
