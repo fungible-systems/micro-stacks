@@ -1,10 +1,12 @@
 import base64url from './base64url';
 import { hashSha256 } from 'micro-stacks/crypto-sha';
-import { sign, signSync } from '@noble/secp256k1';
+import { sign, signSync, utils } from '@noble/secp256k1';
 import { derToJoseES256 } from './ecdsa-sig-formatter';
 import { Json, SignedToken } from './types';
 import { createSigningInput } from './create-signing-input';
 import { MissingParametersError, utf8ToBytes } from 'micro-stacks/common';
+import { hmac } from '@noble/hashes/hmac';
+import { sha256 } from '@noble/hashes/sha256';
 
 export class TokenSigner {
   tokenType: string;
@@ -16,6 +18,12 @@ export class TokenSigner {
 
     this.tokenType = 'JWT';
     this.rawPrivateKey = rawPrivateKey;
+
+    utils.hmacSha256Sync = (key: Uint8Array, ...msgs: Uint8Array[]) => {
+      const h = hmac.create(sha256, key);
+      msgs.forEach(msg => h.update(msg));
+      return h.digest();
+    };
   }
 
   header(header = {}) {
