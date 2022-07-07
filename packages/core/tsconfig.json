@@ -1,0 +1,70 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "module": "esnext",
+    "target": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "micro-stacks/api": [
+        "./src/api.ts"
+      ],
+      "micro-stacks/bip39": [
+        "./src/bip39.ts"
+      ],
+      "micro-stacks/bip32": [
+        "./src/bip32.ts"
+      ],
+      "micro-stacks/connect": [
+        "./src/connect.ts"
+      ],
+      "micro-stacks/common": [
+        "./src/common.ts"
+      ],
+      "micro-stacks/clarity": [
+        "./src/clarity.ts"
+      ],
+      "micro-stacks/crypto": [
+        "./src/crypto.ts"
+      ],
+      "micro-stacks/crypto-aes": [
+        "./src/crypto-aes.ts"
+      ],
+      "micro-stacks/crypto-pbkdf2": [
+        "./src/crypto-pbkdf2.ts"
+      ],
+      "micro-stacks/crypto-hmac-sha": [
+        "./src/crypto-hmac-sha.ts"
+      ],
+      "micro-stacks/crypto-sha": [
+        "./src/crypto-sha.ts"
+      ],
+      "micro-stacks/network": [
+        "./src/network.ts"
+      ],
+      "micro-stacks/storage": [
+        "./src/storage.ts"
+      ],
+      "micro-stacks/transactions": [
+        "./src/transactions.ts"
+      ],
+      "micro-stacks/zone-file": [
+        "./src/zone-file.ts"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "tests/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

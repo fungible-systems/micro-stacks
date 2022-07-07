@@ -14,5 +14,8 @@ module.exports = {
     browser: true,
     context: true,
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['react-hooks', '@typescript-eslint'],
+  rules: {
+    'react-hooks/exhaustive-deps': ['warn'],
+  },
 };
