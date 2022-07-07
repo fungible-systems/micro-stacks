@@ -1,0 +1,89 @@
+{
+  "name": "@micro-stacks/react",
+  "private": false,
+  "version": "1.0.0-beta.9",
+  "description": "Opinionated React integration for micro-stacks.",
+  "files": [
+    "dist"
+  ],
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "import": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "main": "./dist/index.js",
+      "module": "./dist/index.mjs",
+      "import": "./dist/index.mjs"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "require": "./dist/*.js",
+      "main": "./dist/*.js",
+      "module": "./dist/*.mjs",
+      "import": "./dist/*.mjs"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "shx rm -rf ./dist && tsup-node src/index.ts --format esm,cjs --dts --minify --splitting --treeshake --external micro-stacks",
+    "typecheck": "tsc --noEmit --target esnext",
+    "dev:publish": "yalc publish --push",
+    "lint": "pnpm lint:eslint && pnpm lint:prettier",
+    "lint:eslint": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
+    "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\" *.js",
+    "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx}\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "prettier": "@stacks/prettier-config",
+  "lint-staged": {
+    "*.{js,ts,tsx,md}": [
+      "prettier --write"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aulneau/micro-stacks.git"
+  },
+  "keywords": [
+    "stacks",
+    "web3",
+    "small-bundle"
+  ],
+  "author": "Thomas Osmonson",
+  "contributors": [],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fungible-systems/micro-stacks-react/issues"
+  },
+  "homepage": "https://github.com/fungible-systems/micro-stacks",
+  "devDependencies": {
+    "@stacks/stacks-blockchain-api-types": "1.0.7",
+    "@types/common-tags": "1.8.1",
+    "@types/jest": "27.0.2",
+    "@types/jsdom": "16.2.13",
+    "@types/randombytes": "2.0.0",
+    "@types/react": "17.0.31",
+    "@types/react-dom": "17.0.10",
+    "tsup": "6.0.1"
+  },
+  "dependencies": {
+    "@micro-stacks/client": "workspace:*",
+    "micro-stacks": "workspace:*",
+    "react-async-hook": "^4.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0"
+  }
+}
