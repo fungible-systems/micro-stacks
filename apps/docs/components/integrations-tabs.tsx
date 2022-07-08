@@ -29,7 +29,7 @@ export const TabsRow = () => {
       style={{
         zIndex: 99,
         position: 'sticky',
-        top: '64px',
+        top: '63px',
         maxHeight: '68px',
         overflow: 'hidden',
       }}
