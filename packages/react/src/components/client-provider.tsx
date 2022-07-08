@@ -6,7 +6,7 @@ import {
   useOnPersistEffect,
   useOnSignOutEffect,
 } from '../hooks/use-client-callbacks';
-import { memo } from 'react';
+import { memo, PropsWithChildren } from 'react';
 
 /** ------------------------------------------------------------------------------------------------------------------
  *   CallbacksProvider (private)
@@ -28,9 +28,11 @@ const CallbacksProvider: React.FC<
  */
 
 export const ClientProvider: React.FC<
-  {
-    client?: ReturnType<typeof getClient>;
-  } & ClientConfig
+  PropsWithChildren<
+    {
+      client?: ReturnType<typeof getClient>;
+    } & ClientConfig
+  >
 > = React.memo(
   ({
     children,
