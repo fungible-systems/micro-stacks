@@ -1,21 +1,48 @@
 import { ClientConfig } from './common/types';
 import { MicroStacksClient } from './micro-stacks-client';
+import { IS_SSR } from './common/constants';
 
-export let client: MicroStacksClient;
+/** ------------------------------------------------------------------------------------------------------------------
+ *   Types
+ *  ------------------------------------------------------------------------------------------------------------------
+ */
 
 export type Client = typeof client;
 
-export function createClient(options?: { config?: ClientConfig; client?: MicroStacksClient }) {
-  if (options?.client) {
-    client = options.client;
-    return client;
-  } else {
-    client = new MicroStacksClient(options?.config);
-    return client;
-  }
+interface Options {
+  config?: ClientConfig;
+  client?: MicroStacksClient;
 }
 
-export function getClient(options?: { config?: ClientConfig; client?: MicroStacksClient }) {
-  if (!client) return createClient(options);
+/** ------------------------------------------------------------------------------------------------------------------
+ *   Shared client
+ *  ------------------------------------------------------------------------------------------------------------------
+ */
+
+export let client: MicroStacksClient;
+
+/** ------------------------------------------------------------------------------------------------------------------
+ *   createClient
+ *  ------------------------------------------------------------------------------------------------------------------
+ */
+
+export function createClient(options?: Options) {
+  const newClient = options?.client ?? new MicroStacksClient(options?.config);
+
+  // always return new client on server
+  if (IS_SSR) return newClient;
+
+  client = newClient;
   return client;
+}
+
+/** ------------------------------------------------------------------------------------------------------------------
+ *   getClient
+ *  ------------------------------------------------------------------------------------------------------------------
+ */
+
+export function getClient(options?: Options) {
+  // always return new client on server
+  if (IS_SSR) return createClient(options);
+  return client ?? createClient(options);
 }

@@ -6,4 +6,4 @@ export * from './common/storage';
 export * from './getters/network';
 export * from './getters/status';
 export * from './getters/accounts';
-export { cleanDehydratedState } from './common/utils';
+export { cleanDehydratedState } from './utils';

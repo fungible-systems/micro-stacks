@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { ClientConfig, defaultStorage, getClient } from '@micro-stacks/client';
+import { createClient, defaultStorage, getClient, MicroStacksClient } from '@micro-stacks/client';
 import { MicroStacksClientContext } from '../common/context';
 import {
   useOnAuthenticationEffect,
   useOnPersistEffect,
   useOnSignOutEffect,
 } from '../hooks/use-client-callbacks';
-import { memo, PropsWithChildren, useContext, useEffect, useRef } from 'react';
-import { useCreateClient } from '../hooks/use-create-client';
+
+import type { ClientConfig } from '@micro-stacks/client';
+import type { PropsWithChildren } from 'react';
 
 /** ------------------------------------------------------------------------------------------------------------------
  *   CallbacksProvider (private)
@@ -16,12 +17,29 @@ import { useCreateClient } from '../hooks/use-create-client';
 
 const CallbacksProvider: React.FC<
   Pick<ClientConfig, 'onAuthentication' | 'onSignOut' | 'onPersistState'>
-> = memo(({ onPersistState, onAuthentication, onSignOut }) => {
+> = React.memo(({ onPersistState, onAuthentication, onSignOut }) => {
   useOnAuthenticationEffect(onAuthentication);
   useOnSignOutEffect(onSignOut);
   useOnPersistEffect(onPersistState);
   return null;
 });
+
+/** ------------------------------------------------------------------------------------------------------------------
+ *   useEnsureSessionConsistency
+ *
+ *   This hook will try to retry persistence in the case that there is no dehydrated state but an active session
+ *  ------------------------------------------------------------------------------------------------------------------
+ */
+function useEnsureSessionConsistency(config: ClientConfig, client: MicroStacksClient) {
+  const mountRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (config?.onPersistState && !mountRef.current) {
+      mountRef.current = true;
+      if (!config.dehydratedState && client.hasSession) void client.persist();
+    }
+  }, [client, config?.onPersistState, config?.dehydratedState]);
+}
 
 /** ------------------------------------------------------------------------------------------------------------------
  *   ClientProvider
@@ -37,7 +55,7 @@ export const ClientProvider: React.FC<
 > = React.memo(
   ({
     children,
-    client: client_,
+    client: clientProp,
     dehydratedState,
     appIconUrl,
     appName,
@@ -47,15 +65,13 @@ export const ClientProvider: React.FC<
     onAuthentication,
     onSignOut,
   }) => {
-    if (!!useContext(MicroStacksClientContext))
+    if (!!React.useContext(MicroStacksClientContext))
       throw Error(
         '[@micro-stacks/react] Nested ClientProviders detected, you should only have one instance of this component at the root of your app.'
       );
 
-    const mountRef = useRef(false);
-
-    const client = useCreateClient({
-      config: {
+    const config = React.useMemo(
+      () => ({
         appName,
         appIconUrl,
         dehydratedState,
@@ -64,20 +80,33 @@ export const ClientProvider: React.FC<
         onPersistState,
         onAuthentication,
         onSignOut,
-      },
-      dehydratedState,
-    });
+      }),
+      [
+        appName,
+        appIconUrl,
+        dehydratedState,
+        network,
+        storage,
+        onPersistState,
+        onAuthentication,
+        onSignOut,
+      ]
+    );
 
-    useEffect(() => {
-      if (onPersistState && !mountRef.current) {
-        mountRef.current = true;
-        if (!dehydratedState && client.hasSession) void client.persist();
-      }
-    }, [client, dehydratedState, onPersistState]);
+    const client = React.useMemo(
+      () =>
+        createClient({
+          config,
+          client: clientProp,
+        }),
+      [config, clientProp]
+    );
+
+    useEnsureSessionConsistency(config, client);
 
     return (
       <MicroStacksClientContext.Provider value={client}>
-        {!client_ ? (
+        {!clientProp ? (
           <CallbacksProvider
             onPersistState={onPersistState}
             onAuthentication={onAuthentication}

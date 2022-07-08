@@ -4,7 +4,6 @@
  */
 
 export * from './hooks/use-client';
-export * from './hooks/use-create-client';
 export * from './hooks/use-auth';
 export * from './hooks/use-network';
 export * from './hooks/use-account';

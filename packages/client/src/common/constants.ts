@@ -17,3 +17,5 @@ export enum Status {
 }
 
 export const STORE_KEY = 'store';
+
+export const IS_SSR = typeof document === 'undefined';
