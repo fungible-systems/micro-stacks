@@ -1,4 +1,4 @@
-import { Account, ClientConfig, DebugOptions, State } from './common/types';
+import { Account, ClientConfig, DebugOptions, DehydratedState, State } from './common/types';
 import { ChainID, StacksMainnet, StacksNetwork, StacksTestnet } from 'micro-stacks/network';
 import { Status, StatusKeys } from './common/constants';
 import { getGlobalObject } from 'micro-stacks/common';
@@ -99,3 +99,16 @@ export const getDebugState = () => {
   if (debug) return JSON.parse(debug) as DebugOptions;
   return;
 };
+
+export function cleanDehydratedState(dehydratedState: string): string;
+export function cleanDehydratedState(dehydratedState: null): null;
+export function cleanDehydratedState(dehydratedState?: string | null) {
+  if (!dehydratedState) return null;
+  const state = JSON.parse(dehydratedState) as DehydratedState;
+
+  return JSON.stringify([
+    state[0],
+    [state[1][0], state[1][1].map(account => ({ ...account, appPrivateKey: null }))],
+    state[2],
+  ]);
+}
