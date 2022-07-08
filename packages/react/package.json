@@ -1,7 +1,7 @@
 {
   "name": "@micro-stacks/react",
   "private": false,
-  "version": "1.0.0-beta.9",
+  "version": "1.0.0-beta.10",
   "description": "Opinionated React integration for micro-stacks.",
   "files": [
     "dist"
@@ -28,7 +28,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "shx rm -rf ./dist && tsup-node src/index.ts --format esm,cjs --dts --minify --splitting --treeshake --external micro-stacks",
+    "build": "shx rm -rf ./dist && tsup-node src/index.ts --format esm,cjs --dts --minify --splitting --treeshake",
     "typecheck": "tsc --noEmit --target esnext",
     "dev:publish": "yalc publish --push",
     "lint": "pnpm lint:eslint && pnpm lint:prettier",
