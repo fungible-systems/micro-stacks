@@ -1,6 +1,5 @@
 import { decodeToken as _decodeToken } from 'jsontokens';
 import { decodeToken } from './decode-token';
-import base64url from './base64url';
 import { TokenInterface } from 'micro-stacks/crypto';
 
 const sampleDecodedToken = {

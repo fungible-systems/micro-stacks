@@ -27,4 +27,6 @@ export async function fetchWalletConfig(
 
     return JSON.parse(response) as WalletConfig;
   } catch (e) {}
+
+  return;
 }

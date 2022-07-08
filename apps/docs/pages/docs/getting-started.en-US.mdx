@@ -1,0 +1,159 @@
+---
+description: "Get started building the next generation of Stacks apps using micro-stacks. With integrations for React, Svelte, Vue, and vanilla bindings."
+---
+import {InstallTabs} from '../../components/install-tabs'
+import * as Integrations from '../../components/integrations-tabs'
+import Callout from 'nextra-theme-docs/callout'
+
+# Getting started
+
+<Integrations.Tabs/>
+
+<Integrations.React>
+`@micro-stacks/react` is a collection of React Hooks containing everything you need to start working with Stacks. This package makes it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
+</Integrations.React>
+
+<Integrations.Vanilla>
+`@micro-stacks/client` is an all-in-one class containing everything you need to start working with Stacks. The client makes it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
+</Integrations.Vanilla>
+
+## Installation
+
+<Integrations.React>
+	<InstallTabs>
+		@micro-stacks/react@beta
+	</InstallTabs>
+</Integrations.React>
+
+<Integrations.Vanilla>
+	<Callout emoji="⚛" type={'info'}>
+		If you are building an app using React, it is <strong>strongly recommended</strong> that you make use of the React integrations. <Integrations.Action type="react">[View the React docs.](#)</Integrations.Action>
+
+		_P.S.: Vue and Svelte integrations are coming soon!_
+	</Callout>
+
+	<InstallTabs>
+		@micro-stacks/client@beta
+	</InstallTabs>
+</Integrations.Vanilla>
+
+
+## Setting up the client
+
+<Integrations.React>
+To add `@micro-stacks/react` to your application, we only need to import the `ClientProvider` and pass it some details about your app: `appName` and `appIconUrl`. This component creates the React Context that all other functions within this package make use of.
+
+```tsx {7-8}
+import * as MicroStacks from '@micro-stacks/react';
+
+// your app
+function App() {
+  return (
+    <MicroStacks.ClientProvider
+      appName="My sick app"
+      appIconUrl="APP_ICON.png">
+        <Router />
+    </MicroStacks.ClientProvider>
+  );
+}
+
+export default App;
+```
+
+</Integrations.React>
+
+<Integrations.Vanilla>
+
+The `client` is the powerhouse of functionality which will drive all elements of your app that interact with a connected
+Stacks wallet. To get started, you need to initiate your app with an instance of `MicroStacksClient`. Typically it's recommended
+to create a new file `micro-stacks-client.ts` (or `.js`) that exports your client so you can use it throughout your application.
+
+
+```tsx
+// micro-stacks-client.ts
+
+import { createClient } from '@micro-stacks/client';
+
+const client = createClient({
+    appName: 'My cool app',
+    appIconUrl: 'https://mycool.app/my-cool-app-logo.png'
+})
+
+export { client }
+```
+
+```ts
+// auth.ts
+
+import { client } from './micro-stacks-client.ts';
+
+const handleAuth = async () => {
+  if(!client.hasSession) await client.authenticate()
+}
+```
+
+In this example, we've created a new `client` and then created a function that will request the user to authenticate if
+if there is no current session.
+</Integrations.Vanilla>
+
+<Callout>
+	Please note: if the app needs to interact with a Stacks wallet, `appName` and `appIconUrl` are required.
+</Callout>
+
+
+### Parameters
+
+The client can take a number of additional options:
+
+#### `onAuthentication`
+
+An optional callback that fires when authentication is completed successfully.
+
+#### `onSignOut`
+An optional callback that fires when a session is cleared. Useful if building a server-side rendered app.
+
+#### `network`
+
+Change the default network for the app. Available options: `mainnet`, `testnet`, `new StacksNetwork()`.
+
+<Callout type={'info'}>
+	You can read more about networks in Stacks apps on [the Networks page](/docs/getting-started/networks).
+</Callout>
+
+#### `storage`
+
+You can pass a custom storage driver for the state of the client. Defaults to `localStorage`.
+
+```ts
+interface Storage {
+  getItem: <Value = V>(key: string, defaultValue?: Value | null) => Value | null;
+  setItem: <Value>(key: string, value: Value | null) => void;
+  removeItem: (key: string) => void;
+}
+```
+
+#### `onPersistState`
+A callback to persist an instance of the client state as a dehydrated string value. Read more about persistence on [the Advanced Patterns page](/docs/getting-started/advanced-patterns).
+
+#### `dehydratedState`
+A string value of the dehydrated state of the client for hydration. Or a function that returns the value: `(key: string) => string | undefined` Read more about persistence on [the Advanced Patterns page](/docs/getting-started/advanced-patterns).
+
+## Using the client
+
+Now that you've set up your app, feel free to dig into some of the features you can start making use of:
+
+- [Authentication](/docs/authentication)
+- [Networks](/docs/getting-started/networks)
+- [Transaction signing](/docs/transactions)
+- [Message signing](/docs/message-signing)
+- [Gaia & storage](/docs/storage)
+
+### Helpful guides
+
+- [Advanced patterns (SSR)](/docs/getting-started/networks)
+- [What makes a Stacks app?](/guides/stacks-apps)
+- [Working with Post Conditions](/guides/working-with-post-conditions)
+- [Building a Remix app](/guides/with-remix)
+
+
+

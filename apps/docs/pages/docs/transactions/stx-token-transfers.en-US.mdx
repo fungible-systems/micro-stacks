@@ -1,0 +1,54 @@
+---
+description: "Learn how to request users sign a Stacks transaction to transfer STX tokens from an app."
+---
+import Callout from 'nextra-theme-docs/callout'
+import * as Integrations from '../../../components/integrations-tabs'
+
+# Sending STX tokens
+
+<Integrations.Tabs />
+
+This is the simplest type of Stacks transaction: a STX token transfer transaction. This is for requesting a connected wallet to
+transfer an amount of STX to a given recipient, with an optional message (a.k.a. memo).
+
+<Callout type='info'>
+	This transaction type is for the native Stacks token (STX) only. To transfer other types of tokens such as fungible or non-fungible tokens,
+	 see the [calling contract functions](/docs/transactions/contract-calls) page.
+</Callout>
+
+## Usage
+
+<Integrations.React>
+`@micro-stacks/react` exports a hook that you will use to call contract functions: `useOpenStxTokenTransfer`.
+
+```jsx
+import { useOpenStxTokenTransfer } from '@micro-stacks/react';
+```
+</Integrations.React>
+
+### Parameters
+
+- `recipient`: The recipient of the token transfer (can be either standard principal or contract principal).
+- `amount`: The amount of STX in uSTX (a value of `1` would equal `0.000001` STX).
+- `memo`: an optional arbitrary string message.
+
+### Example
+
+<Integrations.React>
+```ts
+import { useOpenStxTokenTransfer } from '@micro-stacks/react';
+
+const MyComponent = () => {
+  const { openStxTokenTransfer, isRequestPending } = useOpenStxTokenTransfer()
+
+  const handleTokenTransfer = async () => {
+      openStxTokenTransfer({
+  	  recipient: 'SP000000000000000000002Q6VF78',
+  	  amount: 20n, // 0.00002 STX
+  	  memo: 'hello world'
+    })
+  }
+}
+```
+</Integrations.React>
+

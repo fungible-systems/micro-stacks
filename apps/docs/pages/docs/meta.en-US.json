@@ -1,0 +1,28 @@
+{
+  "overview": {
+	"title": "Overview"
+  },
+  "getting-started": {
+	"title": "Getting started"
+  },
+  "authentication": {
+	"title": "Authentication",
+	"theme": {
+	}
+  },
+  "transactions": {
+	"title": "Transaction signing",
+	"theme": {
+	}
+  },
+  "message-signing": {
+	"title": "Message signing",
+	"theme": {
+	}
+  },
+  "storage": {
+	"title": "Gaia & storage",
+	"theme": {
+	}
+  }
+}

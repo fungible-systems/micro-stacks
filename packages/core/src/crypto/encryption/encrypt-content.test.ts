@@ -8,8 +8,9 @@ import * as noble from '@noble/secp256k1';
 import type { SignedCipherObject } from 'micro-stacks/crypto';
 import {
   encryptContent as legacy_encryptContent,
-  decryptContent as legacy_decryptContent,
-  verifyECDSA as legacy_verifyECDSA,
+  // TODO fix
+  // decryptContent as legacy_decryptContent,
+  // verifyECDSA as legacy_verifyECDSA,
 } from '@stacks/encryption';
 
 it('Will throw if no keys passed', async () => {

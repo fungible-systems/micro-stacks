@@ -5,7 +5,7 @@ import { getPublicKeyFromPrivate } from '@stacks/encryption';
 import { publicKeyToStxAddress } from 'micro-stacks/crypto';
 
 test('b58 to c32', () => {
-  for (const [btcNetwork, btcAddrs, stxNetwork, stxAddrs] of sampleAddresses) {
+  for (const [_btcNetwork, btcAddrs, _stxNetwork, stxAddrs] of sampleAddresses) {
     for (let i = 0; i < btcAddrs.length; i++) {
       const stxToBtc = b58ToC32(btcAddrs[i]);
       expect(stxToBtc).toBe(stxAddrs[i]);

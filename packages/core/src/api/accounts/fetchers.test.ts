@@ -14,13 +14,7 @@ import {
   fetchAccountInfo,
 } from './fetchers';
 
-import {
-  addressEndpoint,
-  statusEndpoint,
-  networkBlockTimesEndpoint,
-  networkBlockTimeEndpoint,
-  stxSupplyEndpoint,
-} from '../utils';
+import { addressEndpoint } from '../utils';
 import { HIRO_TESTNET_DEFAULT } from 'micro-stacks/network';
 
 const principal = '1C56LYirKa3PFXFsvhSESgDy2acEHVAEt6';
@@ -83,7 +77,6 @@ describe('accounts fetchers', () => {
   });
 
   test(fetchAccountNftEvents.name, async () => {
-    const network: 'mainnet' | 'testnet' = 'testnet';
     const args = { url: HIRO_TESTNET_DEFAULT, principal };
     const data = await fetchAccountNftEvents(args);
     expect(data).toEqual(ADDRESS_NFT_LIST_RESPONSE);

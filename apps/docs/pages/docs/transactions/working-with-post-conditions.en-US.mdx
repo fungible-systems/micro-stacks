@@ -1,0 +1,220 @@
+---
+title: Working with Post Conditions
+description: Post-conditions are a unique feature of the Stacks blockchain that are meant to protect users from unintentional asset loss due to smart contract bugs or other risks.
+---
+
+import Callout from 'nextra-theme-docs/callout'
+
+# Working with Post Conditions
+
+Post conditions are a unique and important feature within Stacks. They are conditions that users or apps can place on
+transactions that will cause the transaction to fail should the conditions not be met. To put it more simply: they are
+protections against unknowingly loosing assets. Post-conditions are defined in terms of which assets each account sends
+or does not send during the transaction's execution.
+
+**Types of post conditions**
+- [STX token post conditions](#stx-token-post-conditions)
+- [Fungible token post conditions](#fungible-token-post-conditions)
+- [Non-fungible token post conditions](#non-fungible-token-post-conditions)
+
+
+## Technical overview
+
+<Callout type='info'>
+    This section has been adapted from content found in `SIP-005`. To read the original content, [click here](https://github.com/stacksgov/sips/blob/main/sips/sip-005/sip-005-blocks-and-transactions.md#transaction-post-conditions).
+
+	For a much more technical overview of post conditions and how they are constructed, check out [this section in `SIP-005`](https://github.com/stacksgov/sips/blob/main/sips/sip-005/sip-005-blocks-and-transactions.md#transaction-post-conditions-1).
+</Callout>
+
+A key use-case of smart contracts is to allow programmatic control over the assets in one or more accounts. However,
+where there is programmatic control, there are bound to be bugs. In the world of smart contract programming, bugs
+(intentional or not) can have severe consequences to the user's well-being. In particular, bugs can destroy a user's
+assets and cause them to lose wealth. Transaction post-conditions are a feature meant to limit the damage a bug can do
+in terms of destroying a user's assets.
+
+Post-conditions are intended to be used to force a transaction to abort if the transaction would cause a principal to
+send an asset in a way that is not to the user's liking.
+
+The Stacks blockchain supports an "allow" or "deny" mode for evaluating post-conditions:
+  - in "allow" mode, other asset transfers not covered by the post-conditions are permitted,
+  - but in "deny" mode, no other asset transfers are permitted besides those named in the post-conditions.
+
+Post-conditions are meant to be added by the user (or by the user's wallet software) at the moment they sign with their
+origin account. Because the user defines the post-conditions, the user has the power to protect themselves from buggy or
+malicious smart contracts proactively, so even undiscovered bugs cannot steal or destroy their assets if they are guarded
+with post-conditions. Well-designed wallets would provide an intuitive user interface for encoding post-conditions, as well
+as provide a set of recommended mitigations based on whether or not the transaction would interact with a known-buggy
+smart contract.
+
+<Callout type='info'>
+    **tl;dr:** post conditions should describe the expected results of a given transaction.
+</Callout>
+
+
+### Post-Condition Limitations
+
+Post-conditions do not consider who currently owns an asset when the transaction finishes, nor do they consider the sequence
+of owners an asset had during its execution. It only encodes who sent an asset, and how much. This information is much cheaper
+to track, and requires no I/O to process (processing time is O(n) in the number of post-conditions). Users who want richer
+post-conditions are encouraged to deploy their own proxy contracts for making such queries.
+
+<Callout type='info'>
+    **tl;dr:** this means that you must consider only the result of a given transaction and which addresses will end up with a given asset.
+</Callout>
+
+
+
+## STX token post conditions
+
+STX token post conditions are pretty straight forward. There are functions you can use from `micro-stacks/transactions`
+called `makeStandardSTXPostCondition` and `makeContractSTXPostCondition` that take a few parameters:
+
+- `principal`: the principal (Stacks address) of the participant this condition affects
+- `contractName`: (_only `makeStandardSTXPostCondition`_) the contract name of the participating contract
+- `conditionCode`: the `FungibleConditionCode` for this condition, available options:
+  - `FungibleConditionCode.Equal`: an exact amount _will_ be transferred
+  - `FungibleConditionCode.Greater`: an amount greater than X _can_ be transferred
+  - `FungibleConditionCode.GreaterEqual`: an amount greater or equal to X _will_ be transferred
+  - `FungibleConditionCode.Less`: an amount less than X _can_ be transferred
+  - `FungibleConditionCode.LessEqual`: an amount less than or equal to X _will_ be transferred
+- `amount`: the amount without decimals (in the case of STX, uSTX)
+
+### Example
+
+```ts
+import {
+  makeStandardSTXPostCondition,
+  makeContractSTXPostCondition,
+  FungibleConditionCode
+} from 'micro-stacks/transactions';
+
+// if the participant is a standard principal
+const stxPostCondition = makeStandardSTXPostCondition(
+  'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+  FungibleConditionCode.Equal,
+  10n
+);
+
+// if the participant is a contract principal
+const stxPostConditionForContract = makeContractSTXPostCondition(
+  'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+  'my-contract'
+  FungibleConditionCode.Equal,
+  10n
+);
+```
+
+## Fungible token post conditions
+
+Post conditions for fungible tokens other than STX tokens are nearly the same, however, you need to pass details of the asset
+the condition is about. There are functions you can use from `micro-stacks/transactions` called `makeStandardFungiblePostCondition`
+and `makeContractFungiblePostCondition` that take a few parameters:
+
+- `principal`: the principal (Stacks address) of the participant this condition affects
+- `contractName`: (_only `makeContractFungiblePostCondition`_) the contract name of the participating contract
+- `conditionCode`: the `FungibleConditionCode` for this condition, available options:
+  - `FungibleConditionCode.Equal`: an exact amount _will_ be transferred
+  - `FungibleConditionCode.Greater`: an amount greater than X _can_ be transferred
+  - `FungibleConditionCode.GreaterEqual`: an amount greater or equal to X _will_ be transferred
+  - `FungibleConditionCode.Less`: an amount less than X _can_ be transferred
+  - `FungibleConditionCode.LessEqual`: an amount less than or equal to X _will_ be transferred
+- `amount`: the amount without decimals (in the case of STX, uSTX)
+
+Additionally, you need to manually define the asset for the post condition using `createAssetInfo`, the parameters this function takes are:
+- `contractAddress`: the contract address (principal) of the specific asset you're working with
+- `contractName`: the name of the contract for this asset
+- `assetName`: the name of the asset as defined in the contract
+
+### Example
+
+```ts
+import {
+  makeStandardFungiblePostCondition,
+  makeContractFungiblePostCondition,
+  createAssetInfo,
+  FungibleConditionCode,
+} from 'micro-stacks/transactions';
+
+// USDA
+const asset = createAssetInfo(
+  'SP2C2YFP12AJZB4MABJBAJ55XECVS7E4PMMZ89YZR',
+  'usda-token',
+  'usda-token'
+)
+
+// if the participant is a standard principal
+const stxPostCondition = makeStandardFungiblePostCondition(
+  'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+  FungibleConditionCode.Equal,
+  10n,
+  asset
+);
+
+// if the participant is a contract principal
+const stxPostConditionForContract = makeContractFungiblePostCondition(
+  'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+  'my-contract'
+  FungibleConditionCode.Equal,
+  10n,
+  asset
+);
+```
+
+## Non-fungible token post conditions
+
+Post conditions for NFTs are slightly different than STX or fungible token post conditions, in that the `conditionCode`
+for NFTs can only be one of two values: `Owns` or `DoesNotOwn`. The functions we will use are `makeStandardNonFungiblePostCondition`
+or `makeContractNonFungiblePostCondition`, and these are the parameters:
+
+- `principal`: the principal (Stacks address) of the participant this condition affects
+- `contractName`: (_only `makeContractNonFungiblePostCondition`_) the contract name of the participating contract
+- `conditionCode`: the `NonFungibleConditionCode` for this condition, available options:
+  - `NonFungibleConditionCode.Owns`: this condition requires that at the end of the transaction, the principal participating will _own_ this asset
+  - `NonFungibleConditionCode.DoesNotOwn`: this condition requires that at the end of the transaction, the principal participating will _NOT own_ this asset
+- `assetInfo`: the information about the asset (see below)
+- `assetId`: the ClarityValue of the asset ID (see below)
+
+Additionally, you need to manually define the asset for the post condition using `createAssetInfo`, the parameters this function takes are:
+- `contractAddress`: the contract address (principal) of the specific asset you're working with
+- `contractName`: the name of the contract for this asset
+- `assetName`: the name of the asset as defined in the contract
+
+With NFTs, you also need to provide the asset id (eg token id) as a `ClarityValue`, see the example below for more details.
+
+### Example
+
+```ts
+import {
+  makeStandardNonFungiblePostCondition,
+  makeContractNonFungiblePostCondition,
+  NonFungibleConditionCode,
+  createAssetInfo
+} from 'micro-stacks/transactions';
+import { uintCV } from 'micro-stacks/clarity';
+
+// Megapont robot expansion contract asset
+const asset = createAssetInfo(
+  'SP3D6PV2ACBPEKYJTCMH7HEN02KP87QSP8KTEH335',
+  'megapont-robot-component-expansion-nft',
+  'Megapont-Robot-Component'
+);
+
+const nftPostCondition = makeStandardNonFungiblePostCondition(
+  'SP2C2YFP12AJZB4MABJBAJ55XECVS7E4PMMZ89YZR',
+  NonFungibleConditionCode.Owns,
+  asset,
+  uintCV('60149') // the token ID
+);
+
+const nftPostConditionForContract = makeStandardNonFungiblePostCondition(
+  'SP2C2YFP12AJZB4MABJBAJ55XECVS7E4PMMZ89YZR',
+  'my-contract',
+  NonFungibleConditionCode.Owns,
+  asset,
+  uintCV('60149')
+);
+```
+
+
+
+

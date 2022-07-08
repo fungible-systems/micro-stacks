@@ -1,0 +1,47 @@
+---
+description: "Learn about the different network options on Stacks and how to add network switching functionality to your decentralized apps."
+---
+import {InstallTabs} from '../../../components/install-tabs'
+import * as Integrations from '../../../components/integrations-tabs'
+import Callout from 'nextra-theme-docs/callout'
+
+# Networks
+
+<Integrations.Tabs/>
+
+Within most blockchain ecosystems, there is a concept of "networks". Within Stacks, networks are of either two "chain modes": `testnet` or `mainnet`.
+Mainnet refers to the primary Stacks blockchain, where real transactions and activity occur. Testnet is a staging or non-production
+instance of the network. There can be many instances of testnet, but only one of mainnet.
+
+Unlike in Ethereum or other chains,
+where the wallet controls what network is set for a given application, that responsibility lies with the apps. This means
+an app could be operating only in testnet, where the user might have their wallet set to mainnet.
+
+## Changing the default network
+
+<Integrations.React>
+The default network mode is set to `mainnet`. To change default mode of your application, you can pass `network="testnet"`
+(or an instance of `StacksNetwork`) to your ClientProvider, like so:
+
+```tsx {9}
+import * as MicroStacks from '@micro-stacks/react';
+
+// your app
+function App() {
+  return (
+    <MicroStacks.ClientProvider
+      appName="My sick app"
+      appIconUrl="APP_ICON.png"
+      network="testnet">
+        <Router />
+    </MicroStacks.ClientProvider>
+  );
+}
+
+export default App;
+```
+</Integrations.React>
+
+### Toggling networks in-app
+
+Sometimes you'll be building an app that can work in many different networks, or take a custom RPC api endpoint.

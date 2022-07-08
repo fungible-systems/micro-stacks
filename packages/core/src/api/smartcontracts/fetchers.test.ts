@@ -23,12 +23,11 @@ import {
 } from './fetchers';
 import { contractEndpoint, contractsEndpoint, v2Endpoint } from '../utils';
 import { HIRO_TESTNET_DEFAULT } from 'micro-stacks/network';
-import { ClarityValue } from 'micro-stacks/clarity';
 
 const contract_id = 'STJTXEJPJPPVDNA9B052NSRRBGQCFNKVS178VGH1.hello_world';
 const functionName = 'hi';
-const senderAddress = 'STJTXEJPJPPVDNA9B052NSRRBGQCFNKVS178VGH1';
-const functionArgs: ClarityValue[] = [];
+// const senderAddress = 'STJTXEJPJPPVDNA9B052NSRRBGQCFNKVS178VGH1';
+// const functionArgs: ClarityValue[] = [];
 const [contract_address, contract_name] = contract_id.split('.');
 const tip = 'b1807a2d3f7f8c7922f7c1d60d7c34145ade05d789640dc7dc9ec1021e07bb54';
 const proof = 0x0000001104060000001;

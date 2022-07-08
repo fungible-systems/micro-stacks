@@ -1,0 +1,42 @@
+# What makes a Stacks app
+
+A Stacks app is any app that makes use of one or many of the features found within the Stacks Ecosystem. Roughly speaking
+however, authentication is the primary element that all Stacks apps share. After that, the app could implement many or
+none of the remaining features, and still be a Stacks app.
+
+## Authentication
+
+Authentication is the mechanism by which users can attest they are who they say they are. Originally, in Stacks 1.0, users
+would authenticate via a hosted application called the Blockstack Browser. The browser was more of a wallet than a browser.
+With Stacks 2.0, all users of the network have some kind of wallet: Hiro's web wallet, desktop wallet, or Xverse, the mobile wallet.
+These wallets all hold the private key for the user, and apps request information from the wallet.
+
+Stacks authentication is when an application requests the public key(s) from the users wallet. If the wallet is a software-only
+wallet (meaning there is no hardware device associated with it), then the authentication response from the wallet will also include
+an `appPrivateKey`. This private key is derived from the accounts primary private key, combined with some information about
+the app requesting it (domain name).
+
+## Transaction signing
+
+Following authentication, the next most common functionality that a Stacks app will implement is transaction signnig. Transactions
+on Stacks are the base unit of participation, just as with any blockchain. A transaction is some payload of data that is signed by a
+public/private key pair, and then broadcast to the network, and eventually mined in a block. There is a fix set of transaction types
+on Stacks:
+
+- STX token transfer
+- Contract deploy
+- Contract call
+- Coinbase
+- Poison-microblock
+
+An application on Stacks can construct the base elements of a given transaction that is then sent to a wallet to be signed and
+ultimately broadcast to the network. Typically apps never sign the transactions themselves, as Stacks apps should not handle
+private keys.
+
+## Message signing
+
+Similar to transaction signing, apps can request that arbitrary messages be signed. This functionality has many, many use cases.
+
+## Gaia
+
+Gaia is a semi-decentralized, privacy-focused storage solution, where apps can allow for users to encrypt and store data for a given application.

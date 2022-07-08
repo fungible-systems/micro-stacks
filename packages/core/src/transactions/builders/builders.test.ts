@@ -1,7 +1,5 @@
 import { deserializeTransaction, StacksTransaction } from '../transaction';
 
-import { createAssetInfo } from '../types';
-
 import {
   createSingleSigSpendingCondition,
   createSponsoredAuth,
@@ -17,7 +15,6 @@ import {
 import {
   DEFAULT_CORE_NODE_API_URL,
   FungibleConditionCode,
-  NonFungibleConditionCode,
   PostConditionMode,
   TxRejectedReason,
   AuthType,
@@ -42,19 +39,12 @@ import {
 } from 'micro-stacks/clarity';
 import { BufferReader, bytesToHex, TransactionVersion } from 'micro-stacks/common';
 import { StacksMainnet, StacksTestnet } from 'micro-stacks/network';
-import { PostCondition } from '../postcondition';
+
 import { parseReadOnlyResponse } from '../common/utils';
 import { createTokenTransferPayload, TokenTransferPayload } from '../payload';
 import { sponsorTransaction } from './sponsor-transaction';
-import { callReadOnlyFunction } from '../fetchers/call-read-only-function';
-import {
-  makeContractFungiblePostCondition,
-  makeContractNonFungiblePostCondition,
-  makeContractSTXPostCondition,
-  makeStandardFungiblePostCondition,
-  makeStandardNonFungiblePostCondition,
-  makeStandardSTXPostCondition,
-} from './post-conditions';
+import { callReadOnlyFunction } from 'micro-stacks/api';
+import { makeStandardSTXPostCondition } from './post-conditions';
 import { makeContractCall, makeUnsignedContractCall } from './make-contract-call';
 import { makeContractDeploy } from './make-contract-deploy';
 import { makeSTXTokenTransfer, makeUnsignedSTXTokenTransfer } from './make-stx-token-transfer';
@@ -151,7 +141,7 @@ describe('tx builders', function () {
   });
 
   test('Make STX token transfer with fee estimate', async () => {
-    const apiUrl = `${DEFAULT_CORE_NODE_API_URL}/v2/fees/transfer`;
+    // const apiUrl = `${DEFAULT_CORE_NODE_API_URL}/v2/fees/transfer`;
     const recipient = standardPrincipalCV('SP3FGQ8Z7JY9BWYZ5WM53E0M9NK7WHJF0691NZ159');
     const amount = 12345;
     const estimateFeeRate = 1;
@@ -670,94 +660,94 @@ describe('tx builders', function () {
     expect(serialized).toBe(tx);
   });
 
-  test('Make contract-call with post conditions', async () => {
-    const contractAddress = 'ST3KC0MTNW34S1ZXD36JYKFD3JJMWA01M55DSJ4JE';
-    const contractName = 'kv-store';
-    const functionName = 'get-value';
-    const buffer = bufferCVFromString('foo');
-    const senderKey = 'e494f188c2d35887531ba474c433b1e41fadd8eb824aca983447fd4bb8b277a801';
-    const postConditionAddress = 'ST1EXHZSN8MJSJ9DSG994G1V8CNKYXGMK7Z4SA6DH';
-    const assetAddress = 'ST34RKEJKQES7MXQFBT29KSJZD73QK3YNT5N56C6X';
-    const assetContractName = 'test-asset-contract';
-    const assetName = 'test-asset-name';
-    const info = createAssetInfo(assetAddress, assetContractName, assetName);
-    const tokenAssetName = 'token-asset-name';
-
-    const fee = 0;
-
-    const postConditions: PostCondition[] = [
-      makeStandardSTXPostCondition(postConditionAddress, FungibleConditionCode.GreaterEqual, 10),
-      makeContractSTXPostCondition(
-        contractAddress,
-        contractName,
-        FungibleConditionCode.GreaterEqual,
-        12345
-      ),
-      makeStandardFungiblePostCondition(
-        postConditionAddress,
-        FungibleConditionCode.Less,
-        1000,
-        info
-      ),
-      makeContractFungiblePostCondition(
-        postConditionAddress,
-        contractName,
-        FungibleConditionCode.Equal,
-        1,
-        info
-      ),
-      makeStandardNonFungiblePostCondition(
-        postConditionAddress,
-        NonFungibleConditionCode.Owns,
-        info,
-        bufferCVFromString(tokenAssetName)
-      ),
-      makeContractNonFungiblePostCondition(
-        postConditionAddress,
-        contractName,
-        NonFungibleConditionCode.DoesNotOwn,
-        info,
-        bufferCVFromString(tokenAssetName)
-      ),
-    ];
-
-    const transaction = await makeContractCall({
-      contractAddress,
-      contractName,
-      functionName,
-      functionArgs: [buffer],
-      senderKey,
-      fee,
-      nonce: 1,
-      network: new StacksTestnet(),
-      postConditions,
-      postConditionMode: PostConditionMode.Deny,
-      anchorMode: AnchorMode.Any,
-    });
-
-    const serialized = bytesToHex(transaction.serialize());
-
-    const tx =
-      '80800000000400e6c05355e0c990ffad19a5e9bda394a9c500342900000000000000010000000000000000' +
-      '0000dcaf5f38038f787babf86644e0251945b93d9bffac610fb3b8c56da9eb2961de04ab66f64aa0b2e1cc' +
-      '04172a2b002b8ff34e4b0c3ee430c00331c911325446c203020000000600021a5dd8ff3545259925b98252' +
-      '4807686567eec2933f03000000000000000a00031ae6c05355e0c990ffad19a5e9bda394a9c5003429086b' +
-      '762d73746f726503000000000000303901021a5dd8ff3545259925b982524807686567eec2933f1ac989ba' +
-      '53bbb27a76ef5e8499e65f69c7798fd5d113746573742d61737365742d636f6e74726163740f746573742d' +
-      '61737365742d6e616d650400000000000003e801031a5dd8ff3545259925b982524807686567eec2933f08' +
-      '6b762d73746f72651ac989ba53bbb27a76ef5e8499e65f69c7798fd5d113746573742d61737365742d636f' +
-      '6e74726163740f746573742d61737365742d6e616d6501000000000000000102021a5dd8ff3545259925b9' +
-      '82524807686567eec2933f1ac989ba53bbb27a76ef5e8499e65f69c7798fd5d113746573742d6173736574' +
-      '2d636f6e74726163740f746573742d61737365742d6e616d650200000010746f6b656e2d61737365742d6e' +
-      '616d651102031a5dd8ff3545259925b982524807686567eec2933f086b762d73746f72651ac989ba53bbb2' +
-      '7a76ef5e8499e65f69c7798fd5d113746573742d61737365742d636f6e74726163740f746573742d617373' +
-      '65742d6e616d650200000010746f6b656e2d61737365742d6e616d6510021ae6c05355e0c990ffad19a5e9' +
-      'bda394a9c5003429086b762d73746f7265096765742d76616c7565000000010200000003666f6f';
-
-    // TODO: FIX
-    // expect(transaction).toEqual(deserializeTransaction(tx));
-    // expect(serialized).toBe(tx);
-  });
+  // test('Make contract-call with post conditions', async () => {
+  //   const contractAddress = 'ST3KC0MTNW34S1ZXD36JYKFD3JJMWA01M55DSJ4JE';
+  //   const contractName = 'kv-store';
+  //   const functionName = 'get-value';
+  //   const buffer = bufferCVFromString('foo');
+  //   const senderKey = 'e494f188c2d35887531ba474c433b1e41fadd8eb824aca983447fd4bb8b277a801';
+  //   const postConditionAddress = 'ST1EXHZSN8MJSJ9DSG994G1V8CNKYXGMK7Z4SA6DH';
+  //   const assetAddress = 'ST34RKEJKQES7MXQFBT29KSJZD73QK3YNT5N56C6X';
+  //   const assetContractName = 'test-asset-contract';
+  //   const assetName = 'test-asset-name';
+  //   const info = createAssetInfo(assetAddress, assetContractName, assetName);
+  //   const tokenAssetName = 'token-asset-name';
+  //
+  //   const fee = 0;
+  //
+  //   const postConditions: PostCondition[] = [
+  //     makeStandardSTXPostCondition(postConditionAddress, FungibleConditionCode.GreaterEqual, 10),
+  //     makeContractSTXPostCondition(
+  //       contractAddress,
+  //       contractName,
+  //       FungibleConditionCode.GreaterEqual,
+  //       12345
+  //     ),
+  //     makeStandardFungiblePostCondition(
+  //       postConditionAddress,
+  //       FungibleConditionCode.Less,
+  //       1000,
+  //       info
+  //     ),
+  //     makeContractFungiblePostCondition(
+  //       postConditionAddress,
+  //       contractName,
+  //       FungibleConditionCode.Equal,
+  //       1,
+  //       info
+  //     ),
+  //     makeStandardNonFungiblePostCondition(
+  //       postConditionAddress,
+  //       NonFungibleConditionCode.Owns,
+  //       info,
+  //       bufferCVFromString(tokenAssetName)
+  //     ),
+  //     makeContractNonFungiblePostCondition(
+  //       postConditionAddress,
+  //       contractName,
+  //       NonFungibleConditionCode.DoesNotOwn,
+  //       info,
+  //       bufferCVFromString(tokenAssetName)
+  //     ),
+  //   ];
+  //
+  //   // const transaction = await makeContractCall({
+  //   //   contractAddress,
+  //   //   contractName,
+  //   //   functionName,
+  //   //   functionArgs: [buffer],
+  //   //   senderKey,
+  //   //   fee,
+  //   //   nonce: 1,
+  //   //   network: new StacksTestnet(),
+  //   //   postConditions,
+  //   //   postConditionMode: PostConditionMode.Deny,
+  //   //   anchorMode: AnchorMode.Any,
+  //   // });
+  //
+  //   // const serialized = bytesToHex(transaction.serialize());
+  //
+  //   // const tx =
+  //   //   '80800000000400e6c05355e0c990ffad19a5e9bda394a9c500342900000000000000010000000000000000' +
+  //   //   '0000dcaf5f38038f787babf86644e0251945b93d9bffac610fb3b8c56da9eb2961de04ab66f64aa0b2e1cc' +
+  //   //   '04172a2b002b8ff34e4b0c3ee430c00331c911325446c203020000000600021a5dd8ff3545259925b98252' +
+  //   //   '4807686567eec2933f03000000000000000a00031ae6c05355e0c990ffad19a5e9bda394a9c5003429086b' +
+  //   //   '762d73746f726503000000000000303901021a5dd8ff3545259925b982524807686567eec2933f1ac989ba' +
+  //   //   '53bbb27a76ef5e8499e65f69c7798fd5d113746573742d61737365742d636f6e74726163740f746573742d' +
+  //   //   '61737365742d6e616d650400000000000003e801031a5dd8ff3545259925b982524807686567eec2933f08' +
+  //   //   '6b762d73746f72651ac989ba53bbb27a76ef5e8499e65f69c7798fd5d113746573742d61737365742d636f' +
+  //   //   '6e74726163740f746573742d61737365742d6e616d6501000000000000000102021a5dd8ff3545259925b9' +
+  //   //   '82524807686567eec2933f1ac989ba53bbb27a76ef5e8499e65f69c7798fd5d113746573742d6173736574' +
+  //   //   '2d636f6e74726163740f746573742d61737365742d6e616d650200000010746f6b656e2d61737365742d6e' +
+  //   //   '616d651102031a5dd8ff3545259925b982524807686567eec2933f086b762d73746f72651ac989ba53bbb2' +
+  //   //   '7a76ef5e8499e65f69c7798fd5d113746573742d61737365742d636f6e74726163740f746573742d617373' +
+  //   //   '65742d6e616d650200000010746f6b656e2d61737365742d6e616d6510021ae6c05355e0c990ffad19a5e9' +
+  //   //   'bda394a9c5003429086b762d73746f7265096765742d76616c7565000000010200000003666f6f';
+  //
+  //   // TODO: FIX
+  //   // expect(transaction).toEqual(deserializeTransaction(tx));
+  //   // expect(serialized).toBe(tx);
+  // });
 
   test('Make contract-call with post condition allow mode', async () => {
     const contractAddress = 'ST3KC0MTNW34S1ZXD36JYKFD3JJMWA01M55DSJ4JE';

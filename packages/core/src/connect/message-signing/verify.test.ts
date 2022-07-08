@@ -209,7 +209,7 @@ describe(verifyStructuredMessageSignature.name, () => {
 
   it('should be fail with no public key', () => {
     expect(() => {
-      const isValid = verifyStructuredMessageSignature({
+      verifyStructuredMessageSignature({
         message: structuredData,
         domain: domainOpts,
         signature: payload.signature,

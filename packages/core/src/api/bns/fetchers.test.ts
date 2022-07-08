@@ -4,8 +4,8 @@ import * as BNS_GET_NAMESPACE_PRICE_200_RESPONSE from '../../../tests/mocks/api/
 import * as BNS_GET_NAMES_PRICE_200_RESPONSE from '../../../tests/mocks/api/bns/BnsGetNamePriceResponse200.json';
 import * as BNS_GET_ALL_NAMESPACES_200_RESPONSE from '../../../tests/mocks/api/bns/BnsGetAllNamespacesResponse200.json';
 import * as BNS_GET_NAME_INFO_200_RESPONSE from '../../../tests/mocks/api/bns/BnsGetNameInfoResponse200.json';
-import * as BNS_ERROR_400_RESPONSE from '../../../tests/mocks/api/bns/BnsError400.json';
-import * as BNS_ERROR_404_RESPONSE from '../../../tests/mocks/api/bns/BnsError404.json';
+// import * as BNS_ERROR_400_RESPONSE from '../../../tests/mocks/api/bns/BnsError400.json';
+// import * as BNS_ERROR_404_RESPONSE from '../../../tests/mocks/api/bns/BnsError404.json';
 import * as BNS_FETCH_HISTORICAL_ZONEFILE_200_RESPONSE from '../../../tests/mocks/api/bns/BnsFetchHistoricalZoneFileResponse200.json';
 import * as BNS_FETCH_FILEZONE_200_RESPONSE from '../../../tests/mocks/api/bns/BnsFetchFileZoneResponse200.json';
 import * as BNS_NAMES_OWN_BY_ADDRESS_200_RESPONSE from '../../../tests/mocks/api/bns/BnsNamesOwnByAddressResponse200.json';

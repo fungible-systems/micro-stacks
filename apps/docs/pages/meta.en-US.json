@@ -1,0 +1,19 @@
+{
+  "index": {
+	"title": "Introduction",
+	"type": "page",
+	"hidden": true
+  },
+  "docs": {
+	"title": "Docs",
+	"type": "page"
+  },
+  "guides": {
+	"title": "Guides",
+	"type": "page"
+  },
+  "reference": {
+	"title": "Reference",
+	"type": "page"
+  }
+}

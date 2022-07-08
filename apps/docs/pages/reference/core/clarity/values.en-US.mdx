@@ -1,0 +1,21 @@
+# Clarity Values
+
+Clarity is a strongly-typed language. Its types define both what kind of data can be stored and how data should be formatted within Clarity variables. This language feature means developers need to declare variables and type values correctly but it also ensures that Clarity contracts are very predictable. `micro-stacks` has a full implementation of Clarity Values (CV) as well as a number of helpers to make it easier for developers to focus on the core application functionality.
+
+## Clarity Type System
+
+Here is a brief overview of Clarity's types and their corresponding Clarity Values:
+
+| Import type           | Clarity Type                                          | Notes                                                                                                                                                                                |
+| --------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|  `intCV`              | `int`                                                 | signed 128-bit integer e.g., `0`, `-220`, `29529342`. The minimum value is `-2^127` and the maximum value is `2^127 - 1`                                                             |
+|  `uintCV`             | `uint`                                                | unsigned 128-bit integer e.g., `u0`, `u2962412`.The minimum value is `0` and the maximum value is `2^128 - 1`                                                                        |
+|  `boolCV`             | `bool`                                                | boolean value (`true` or `false`)                                                                                                                                                    |
+|  `principalCV`        | `principal`                                           | object representing a principal (whether a contract principal or standard principal)                                                                                                 |
+|  `bufferCV`           | `(buff max-len)`                                      | byte buffer of maximum length `max-len`.                                                                                                                                             |
+|  `stringAsciiCV`      | `(string-ascii max-len)`                              | ASCII string of maximum length `max-len`                                                                                                                                             |
+|  `stringUtf8CV`       | `(string-utf8 max-len)`                               | UTF-8 string of maximum length `max-len` (u"hello world")                                                                                                                            |
+|  `listCV`             | `(list max-len entry-type)`                           | list of maximum length `max-len`, with entries of type `entry-type`                                                                                                                  |
+|  `tupleCV`            | `{label-0: value-type-0, label-1: value-type-1, ...}` | tuple, group of data values with named fields                                                                                                                                        |
+|  `someCV`             | `(optional some-type)`                                | an option type for objects that can either be `(some value)` or `none`                                                                                                               |
+|  `responseCV`         | `(response ok-type err-type)`                         | object used by public functions to commit their changes or abort. May be returned or used by other functions as well, however, only public functions have the commit/abort behavior  |

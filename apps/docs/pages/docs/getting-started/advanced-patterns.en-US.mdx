@@ -1,0 +1,86 @@
+---
+description: "Learn advanced application patterns like working with server side rendering frameworks like Remix and Next.js."
+---
+
+import {InstallTabs} from '../../../components/install-tabs'
+import * as Integrations from '../../../components/integrations-tabs'
+import Callout from 'nextra-theme-docs/callout'
+
+# Advanced patterns
+
+<Integrations.Tabs/>
+
+The client can take a few additional parameters: `onPersistState`, `onSignOut`, and `onAuthentication`.
+
+
+## Server side rendered apps
+
+There are times with which you might want to be able to persist the state of the client in more advanced ways. Most often,
+if you're working with a server-side rendered application (SSR), you will want to persist the user state as a session that
+can be accessed on the server. Most likely you will want to use some kind of cookie-based storage.
+
+Persisting the state of the client is useful in the context of a SSR application because it allows applications to
+do things like prefetch account data on the server, render account related components on the server to prevent a momentary flash
+of un-authenticated data, or as an authentication gate for restricted areas of an application.
+
+<Integrations.React>
+<Callout type={'info'}>
+	You can learn more about using building robust SSR Stacks applications by checking out the [Next.js](/guides/frameworks/with-nextjs)
+	and [Remix](/guides/frameworks/with-remix) guides.
+</Callout>
+</Integrations.React>
+
+### `onPersistState`
+
+To get access the client state to persist, you pass a callback `onPersistState` to the client which fires whenever the state
+changes. `onPersistState` is a function that takes a string value of `dehydratedState`.
+
+Here is a simple example:
+
+<Integrations.React>
+
+```tsx {9}
+import * as MicroStacks from '@micro-stacks/react';
+
+// your app
+function App() {
+  return (
+    <MicroStacks.ClientProvider
+      appName="My sick app"
+      appIconUrl="APP_ICON.png"
+      onPersistState={(state: string) => saveToSessionCookie(state)}>
+        <Router />
+    </MicroStacks.ClientProvider>
+  );
+}
+
+export default App;
+```
+</Integrations.React>
+
+### `dehydratedState`
+
+Now, if you've persisted the state of the client, we need some way of feeding it back to our client when the app loads. The
+client takes a parameter called `dehydratedState`, which is the `string` value that you got from `onPersistState` before.
+Often times, you'll get this from a cookie which you've saved it to, and then pass it down to wherever you have initiated your client.
+
+<Integrations.React>
+```tsx {10}
+import * as MicroStacks from '@micro-stacks/react';
+
+// your app
+function App({ dehydratedState }) {
+  return (
+    <MicroStacks.ClientProvider
+      appName="My sick app"
+      appIconUrl="APP_ICON.png"
+      onPersistState={(state: string) => saveToSessionCookie(state)}
+      dehydratedState={dehydratedState}>
+        <Router />
+    </MicroStacks.ClientProvider>
+  );
+}
+
+export default App;
+```
+</Integrations.React>
