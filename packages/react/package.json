@@ -31,6 +31,7 @@
     "build": "shx rm -rf ./dist && tsup-node src/index.ts --format esm,cjs --dts --minify --splitting --treeshake",
     "typecheck": "tsc --noEmit --target esnext",
     "dev:publish": "yalc publish --push",
+    "dev:build": "pnpm build && yalc publish --push",
     "lint": "pnpm lint:eslint && pnpm lint:prettier",
     "lint:eslint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",

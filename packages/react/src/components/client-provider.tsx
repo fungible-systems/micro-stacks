@@ -6,7 +6,8 @@ import {
   useOnPersistEffect,
   useOnSignOutEffect,
 } from '../hooks/use-client-callbacks';
-import { memo, PropsWithChildren } from 'react';
+import { memo, PropsWithChildren, useContext, useEffect, useRef } from 'react';
+import { useCreateClient } from '../hooks/use-create-client';
 
 /** ------------------------------------------------------------------------------------------------------------------
  *   CallbacksProvider (private)
@@ -46,9 +47,15 @@ export const ClientProvider: React.FC<
     onAuthentication,
     onSignOut,
   }) => {
-    const client =
-      client_ ??
-      getClient({
+    if (!!useContext(MicroStacksClientContext))
+      throw Error(
+        '[@micro-stacks/react] Nested ClientProviders detected, you should only have one instance of this component at the root of your app.'
+      );
+
+    const mountRef = useRef(false);
+
+    const client = useCreateClient({
+      config: {
         appName,
         appIconUrl,
         dehydratedState,
@@ -57,7 +64,17 @@ export const ClientProvider: React.FC<
         onPersistState,
         onAuthentication,
         onSignOut,
-      });
+      },
+      dehydratedState,
+    });
+
+    useEffect(() => {
+      if (onPersistState && !mountRef.current) {
+        mountRef.current = true;
+        if (!dehydratedState && client.hasSession) void client.persist();
+      }
+    }, [client, dehydratedState, onPersistState]);
+
     return (
       <MicroStacksClientContext.Provider value={client}>
         {!client_ ? (
