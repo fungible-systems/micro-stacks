@@ -28,6 +28,7 @@ import type {
   ContractDeployParams,
   StxTransferParams,
 } from '@micro-stacks/client';
+import type { PropsWithChildren } from 'react';
 import type { SignedOptionsWithOnHandlers } from 'micro-stacks/connect';
 import type { ClarityValue } from 'micro-stacks/clarity';
 
@@ -52,7 +53,7 @@ export const clientState = atom<MicroStacksClient>(get => {
  */
 
 // this goes below `ClientProvider` in your app
-export const JotaiClientProvider: React.FC = ({ children }) => {
+export const JotaiClientProvider: React.FC<PropsWithChildren<void>> = ({ children }) => {
   const client = useMicroStacksClient();
 
   const props = useMemo(
