@@ -33,7 +33,7 @@ npx create-next-app@latest --ts
 
 ## Client Provider
 
-Our first step will be to `import * as MicroStacks from "@micro-stacks/react";` and wrap the `_app_.tsx` file in our
+Our first step will be to `import * as MicroStacks from "@micro-stacks/react";` and wrap the `_app.tsx` file in our
 `MicroStacks.ClientProvider` component. This component allows for all of the related hooks to access a shared session
 client within the application. We've also added two props to the `ClientProvider`: `appName` and `appIconUrl`.
 
@@ -254,7 +254,7 @@ This is important because we're going to be passing this data from the server to
 We need to create two API routes to save our session and also for when we need to destroy it. The files we'll make are:
 `/pages/api/session/save.ts` and `/pages/api/session/destroy.ts`
 
-### api/save.ts
+### api/session/save.ts
 
 This API route is what we're going to `POST` our session to. The route makes use of the higher order function `withIronSessionApiRoute`
 which is exported from `iron-session/next`.
@@ -282,7 +282,7 @@ async function saveSessionRoute(req: NextApiRequest, res: NextApiResponse) {
 export default withIronSessionApiRoute(saveSessionRoute, sessionOptions);
 ```
 
-### api/destroy.ts
+### api/session/destroy.ts
 
 This API route is what we're going to `POST` to when we need to clear the current session. The route makes use of the higher
 order function `withIronSessionApiRoute` which is exported from `iron-session/next`.
@@ -299,8 +299,6 @@ function destorySessionRoute(req: NextApiRequest, res: NextApiResponse) {
 
 export default withIronSessionApiRoute(destorySessionRoute, sessionOptions);
 ```
-
-
 
 ### Fetchers
 
