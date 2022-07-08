@@ -143,3 +143,17 @@ export type OpenSignStructuredMessageParams = SignedOptionsWithOnHandlers<{
   message: string | ClarityValue;
   domain?: StructuredDataDomainTuple;
 }>;
+
+interface SerializedAccount {
+  appPrivateKey: null | string;
+  address: string;
+  profile_url: string;
+}
+
+type AccountsTuple = [currentAccountIndex: number, accounts: SerializedAccount[]];
+
+export type DehydratedState = [
+  network: [chainId: number, apiUrl: string],
+  accounts: AccountsTuple,
+  version: number
+];

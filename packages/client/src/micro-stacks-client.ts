@@ -106,8 +106,8 @@ export class MicroStacksClient {
     return STORE_KEY;
   }
 
-  private onPersistState = (str: string) => {
-    return this.store.getState()?.onPersistState?.(str);
+  private onPersistState = (dehydratedState: string) => {
+    return this.store.getState()?.onPersistState?.(dehydratedState);
   };
 
   private get onAuthentication() {
@@ -142,9 +142,11 @@ export class MicroStacksClient {
     this.config.onAuthentication = onAuthentication;
   };
 
-  private handleOnPersistState = () => {
-    // persist state on changes
-    if (this.onPersistState) this.onPersistState(this.dehydrate(this.store.getState()));
+  persist = async () => {
+    if (this.onPersistState) {
+      const dehydratedState = this.dehydrate(this.store.getState());
+      await this.onPersistState(dehydratedState);
+    }
   };
 
   dehydrate(state?: State) {
@@ -293,7 +295,7 @@ export class MicroStacksClient {
       {
         appDetails: this.appDetails,
         // this is the on success callback
-        onFinish: ({ profile, ...session }) => {
+        onFinish: async ({ profile, ...session }) => {
           const address = c32addressDecode(session.addresses.mainnet);
 
           const hasAccount = this.accounts.find(account => account.address === address);
@@ -319,7 +321,7 @@ export class MicroStacksClient {
           // fire any of our callbacks
           params?.onFinish?.(session);
           this.onAuthentication?.({ profile, ...session });
-          this.handleOnPersistState();
+          await this.persist();
 
           // set pending to idle
           this.setIsIdle(StatusKeys.Authentication);
@@ -524,7 +526,7 @@ export class MicroStacksClient {
         network: network === 'mainnet' ? new StacksMainnet() : new StacksTestnet(),
       }));
     else this.setState(s => ({ ...s, network }));
-    this.handleOnPersistState();
+    this.persist();
   };
 
   /** ------------------------------------------------------------------------------------------------------------------
@@ -540,7 +542,7 @@ export class MicroStacksClient {
     });
   }
 
-  putFile = async (
+  putFile = (
     path: string,
     contents: string | Uint8Array | ArrayBufferView | Blob,
     { encrypt = true, sign }: { encrypt?: boolean; sign?: boolean }
@@ -558,10 +560,7 @@ export class MicroStacksClient {
     });
   };
 
-  getFile = async (
-    path: string,
-    { decrypt = true, verify }: { decrypt?: boolean; verify?: boolean }
-  ) => {
+  getFile = (path: string, { decrypt = true, verify }: { decrypt?: boolean; verify?: boolean }) => {
     if (!this.gaiaHubConfig) return;
     if (!this.hasSession) return;
     if (!this.account.appPrivateKey) return;
