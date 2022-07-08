@@ -1,0 +1,85 @@
+---
+description: "Learn how to deploy Clarity smart contracts to the blockchain from within an app."
+---
+
+import Callout from 'nextra-theme-docs/callout'
+import * as Integrations from '../../../components/integrations-tabs'
+
+# Deploying Clarity smart contracts
+
+<Integrations.Tabs />
+
+This transaction type is how we deploy a smart contract to the blockchain.
+
+## Usage
+
+<Integrations.React>
+`@micro-stacks/react` exports a hook that you will use to call contract functions: `useOpenContractDeploy`.
+
+```jsx
+import { useOpenContractDeploy } from '@micro-stacks/react';
+```
+</Integrations.React>
+
+### Parameters
+
+- `contractName`: the name of the contract.
+- `codeBody`: the Clarity code for this contract as a string value.
+
+### Example
+
+We will be deploying this simple Clarity contract:
+
+```clar
+(define-fungible-token connect-token)
+(begin (ft-mint? connect-token u10000000 tx-sender))
+(define-public (transfer
+    (recipient principal)
+    (amount uint)
+  )
+  (ok (ft-transfer? connect-token amount tx-sender recipient))
+)
+(define-public (faucet)
+  (ok (ft-mint? connect-token u100 tx-sender))
+)
+(define-non-fungible-token hello-nft uint)
+(begin (nft-mint? hello-nft u1 tx-sender))
+(begin (nft-mint? hello-nft u2 tx-sender))
+```
+And this is how you'd request someone sign a transaction to deploy it:
+<Integrations.React>
+```jsx
+import { useOpenContractDeploy } from '@micro-stacks/react';
+import { useState } from 'react';
+
+export const ContractDeploy = () => {
+  const { openContractDeploy, isRequestPending } = useOpenContractDeploy();
+  const [response, setResponse] = useState(null);
+
+  const handleOpenContractDeploy = async () => {
+    await openContractDeploy({
+      contractName: `demo-deploy`,
+      // the clarity contract above
+      codeBody,
+      onFinish: async (data) => {
+        console.log('finished contract deploy!', data);
+        setResponse(data);
+      },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
+    });
+  };
+
+  return (
+    <div>
+      <h4>Deploy a contract!</h4>
+      {response && <pre><code>{JSON.stringify(response, null, 2)}</code></pre>}
+      <button onClick={() => handleOpenContractDeploy()}>
+        {isRequestPending ? 'request pending...' : 'Deploy a contract'}
+      </button>
+    </div>
+  );
+};
+```
+</Integrations.React>

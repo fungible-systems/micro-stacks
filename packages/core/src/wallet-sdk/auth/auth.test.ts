@@ -8,8 +8,8 @@ import {
 } from './verification';
 
 const privateKey = 'a5c61c6ca7b3e7e55edee68566aeab22e4da26baa285c7bd10e8d2218aa3b229';
-const publicKey = '027d28f9951ce46538951e3697c62588a87f1f1f295de4a14fdd4c780fc52cfe69';
-const nameLookupURL = 'https://stacks-node-api.mainnet.stacks.co/v1/names/';
+// const publicKey = '027d28f9951ce46538951e3697c62588a87f1f1f295de4a14fdd4c780fc52cfe69';
+// const nameLookupURL = 'https://stacks-node-api.mainnet.stacks.co/v1/names/';
 const profile = {
   '@type': 'Person',
   account: [

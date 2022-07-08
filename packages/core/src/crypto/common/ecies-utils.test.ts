@@ -7,7 +7,6 @@ import {
 } from 'micro-stacks/crypto';
 import { aes256CbcEncrypt } from 'micro-stacks/crypto-aes';
 import { bytesToBase64 } from 'micro-stacks/common';
-import { GaiaHubConfig } from 'micro-stacks/storage';
 
 describe('size tests', function () {
   test('aes256Cbc output size calculation', async () => {
@@ -44,14 +43,14 @@ describe('size tests', function () {
   test('playload size detection', async () => {
     const privateKey = 'a5c61c6ca7b3e7e55edee68566aeab22e4da26baa285c7bd10e8d2218aa3b229';
 
-    const gaiaHubConfig: GaiaHubConfig = {
-      address: '1NZNxhoxobqwsNvTb16pdeiqvFvce3Yg8U',
-      server: 'https://hub.blockstack.org',
-      token: '',
-      url_prefix: 'gaia.testblockstack2.org/hub/',
-      // 500 bytes
-      max_file_upload_size_megabytes: 0.0005,
-    };
+    // const gaiaHubConfig: GaiaHubConfig = {
+    //   address: '1NZNxhoxobqwsNvTb16pdeiqvFvce3Yg8U',
+    //   server: 'https://hub.blockstack.org',
+    //   token: '',
+    //   url_prefix: 'gaia.testblockstack2.org/hub/',
+    //   // 500 bytes
+    //   max_file_upload_size_megabytes: 0.0005,
+    // };
 
     const data = Buffer.alloc(100);
 

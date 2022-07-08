@@ -1,7 +1,6 @@
 import { StacksTransaction, deserializeTransaction } from './transaction';
 
 import {
-  StandardAuthorization,
   createSingleSigSpendingCondition,
   SingleSigSpendingCondition,
   createMultiSigSpendingCondition,

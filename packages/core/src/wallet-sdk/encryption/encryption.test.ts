@@ -1,4 +1,4 @@
-import { bytesToHex, bytesToUtf8, hexToBytes } from 'micro-stacks/common';
+import { bytesToHex, hexToBytes } from 'micro-stacks/common';
 import { encryptMnemonic } from './encrypt-mnemonic';
 import { decryptMnemonic } from './decrypt-mnemonic';
 

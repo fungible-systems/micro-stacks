@@ -1,15 +1,9 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "resolveJsonModule": true,
-    "module": "esnext",
-    "target": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "isolatedModules": false,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
       "micro-stacks/api": [

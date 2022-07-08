@@ -1,0 +1,35 @@
+import * as Integrations from 'components/integrations-tabs'
+
+# Saving data on Gaia
+
+<Integrations.Tabs />
+
+The first hook you'll likely want to use is the `usePutFile` hook which handles asynchronously encrypting and uploading data to the
+default Gaia hub.
+
+```tsx
+import { usePutFile } from '@micro-stacks/react';
+import * as React from 'react';
+
+const filename = 'hello-world';
+const contents = {
+  foo: 'bar',
+};
+
+const MyGaiaComponent = () => {
+  const [gaiaUrl, setGaiaUrl] = React.useState(null as null | string);
+
+  const { isLoading, error, hasError, data, putFile } = usePutFile(`${filename}.json`, contents, {
+    onSuccess: url => setGaiaUrl(url),
+  });
+
+  return (
+    <div>
+      {isLoading && <div>loading...</div>}
+      {hasError && <div>{error}</div>}
+      {data || gaiaUrl ? <div>file path: {data || gaiaUrl}</div> : null}
+      <button onClick={() => putFile()}>save file</button>
+    </div>
+  );
+};
+```

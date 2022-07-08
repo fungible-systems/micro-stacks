@@ -1,6 +1,5 @@
 import { publicKeyToBase58Address, hashP2SH } from 'micro-stacks/crypto';
 import { getPublicKey } from 'micro-stacks/crypto';
-import { hexToBytes } from 'micro-stacks/common';
 
 describe('micro-stacks/crypto', () => {
   it(publicKeyToBase58Address.name, () => {

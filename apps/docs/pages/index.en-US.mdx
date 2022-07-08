@@ -1,0 +1,108 @@
+---
+title: micro-stacks
+---
+import Callout from 'nextra-theme-docs/callout'
+import Bleed from 'nextra-theme-docs/bleed'
+import * as Integrations from 'components/integrations-tabs'
+import {Logo} from 'components/logo'
+
+{<h1 className="text-center font-extrabold md:text-5xl mt-8">
+<span style={{display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column'}}>
+<Logo size='64' />
+<span>micro-stacks</span>
+</span>
+</h1>}
+
+`micro-stacks` is an all-in-one JavaScript/TypeScript SDK for building robust and sophisticated decentralized apps on [Stacks](https://stacks.co).
+With `micro-stacks` you can build apps that can: interact with [Clarity](https://clarity-lang.org), the smart contract language on Stacks,
+apps that interact with Stacks based wallets, construct transactions, post conditions, and much more!
+
+<div className="mt-16 mb-20 text-center">
+  [Overview](/docs/overview) · [Get Started](/docs/getting-started) · [Guides](/guides/stacks-apps) · [Core](/reference/core) · [GitHub](https://github.com/fungible-systems/micro-stacks)
+</div>
+
+## Overview
+
+<Integrations.Tabs />
+
+<Integrations.React>
+```typescript
+import { useAuth } from '@micro-stacks/react';
+
+export const WalletConnectButton = () => {
+  const { openAuthRequest, isRequestPending, signOut, isSignedIn } = useAuth();
+  const label = isRequestPending ? 'Loading...' : isSignedIn ? 'Sign out' : 'Connect Stacks wallet';
+  return (
+    <button
+      onClick={async () => {
+        if (isSignedIn) await signOut();
+        else await openAuthRequest();
+      }}
+    >
+      {label}
+    </button>
+  );
+};
+```
+
+In this example, we've imported the `useAuth` hook and created a simple `WalletConnect` style button. This is all you need to add
+web3 style Stacks authentication to your app!
+</Integrations.React>
+
+<Integrations.Vanilla>
+```typescript
+import { createClient } from '@micro-stacks/client';
+
+const client = createClient({
+    appName: 'My cool app',
+    appIconUrl: 'https://mycool.app/my-cool-app-logo.png'
+})
+
+const authenticate = async () => {
+  await client.authenticate({
+    onFinish: async () => {
+	  await client.signMessage({
+	    message: 'hello world',
+	    onFinish: (payload) => console.log(payload)
+	  })
+	}
+  })
+}
+```
+
+In this example, we've imported `createClient` from `@micro-stacks/client`, created a new `client`, and then requested the user
+authenticate, and once authentication completes, will be requested to sign a message. This is all you need to add web3 style
+Stacks authentication to your app!
+</Integrations.Vanilla>
+
+Want to learn more? [Get Started](/docs/getting-started) with `micro-stacks`.
+
+## Features
+
+- Core has only 2 dependencies (and those have 0)
+- Modular: take what you need, leave what you don't
+- ESM based, works with all modern bundlers
+- Un-opinionated core
+- Robust framework integrations
+  - React
+  - Svelte _(coming soon)_
+  - Vue _(coming soon)_
+  - React Jotai
+- Built from the ground up to work with Wallet-based authentication
+- Highly typed -- written in typescript
+- Well tested
+- Audited
+
+## Community
+
+<p className="flex h-6">
+  <img alt="stars" src="https://badgen.net/github/stars/fungible-systems/micro-stacks" className="inline-block mr-2"/>
+  <img alt="downloads" src="https://badgen.net/npm/dt/micro-stacks" className="inline-block mr-2"/>
+  <img alt="license" src="https://badgen.net/npm/license/micro-stacks" className="inline-block mr-2"/>
+</p>
+
+`micro-stacks` is created and maintained by [Fungible Systems](https://fungible.systems), a web3-focused design and engineering studio.
+
+Follow [@FungibleSystems](https://twitter.com/FungibleSystems) on Twitter for updates and memes :~)
+
+

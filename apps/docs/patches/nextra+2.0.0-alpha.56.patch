@@ -1,0 +1,21 @@
+diff --git a/node_modules/nextra/dist/loader.mjs b/node_modules/nextra/dist/loader.mjs
+index 486c1fb..1ddaa34 100644
+--- a/node_modules/nextra/dist/loader.mjs
++++ b/node_modules/nextra/dist/loader.mjs
+@@ -620,6 +620,7 @@ function compileMdx(_0) {
+     unstable_flexsearch: false
+   }, resourcePath) {
+     let structurizedData = {};
++	let extraOptions = mdxOptions.rehypePrettyCodeOptions ? mdxOptions.rehypePrettyCodeOptions : {}
+     const compiler = createCompiler({
+       jsx: true,
+       providerImportSource: "@mdx-js/react",
+@@ -633,7 +634,7 @@ function compileMdx(_0) {
+       rehypePlugins: [
+         ...mdxOptions.rehypePlugins || [],
+         parseMeta,
+-        [rehypePrettyCode, rehypePrettyCodeOptions],
++        [rehypePrettyCode, {...rehypePrettyCodeOptions, ...extraOptions}],
+         attachMeta
+       ].filter(Boolean)
+     });
