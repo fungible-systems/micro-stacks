@@ -2,7 +2,7 @@
 
 export default {
   projectLink: 'https://github.com/fungible-systems/micro-stacks', // GitHub link in the navbar
-  docsRepositoryBase: 'https://github.com/fungible-systems/micro-stacks-docs/blob/main', // base URL for the docs repository
+  docsRepositoryBase: 'https://github.com/fungible-systems/micro-stacks/blob/main/apps/docs', // base URL for the docs repository
   titleSuffix: ' – micro-stacks.dev',
   unstable_flexsearch: true,
   floatTOC: true,
