@@ -4,8 +4,11 @@ import * as Integrations from 'components/integrations-tabs'
 
 <Integrations.Tabs />
 
-The first hook you'll likely want to use is the `usePutFile` hook which handles asynchronously encrypting and uploading data to the
-default Gaia hub.
+<Integrations.React>
+To save data with Gaia, `@micro-stacks/react` exports a helpful hook `usePutFile` that wraps the library `react-async-hook`.
+This hook handles asynchronously encrypting and uploading data to the default Gaia hub.
+
+## Example
 
 ```tsx
 import { usePutFile } from '@micro-stacks/react';
@@ -33,3 +36,8 @@ const MyGaiaComponent = () => {
   );
 };
 ```
+</Integrations.React>
+
+<Integrations.Vanilla>
+`@micro-stacks/client` putFile documentation coming soon!
+</Integrations.React>
