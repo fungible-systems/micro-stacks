@@ -76,8 +76,8 @@ export const usePutFile = <T = unknown>(
     error,
     execute,
   } = useAsyncCallback<string | null>(putFileCallback, {
-    onSuccess: useCallback(v => options?.onSuccess?.(v), [options?.onSuccess]),
-    onError: useCallback(e => options?.onError?.(e), [options?.onError]),
+    onSuccess: useCallback((v: string | null) => options?.onSuccess?.(v), [options]),
+    onError: useCallback((e: Error) => options?.onError?.(e), [options]),
   });
 
   return {
