@@ -1,0 +1,67 @@
+{
+  "name": "@micro-stacks/svelte",
+  "version": "1.0.0-beta.0",
+  "description": "Opinionated svelte integration for micro-stacks.",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "import": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "main": "./dist/index.cjs",
+      "module": "./dist/index.js",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "require": "./dist/*.cjs",
+      "main": "./dist/*.cjs",
+      "module": "./dist/*.js",
+      "import": "./dist/*.js",
+      "default": "./dist/*.js"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "shx rm -rf ./dist && tsup-node src/index.ts --format esm,cjs --dts --minify --splitting --treeshake",
+    "dev": "tsup-node src/index.ts --format esm,cjs --dts --splitting --treeshake --watch",
+    "typecheck": "tsc --noEmit --target esnext",
+    "dev:publish": "yalc publish --push",
+    "lint": "pnpm lint:eslint && pnpm lint:prettier",
+    "lint:eslint": "eslint \"src/**/*.{ts,tsx,svelte}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx,svelte}\" --fix",
+    "lint:prettier": "prettier --check \"src/**/*.{ts,tsx,svelte}\" *.js",
+    "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx,svelte}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fungible-systems/micro-stacks-monorepo.git"
+  },
+  "keywords": [
+    "stacks",
+    "web3",
+    "small-bundle"
+  ],
+  "author": "Mohammad Bagher Abiat",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fungible-systems/micro-stacks-monorepo/issues"
+  },
+  "homepage": "https://github.com/fungible-systems/micro-stacks-monorepo",
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.49",
+    "vite": "^2.9.13",
+    "svelte": "^3.48.0"
+  },
+  "dependencies": {
+    "@micro-stacks/client": "workspace:*",
+    "micro-stacks": "^0.6.1"
+  }
+}
