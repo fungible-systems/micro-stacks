@@ -1,0 +1,168 @@
+import * as Integrations from '../../components/integrations-tabs'
+import Callout from 'nextra-theme-docs/callout'
+
+# Sponsored Transactions
+
+<Integrations.Tabs />
+
+One of the unique features of the Stacks blockchain is that it has native support for "sponsored transactions". A sponsored transaction is signed by a user, but the fee is paid for by a third party. This allows for improved user experiences where a user doesn't need to own Stacks in order to make transactions.
+
+## Implementing sponsored transactions
+
+In most cases, the flow for a sponsored transactions is:
+
+- When [signing a transaction](/docs/transactions), include `sponsored: true` as one of the transaction options
+- After the transaction is signed, the callback includes a `txRaw` property, which is a hex-encoded transaction. This transaction is **not** broadcasted to the blockchain yet.
+- Pass the `txRaw` encoded transaction to an API route
+- In the API route, sign the transaction using a different private key. The account controlled by this private key is paying the fee.
+
+### Signing transactions
+
+<Callout type='info'>
+	For more information about signing transactions, check out the docs for [contract calls](/docs/transactions/contract-calls).
+</Callout>
+
+In order to implement sponsored transactions, you **must** include the `sponsored: true` parameter. Each of the transaction signing functions support this parameter. When this option is included, the transaction payload is signed slightly differently. Additionally, the transaction is not immediately broadcasted.
+
+<Integrations.React>
+```jsx
+import { useOpenContractCall } from '@micro-stacks/react';
+import { useCallback } from 'react';
+
+export const ContractCall = () => {
+  const { openContractCall } = useOpenContractCall();
+
+  const signTx = useCallback(() => {
+    openContractCall({
+      ...params, // all the usual parameters
+      sponsored: true,
+    });
+  }, []);
+
+  return (
+    <button onClick={signTx}>Sign Transaction</button>
+  );
+}
+```
+</Integrations.React>
+
+### Server-side sponsoring transactions
+
+When implementing sponsored transactions, we need a backend API that supports signing a transaction as the sponsor. To do this, use the `sponsorTransaction` function from `micro-stacks/transactions`. We'll need to provide the transaction and our private key as parameters.
+
+You'll need a private key in order to sign the transaction as a sponsor. In this example, the private key is configured as an environment variable.
+
+```ts
+import { deserializeTransaction, sponsorTransaction, broadcastTransaction } from 'micro-stacks/transactions';
+
+export const sponsorHex = async (txHex: string) => {
+  const tranaction = deserializeTransaction(txHex);
+  const sponsorPrivateKey = process.env.SPONSOR_PRIVATE_KEY;
+  if (!sponsorPrivateKey) throw new Error('SPONSOR_PRIVATE_KEY is required');
+
+  const network = new StacksTestnet();
+  const sponsoredTx = await sponsorTransaction({
+    transaction,
+    sponsorPrivateKey: sponsorPrivateKey,
+    network,
+    fee: '1000',
+  })
+  const result = await broadcastTransaction(sponsoredTx, network);
+  if ('error' in result) {
+    throw new Error(`Broadcast failed: ${result.error}`);
+  }
+  return result.txid;
+}
+```
+
+The `sponsorTransaction` parameters are:
+
+- `transaction`: A `StacksTransaction` instance. This **must** already be signed by the original sender
+- `sponsorPrivateKey`: a hex private key, which corresponds to the account paying the transaction fee
+- `network`: the `StacksNetwork` we want to interface with
+- `fee`: optionally, a fee can be provided. If `fee` is omitted, then a fee estimation is used.
+- `sponsorNonce`: optionally, we can specify the nonce used. This is helpful in cases where our backend needs to handle many consecutive sponsored transactions.
+
+### Putting it all together
+
+Now that we have a backend API setup to handle sponsoring, we can use it after signing the transaction.
+
+<Integrations.React>
+```tsx
+import { useOpenContractCall } from '@micro-stacks/react';
+import { useCallback } from 'react';
+
+export const ContractCall = () => {
+  const { openContractCall } = useOpenContractCall();
+
+  const signTx = useCallback(() => {
+    const receipt = openContractCall({
+      ...params, // all the usual parameters
+      sponsored: true,
+    });
+
+    if (typeof receipt === 'undefined') return; // if the popup was closed
+
+    // Send it to our API
+    const result = await fetch('/api/sponsor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ txHex }),
+    })
+
+    // get the txid from the response
+    const { txid } = await result.json();
+
+    console.log('Transaction submitted!', txid);
+  }, [openContractCall]);
+
+  return (
+    <button onClick={signTx}>Sign Transaction</button>
+  );
+}
+```
+</Integrations.React>
+
+## Advanced Usage
+
+### Authorizing sponsored transactions
+
+Most of the time, you'll want to only sponsor specific transactions. For example, you might want to only sponsor your app's contracts, or only sponsor transactions for specific users. You can implement that kind of authorization before signing.
+
+```ts
+export function verifyContractCall(tx: StacksTransaction) {
+  // only contract call types
+  if (tx.payload.payloadType !== 2) return false;
+
+  const myContract = createAddress('SP123.my-contract');
+  // validate contract address
+  if (tx.payload.contractAddress !== myContract) return false;
+
+  // maybe authorize the signer
+  if (!verifySigner(tx.auth.spendingCondition.signer)) return false;
+
+  return true;
+}
+
+export async function sponsorTx(tx: StacksTransaction) {
+  if (!verifyContractCall(tx)) {
+    throw new Error('Unauthorized');
+  }
+  // continue sponsoring
+}
+```
+
+### Managing sponsor nonce
+
+In production, you might want to keep track of your sponsor account's nonce in a custom way. By default, `sponsorTransaction` fetches the sponsor's nonce from the network. If you have many requests to sponsor transactions coming in simultaneously, you should keep track of your nonce using some central data store.
+
+```ts
+export async function sponsorTx(tx: StacksTransaction) {
+  // some method to fetch and update your next nonce
+  const nonce = atomicFetchNextNonce();
+  await sponsorTransaction({
+    sponsorNonce: nonce,
+    // other params
+  });
+}
+```
