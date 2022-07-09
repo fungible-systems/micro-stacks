@@ -1,4 +1,4 @@
-import * as Integrations from '../../components/integrations-tabs'
+import * as Integrations from 'components/integrations-tabs'
 import Callout from 'nextra-theme-docs/callout'
 
 # Sponsored Transactions
@@ -25,7 +25,7 @@ In most cases, the flow for a sponsored transactions is:
 In order to implement sponsored transactions, you **must** include the `sponsored: true` parameter. Each of the transaction signing functions support this parameter. When this option is included, the transaction payload is signed slightly differently. Additionally, the transaction is not immediately broadcasted.
 
 <Integrations.React>
-```jsx
+```jsx {10}
 import { useOpenContractCall } from '@micro-stacks/react';
 import { useCallback } from 'react';
 
@@ -45,6 +45,26 @@ export const ContractCall = () => {
 }
 ```
 </Integrations.React>
+
+<Integrations.Vanilla>
+```tsx {12}
+import { client } from "./micro-stacks-client";
+import { TxType } from "@micro-stacks/client";
+import type { FinishedTxData } from "micro-stacks/connect";
+
+const signTx = async () => {
+  let payload: FinishedTxData | undefined;
+  await client.signTransaction(TxType.ContractCall, {
+    ...params, // all the usual parameters
+    onFinish(finishedTxData: FinishedTxData) {
+      payload = finishedTxData;
+    },
+    sponsored: true,
+  });
+  return payload;
+};
+```
+</Integrations.Vanilla>
 
 ### Server-side sponsoring transactions
 
@@ -122,6 +142,43 @@ export const ContractCall = () => {
 }
 ```
 </Integrations.React>
+<Integrations.Vanilla>
+```tsx
+import { client } from "./micro-stacks-client";
+import { TxType } from "@micro-stacks/client";
+import type { FinishedTxData } from "micro-stacks/connect";
+
+const signTx = async () => {
+  let payload: FinishedTxData | undefined;
+  await client.signTransaction(TxType.ContractCall, {
+    ...params, // all the usual parameters
+    onFinish(finishedTxData: FinishedTxData) {
+      payload = finishedTxData;
+    },
+    sponsored: true,
+  });
+  return payload;
+};
+
+const signTxAndSponsor = async () => {
+  const payload = await signTx();
+
+  if (typeof payload === "undefined") return; // if the popup was closed
+
+  // Send it to our API
+  const result = await fetch("/api/sponsor", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ txHex: payload?.txRaw }),
+  });
+
+  // get the txid from the response
+  const { txid } = await result.json();
+
+  console.log("Transaction submitted!", txid);
+};
+```
+</Integrations.Vanilla>
 
 ## Advanced Usage
 
