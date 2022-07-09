@@ -1,8 +1,8 @@
 // theme.config.js
 
 export default {
-  projectLink: 'https://github.com/fungible-systems/micro-stacks', // GitHub link in the navbar
-  docsRepositoryBase: 'https://github.com/fungible-systems/micro-stacks/blob/main/apps/docs', // base URL for the docs repository
+  projectLink: 'https://github.com/fungible-systems/micro-stacks',
+  docsRepositoryBase: 'https://github.com/fungible-systems/micro-stacks/blob/feat/v1/apps/docs',
   titleSuffix: ' – micro-stacks.dev',
   unstable_flexsearch: true,
   floatTOC: true,
