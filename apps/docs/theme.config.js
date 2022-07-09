@@ -1,8 +1,10 @@
 // theme.config.js
 
+const BRANCH = 'feat/v1';
+
 export default {
   projectLink: 'https://github.com/fungible-systems/micro-stacks',
-  docsRepositoryBase: 'https://github.com/fungible-systems/micro-stacks/blob/feat/v1/apps/docs',
+  docsRepositoryBase: `https://github.com/fungible-systems/micro-stacks/tree/${BRANCH}/apps/docs/pages`,
   titleSuffix: ' – micro-stacks.dev',
   unstable_flexsearch: true,
   floatTOC: true,
