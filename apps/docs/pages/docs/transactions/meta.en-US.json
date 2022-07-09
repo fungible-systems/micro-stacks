@@ -1,12 +1,13 @@
 {
   "stx-token-transfers": {
-	"title": "STX Token transfers"
+    "title": "STX Token transfers"
   },
   "contract-calls": {
-	"title": "Calling contracts"
+    "title": "Calling contracts"
   },
   "contract-deploys": {
-	"title": "Deploying contracts"
+    "title": "Deploying contracts"
   },
-  "working-with-post-conditions": "Post Conditions"
+  "working-with-post-conditions": "Post Conditions",
+  "sponsored-transactions": "Sponsored transactions"
 }
