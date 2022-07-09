@@ -37,7 +37,7 @@ export const useGetFile = <T = unknown>(filename: string, options?: UseGetFileOp
     if (!file) return null;
     if (options?.deserialize) return options.deserialize(file);
     return file;
-  }, [client, options]);
+  }, [filename, client, options]);
 
   const {
     result: data,
@@ -60,7 +60,15 @@ export const usePutFile = <T = unknown>(
 ) => {
   const client = useMicroStacksClient();
 
-  const serialize = useCallback(options?.serialize ?? JSON.stringify, [options?.serialize]);
+  const _serialize = options?.serialize;
+
+  const serialize = useCallback(
+    (v: T) => {
+      if (_serialize) return _serialize(v);
+      return JSON.stringify(v);
+    },
+    [_serialize]
+  );
 
   const putFileCallback = useCallback(async (): Promise<string | null> => {
     const path = await client.putFile(filename, serialize(contents), {
