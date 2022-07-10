@@ -7,8 +7,9 @@ import {
   TxType,
 } from '@micro-stacks/client';
 import { FinishedTxData } from 'micro-stacks/connect';
-import { getClient, watchStatuses } from 'src';
 import { derived, Readable } from 'svelte/store';
+import { getClient } from './store';
+import { watchStatuses } from './status';
 
 export interface OptionalParams {
   onFinish?: (payload: FinishedTxData) => void;
