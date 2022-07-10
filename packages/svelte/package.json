@@ -5,27 +5,24 @@
   "files": [
     "dist"
   ],
-  "type": "module",
   "types": "./dist/index.d.ts",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "import": "./dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "import": "./dist/index.mjs",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "main": "./dist/index.cjs",
-      "module": "./dist/index.js",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "require": "./dist/index.js",
+      "main": "./dist/index.js",
+      "module": "./dist/index.mjs",
+      "import": "./dist/index.mjs"
     },
     "./*": {
       "types": "./dist/*.d.ts",
-      "require": "./dist/*.cjs",
-      "main": "./dist/*.cjs",
-      "module": "./dist/*.js",
-      "import": "./dist/*.js",
-      "default": "./dist/*.js"
+      "require": "./dist/*.js",
+      "main": "./dist/*.js",
+      "module": "./dist/*.mjs",
+      "import": "./dist/*.mjs"
     }
   },
   "sideEffects": false,
