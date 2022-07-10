@@ -1,10 +1,10 @@
 import type { SignatureData, SignedOptionsWithOnHandlers } from 'micro-stacks/connect';
-import { getClient } from './store';
 import { derived, Readable } from 'svelte/store';
 import { Status, StatusKeys } from '@micro-stacks/client';
 import { watchStatuses } from './status';
 import { ClarityValue } from 'micro-stacks/clarity';
 import { ChainID } from 'micro-stacks/network';
+import { useMicroStacksClient } from './context';
 
 /** ------------------------------------------------------------------------------------------------------------------
  *   Simple message signing
@@ -22,7 +22,7 @@ type OpenSignMessageParams = SignedOptionsWithOnHandlers<{ message: string }>;
 export function getOpenSignMessage(
   callbacks?: SignedOptionsWithOnHandlers<{}>
 ): Readable<OpenSignMessage> {
-  const client = getClient();
+  const client = useMicroStacksClient();
 
   return derived([watchStatuses()], ([$status]) => {
     const openSignMessage = async (params: OpenSignMessageParams) =>
@@ -35,13 +35,13 @@ export function getOpenSignMessage(
         onCancel: (payload: string | undefined) => {
           params?.onCancel?.(payload);
           callbacks?.onCancel?.(payload);
-        },
+        }
       });
     const isRequestPending = $status[StatusKeys.MessageSigning] === Status.IsLoading;
 
     return {
       openSignMessage,
-      isRequestPending,
+      isRequestPending
     };
   });
 }
@@ -70,7 +70,7 @@ export interface OpenSignStructuredMessage {
 export function getOpenSignStructuredMessage(
   callbacks?: SignedOptionsWithOnHandlers<{}>
 ): Readable<OpenSignStructuredMessage> {
-  const client = getClient();
+  const client = useMicroStacksClient();
 
   return derived([watchStatuses()], ([$status]) => {
     const openSignStructuredMessage = (params: OpenSignStructuredMessageParams) =>
@@ -84,9 +84,10 @@ export function getOpenSignStructuredMessage(
         onCancel: (payload: string | undefined) => {
           params?.onCancel?.(payload);
           callbacks?.onCancel?.(payload);
-        },
+        }
       });
-    const isRequestPending = $status[StatusKeys.StructuredMessageSigning] === Status.IsLoading;
+    const isRequestPending =
+      $status[StatusKeys.StructuredMessageSigning] === Status.IsLoading;
 
     return { openSignStructuredMessage, isRequestPending };
   });

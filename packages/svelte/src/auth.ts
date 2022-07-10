@@ -2,7 +2,7 @@ import { Status, StatusKeys } from '@micro-stacks/client';
 import { derived } from 'svelte/store';
 import { getAccount } from './account';
 import { watchStatuses } from './status';
-import { getClient } from './store';
+import { useMicroStacksClient } from './context';
 
 /** ------------------------------------------------------------------------------------------------------------------
  *   Derived state
@@ -10,7 +10,7 @@ import { getClient } from './store';
  */
 
 export function getAuth() {
-  const client: any = getClient();
+  const client = useMicroStacksClient();
 
   return derived([getAccount(), watchStatuses()], ([$account, $status]) => {
     return {
@@ -23,7 +23,7 @@ export function getAuth() {
        * state
        */
       isSignedIn: !!$account.stxAddress,
-      isRequestPending: $status[StatusKeys.Authentication] === Status.IsLoading,
+      isRequestPending: $status[StatusKeys.Authentication] === Status.IsLoading
     };
   });
 }

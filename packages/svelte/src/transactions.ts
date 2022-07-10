@@ -4,12 +4,13 @@ import {
   Status,
   StatusKeys,
   StxTransferParams,
-  TxType,
+  TxType
 } from '@micro-stacks/client';
 import { FinishedTxData } from 'micro-stacks/connect';
 import { derived, Readable } from 'svelte/store';
-import { getClient } from './store';
+
 import { watchStatuses } from './status';
+import { useMicroStacksClient } from './context';
 
 export interface OptionalParams {
   onFinish?: (payload: FinishedTxData) => void;
@@ -22,7 +23,7 @@ export interface OptionalParams {
  */
 
 export function getOpenStxTokenTransfer(callbacks?: OptionalParams) {
-  const client = getClient();
+  const client = useMicroStacksClient();
 
   return derived([watchStatuses()], ([status]) => {
     const openStxTokenTransfer = (params: StxTransferParams) =>
@@ -35,13 +36,13 @@ export function getOpenStxTokenTransfer(callbacks?: OptionalParams) {
         onCancel: (error: string | undefined) => {
           params?.onCancel?.(error);
           callbacks?.onCancel?.(error);
-        },
+        }
       });
     const isRequestPending = status[StatusKeys.TransactionSigning] === Status.IsLoading;
 
     return {
       openStxTokenTransfer,
-      isRequestPending,
+      isRequestPending
     };
   });
 }
@@ -56,8 +57,10 @@ interface OpenContractCall {
   isRequestPending: boolean;
 }
 
-export function getOpenContractCall(callbacks?: OptionalParams): Readable<OpenContractCall> {
-  const client = getClient();
+export function getOpenContractCall(
+  callbacks?: OptionalParams
+): Readable<OpenContractCall> {
+  const client = useMicroStacksClient();
 
   return derived([watchStatuses()], ([$status]) => {
     const openContractCall = (params: ContractCallParams) =>
@@ -70,13 +73,13 @@ export function getOpenContractCall(callbacks?: OptionalParams): Readable<OpenCo
         onCancel: (error: string | undefined) => {
           params?.onCancel?.(error);
           callbacks?.onCancel?.(error);
-        },
+        }
       });
     const isRequestPending = $status[StatusKeys.TransactionSigning] === Status.IsLoading;
 
     return {
       openContractCall,
-      isRequestPending,
+      isRequestPending
     };
   });
 }
@@ -87,12 +90,16 @@ export function getOpenContractCall(callbacks?: OptionalParams): Readable<OpenCo
  */
 
 interface OpenContractDeploy {
-  openContractDeploy: (params: ContractDeployParams) => Promise<FinishedTxData | undefined>;
+  openContractDeploy: (
+    params: ContractDeployParams
+  ) => Promise<FinishedTxData | undefined>;
   isRequestPending: boolean;
 }
 
-export function getOpenContractDeploy(callbacks?: OptionalParams): Readable<OpenContractDeploy> {
-  const client = getClient();
+export function getOpenContractDeploy(
+  callbacks?: OptionalParams
+): Readable<OpenContractDeploy> {
+  const client = useMicroStacksClient();
 
   return derived([watchStatuses()], ([$status]) => {
     const openContractDeploy = (params: ContractDeployParams) =>
@@ -105,13 +112,13 @@ export function getOpenContractDeploy(callbacks?: OptionalParams): Readable<Open
         onCancel: (error: string | undefined) => {
           params?.onCancel?.(error);
           callbacks?.onCancel?.(error);
-        },
+        }
       });
     const isRequestPending = $status[StatusKeys.TransactionSigning] === Status.IsLoading;
 
     return {
       openContractDeploy,
-      isRequestPending,
+      isRequestPending
     };
   });
 }

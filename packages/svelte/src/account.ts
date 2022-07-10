@@ -4,7 +4,7 @@ import {
   getStxAddress,
   watchAccounts as _watchAccounts,
   watchCurrentAccount,
-  watchStxAddress as _watchStxAddress,
+  watchStxAddress as _watchStxAddress
 } from '@micro-stacks/client';
 import { derived } from 'svelte/store';
 import { readableClientState } from './utils';
@@ -30,7 +30,7 @@ export function getAccount() {
   return derived([account, stxAddress], ([$account, $stxAddress]) => {
     return {
       appPrivateKey: $account?.appPrivateKey ?? null,
-      stxAddress: $stxAddress,
+      stxAddress: $stxAddress
     };
   });
 }

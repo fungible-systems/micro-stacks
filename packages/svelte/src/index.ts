@@ -1,4 +1,4 @@
-export * from './store';
+export * from './context';
 export * from './events';
 export * from './account';
 export * from './auth';

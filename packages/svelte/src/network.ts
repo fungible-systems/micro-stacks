@@ -1,8 +1,11 @@
-import { getNetwork, watchNetwork as _watchNetwork } from '@micro-stacks/client';
+import {
+  getClient,
+  getNetwork,
+  watchNetwork as _watchNetwork
+} from '@micro-stacks/client';
 import { ChainID, StacksNetwork } from 'micro-stacks/network';
 import { derived } from 'svelte/store';
 
-import { getClient } from './store';
 import { readableClientState } from './utils';
 
 interface WatchNetwork {
@@ -28,7 +31,7 @@ export function watchNetwork() {
        * state
        */
       network,
-      isMainnet: network.isMainnet(),
+      isMainnet: network.isMainnet()
     };
   };
 

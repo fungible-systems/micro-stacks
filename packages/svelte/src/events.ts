@@ -1,20 +1,20 @@
-import { getClient } from './store';
 import type { ClientConfig, MicroStacksClient } from '@micro-stacks/client';
+import { useMicroStacksClient } from './context';
 
 type ConfigCallback<K extends keyof ClientConfig> = ClientConfig[K];
 
 export function getSetOnAuthentication(): MicroStacksClient['setOnAuthentication'] {
-  const client = getClient();
+  const client = useMicroStacksClient();
   return client.setOnAuthentication;
 }
 
 export function getSetOnSignOut(): MicroStacksClient['setOnSignOut'] {
-  const client = getClient();
+  const client = useMicroStacksClient();
   return client.setOnSignOut;
 }
 
 export function getSetOnPersistState(): MicroStacksClient['setOnPersistState'] {
-  const client = getClient();
+  const client = useMicroStacksClient();
   return client.setOnPersistState;
 }
 
