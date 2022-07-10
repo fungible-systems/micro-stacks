@@ -39,7 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fungible-systems/micro-stacks-monorepo.git"
+    "url": "git+https://github.com/fungible-systems/micro-stacks.git"
   },
   "keywords": [
     "stacks",
@@ -49,9 +49,9 @@
   "author": "Mohammad Bagher Abiat",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fungible-systems/micro-stacks-monorepo/issues"
+    "url": "https://github.com/fungible-systems/micro-stacks/issues"
   },
-  "homepage": "https://github.com/fungible-systems/micro-stacks-monorepo",
+  "homepage": "https://github.com/fungible-systems/micro-stacks",
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.49",
     "svelte": "^3.48.0",
@@ -61,5 +61,8 @@
   "dependencies": {
     "@micro-stacks/client": "workspace:*",
     "micro-stacks": "workspace:*"
+  },
+  "peerDependencies": {
+    "svelte": "^3.48.0"
   }
 }
