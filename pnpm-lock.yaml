@@ -370,7 +370,8 @@ importers:
     specifiers:
       '@micro-stacks/client': workspace:*
       '@sveltejs/vite-plugin-svelte': ^1.0.0-next.49
-      micro-stacks: ^0.6.1
+      '@types/node': 18.0.3
+      micro-stacks: workspace:*
       svelte: ^3.48.0
       tsup: 6.1.3
       vite: ^2.9.13
@@ -379,6 +380,7 @@ importers:
       micro-stacks: link:../core
     devDependencies:
       '@sveltejs/vite-plugin-svelte': 1.0.0-next.49_svelte@3.49.0+vite@2.9.14
+      '@types/node': 18.0.3
       svelte: 3.49.0
       tsup: 6.1.3_typescript@4.7.4
       vite: 2.9.14
@@ -732,6 +734,8 @@ packages:
     resolution: {integrity: sha512-RSKRfYX20dyH+elbJK2uqAkVyucL+xXzhqlMD5/ZXx+dAAwpyB7HsvnHe/ZUGOF+xLr5Wx9/JoXVTj6BQE2/oA==}
     engines: {node: '>=6.0.0'}
     hasBin: true
+    dependencies:
+      '@babel/types': 7.18.8
     dev: true
 
   /@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/7.18.6_@babel+core@7.18.6:
