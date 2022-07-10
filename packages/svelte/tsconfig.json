@@ -8,13 +8,22 @@
     "paths": {
       "@micro-stacks/client": [
         "../client/src"
+      ],
+      "micro-stacks/*": [
+        "../core/src/*"
       ]
     }
   },
   "references": [
     {
       "path": "../client/tsconfig.json"
+    },
+    {
+      "path": "../core/tsconfig.json"
     }
   ],
-  "include": ["src/**/*", "tests/**/*"]
+  "include": [
+    "src/**/*",
+    "tests/**/*"
+  ]
 }

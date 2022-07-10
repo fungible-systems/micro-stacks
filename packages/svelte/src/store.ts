@@ -1,4 +1,4 @@
-import { defaultStorage, getClient as _getClient } from '@micro-stacks/client';
+import { createClient, defaultStorage, getClient as _getClient } from '@micro-stacks/client';
 import { get, writable } from 'svelte/store';
 import { onAuthentication, onPersistState, onSignOut } from './events';
 
@@ -19,9 +19,8 @@ export const mountClient = ({
 }: {
   client?: ReturnType<typeof _getClient>;
 } & ClientConfig) => {
-  const client =
-    client_ ??
-    _getClient({
+  const client = createClient({
+    config: {
       appName,
       appIconUrl,
       dehydratedState,
@@ -30,8 +29,12 @@ export const mountClient = ({
       onPersistState: _onPersistState,
       onAuthentication: _onAuthentication,
       onSignOut: _onSignOut,
-    });
+    },
+    client: client_,
+  });
+
   microStacksClientStore.set(client);
+
   if (!client_) {
     onAuthentication(_onAuthentication);
     onSignOut(_onSignOut);
