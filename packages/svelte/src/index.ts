@@ -160,16 +160,16 @@ export function getAuth() {
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-interface UseNetwork {
+interface GetNetwork {
   network: StacksNetwork;
   isMainnet: boolean;
   setNetwork: (network: 'mainnet' | 'testnet' | StacksNetwork) => void;
 }
 
-export function useNetwork() {
+export function geNetwork() {
   const client = getMicroStacksClient();
 
-  const modifyNetwork = (network: StacksNetwork): UseNetwork => {
+  const modifyNetwork = (network: StacksNetwork): GetNetwork => {
     network.isMainnet = () => network.chainId === ChainID.Mainnet;
 
     return {
