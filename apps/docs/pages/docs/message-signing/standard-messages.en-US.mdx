@@ -73,7 +73,10 @@ const SignMessageComponent = () => {
       }}
     >
       <h5>Sign a message!</h5>
-      <input style={{ display: 'block' }} onChange={e => setMessage(e.currentTarget.value)} />
+      <input
+        style={{ display: 'block' }}
+        onChange={e => setMessage(e.currentTarget.value)}
+      />
       <button onClick={onClick}>{isRequestPending ? 'Loading...' : 'Sign message'}</button>
       <code>
         <pre>{JSON.stringify(payload, null, 2)}</pre>

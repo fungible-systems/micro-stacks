@@ -82,7 +82,10 @@ import * as MicroStacks from '@micro-stacks/react';
 // your app
 function App() {
   return (
-    <MicroStacks.ClientProvider appName="My sick app" appIconUrl="APP_ICON.png">
+    <MicroStacks.ClientProvider
+      appName="My sick app"
+      appIconUrl="APP_ICON.png"
+    >
       <Router />
     </MicroStacks.ClientProvider>
   );
@@ -150,7 +153,10 @@ provideClient({
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
+  <img
+    alt="Vue logo"
+    src="./assets/logo.png"
+  />
 </template>
 ```
 

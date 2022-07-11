@@ -30,7 +30,11 @@ import * as MicroStacks from '@micro-stacks/react';
 // your app
 function App() {
   return (
-    <MicroStacks.ClientProvider appName="My sick app" appIconUrl="APP_ICON.png" network="testnet">
+    <MicroStacks.ClientProvider
+      appName="My sick app"
+      appIconUrl="APP_ICON.png"
+      network="testnet"
+    >
       <Router />
     </MicroStacks.ClientProvider>
   );

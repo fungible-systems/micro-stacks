@@ -108,7 +108,10 @@ export const QuickStart = () => {
 
 export const RemixGuide = () => {
   return (
-    <Card backgroundColor={'#212121'} gap={'0'}>
+    <Card
+      backgroundColor={'#212121'}
+      gap={'0'}
+    >
       <CardTitle
         style={{
           color: 'white',

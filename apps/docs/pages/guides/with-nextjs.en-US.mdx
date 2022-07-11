@@ -48,7 +48,10 @@ import { ClientProvider } from '@micro-stacks/react';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ClientProvider appName="Nextjs + Microstacks" appIconUrl="/vercel.png">
+    <ClientProvider
+      appName="Nextjs + Microstacks"
+      appIconUrl="/vercel.png"
+    >
       <Component {...pageProps} />
     </ClientProvider>
   );
@@ -263,7 +266,9 @@ async function saveSessionRoute(req: NextApiRequest, res: NextApiResponse) {
   const { dehydratedState } = await req.body;
 
   if (!dehydratedState)
-    return res.status(500).json({ message: 'No dehydratedState found is request body' });
+    return res.status(500).json({
+      message: 'No dehydratedState found is request body',
+    });
 
   try {
     req.session.dehydratedState = dehydratedState;
