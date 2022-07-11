@@ -10,6 +10,7 @@
     "lint": "turbo run lint",
     "build": "turbo run build --parallel",
     "postbuild": "shx rm -rf ./dist",
+    "dev:docs": "turbo run dev --filter=@micro-stacks/docs",
     "dev:build": "turbo run build --parallel && pnpm dev:publish",
     "dev:publish": "pnpm -r dev:publish",
     "ci:publish": "pnpm build && pnpm publish -r --no-git-checks --access public",
