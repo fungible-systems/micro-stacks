@@ -104,17 +104,27 @@ export const ClientProvider: React.FC<
 
     useEnsureSessionConsistency(config, client);
 
-    return (
-      <MicroStacksClientContext.Provider value={client}>
-        {!clientProp ? (
-          <CallbacksProvider
-            onPersistState={onPersistState}
-            onAuthentication={onAuthentication}
-            onSignOut={onSignOut}
-          />
-        ) : null}
-        {children}
-      </MicroStacksClientContext.Provider>
+    if (!clientProp) {
+      const callbacksProvider = React.createElement(CallbacksProvider, {
+        onPersistState,
+        onAuthentication,
+        onSignOut,
+      });
+      return React.createElement(
+        MicroStacksClientContext.Provider,
+        {
+          value: client,
+        },
+        React.createElement(React.Fragment, null, [callbacksProvider, children])
+      );
+    }
+
+    return React.createElement(
+      MicroStacksClientContext.Provider,
+      {
+        value: client,
+      },
+      children
     );
   }
 );
