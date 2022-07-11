@@ -1,0 +1,29 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "noEmit": false,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@micro-stacks/client": [
+        "../client/src"
+      ],
+      "micro-stacks/*": [
+        "../core/src/*"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "../client/tsconfig.json"
+    },
+    {
+      "path": "../core/tsconfig.json"
+    }
+  ],
+  "include": [
+    "src/**/*",
+    "tests/**/*"
+  ]
+}
