@@ -1,7 +1,8 @@
 import * as Client from '@micro-stacks/client';
 import { getContext, setContext } from 'svelte';
-import { derived, Readable, readable } from 'svelte/store';
+import { derived, readable } from 'svelte/store';
 import { ChainID } from 'micro-stacks/common';
+import { CLIENT_CONTEXT } from './common';
 
 import type {
   MicroStacksClient,
@@ -14,6 +15,7 @@ import type {
   SignatureData,
   SignedOptionsWithOnHandlers,
 } from 'micro-stacks/connect';
+import type { Readable } from 'svelte/store';
 import type { ClarityValue } from 'micro-stacks/clarity';
 import type { StacksNetwork } from 'micro-stacks/network';
 
@@ -21,6 +23,8 @@ import type { StacksNetwork } from 'micro-stacks/network';
  *   Client
  *  ------------------------------------------------------------------------------------------------------------------
  */
+
+export { ClientProvider } from './client-provider';
 
 export const mountClient = ({
   appName,
@@ -46,19 +50,20 @@ export const mountClient = ({
   };
 
   setContext(
-    'micro-stacks-client',
+    CLIENT_CONTEXT,
     Client.createClient({
       config,
     })
   );
 };
 
+const ERROR_MESSAGE =
+  'No MicroStacksClient set, mount the client in your app by wrapping your app in `ClientProvider` or using `mountClient`';
+
 export const getMicroStacksClient = () => {
-  const client = getContext<MicroStacksClient | undefined>('micro-stacks-client');
+  const client = getContext<MicroStacksClient | undefined>(CLIENT_CONTEXT);
   if (!client) {
-    throw new Error(
-      'No MicroStacksClient set, mount the client in your app by wrapping your app in `ClientProvider`'
-    );
+    throw new Error(ERROR_MESSAGE);
   }
   return client;
 };
