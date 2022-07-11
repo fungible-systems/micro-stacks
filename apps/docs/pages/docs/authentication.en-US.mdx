@@ -1,8 +1,9 @@
 ---
-description: "Learn how to add web3 auth to your decentralized apps on Stacks. Interact with Stacks based wallets and authenticate your users."
+description: 'Learn how to add web3 auth to your decentralized apps on Stacks. Interact with Stacks based wallets and authenticate your users.'
 ---
-import Callout from 'nextra-theme-docs/callout'
-import * as Integrations from '../../components/integrations-tabs'
+
+import Callout from 'nextra-theme-docs/callout';
+import * as Integrations from '../../components/integrations-tabs';
 
 # Authentication
 
@@ -12,25 +13,26 @@ The foundation of any Stacks based application is authentication. With `micro-st
 any JavaScript/TypeScript application. Stacks authentication is dependent on your users having a compatible wallet to authenticate with.
 
 <Callout type={'info'}>
-	The two primary wallets in the Stacks ecosystem are: the [Hiro Web Wallet](https://hiro.so/wallet/install-web) and the native (iOS and Android) wallet [Xverse](https://www.xverse.app/).
+  The two primary wallets in the Stacks ecosystem are: the [Hiro Web
+  Wallet](https://hiro.so/wallet/install-web) and the native (iOS and Android) wallet
+  [Xverse](https://www.xverse.app/).
 </Callout>
 
 <Integrations.Vanilla>
-	<Callout emoji="⚛">
-		If you are building an app using React, it is <strong>strongly recommended</strong> that you make use of the React
-		integrations. <Integrations.Action type="react">[View the React docs for authentication.]()</Integrations.Action>
-
-		_P.S.: Vue and Svelte integrations are coming soon!_
-	</Callout>
+  <Callout emoji="⚛">
+    If you are building an app using a framework like React, Svelte, Vue, or Solid.js, it is{' '}
+    <strong>strongly recommended</strong> that you make use of the official integrations.
+  </Callout>
 </Integrations.Vanilla>
 
 ## Adding auth to your app
 
-<Integrations.React>
-
-<Callout type='info'>
-  **Important**: before adding authentication, make sure you've [properly set up](./getting-started#setting-up-the-client) your application to work with `@micro-stacks/react`.
+<Callout type="info">
+  **Important**: before adding authentication, make sure you've [properly set
+  up](./getting-started#setting-up-the-client) your application.
 </Callout>
+
+<Integrations.React>
 
 The primary way you'll implement authentication is via the `useAuth` hook. This hook exposes a few callbacks for
 different functions: `openAuthRequest`, `signOut`, along with some helper variables: `isRequestPending` `isSignedIn`.
@@ -55,21 +57,93 @@ export const WalletConnectButton = () => {
   );
 };
 ```
+
 <Callout type={'info'}>
 	**Migrating from pre v1.0.0**
 
-	The primary differences between the latest version and versions before v1.0.0 are as follows:
+    The primary differences between the latest version and versions before v1.0.0 are as follows:
 
-	- `handleSignIn` renamed to `openAuthRequest`
-	- `handleSignOut` renamed to `signOut`
-	- `isLoading` renamed to `isRequestPending`
-	- **`session` is removed from this hook, use `useAccount` instead**
+    - `handleSignIn` renamed to `openAuthRequest`
+    - `handleSignOut` renamed to `signOut`
+    - `isLoading` renamed to `isRequestPending`
+    - **`session` is removed from this hook, use `useAccount` instead**
+
 </Callout>
 </Integrations.React>
 
+<Integrations.Svelte>
+
+The primary way you'll implement authentication is via the `getAuth` function. This function exposes a few callbacks for
+different functions: `openAuthRequest`, `signOut`, along with some helper reactive variables: `isRequestPending` `isSignedIn`.
+
+Check out the sample below for a very simple `WalletConnectButton` component:
+
+```svelte
+<script lang="ts">
+  import { getAuth } from "@micro-stacks/svelte";
+
+  const auth = getAuth();
+
+  $: label = $auth.isRequestPending
+    ? "Loading..."
+    : $auth.isSignedIn
+      ? "Sign out"
+      : "Connect Stacks wallet";
+
+  function onClick() {
+    if ($auth.isSignedIn) {
+      $auth.signOut();
+    } else {
+      $auth.openAuthRequest();
+    }
+  }
+</script>
+
+<button on:click={onClick}>
+  {label}
+</button>
+```
+
+</Integrations.Svelte>
+
+<Integrations.Vue>
+The primary way you'll implement authentication is via the `useAuth` hook. This hook exposes a few callbacks for
+different functions: `openAuthRequest`, `signOut`, along with some helper reactive values: `isRequestPending` `isSignedIn`.
+
+Check out the sample below for a very simple `WalletConnectButton` component:
+
+```vue
+<script setup lang="ts">
+import { useAuth } from '@micro-stacks/vue';
+
+// using the experimental Reactivity Transform
+// @see https://vuejs.org/guide/extras/reactivity-transform.html#reactivity-transform
+const auth = $(useAuth());
+
+const onClick = () => {
+  !auth.isSignedIn ? auth.openAuthRequest() : auth.signOut();
+};
+const buttonLabel = auth.isRequestPending
+  ? 'pending...'
+  : auth.isSignedIn
+  ? 'Sign out'
+  : 'Connect Stacks Wallet';
+</script>
+
+<template>
+  <button type="button" v-on:click="() => onClick()">
+    {{ buttonLabel }}
+  </button>
+</template>
+```
+
+</Integrations.Vue>
+
 <Integrations.Vanilla>
-<Callout type='info'>
-	**Important**: before adding using authentication, make sure you've [set up your client](./#overview) correctly.
+
+<Callout type="info">
+  **Important**: before adding using authentication, make sure you've [set up your
+  client](./#overview) correctly.
 </Callout>
 
 The micro-stacks client will handle persistence for you, so all you need to do is have you users call `authenticate` from the client,
@@ -80,25 +154,14 @@ import { client } from './my-client';
 
 const authenticate = async () => {
   await client.authenticate({
-    onFinish: (payload) => {
-	  console.log(payload)
-	}
-  })
-}
+    onFinish: payload => {
+      console.log(payload);
+    },
+  });
+};
 ```
+
 </Integrations.Vanilla>
-
-## Server side session
-
-If you are building an application that uses server side rendering, or want to share state with an api route, checkout these
-handy resources for working with Stacks apps & server rendering:
-
-[Advanced patterns: server side rendering](/docs/getting-started/advanced-patterns)
-
-[Building a Stacks app with Remix](/guides/frameworks/with-remix)
-
-[Building a Stacks app with Next.js](/guides/frameworks/with-next)
-
 
 ## User account data
 
@@ -121,7 +184,45 @@ interface Account {
   profileUrl?: string;
 }
 ```
+
 </Integrations.React>
+
+<Integrations.Svelte>
+To access the current signed in user data, you'll want to make use of the `getAccount` function:
+
+```ts
+import { getAccount } from '@micro-stacks/svelte';
+```
+
+This function will return a _reactive_ (will automatically update as state changes) object with the shape:
+
+```ts
+interface Account {
+  appPrivateKey?: string;
+  stxAddress?: string;
+  rawAddress?: [number, Uint8Array];
+  identityAddress?: string;
+  decentralizedID?: string;
+  profileUrl?: string;
+}
+```
+
+```svelte
+<script lang="ts">
+  import { getAccount } from "@micro-stacks/svelte";
+
+  const account = getAccount();
+
+  const appPrivateKey = $account.appPrivateKey
+  const stxAddress = $account.stxAddress
+  const rawAddress = $account.rawAddress
+  const identityAddress = $account.identityAddress
+  const decentralizedID = $account.decentralizedID
+  const profileUrl = $account.profileUrl
+</script>
+```
+
+</Integrations.Svelte>
 
 <Integrations.Vanilla>
 Once your users have authenticated, you will have access to their session state, such as their Stacks addresses and associated `appPrivateKey`.
@@ -130,7 +231,70 @@ Once your users have authenticated, you will have access to their session state,
 import { client } from './my-client';
 
 const stxAddress = client.stxAddress;
-const appPrivateKey = client.account.appPrivateKey
+const appPrivateKey = client.account.appPrivateKey;
 ```
+
 </Integrations.Vanilla>
 
+<Integrations.Vue>
+To access the current signed in user data, you'll want to make use of the `useAccount` hook:
+
+```ts
+import { useAccount } from '@micro-stacks/vue';
+```
+
+This hook will return a _reactive_ (will automatically update as state changes) object with the shape:
+
+```ts
+interface Account {
+  appPrivateKey?: string;
+  stxAddress?: string;
+  rawAddress?: [number, Uint8Array];
+  identityAddress?: string;
+  decentralizedID?: string;
+  profileUrl?: string;
+}
+```
+
+```vue
+<script setup lang="ts">
+import { useAccount } from '@micro-stacks/vue';
+
+const account = $(useAccount());
+
+const appPrivateKey = account.appPrivateKey;
+const stxAddress = account.stxAddress;
+const rawAddress = account.rawAddress;
+const identityAddress = account.identityAddress;
+const decentralizedID = account.decentralizedID;
+const profileUrl = account.profileUrl;
+</script>
+```
+
+</Integrations.Vue>
+
+<Integrations.Vanilla>
+Once your users have authenticated, you will have access to their session state, such as their Stacks addresses and associated `appPrivateKey`.
+
+```ts
+import { client } from './my-client';
+
+const stxAddress = client.stxAddress;
+const appPrivateKey = client.account.appPrivateKey;
+```
+
+</Integrations.Vanilla>
+
+## Server side session
+
+If you are building an application that uses server side rendering, or want to share state with an api route, checkout these
+handy resources for working with Stacks apps & server rendering:
+
+[Advanced patterns: server side rendering](/docs/getting-started/advanced-patterns)
+
+<Integrations.React>
+[Building a Stacks app with Remix](/guides/frameworks/with-remix)
+
+[Building a Stacks app with Next.js](/guides/frameworks/with-next)
+
+</Integrations.React>
