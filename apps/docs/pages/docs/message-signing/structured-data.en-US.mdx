@@ -1,5 +1,7 @@
 ---
-description: 'Learn about the different ways users can cryptographically sign messages, or sign Clarity values for use in smart contracts.'
+description:
+  'Learn about the different ways users can cryptographically sign messages, or sign Clarity values
+  for use in smart contracts.'
 ---
 
 import * as Integrations from '../../../components/integrations-tabs';
@@ -9,8 +11,9 @@ import Callout from 'nextra-theme-docs/callout';
 
 <Integrations.Tabs />
 
-Structured data signing is slightly different from simple message signing, in that rather than passing an arbitrary message string,
-you are passing some kind of Clarity value to be signed, likely to also be used in the context of a Clarity smart contract.
+Structured data signing is slightly different from simple message signing, in that rather than
+passing an arbitrary message string, you are passing some kind of Clarity value to be signed, likely
+to also be used in the context of a Clarity smart contract.
 
 ## Usage
 
@@ -21,7 +24,8 @@ This method will accept a hex encoded clarity value, or a `ClarityValue`. Check 
 requested a signature). The pending state is handled all internally for every wallet request, so you don't need to
 manually handle any loading logic.
 
-As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and `onCancel` callback.
+As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and
+`onCancel` callback.
 
 </Integrations.React>
 
@@ -30,11 +34,13 @@ When using `@micro-stacks/client`, the `client` has a method for structured mess
 which takes a `message` of type `string` or `ClarityValue` value. This method will accept a hex encoded clarity value,
 or a `ClarityValue`. Check out the page on Clarity Values to learn more about them.
 
-As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and `onCancel` callback.
+As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and
+`onCancel` callback.
 
-To check the status of a request, you can check `client.isSignStructuredMessageRequestPending`, a boolean value to denote if there
-is a current request open (meaning the use has already requested a signature). The pending state is handled all internally
-for every wallet request, so you don't need to manually handle any loading logic.
+To check the status of a request, you can check `client.isSignStructuredMessageRequestPending`, a
+boolean value to denote if there is a current request open (meaning the use has already requested a
+signature). The pending state is handled all internally for every wallet request, so you don't need
+to manually handle any loading logic.
 
 </Integrations.Vanilla>
 
@@ -116,7 +122,8 @@ const isRequestPending = client.isSignStructuredMessageRequestPending;
 
 ## Verification
 
-To verify a signed structured message, you can import `verifyStructuredMessageSignature` from `micro-stacks/connect`.
+To verify a signed structured message, you can import `verifyStructuredMessageSignature` from
+`micro-stacks/connect`.
 
 ### Example
 

@@ -1,8 +1,12 @@
 # Connect
 
-`micro-stacks/connect` is the module that deals with interactions between wallets and your application. This means if you need to implement authentication or transaction signing, this library is playing a role in that.
+`micro-stacks/connect` is the module that deals with interactions between wallets and your
+application. This means if you need to implement authentication or transaction signing, this library
+is playing a role in that.
 
-More often than not, you as an app developer will never need to use this package directly. If you are building a React application, you should check out the docs on [Authentication](../integrations/react/authentication.md) and [Transactions](transactions.md).
+More often than not, you as an app developer will never need to use this package directly. If you
+are building a React application, you should check out the docs on
+[Authentication](../integrations/react/authentication.md) and [Transactions](transactions.md).
 
 ## Authentication
 
@@ -10,21 +14,26 @@ More often than not, you as an app developer will never need to use this package
 
 #### AuthOptions
 
-The authOptions object contains data specific to your application. This includes things like `appDetails` which is an object that contains the `name` and `icon` fields.&#x20;
+The authOptions object contains data specific to your application. This includes things like
+`appDetails` which is an object that contains the `name` and `icon` fields.&#x20;
 
-Additionally, you are able to pass some callbacks that happen at different events during the authentication process: `onFinish` and `onCancel`.
+Additionally, you are able to pass some callbacks that happen at different events during the
+authentication process: `onFinish` and `onCancel`.
 
 #### StorageAdapter
 
-The storageAdapter parameter is to instruct where and how to save the session for your users. The default value for this is `localStorage`.
+The storageAdapter parameter is to instruct where and how to save the session for your users. The
+default value for this is `localStorage`.
 
 #### Serialize
 
-This is the serialize function that will run when saving the authentication session. Default is `JSON.stringify`.
+This is the serialize function that will run when saving the authentication session. Default is
+`JSON.stringify`.
 
 ## Transaction signing
 
-`micro-stacks/connect` exports a number of functions to construct the tokens that will be sent to the wallet of your users for them to sign.&#x20;
+`micro-stacks/connect` exports a number of functions to construct the tokens that will be sent to
+the wallet of your users for them to sign.&#x20;
 
 ### openTransactionPopup
 
@@ -50,7 +59,8 @@ async function handleTxSigning(token: string) {
 
 ### makeStxTransferToken
 
-This method creates a STX token transfer token which would be sent to a wallet for a user to sign with their private keys.
+This method creates a STX token transfer token which would be sent to a wallet for a user to sign
+with their private keys.
 
 ### makeContractCallToken
 

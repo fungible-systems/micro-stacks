@@ -41,6 +41,9 @@
     "semi": true,
     "singleQuote": true,
     "singleAttributePerLine": true,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "proseWrap": "always",
+    "vueIndentScriptAndStyle": true,
+    "embeddedLanguageFormatting": "auto"
   }
 }

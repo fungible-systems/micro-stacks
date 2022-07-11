@@ -1,5 +1,7 @@
 ---
-description: 'Learn about the different ways users can cryptographically sign messages, or sign Clarity values for use in smart contracts.'
+description:
+  'Learn about the different ways users can cryptographically sign messages, or sign Clarity values
+  for use in smart contracts.'
 ---
 
 import * as Integrations from 'components/integrations-tabs';
@@ -24,7 +26,8 @@ connected wallet. The hook returns a callback, `openSignMessage` which takes a `
 already requested a signature). The pending state is handled all internally for every wallet request, so you don't need
 to manually handle any loading logic.
 
-As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and `onCancel` callback.
+As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and
+`onCancel` callback.
 
 </Integrations.React>
 
@@ -32,11 +35,13 @@ As with all of the hooks that interact with the wallet, you can also pass an `on
 When using `@micro-stacks/client`, the `client` has a method for message signing: `signMessage`. This method interacts
 directly with a connected wallet. The method `signMessage` takes a `message` of type `string` value.
 
-As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and `onCancel` callback.
+As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and
+`onCancel` callback.
 
-To check the status of a request, you can check `client.isSignMessageRequestPending`, a boolean value to denote if there
-is a current request open (meaning the use has already requested a signature). The pending state is handled all internally
-for every wallet request, so you don't need to manually handle any loading logic.
+To check the status of a request, you can check `client.isSignMessageRequestPending`, a boolean
+value to denote if there is a current request open (meaning the use has already requested a
+signature). The pending state is handled all internally for every wallet request, so you don't need
+to manually handle any loading logic.
 
 </Integrations.Vanilla>
 

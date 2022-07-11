@@ -1,5 +1,7 @@
 ---
-description: 'Learn about the different ways users can cryptographically sign messages, or sign Clarity values for use in smart contracts.'
+description:
+  'Learn about the different ways users can cryptographically sign messages, or sign Clarity values
+  for use in smart contracts.'
 ---
 
 import * as Integrations from '../../components/integrations-tabs';
@@ -7,32 +9,38 @@ import Callout from 'nextra-theme-docs/callout';
 
 # Message Signing
 
-When interacting with the Stacks blockchain, much of the activity we do as users is considered "signing" messages. What
-this means is that we are using our private keys to verify that some bits of data are really something we want to do.
-This is most often in the form of signing and then broadcasting transactions. However, there are many use cases for
-which we'd want to sign something that is not a transaction. Taken from the SIP-018 introduction:
+When interacting with the Stacks blockchain, much of the activity we do as users is considered
+"signing" messages. What this means is that we are using our private keys to verify that some bits
+of data are really something we want to do. This is most often in the form of signing and then
+broadcasting transactions. However, there are many use cases for which we'd want to sign something
+that is not a transaction. Taken from the SIP-018 introduction:
 
-> Digital signatures are at the heart of blockchains. They allow users to transfer assets, invoke smart contracts and more,
-> without a designated trusted third party. To perform these actions, a user signs a transaction and broadcasts it to the network.
+> Digital signatures are at the heart of blockchains. They allow users to transfer assets, invoke
+> smart contracts and more, without a designated trusted third party. To perform these actions, a
+> user signs a transaction and broadcasts it to the network.
 >
-> However, there are situations in which it is desirable to produce signed messages that are not transactions:
+> However, there are situations in which it is desirable to produce signed messages that are not
+> transactions:
 >
 > - prove to an external application or entity that a user is in control of an address;
-> - authorize an action to be performed by a smart contract at a later stage (like a meta transaction, see below);
+> - authorize an action to be performed by a smart contract at a later stage (like a meta
+>   transaction, see below);
 > - participate in an off-chain mechanism that is later settled on-chain (like a subnet).
 >
-> It is important that signed messages are understandable for humans. For transactions, this is obvious: wallet
-> applications display whom is receiving how many tokens of what kind. Likewise, the input parameters, function name,
-> and target contract of contract calls are properly listed. Signed messages that are not transactions should be no different.
+> It is important that signed messages are understandable for humans. For transactions, this is
+> obvious: wallet applications display whom is receiving how many tokens of what kind. Likewise, the
+> input parameters, function name, and target contract of contract calls are properly listed. Signed
+> messages that are not transactions should be no different.
 
 [You can read more about the standard here.](https://github.com/stacksgov/sips/blob/5fa194659687de491ff9bba58ef44bc5aead0601/sips/sip-018/sip-018-signed-structured-data.md#introduction)
 
-Typically a Stacks-based app will not be responsible for any private keys, but instead something like the Hiro Web Wallet
-or Xverse will be the application that ends up signing messages.
+Typically a Stacks-based app will not be responsible for any private keys, but instead something
+like the Hiro Web Wallet or Xverse will be the application that ends up signing messages.
 
 ## SIP-018 message signing
 
 There are two main types of messages that you can sign:
 
 - [Standard message signing](./message-signing/standard-messages): an arbitrary string value.
-- [Structured data signing](./message-signing/structured-data): either a hex encoded Clarity value, or a `ClarityValue`.
+- [Structured data signing](./message-signing/structured-data): either a hex encoded Clarity value,
+  or a `ClarityValue`.
