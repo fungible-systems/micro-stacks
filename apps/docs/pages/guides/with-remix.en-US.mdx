@@ -1,23 +1,23 @@
 ---
-description: "Learn how to build a decentralized Stacks based app using the full stack web framework Remix."
+description: 'Learn how to build a decentralized Stacks based app using the full stack web framework Remix.'
 ---
 
-import {InstallTabs} from 'components/install-tabs'
+import { InstallTabs } from 'components/install-tabs';
 
 # Build a Stacks app with Remix
 
 > Remix is a full stack web framework that lets you focus on the user interface and work back through web
-standards to deliver a fast, slick, and resilient user experience. People are gonna love using your stuff.
+> standards to deliver a fast, slick, and resilient user experience. People are gonna love using your stuff.
 
 Remix is a wonderful framework built on top of React. With `@micro-stacks/react` and `@micro-stacks/client`,
 we will be able to create robust and high performance Stacks apps that provide a delightful user experience.
 
 In this guide you will learn about:
+
 - 🏗️ Setting up `@micro-stacks/react`
 - 🔒 Adding authentication via Stacks based wallets
 - 🔥 How to share a user session between client and server
 - 🤩 Ensuring a better user experience via SSR
-
 
 ## Getting started
 
@@ -28,25 +28,21 @@ following the prompts:
 npx create-remix
 ```
 
-- *Where would you like to create your app?* **./micro-stacks-remix-example**
-- *What type of app do you want to create?* **Just the basics**
-- *Where do you want to deploy? Choose Remix if you're unsure; it's easy to change deployment targets.* **Vercel**
-- *Do you want me to run `npm install`?* **No**
-- *TypeScript or JavaScript?* **TypeScript**
-
+- _Where would you like to create your app?_ **./micro-stacks-remix-example**
+- _What type of app do you want to create?_ **Just the basics**
+- _Where do you want to deploy? Choose Remix if you're unsure; it's easy to change deployment targets._ **Vercel**
+- _Do you want me to run `npm install`?_ **No**
+- _TypeScript or JavaScript?_ **TypeScript**
 
 Next up, we need to install our `micro-stacks` related dependencies:
 
-<InstallTabs>
-@micro-stacks/client @micro-stacks/react
-</InstallTabs>
+<InstallTabs>@micro-stacks/client @micro-stacks/react</InstallTabs>
 
 ## Client Provider
 
 Our first step will be to `import * as MicroStacks from "@micro-stacks/react";` and wrap the `root.tsx` file in our
 `MicroStacks.ClientProvider` component. This component allows for all of the related hooks to access a shared session
 client within the application. We've also added two props to the `ClientProvider`: `appName` and `appIconUrl`.
-
 
 ```tsx {7, 24-25}
 // root.tsx
@@ -92,6 +88,7 @@ Now that we've wrapped our app in the `ClientProvider`, we can start making use 
 that `@micro-stacks/react` exports. Here is a simple `WalletConnectButton` component we can use to authenticate a user.
 
 ### Wallet connect button
+
 ```tsx
 // components/wallet-connect-button.tsx
 
@@ -118,11 +115,11 @@ In our `routes/index.tsx` file, we can `import { WalletConnectButton } from "~/c
 ```tsx {3, 9}
 // routes/index.tsx
 
-import { WalletConnectButton } from "~/components/wallet-connect-button";
+import { WalletConnectButton } from '~/components/wallet-connect-button';
 
 export default function Index() {
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+    <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
       <h1>Welcome to Remix</h1>
       <WalletConnectButton />
     </div>
@@ -136,14 +133,12 @@ authenticate, we should create a component that will let us know who is currentl
 ### User card component
 
 ```tsx
-import { useStxAddress } from "@micro-stacks/react";
+import { useStxAddress } from '@micro-stacks/react';
 
 export const UserCard = () => {
-	const stxAddress = useStxAddress();
-	if (!stxAddress) return <h2>No active session</h2>;
-	return (
-		<h2>{stxAddress}</h2>
-	);
+  const stxAddress = useStxAddress();
+  if (!stxAddress) return <h2>No active session</h2>;
+  return <h2>{stxAddress}</h2>;
 };
 ```
 
@@ -152,15 +147,15 @@ And we can add that to our index route:
 ```tsx {4, 11}
 // routes/index.tsx
 
-import { WalletConnectButton } from "~/components/wallet-connect-button";
-import { UserCard } from "~/components/user-card";
+import { WalletConnectButton } from '~/components/wallet-connect-button';
+import { UserCard } from '~/components/user-card';
 
 export default function Index() {
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+    <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
       <h1>Welcome to Remix</h1>
       <WalletConnectButton />
-	  <UserCard />
+      <UserCard />
     </div>
   );
 }
@@ -172,7 +167,6 @@ Great! now we've successfully implemented stacks authentication. However, if you
 and refresh the page many times after logging in, you'll notice that there is a momentary flash of the unauthenticated state.
 
 We can do better! Since we're using Remix, a SSR focused framework, let's learn how we can share session state between the client and server.
-
 
 ## Server side session data
 
@@ -187,40 +181,40 @@ This gives us the ability to make use of an active session on the server and:
 - no more flash of unauthenticated state
 - and more!
 
-
 ### Cookie sessions
 
 To start off, we're going to create a new file: `session.server.ts` in `/app/common`. This file is based off the Remix
 starter kit called the Blues Stack. [See here for their version.](https://github.com/remix-run/blues-stack/blob/main/app/session.server.ts)
 
 In this file we're going to create a few things:
+
 - `sessionStorage`: using Remix's `createCookieSessionStorage` (see their docs)
 - `saveSession`: a helper function to save the session to a cookie
 - `destroySession`: a helper function to remove the session
 - `getSession`: a helper function to get the current session
 
 ```ts
-import type { Session } from "@remix-run/server-runtime";
-import { createCookieSessionStorage, json } from "@remix-run/node";
+import type { Session } from '@remix-run/server-runtime';
+import { createCookieSessionStorage, json } from '@remix-run/node';
 
-const DEFAULT_SECRET = "this_is_a_long_password";
+const DEFAULT_SECRET = 'this_is_a_long_password';
 
 export const sessionStorage = createCookieSessionStorage({
   cookie: {
-    name: "__session",
+    name: '__session',
     httpOnly: true,
     maxAge: 0,
-    path: "/",
-    sameSite: "lax",
+    path: '/',
+    sameSite: 'lax',
     secrets: [process.env.SECRET ?? DEFAULT_SECRET],
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === 'production',
   },
 });
 
 export async function saveSession(session: Session) {
   return json(null, {
     headers: {
-      "Set-Cookie": await sessionStorage.commitSession(session, {
+      'Set-Cookie': await sessionStorage.commitSession(session, {
         maxAge: 60 * 60 * 24 * 7,
       }),
     },
@@ -230,13 +224,13 @@ export async function saveSession(session: Session) {
 export async function destroySession(session: Session) {
   return json(null, {
     headers: {
-      "Set-Cookie": await sessionStorage.destroySession(session),
+      'Set-Cookie': await sessionStorage.destroySession(session),
     },
   });
 }
 
 export async function getSession(request: Request) {
-  const cookie = request.headers.get("Cookie");
+  const cookie = request.headers.get('Cookie');
   return sessionStorage.getSession(cookie);
 }
 ```
@@ -277,20 +271,16 @@ Now, in that same file, we're going to add one more function that we're going to
 imports to make use of our session helper functions from `session.server.ts`:
 
 ```ts
-import { getSession, saveSession } from "~/common/session.server";
+import { getSession, saveSession } from '~/common/session.server';
 ```
 
 Then add the function `serverSideSessionHandler`:
 
-
 ```ts
 export async function serverSideSessionHandler(request: Request) {
-  const [session, data] = await Promise.all([
-    getSession(request),
-    request.formData(),
-  ]);
+  const [session, data] = await Promise.all([getSession(request), request.formData()]);
 
-  const dehydratedState = data.get("dehydratedState") as string | undefined;
+  const dehydratedState = data.get('dehydratedState') as string | undefined;
 
   if (dehydratedState) {
     const client = createServerClient(session);
@@ -319,8 +309,8 @@ safely interact with setting or deleting the server side session. The two files 
 #### Saving the session
 
 ```ts
-import type { ActionFunction } from "@remix-run/node";
-import { serverSideSessionHandler } from "~/common/client.server";
+import type { ActionFunction } from '@remix-run/node';
+import { serverSideSessionHandler } from '~/common/client.server';
 
 export const action: ActionFunction = async ({ request }) => {
   return serverSideSessionHandler(request);
@@ -350,8 +340,8 @@ two methods that will make use of the API routes and session helpers we made pre
 Both of these callbacks make use of the `useFetcher` hook from Remix. Check out their docs if you want to learn more.
 
 ```ts
-import { useFetcher } from "@remix-run/react";
-import { useCallback } from "react";
+import { useFetcher } from '@remix-run/react';
+import { useCallback } from 'react';
 
 export const useSessionCallbacks = () => {
   const fetcher = useFetcher();
@@ -365,12 +355,12 @@ export const useSessionCallbacks = () => {
    */
   const handleSetSession = useCallback(
     async (dehydatedState: string) => {
-      console.log("setting session");
+      console.log('setting session');
       const data = new FormData();
-      data.set("dehydratedState", dehydatedState);
+      data.set('dehydratedState', dehydatedState);
       await fetcher.submit(data, {
-        method: "post",
-        action: "/session/save",
+        method: 'post',
+        action: '/session/save',
       });
     },
     [fetcher]
@@ -384,8 +374,8 @@ export const useSessionCallbacks = () => {
    */
   const handleDestroySession = useCallback(async () => {
     await fetcher.submit(null, {
-      method: "post",
-      action: "/session/destroy",
+      method: 'post',
+      action: '/session/destroy',
     });
   }, [fetcher]);
 
@@ -402,6 +392,7 @@ Now that we have all the pieces put together, if we go back to our `/app/root.ts
 `useSessionCallbacks` hook, add two props to the `MicroStacks.ClientProvider` component, and we should be good to go!
 
 The two props we wil be:
+
 - `onPersistState`: this is a callback that runs anytime there is a state change that needs to be persisted
 - `onSignOut`: this callback runs when the user signs out of the current session
 
@@ -444,7 +435,6 @@ export default function App() {
     </html>
   );
 }
-
 ```
 
 ## Wrap up
@@ -458,4 +448,3 @@ To wrap up, in this guide we covered:
 - Creating API routes for saving/destroying session
 - Hooking into authentication callbacks
 - Fetching the current session and passing it to `ClientProvider`
-

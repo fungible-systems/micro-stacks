@@ -1,17 +1,16 @@
 ---
-description: "Learn advanced application patterns like working with server side rendering frameworks like Remix and Next.js."
+description: 'Learn advanced application patterns like working with server side rendering frameworks like Remix and Next.js.'
 ---
 
-import {InstallTabs} from '../../../components/install-tabs'
-import * as Integrations from '../../../components/integrations-tabs'
-import Callout from 'nextra-theme-docs/callout'
+import { InstallTabs } from 'components/install-tabs';
+import * as Integrations from 'components/integrations-tabs';
+import Callout from 'nextra-theme-docs/callout';
 
 # Advanced patterns
 
-<Integrations.Tabs/>
+<Integrations.Tabs />
 
 The client can take a few additional parameters: `onPersistState`, `onSignOut`, and `onAuthentication`.
-
 
 ## Server side rendered apps
 
@@ -24,10 +23,10 @@ do things like prefetch account data on the server, render account related compo
 of un-authenticated data, or as an authentication gate for restricted areas of an application.
 
 <Integrations.React>
-<Callout type={'info'}>
-	You can learn more about using building robust SSR Stacks applications by checking out the [Next.js](/guides/with-nextjs)
-	and [Remix](/guides/with-remix) guides.
-</Callout>
+  <Callout type={'info'}>
+    You can learn more about using building robust SSR Stacks applications by checking out the
+    [Next.js](/guides/with-nextjs) and [Remix](/guides/with-remix) guides.
+  </Callout>
 </Integrations.React>
 
 ### `onPersistState`
@@ -48,14 +47,16 @@ function App() {
     <MicroStacks.ClientProvider
       appName="My sick app"
       appIconUrl="APP_ICON.png"
-      onPersistState={(state: string) => saveToSessionCookie(state)}>
-        <Router />
+      onPersistState={(state: string) => saveToSessionCookie(state)}
+    >
+      <Router />
     </MicroStacks.ClientProvider>
   );
 }
 
 export default App;
 ```
+
 </Integrations.React>
 
 ### `dehydratedState`
@@ -65,22 +66,24 @@ client takes a parameter called `dehydratedState`, which is the `string` value t
 Often times, you'll get this from a cookie which you've saved it to, and then pass it down to wherever you have initiated your client.
 
 <Integrations.React>
-```tsx {10}
+
+```tsx {9}
 import * as MicroStacks from '@micro-stacks/react';
 
-// your app
-function App({ dehydratedState }) {
+function App({ dehydratedState }: { dehydratedState: string | null }) {
   return (
     <MicroStacks.ClientProvider
       appName="My sick app"
       appIconUrl="APP_ICON.png"
       onPersistState={(state: string) => saveToSessionCookie(state)}
-      dehydratedState={dehydratedState}>
-        <Router />
+      dehydratedState={dehydratedState}
+    >
+      {/* your app */}
     </MicroStacks.ClientProvider>
   );
 }
 
 export default App;
 ```
+
 </Integrations.React>

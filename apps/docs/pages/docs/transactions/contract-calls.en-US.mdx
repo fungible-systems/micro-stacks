@@ -1,8 +1,9 @@
 ---
-description: "Learn how to call Clarity functions in decentralized apps with deployed smart contracts on Stacks."
+description: 'Learn how to call Clarity functions in decentralized apps with deployed smart contracts on Stacks.'
 ---
-import Callout from 'nextra-theme-docs/callout'
-import * as Integrations from 'components/integrations-tabs'
+
+import Callout from 'nextra-theme-docs/callout';
+import * as Integrations from 'components/integrations-tabs';
 
 # Calling contract functions
 
@@ -11,8 +12,8 @@ import * as Integrations from 'components/integrations-tabs'
 This is the most complex transaction type that we can work with -- this is for when you're interested in calling a specific
 public function for a given smart contract deployed to the blockchain.
 
-<Callout type='info'>
-	If you're interested in learning how to call _read-only_ contract functions, check out this guide.
+<Callout type="info">
+  If you're interested in learning how to call _read-only_ contract functions, check out this guide.
 </Callout>
 
 ## Usage
@@ -20,9 +21,11 @@ public function for a given smart contract deployed to the blockchain.
 `@micro-stacks/react` exports a hook that you will use to call contract functions: `useOpenContractCall`.
 
 <Integrations.React>
-```jsx
+
+```tsx
 import { useOpenContractCall } from '@micro-stacks/react';
 ```
+
 </Integrations.React>
 
 ### Parameters
@@ -34,24 +37,26 @@ import { useOpenContractCall } from '@micro-stacks/react';
 - `validateWithAbi`: A boolean value, if set to true, the function will attempt to fetch the ABI for the contract. Alternatively, you can pass the ABI directly to this parameter.
 
 ### Example
+
 <Integrations.React>
-```jsx
+
+```tsx
 export const MyContractCallTx = () => {
   const { openContractCall, isRequestPending } = useOpenContractCall();
   const { stxAddress } = useAccount();
   const [response, setResponse] = useState(null);
 
-  const handleOpenContractCall = async () => {
-    const functionArgs = [
-      uintCV(1234),
-      intCV(-234),
-      bufferCV(utf8ToBytes('hello, world')),
-      stringAsciiCV('hey-ascii'),
-      stringUtf8CV('hey-utf8'),
-      standardPrincipalCV('ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3'),
-      trueCV(),
-    ];
+  const functionArgs = [
+    uintCV(1234),
+    intCV(-234),
+    bufferCV(utf8ToBytes('hello, world')),
+    stringAsciiCV('hey-ascii'),
+    stringUtf8CV('hey-utf8'),
+    standardPrincipalCV('ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3'),
+    trueCV(),
+  ];
 
+  const handleOpenContractCall = async () => {
     const postConditions = [
       makeStandardSTXPostCondition(stxAddress!, FungibleConditionCode.LessEqual, '100'),
     ];
@@ -63,7 +68,7 @@ export const MyContractCallTx = () => {
       functionArgs,
       postConditions,
       attachment: 'This is an attachment',
-      onFinish: async (data) => {
+      onFinish: async data => {
         console.log('finished contract call!', data);
         setResponse(data);
       },
@@ -76,7 +81,11 @@ export const MyContractCallTx = () => {
   return (
     <div>
       <h4>Faker contract call</h4>
-      {response && <pre><code>{JSON.stringify(response, null, 2)}</code></pre>}
+      {response && (
+        <pre>
+          <code>{JSON.stringify(response, null, 2)}</code>
+        </pre>
+      )}
       <button onClick={() => handleOpenContractCall()}>
         {isRequestPending ? 'request pending...' : 'Call Contract'}
       </button>
@@ -84,4 +93,5 @@ export const MyContractCallTx = () => {
   );
 };
 ```
+
 </Integrations.React>

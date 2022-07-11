@@ -1,13 +1,14 @@
 ---
-description: "Learn about the different network options on Stacks and how to add network switching functionality to your decentralized apps."
+description: 'Learn about the different network options on Stacks and how to add network switching functionality to your decentralized apps.'
 ---
-import {InstallTabs} from '../../../components/install-tabs'
-import * as Integrations from '../../../components/integrations-tabs'
-import Callout from 'nextra-theme-docs/callout'
+
+import { InstallTabs } from 'components/install-tabs';
+import * as Integrations from 'components/integrations-tabs';
+import Callout from 'nextra-theme-docs/callout';
 
 # Networks
 
-<Integrations.Tabs/>
+<Integrations.Tabs />
 
 Within most blockchain ecosystems, there is a concept of "networks". Within Stacks, networks are of either two "chain modes": `testnet` or `mainnet`.
 Mainnet refers to the primary Stacks blockchain, where real transactions and activity occur. Testnet is a staging or non-production
@@ -29,17 +30,15 @@ import * as MicroStacks from '@micro-stacks/react';
 // your app
 function App() {
   return (
-    <MicroStacks.ClientProvider
-      appName="My sick app"
-      appIconUrl="APP_ICON.png"
-      network="testnet">
-        <Router />
+    <MicroStacks.ClientProvider appName="My sick app" appIconUrl="APP_ICON.png" network="testnet">
+      <Router />
     </MicroStacks.ClientProvider>
   );
 }
 
 export default App;
 ```
+
 </Integrations.React>
 
 ### Toggling networks in-app

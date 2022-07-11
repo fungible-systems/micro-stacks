@@ -1,9 +1,9 @@
 ---
-description: "Learn how to deploy Clarity smart contracts to the blockchain from within an app."
+description: 'Learn how to deploy Clarity smart contracts to the blockchain from within an app.'
 ---
 
-import Callout from 'nextra-theme-docs/callout'
-import * as Integrations from '../../../components/integrations-tabs'
+import Callout from 'nextra-theme-docs/callout';
+import * as Integrations from 'components/integrations-tabs';
 
 # Deploying Clarity smart contracts
 
@@ -19,6 +19,7 @@ This transaction type is how we deploy a smart contract to the blockchain.
 ```jsx
 import { useOpenContractDeploy } from '@micro-stacks/react';
 ```
+
 </Integrations.React>
 
 ### Parameters
@@ -46,9 +47,12 @@ We will be deploying this simple Clarity contract:
 (begin (nft-mint? hello-nft u1 tx-sender))
 (begin (nft-mint? hello-nft u2 tx-sender))
 ```
+
 And this is how you'd request someone sign a transaction to deploy it:
+
 <Integrations.React>
-```jsx
+
+```tsx
 import { useOpenContractDeploy } from '@micro-stacks/react';
 import { useState } from 'react';
 
@@ -61,7 +65,7 @@ export const ContractDeploy = () => {
       contractName: `demo-deploy`,
       // the clarity contract above
       codeBody,
-      onFinish: async (data) => {
+      onFinish: async data => {
         console.log('finished contract deploy!', data);
         setResponse(data);
       },
@@ -74,7 +78,11 @@ export const ContractDeploy = () => {
   return (
     <div>
       <h4>Deploy a contract!</h4>
-      {response && <pre><code>{JSON.stringify(response, null, 2)}</code></pre>}
+      {response && (
+        <pre>
+          <code>{JSON.stringify(response, null, 2)}</code>
+        </pre>
+      )}
       <button onClick={() => handleOpenContractDeploy()}>
         {isRequestPending ? 'request pending...' : 'Deploy a contract'}
       </button>
@@ -82,4 +90,5 @@ export const ContractDeploy = () => {
   );
 };
 ```
+
 </Integrations.React>

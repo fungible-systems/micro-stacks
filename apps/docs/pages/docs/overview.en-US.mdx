@@ -1,24 +1,27 @@
 ---
 title: Overview
 ---
-import Callout from 'nextra-theme-docs/callout'
-import * as Overview from 'components/overview'
+
+import Callout from 'nextra-theme-docs/callout';
+import * as Overview from 'components/overview';
 
 # Overview
 
 `micro-stacks` is an all-in-one TypeScript SDK for interacting with the Stacks ecosystem. With `micro-stacks` you can build
 software that can: interact with Clarity, the smart contract langauge on Stacks, build apps that interact with Stacks based wallets,
 construct transactions, post conditions, and more!
+
 <br />
 <br />
 <Overview.Grid columns="40% 60%">
-<Overview.QuickStart />
-<Overview.RemixGuide />
+  <Overview.QuickStart />
+  <Overview.RemixGuide />
 </Overview.Grid>
 
 ## Building apps
 
 Check out these core patterns for building robust Stacks applications.
+
 <br />
 <Overview.Grid columns={2}>
 <Overview.GetStarted />
@@ -32,6 +35,7 @@ Check out these core patterns for building robust Stacks applications.
 ## Available libraries
 
 These are the packages you can use:
+
 - **React**: if you're building a Vue app, use this.
 - **Svelte**: if you're building a Svelte app, use this (coming soon).
 - **Vue**: if you're building a Vue app, use this (coming soon).
@@ -40,17 +44,16 @@ These are the packages you can use:
 
 Here is a handy table to understand which library to use:
 
-| Use case | Module to use |
-|--------------------------- | ---------------|
-| Building a react based app | React: `@micro-stacks/react` |
-| Building a svelte app | Client module: `@micro-stacks/svelte` (coming soon) |
-| Building a vue app | Client module: `@micro-stacks/vue` (coming soon) |
-| Building an angular app | Client module: `@micro-stacks/client` |
-| Handling Stacks user sessions in vanilla javascript | Client module: `@micro-stacks/client` |
-| Working with Clarity values | Core module: `micro-stacks/clarity` |
-| Constructing transactions in node.js | Core module: `micro-stacks/transactions` |
-| Converting values to and from byte arrays | Core module: `micro-stacks/common` |
-
+| Use case                                            | Module to use                                       |
+| --------------------------------------------------- | --------------------------------------------------- |
+| Building a react based app                          | React: `@micro-stacks/react`                        |
+| Building a svelte app                               | Client module: `@micro-stacks/svelte` (coming soon) |
+| Building a vue app                                  | Client module: `@micro-stacks/vue` (coming soon)    |
+| Building an angular app                             | Client module: `@micro-stacks/client`               |
+| Handling Stacks user sessions in vanilla javascript | Client module: `@micro-stacks/client`               |
+| Working with Clarity values                         | Core module: `micro-stacks/clarity`                 |
+| Constructing transactions in node.js                | Core module: `micro-stacks/transactions`            |
+| Converting values to and from byte arrays           | Core module: `micro-stacks/common`                  |
 
 ### Core modules
 
@@ -58,11 +61,10 @@ At the foundation of all this tooling is the base library, `micro-stacks`. This 
 packages make use of. Most developers will likely interact with packages higher up in this stack, such as the Client module or React specific tooling.
 The core modules are: Clarity, Connect, Crypto, Network, Storage, and Transactions.
 
-
 <Callout type="info" emoji="✅">
-  Use these modules if you're parsing Clarity values, interacting with buffers (byte arrays), or building lower-level functionality.
+  Use these modules if you're parsing Clarity values, interacting with buffers (byte arrays), or
+  building lower-level functionality.
 </Callout>
-
 
 ### Client module
 

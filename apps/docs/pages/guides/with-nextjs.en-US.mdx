@@ -1,10 +1,9 @@
 ---
-description: "Learn how to build a decentralized Stacks-based app using the full stack web framework Next.js."
+description: 'Learn how to build a decentralized Stacks-based app using the full stack web framework Next.js.'
 ---
 
-import {InstallTabs} from 'components/install-tabs'
-import Callout from 'nextra-theme-docs/callout'
-
+import { InstallTabs } from 'components/install-tabs';
+import Callout from 'nextra-theme-docs/callout';
 
 # Build a Stacks app with Next.js
 
@@ -12,6 +11,7 @@ Next.js is a very popular framework built on top of React. With `@micro-stacks/r
 we will be able to create robust and high performance Stacks apps that provide a delightful user experience.
 
 In this guide you will learn about:
+
 - 🏗️ Setting up `@micro-stacks/react`
 - 🔒 Adding authentication via Stacks based wallets
 - 🔥 How to share a user session between client and server
@@ -21,8 +21,8 @@ In this guide you will learn about:
 You can view the result of this guide online at this demo: [nextjs-example.micro-stacks.dev](https://nextjs-example.micro-stacks.dev)
 
 And view the source files [on GitHub](https://github.com/fungible-systems/micro-stacks-nextjs-example)
-	</Callout>
 
+</Callout>
 
 ## Getting started
 
@@ -33,17 +33,13 @@ following the prompts:
 npx create-next-app@latest --ts
 ```
 
-<InstallTabs>
-@micro-stacks/client @micro-stacks/react
-</InstallTabs>
-
+<InstallTabs>@micro-stacks/client @micro-stacks/react</InstallTabs>
 
 ## Client Provider
 
 Our first step will be to `import * as MicroStacks from "@micro-stacks/react";` and wrap the `_app.tsx` file in our
 `MicroStacks.ClientProvider` component. This component allows for all of the related hooks to access a shared session
 client within the application. We've also added two props to the `ClientProvider`: `appName` and `appIconUrl`.
-
 
 ```tsx {8-9}
 import '../styles/globals.css';
@@ -52,9 +48,7 @@ import { ClientProvider } from '@micro-stacks/react';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ClientProvider
-		appName="Nextjs + Microstacks"
-		appIconUrl="/vercel.png">
+    <ClientProvider appName="Nextjs + Microstacks" appIconUrl="/vercel.png">
       <Component {...pageProps} />
     </ClientProvider>
   );
@@ -69,6 +63,7 @@ Now that we've wrapped our app in the `ClientProvider`, we can start making use 
 that `@micro-stacks/react` exports. Here is a simple `WalletConnectButton` component we can use to authenticate a user.
 
 ### Wallet connect button
+
 ```tsx
 // components/wallet-connect-button.tsx
 
@@ -92,7 +87,6 @@ export const WalletConnectButton = () => {
 
 In our `pages/index.tsx` file, we can `import { WalletConnectButton } from "../components/wallet-connect-button";` and render it:
 
-
 ```tsx {3, 12}
 import type { NextPage } from 'next';
 import styles from '../styles/Home.module.css';
@@ -114,21 +108,18 @@ const Home: NextPage = () => {
 export default Home;
 ```
 
-
 Now, if you click the button, you should see the state change to loading and the Hiro Web Wallet pop up. Before we
 authenticate, we should create a component that will let us know who is currently logged in:
 
 ### User card component
 
 ```tsx
-import { useAccount } from "@micro-stacks/react";
+import { useAccount } from '@micro-stacks/react';
 
 export const UserCard = () => {
-	const { stxAddress } = useAccount();
-	if (!stxAddress) return <h2>No active session</h2>;
-	return (
-		<h2>{stxAddress}</h2>
-	);
+  const { stxAddress } = useAccount();
+  if (!stxAddress) return <h2>No active session</h2>;
+  return <h2>{stxAddress}</h2>;
 };
 ```
 
@@ -181,16 +172,13 @@ This gives us the ability to make use of an active session on the server and:
 - no more flash of unauthenticated state
 - and more!
 
-
 ## Cookie sessions (iron-session)
 
 To start off, we need to add another dependency to our project. For our needs, we're going to make use of the library
 `iron-session`. This package will handle the encryption and generation of our cookies. It's highly recommended you use a
 package like `iron-session` or `next-auth`, versus rolling your own implementation.
 
-<InstallTabs>
-iron-session
-</InstallTabs>
+<InstallTabs>iron-session</InstallTabs>
 
 Next up, let's create a new file `common/session.ts`:
 
@@ -202,7 +190,7 @@ export const sessionOptions: IronSessionOptions = {
   password: process.env.SECRET_COOKIE_PASSWORD as string,
   cookieName: 'micro-stacks-react',
   cookieOptions: {
-    secure: process.env.NODE_ENV === 'production'
+    secure: process.env.NODE_ENV === 'production',
   },
 };
 
@@ -253,8 +241,8 @@ export const getDehydratedStateFromSession = async (ctx: GetServerSidePropsConte
 **Important**: we are using the function `cleanDehydratedState` here to remove any instance of an `appPrivateKey` from the `dehydratedState` of our client.
 
 This is important because we're going to be passing this data from the server to client, and we want to avoid accidentally leaking any private information.
-</Callout>
 
+</Callout>
 
 ## API routes
 
@@ -350,6 +338,7 @@ Now that we have all the pieces put together, if we go back to our `/pages/_app.
 add two props to the `MicroStacks.ClientProvider` component.
 
 The two props we wil be:
+
 - `onPersistState`: this is a callback that runs anytime there is a state change that needs to be persisted
 - `onSignOut`: this callback runs when the user signs out of the current session
 
@@ -456,6 +445,7 @@ nasty hydration warning, and if you were to `console.log` the `stxAddress` in th
 log on the server and the client.
 
 To wrap up, in this guide we covered:
+
 - Creating a new Next.js app
 - Installing out micro-stacks related dependencies
 - Adding Stacks auth
@@ -464,5 +454,3 @@ To wrap up, in this guide we covered:
 - Creating API routes for saving/destroying session
 - Hooking into authentication callbacks
 - Fetching the current session and passing it to `ClientProvider`
-
-

@@ -1,8 +1,9 @@
 ---
 description: The Stacks blockchain native support for "sponsored transactions", which are transactions that have fees paid for by a third party.
 ---
-import * as Integrations from 'components/integrations-tabs'
-import Callout from 'nextra-theme-docs/callout'
+
+import * as Integrations from 'components/integrations-tabs';
+import Callout from 'nextra-theme-docs/callout';
 
 # Sponsored Transactions
 
@@ -21,14 +22,16 @@ In most cases, the flow for a sponsored transactions is:
 
 ### Signing transactions
 
-<Callout type='info'>
-	For more information about signing transactions, check out the docs for [contract calls](/docs/transactions/contract-calls).
+<Callout type="info">
+  For more information about signing transactions, check out the docs for [contract
+  calls](/docs/transactions/contract-calls).
 </Callout>
 
 In order to implement sponsored transactions, you **must** include the `sponsored: true` parameter. Each of the transaction signing functions support this parameter. When this option is included, the transaction payload is signed slightly differently. Additionally, the transaction is not immediately broadcasted.
 
 <Integrations.React>
-```jsx {10}
+
+```tsx {10}
 import { useOpenContractCall } from '@micro-stacks/react';
 import { useCallback } from 'react';
 
@@ -42,18 +45,18 @@ export const ContractCall = () => {
     });
   }, []);
 
-  return (
-    <button onClick={signTx}>Sign Transaction</button>
-  );
-}
+  return <button onClick={signTx}>Sign Transaction</button>;
+};
 ```
+
 </Integrations.React>
 
 <Integrations.Vanilla>
+
 ```tsx {12}
-import { client } from "./micro-stacks-client";
-import { TxType } from "@micro-stacks/client";
-import type { FinishedTxData } from "micro-stacks/connect";
+import { client } from './micro-stacks-client';
+import { TxType } from '@micro-stacks/client';
+import type { FinishedTxData } from 'micro-stacks/connect';
 
 const signTx = async () => {
   let payload: FinishedTxData | undefined;
@@ -67,6 +70,7 @@ const signTx = async () => {
   return payload;
 };
 ```
+
 </Integrations.Vanilla>
 
 ### Server-side sponsoring transactions
@@ -76,7 +80,11 @@ When implementing sponsored transactions, we need a backend API that supports si
 You'll need a private key in order to sign the transaction as a sponsor. In this example, the private key is configured as an environment variable.
 
 ```ts
-import { deserializeTransaction, sponsorTransaction, broadcastTransaction } from 'micro-stacks/transactions';
+import {
+  deserializeTransaction,
+  sponsorTransaction,
+  broadcastTransaction,
+} from 'micro-stacks/transactions';
 
 export const sponsorHex = async (txHex: string) => {
   const tranaction = deserializeTransaction(txHex);
@@ -89,13 +97,13 @@ export const sponsorHex = async (txHex: string) => {
     sponsorPrivateKey: sponsorPrivateKey,
     network,
     fee: '1000',
-  })
+  });
   const result = await broadcastTransaction(sponsoredTx, network);
   if ('error' in result) {
     throw new Error(`Broadcast failed: ${result.error}`);
   }
   return result.txid;
-}
+};
 ```
 
 The `sponsorTransaction` parameters are:
@@ -111,6 +119,7 @@ The `sponsorTransaction` parameters are:
 Now that we have a backend API setup to handle sponsoring, we can use it after signing the transaction.
 
 <Integrations.React>
+
 ```tsx
 import { useOpenContractCall } from '@micro-stacks/react';
 import { useCallback } from 'react';
@@ -131,7 +140,7 @@ export const ContractCall = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ txHex }),
-    })
+    });
 
     // get the txid from the response
     const { txid } = await result.json();
@@ -139,17 +148,17 @@ export const ContractCall = () => {
     console.log('Transaction submitted!', txid);
   }, [openContractCall]);
 
-  return (
-    <button onClick={signTx}>Sign Transaction</button>
-  );
-}
+  return <button onClick={signTx}>Sign Transaction</button>;
+};
 ```
+
 </Integrations.React>
 <Integrations.Vanilla>
+
 ```tsx
-import { client } from "./micro-stacks-client";
-import { TxType } from "@micro-stacks/client";
-import type { FinishedTxData } from "micro-stacks/connect";
+import { client } from './micro-stacks-client';
+import { TxType } from '@micro-stacks/client';
+import type { FinishedTxData } from 'micro-stacks/connect';
 
 const signTx = async () => {
   let payload: FinishedTxData | undefined;
@@ -166,21 +175,22 @@ const signTx = async () => {
 const signTxAndSponsor = async () => {
   const payload = await signTx();
 
-  if (typeof payload === "undefined") return; // if the popup was closed
+  if (typeof payload === 'undefined') return; // if the popup was closed
 
   // Send it to our API
-  const result = await fetch("/api/sponsor", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+  const result = await fetch('/api/sponsor', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ txHex: payload?.txRaw }),
   });
 
   // get the txid from the response
   const { txid } = await result.json();
 
-  console.log("Transaction submitted!", txid);
+  console.log('Transaction submitted!', txid);
 };
 ```
+
 </Integrations.Vanilla>
 
 ## Advanced Usage
