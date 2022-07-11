@@ -97,24 +97,57 @@ Import the `ClientProvider` and pass it some details about your app: `appName` a
 
 Or you can use the function `mountClient` and pass it the same details.
 
-```tsx {7-8}
-import * as MicroStacks from '@micro-stacks/svelte';
+```svelte {3,6}
+<script lang="ts">
+  // App.svelte file
+  import { ClientProvider } from "@micro-stacks/svelte";
+</script>
 
-// your app
-function App() {
-  return (
-    <MicroStacks.ClientProvider
-      appName="My sick app"
-      appIconUrl="APP_ICON.png">
-        <Router />
-    </MicroStacks.ClientProvider>
-  );
-}
-
-export default App;
+<ClientProvider appName="Svelte + micro-stacks" appIconUrl="/icon.png">
+  <main>
+    // app stuff
+  </main>
+</ClientProvider>
 ```
+Or if you want to use `mountClient`:
+```svelte {3,5-8}
+<script lang="ts">
+  // App.svelte file
+  import { mountClient } from "@micro-stacks/svelte";
 
+  mountClient({
+    appName: 'Svelte + micro-stacks',
+    appIconUrl: '/icon.png'
+  })
+</script>
+
+<main>
+  // app stuff
+</main>
+```
 </Integrations.Svelte>
+
+<Integrations.Vue>
+To add `@micro-stacks/vue` to your application, we need to set the context for the client. There is a function
+`provideClient` which sets the context for the app and all the functions to make use of.
+
+```vue {4, 6-9}
+<script setup lang="ts">
+// This starter template is using Vue 3 <script setup> SFCs
+// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import { provideClient } from '@micro-stacks/vue';
+
+provideClient({
+  appName: 'Vue + micro-stacks',
+  appIconUrl: window.location.href + 'assets/logo.png',
+});
+</script>
+
+<template>
+  <img alt="Vue logo" src="./assets/logo.png" />
+</template>
+```
+</Integrations.Vue>
 
 <Integrations.Vanilla>
 
