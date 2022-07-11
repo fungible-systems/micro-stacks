@@ -85,6 +85,15 @@ export const QuickStart = () => {
           <Integrations.React>
             <>@micro-stacks/react@beta</>
           </Integrations.React>
+          <Integrations.Svelte>
+            <>@micro-stacks/svelte@beta</>
+          </Integrations.Svelte>
+          <Integrations.Vue>
+            <>@micro-stacks/vue@beta</>
+          </Integrations.Vue>
+          <Integrations.Solid>
+            <>@micro-stacks/solidjs@beta</>
+          </Integrations.Solid>
           <Integrations.Vanilla>
             <>@micro-stacks/client@beta</>
           </Integrations.Vanilla>

@@ -24,7 +24,7 @@ import { defaultStorage, noopStorage } from './common/storage';
 import type { ClientConfig, SignTransactionRequest, State } from './common/types';
 import { DebugOptions } from './common/types';
 import { persist, subscribeWithSelector } from 'zustand/middleware';
-import { fetchPrivate, getGlobalObject } from 'micro-stacks/common';
+import { bytesToHex, fetchPrivate, getGlobalObject, hexToBytes } from 'micro-stacks/common';
 import { invariantWithMessage } from './common/utils';
 import { Status, StatusKeys, STORE_KEY, TxType } from './common/constants';
 import {
@@ -194,14 +194,14 @@ export class MicroStacksClient {
       version === StacksNetworkVersion.mainnetP2SH
         ? StacksNetworkVersion.testnetP2SH
         : StacksNetworkVersion.testnetP2PKH,
-      hash
+      hexToBytes(hash)
     );
   }
 
   get mainnetStxAddress() {
     if (!this.account) return null;
     const [version, hash] = this.account.address;
-    return c32address(version, hash);
+    return c32address(version, hexToBytes(hash));
   }
 
   get stxAddress(): string | null {
@@ -296,7 +296,9 @@ export class MicroStacksClient {
         appDetails: this.appDetails,
         // this is the on success callback
         onFinish: async ({ profile, ...session }) => {
-          const address = c32addressDecode(session.addresses.mainnet);
+          const [version, bytes] = c32addressDecode(session.addresses.mainnet);
+
+          const address: [number, string] = [version, bytesToHex(bytes)];
 
           const hasAccount = this.accounts.find(account => account.address === address);
           // if this is not currently saved, we should save it

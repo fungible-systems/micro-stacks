@@ -10,25 +10,28 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "import": "./dist/index.mjs",
+  "browser": "./dist/index.global.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
       "main": "./dist/index.js",
       "module": "./dist/index.mjs",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "browser": "./dist/index.global.js"
     },
     "./*": {
       "types": "./dist/*.d.ts",
       "require": "./dist/*.js",
       "main": "./dist/*.js",
       "module": "./dist/*.mjs",
-      "import": "./dist/*.mjs"
+      "import": "./dist/*.mjs",
+      "browser": "./dist/*.global.js"
     }
   },
   "sideEffects": false,
   "scripts": {
-    "build": "shx rm -rf ./dist && tsup-node src/index.ts --format esm,cjs --dts --minify --splitting --treeshake",
+    "build": "tsup",
     "typecheck": "tsc --noEmit --target esnext",
     "dev:publish": "yalc publish --push",
     "dev:build": "pnpm build && yalc publish --push",

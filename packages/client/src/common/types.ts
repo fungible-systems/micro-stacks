@@ -108,7 +108,7 @@ export interface ClientConfig {
 
 export interface Account {
   appPrivateKey?: string;
-  address: [version: number, hash: Uint8Array];
+  address: [version: number, hash: string];
   decentralizedID?: string;
   profile_url?: string;
 }

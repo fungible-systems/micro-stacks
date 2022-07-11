@@ -15,9 +15,20 @@ import type {
   SignatureData,
   SignedOptionsWithOnHandlers,
 } from 'micro-stacks/connect';
-import type { Readable } from 'svelte/store';
 import type { ClarityValue } from 'micro-stacks/clarity';
 import type { StacksNetwork } from 'micro-stacks/network';
+
+type Invalidator<T> = (value?: T) => void;
+declare type Subscriber<T> = (value: T) => void;
+
+interface Readable<T> {
+  /**
+   * Subscribe on value changes.
+   * @param run subscription callback
+   * @param invalidate cleanup callback
+   */
+  subscribe(this: void, run: Subscriber<T>, invalidate?: Invalidator<T>): () => void;
+}
 
 /** ------------------------------------------------------------------------------------------------------------------
  *   Client

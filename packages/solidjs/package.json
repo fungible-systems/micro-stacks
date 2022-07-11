@@ -28,7 +28,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "shx rm -rf ./dist && tsup-node src/index.ts --format esm,cjs --dts --minify --splitting --treeshake",
+    "build": "tsup --config ../configs/tsup.config.ts",
     "typecheck": "tsc --noEmit --target esnext",
     "dev:publish": "yalc publish --push",
     "lint": "pnpm lint:eslint && pnpm lint:prettier",

@@ -6,15 +6,12 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@micro-stacks/client": [
-        "../client/src"
-      ],
       "micro-stacks/*": [
         "../core/src/*"
       ]
     }
   },
   "include": [
-    "./src/**/*",
+    "./src/**/*"
   ]
 }

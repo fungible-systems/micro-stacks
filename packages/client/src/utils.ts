@@ -1,7 +1,7 @@
 import { Account, ClientConfig, DebugOptions, DehydratedState, State } from './common/types';
 import { ChainID, StacksMainnet, StacksNetwork, StacksTestnet } from 'micro-stacks/network';
 import { Status, StatusKeys } from './common/constants';
-import { getGlobalObject } from 'micro-stacks/common';
+import { bytesToHex, getGlobalObject, hexToBytes } from 'micro-stacks/common';
 import { c32address, c32addressDecode } from 'micro-stacks/crypto';
 
 export const VERSION = 1;
@@ -14,7 +14,7 @@ export function serialize({ state, version }: { state: State; version: number })
       state.accounts.map(account => {
         return {
           appPrivateKey: account.appPrivateKey,
-          address: c32address(account.address[0], account.address[1]),
+          address: c32address(account.address[0], hexToBytes(account.address[1])),
           profile_url: account.profile_url,
         };
       }),
@@ -38,9 +38,10 @@ export function deserialize(str: string) {
     network,
     currentAccountIndex,
     accounts: accounts.map((account: Omit<Account, 'address'> & { address: string }) => {
+      const [version, hash] = c32addressDecode(account.address);
       return {
         appPrivateKey: account.appPrivateKey,
-        address: c32addressDecode(account.address),
+        address: [version, bytesToHex(hash)],
         profile_url: account.profile_url,
       };
     }),

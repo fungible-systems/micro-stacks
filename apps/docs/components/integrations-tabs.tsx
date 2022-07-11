@@ -13,7 +13,7 @@ const items = [
   { label: 'React' },
   { label: 'Svelte' },
   { label: 'Vue' },
-  { label: 'Solid.js' },
+  { label: 'Solid' },
   { label: 'Vanilla' },
 ];
 
