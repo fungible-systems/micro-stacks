@@ -28,7 +28,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "shx rm -rf ./dist && tsup-node src/index.ts --format esm,cjs --dts --minify --splitting --treeshake",
+    "build": "tsup --config ../configs/tsup.config.ts",
     "typecheck": "tsc --noEmit --target esnext",
     "dev:publish": "yalc publish --push",
     "dev:build": "pnpm build && yalc publish --push",
@@ -37,20 +37,6 @@
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
     "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\" *.js",
     "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx}\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "engines": {
-    "node": ">=12"
-  },
-  "prettier": "@stacks/prettier-config",
-  "lint-staged": {
-    "*.{js,ts,tsx,md}": [
-      "prettier --write"
-    ]
   },
   "repository": {
     "type": "git",
