@@ -9,9 +9,6 @@
       "@micro-stacks/client": [
         "../client/src"
       ],
-      "@micro-stacks/react": [
-        "../react/src"
-      ],
       "micro-stacks/*": [
         "../core/src/*"
       ]
@@ -23,9 +20,6 @@
     },
     {
       "path": "../core/tsconfig.json"
-    },
-    {
-      "path": "../react/tsconfig.json"
     }
   ],
   "include": [
