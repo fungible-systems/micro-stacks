@@ -5,15 +5,18 @@ import { atomWithStorage } from 'jotai/utils';
 import { useAtom } from 'jotai';
 import { useHasMounted } from '../common/use-has-mounted';
 import { SetAtom } from 'jotai/core/atom';
+import React, { PropsWithChildren } from 'react';
 
 const tabState = atomWithStorage('integrations', 0);
 
 const items = [
   { label: 'React' },
-  { label: 'Svelte', disabled: true },
-  { label: 'Vue', disabled: true },
+  { label: 'Svelte' },
+  { label: 'Vue' },
+  { label: 'Solid.js' },
   { label: 'Vanilla' },
 ];
+
 const useTabs = (): [number, SetAtom<number, any>] => {
   const hasMounted = useHasMounted();
   const [_tab, setTab] = useAtom(tabState);
@@ -51,20 +54,43 @@ const ReactContent = ({ children }) => {
   return null;
 };
 
-const VanillaContent = ({ children }) => {
+const SvelteContent = ({ children }) => {
+  const [tab, setTab] = useTabs();
+  if (tab === 1) return children;
+  return null;
+};
+const VueContent = ({ children }) => {
+  const [tab, setTab] = useTabs();
+  if (tab === 2) return children;
+  return null;
+};
+const SolidContent = ({ children }) => {
   const [tab, setTab] = useTabs();
   if (tab === 3) return children;
   return null;
 };
+const VanillaContent = ({ children }) => {
+  const [tab, setTab] = useTabs();
+  if (tab === 4) return children;
+  return null;
+};
 
-const Action = ({ type, children }) => {
+type Tabs = 'react' | 'svelte' | 'vue' | 'solid.js' | 'vanilla';
+
+const Action: React.FC<PropsWithChildren<{ type: Tabs }>> = ({ type, children }) => {
   const [tab, setTab] = useTabs();
   const tabInt = () => {
     switch (type) {
       case 'react':
         return 0;
-      case 'vanilla':
+      case 'svelte':
+        return 1;
+      case 'vue':
+        return 2;
+      case 'solid.js':
         return 3;
+      case 'vanilla':
+        return 4;
     }
   };
   return (
@@ -78,4 +104,12 @@ const Action = ({ type, children }) => {
   );
 };
 
-export { TabsRow as Tabs, ReactContent as React, VanillaContent as Vanilla, Action };
+export {
+  TabsRow as Tabs,
+  ReactContent as React,
+  SvelteContent as Svelte,
+  VueContent as Vue,
+  SolidContent as Solid,
+  VanillaContent as Vanilla,
+  Action,
+};
