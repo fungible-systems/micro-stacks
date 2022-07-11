@@ -13,6 +13,18 @@ import Callout from 'nextra-theme-docs/callout'
 `@micro-stacks/react` is a collection of React Hooks containing everything you need to start working with Stacks. This package makes it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
 </Integrations.React>
 
+<Integrations.Svelte>
+`@micro-stacks/svelte` is the official Svelte library for building Stacks apps with `micro-stacks`. It contains everything you need to start working with Stacks. This package makes it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
+</Integrations.Svelte>
+
+<Integrations.Vue>
+`@micro-stacks/vue` is the official Vue.js library for building Stacks apps with `micro-stacks`. It contains everything you need to start working with Stacks. This package makes it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
+</Integrations.Vue>
+
+<Integrations.Solid>
+`@micro-stacks/solidjs` is the official Solid.js library for building Stacks apps with `micro-stacks`. It contains everything you need to start working with Stacks. This package makes it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
+</Integrations.Solid>
+
 <Integrations.Vanilla>
 `@micro-stacks/client` is an all-in-one class containing everything you need to start working with Stacks. The client makes it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
 </Integrations.Vanilla>
@@ -20,16 +32,32 @@ import Callout from 'nextra-theme-docs/callout'
 ## Installation
 
 <Integrations.React>
-	<InstallTabs>
-		@micro-stacks/react@beta
-	</InstallTabs>
+  <InstallTabs>
+    @micro-stacks/react@beta
+  </InstallTabs>
 </Integrations.React>
+
+<Integrations.Svelte>
+  <InstallTabs>
+    @micro-stacks/svelte@beta
+  </InstallTabs>
+</Integrations.Svelte>
+
+<Integrations.Vue>
+  <InstallTabs>
+    @micro-stacks/vue@beta
+  </InstallTabs>
+</Integrations.Vue>
+
+<Integrations.Solid>
+  <InstallTabs>
+    @micro-stacks/solidjs@beta
+  </InstallTabs>
+</Integrations.Solid>
 
 <Integrations.Vanilla>
 	<Callout emoji="⚛" type={'info'}>
-		If you are building an app using React, it is <strong>strongly recommended</strong> that you make use of the React integrations. <Integrations.Action type="react">[View the React docs.](#)</Integrations.Action>
-
-		_P.S.: Vue and Svelte integrations are coming soon!_
+		If you are building an app using a framework like React, Svelte, Vue, or Solid.js, it is <strong>strongly recommended</strong> that you make use of the official integrations.
 	</Callout>
 
 	<InstallTabs>
@@ -61,6 +89,32 @@ export default App;
 ```
 
 </Integrations.React>
+
+<Integrations.Svelte>
+To add `@micro-stacks/svelte` to your application, there are two main ways to do it:
+
+Import the `ClientProvider` and pass it some details about your app: `appName` and `appIconUrl`. This component creates the Context that all other functions within this package make use of.
+
+Or you can use the function `mountClient` and pass it the same details.
+
+```tsx {7-8}
+import * as MicroStacks from '@micro-stacks/svelte';
+
+// your app
+function App() {
+  return (
+    <MicroStacks.ClientProvider
+      appName="My sick app"
+      appIconUrl="APP_ICON.png">
+        <Router />
+    </MicroStacks.ClientProvider>
+  );
+}
+
+export default App;
+```
+
+</Integrations.Svelte>
 
 <Integrations.Vanilla>
 
