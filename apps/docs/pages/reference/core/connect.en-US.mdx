@@ -4,7 +4,6 @@
 
 More often than not, you as an app developer will never need to use this package directly. If you are building a React application, you should check out the docs on [Authentication](../integrations/react/authentication.md) and [Transactions](transactions.md).
 
-
 ## Authentication
 
 `micro-stacks/connect` exports an `authenticate` method that takes a few parameters:
@@ -33,20 +32,19 @@ This is the serialize function that will run when saving the authentication sess
 import { openTransactionPopup } from 'micro-stacks/connect';
 import type { FinishedTxData } from 'micro-stacks/connect';
 
-
-function onFinish(data: FinishedTxData){
+function onFinish(data: FinishedTxData) {
   console.log('finished!');
   console.log(data);
 }
 
-function onCancel(errorMessage: string){
+function onCancel(errorMessage: string) {
   console.log('something went wrong!');
   console.log(errorMessage);
 }
 
-async function handleTxSigning(token: string){
+async function handleTxSigning(token: string) {
   // promise will resolve when finished or canceled
-  await openTransactionPopup({ token, onFinish, onCancel })
+  await openTransactionPopup({ token, onFinish, onCancel });
 }
 ```
 
@@ -68,21 +66,21 @@ import { hashSha256 } from 'micro-stacks/crypto-sha';
 import { makeContractCallToken } from 'micro-stacks/connect';
 
 async function createBnsPreorderToken(): Promise<string> {
-    const privateKey = bytesToHex(getRandomBytes()); // this would be the appPrivateKey
-    const salt = 'asdadasdasda';
-    const fqn = 'jude.id';
-    const sha256 = hashSha256(utf8ToBytes(`${fqn}${salt}`));
-    const hash160 = hashRipemd160(sha256);
+  const privateKey = bytesToHex(getRandomBytes()); // this would be the appPrivateKey
+  const salt = 'asdadasdasda';
+  const fqn = 'jude.id';
+  const sha256 = hashSha256(utf8ToBytes(`${fqn}${salt}`));
+  const hash160 = hashRipemd160(sha256);
 
-    // create the token
-    const token = await makeContractCallToken({
-      privateKey,
-      functionName: 'name-preorder',
-      contractAddress: 'SP000000000000000000002Q6VF78',
-      contractName: 'bns',
-      functionArgs: [bufferCV(hash160), uintCV(200000)],
-    });
+  // create the token
+  const token = await makeContractCallToken({
+    privateKey,
+    functionName: 'name-preorder',
+    contractAddress: 'SP000000000000000000002Q6VF78',
+    contractName: 'bns',
+    functionArgs: [bufferCV(hash160), uintCV(200000)],
+  });
 
-    return token
+  return token;
 }
 ```

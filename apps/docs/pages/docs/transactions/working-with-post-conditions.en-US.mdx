@@ -3,7 +3,7 @@ title: Working with Post Conditions
 description: Post-conditions are a unique feature of the Stacks blockchain that are meant to protect users from unintentional asset loss due to smart contract bugs or other risks.
 ---
 
-import Callout from 'nextra-theme-docs/callout'
+import Callout from 'nextra-theme-docs/callout';
 
 # Working with Post Conditions
 
@@ -13,17 +13,18 @@ protections against unknowingly loosing assets. Post-conditions are defined in t
 or does not send during the transaction's execution.
 
 **Types of post conditions**
+
 - [STX token post conditions](#stx-token-post-conditions)
 - [Fungible token post conditions](#fungible-token-post-conditions)
 - [Non-fungible token post conditions](#non-fungible-token-post-conditions)
-
 
 ## Technical overview
 
 <Callout type='info'>
     This section has been adapted from content found in `SIP-005`. To read the original content, [click here](https://github.com/stacksgov/sips/blob/main/sips/sip-005/sip-005-blocks-and-transactions.md#transaction-post-conditions).
 
-	For a much more technical overview of post conditions and how they are constructed, check out [this section in `SIP-005`](https://github.com/stacksgov/sips/blob/main/sips/sip-005/sip-005-blocks-and-transactions.md#transaction-post-conditions-1).
+    For a much more technical overview of post conditions and how they are constructed, check out [this section in `SIP-005`](https://github.com/stacksgov/sips/blob/main/sips/sip-005/sip-005-blocks-and-transactions.md#transaction-post-conditions-1).
+
 </Callout>
 
 A key use-case of smart contracts is to allow programmatic control over the assets in one or more accounts. However,
@@ -36,8 +37,9 @@ Post-conditions are intended to be used to force a transaction to abort if the t
 send an asset in a way that is not to the user's liking.
 
 The Stacks blockchain supports an "allow" or "deny" mode for evaluating post-conditions:
-  - in "allow" mode, other asset transfers not covered by the post-conditions are permitted,
-  - but in "deny" mode, no other asset transfers are permitted besides those named in the post-conditions.
+
+- in "allow" mode, other asset transfers not covered by the post-conditions are permitted,
+- but in "deny" mode, no other asset transfers are permitted besides those named in the post-conditions.
 
 Post-conditions are meant to be added by the user (or by the user's wallet software) at the moment they sign with their
 origin account. Because the user defines the post-conditions, the user has the power to protect themselves from buggy or
@@ -46,10 +48,9 @@ with post-conditions. Well-designed wallets would provide an intuitive user inte
 as provide a set of recommended mitigations based on whether or not the transaction would interact with a known-buggy
 smart contract.
 
-<Callout type='info'>
-    **tl;dr:** post conditions should describe the expected results of a given transaction.
+<Callout type="info">
+  **tl;dr:** post conditions should describe the expected results of a given transaction.
 </Callout>
-
 
 ### Post-Condition Limitations
 
@@ -58,11 +59,10 @@ of owners an asset had during its execution. It only encodes who sent an asset, 
 to track, and requires no I/O to process (processing time is O(n) in the number of post-conditions). Users who want richer
 post-conditions are encouraged to deploy their own proxy contracts for making such queries.
 
-<Callout type='info'>
-    **tl;dr:** this means that you must consider only the result of a given transaction and which addresses will end up with a given asset.
+<Callout type="info">
+  **tl;dr:** this means that you must consider only the result of a given transaction and which
+  addresses will end up with a given asset.
 </Callout>
-
-
 
 ## STX token post conditions
 
@@ -121,6 +121,7 @@ and `makeContractFungiblePostCondition` that take a few parameters:
 - `amount`: the amount without decimals (in the case of STX, uSTX)
 
 Additionally, you need to manually define the asset for the post condition using `createAssetInfo`, the parameters this function takes are:
+
 - `contractAddress`: the contract address (principal) of the specific asset you're working with
 - `contractName`: the name of the contract for this asset
 - `assetName`: the name of the asset as defined in the contract
@@ -175,6 +176,7 @@ or `makeContractNonFungiblePostCondition`, and these are the parameters:
 - `assetId`: the ClarityValue of the asset ID (see below)
 
 Additionally, you need to manually define the asset for the post condition using `createAssetInfo`, the parameters this function takes are:
+
 - `contractAddress`: the contract address (principal) of the specific asset you're working with
 - `contractName`: the name of the contract for this asset
 - `assetName`: the name of the asset as defined in the contract
@@ -188,7 +190,7 @@ import {
   makeStandardNonFungiblePostCondition,
   makeContractNonFungiblePostCondition,
   NonFungibleConditionCode,
-  createAssetInfo
+  createAssetInfo,
 } from 'micro-stacks/transactions';
 import { uintCV } from 'micro-stacks/clarity';
 
@@ -214,7 +216,3 @@ const nftPostConditionForContract = makeStandardNonFungiblePostCondition(
   uintCV('60149')
 );
 ```
-
-
-
-

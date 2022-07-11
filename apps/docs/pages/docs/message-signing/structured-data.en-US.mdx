@@ -1,9 +1,9 @@
 ---
-description: "Learn about the different ways users can cryptographically sign messages, or sign Clarity values for use in smart contracts."
+description: 'Learn about the different ways users can cryptographically sign messages, or sign Clarity values for use in smart contracts.'
 ---
 
-import * as Integrations from '../../../components/integrations-tabs'
-import Callout from 'nextra-theme-docs/callout'
+import * as Integrations from '../../../components/integrations-tabs';
+import Callout from 'nextra-theme-docs/callout';
 
 # Structured data message signing
 
@@ -22,6 +22,7 @@ requested a signature). The pending state is handled all internally for every wa
 manually handle any loading logic.
 
 As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and `onCancel` callback.
+
 </Integrations.React>
 
 <Integrations.Vanilla>
@@ -29,12 +30,12 @@ When using `@micro-stacks/client`, the `client` has a method for structured mess
 which takes a `message` of type `string` or `ClarityValue` value. This method will accept a hex encoded clarity value,
 or a `ClarityValue`. Check out the page on Clarity Values to learn more about them.
 
-
 As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and `onCancel` callback.
 
 To check the status of a request, you can check `client.isSignStructuredMessageRequestPending`, a boolean value to denote if there
 is a current request open (meaning the use has already requested a signature). The pending state is handled all internally
 for every wallet request, so you don't need to manually handle any loading logic.
+
 </Integrations.Vanilla>
 
 ## Example
@@ -53,14 +54,14 @@ const SignMessageComponent = () => {
   const { openSignStructuredMessage, isRequestPending } = useOpenSignStructuredMessage();
 
   const [payload, setPayload] = React.useState(null);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState('');
 
   const message = tupleCV({ message: stringAsciiCV(value) });
 
   const onClick = React.useCallback(async () => {
     await openSignStructuredMessage({
       message,
-      onFinish: (walletResponse) => {
+      onFinish: walletResponse => {
         setPayload(walletResponse);
       },
     });
@@ -69,18 +70,13 @@ const SignMessageComponent = () => {
   return (
     <div
       style={{
-        display: "grid",
-        gap: "20px",
+        display: 'grid',
+        gap: '20px',
       }}
     >
       <h5>Sign a message!</h5>
-      <input
-        style={{ display: "block" }}
-        onChange={(e) => setMessage(e.currentTarget.value)}
-      />
-      <button onClick={onClick}>
-        {isRequestPending ? "Loading..." : "Sign message"}
-      </button>
+      <input style={{ display: 'block' }} onChange={e => setMessage(e.currentTarget.value)} />
+      <button onClick={onClick}>{isRequestPending ? 'Loading...' : 'Sign message'}</button>
       <code>
         <pre>{JSON.stringify(payload, null, 2)}</pre>
       </code>
@@ -88,9 +84,11 @@ const SignMessageComponent = () => {
   );
 };
 ```
+
 </Integrations.React>
 
 <Integrations.Vanilla>
+
 ```js
 import { client } from './micro-stacks-client';
 import { stringAsciiCV, tupleCV } from 'micro-stacks/clarity';
@@ -100,13 +98,13 @@ const message = tupleCV({ message: stringAsciiCV('hello world') });
 
 const payload = await client.signStructuredMessage({
   message,
-  onFinish: (response) => console.log(response),
-  onCancel: (error) => console.error(error)
-})
+  onFinish: response => console.log(response),
+  onCancel: error => console.error(error),
+});
 
-const isRequestPending = client.isSignStructuredMessageRequestPending
-
+const isRequestPending = client.isSignStructuredMessageRequestPending;
 ```
+
 </Integrations.Vanilla>
 
 ## Verification
@@ -128,5 +126,9 @@ const payload = {
   publicKey: '035b08fd4d14786187f51a33...4665fa437a9ad22bbdf7ae716d4599f26943a7',
 };
 
-const isValid = verifyStructuredMessageSignature({ message, signature: payload.signature, publicKey: payload.publicKey });
+const isValid = verifyStructuredMessageSignature({
+  message,
+  signature: payload.signature,
+  publicKey: payload.publicKey,
+});
 ```

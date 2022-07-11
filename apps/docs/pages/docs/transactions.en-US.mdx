@@ -1,22 +1,23 @@
-import Callout from 'nextra-theme-docs/callout'
-import * as Integrations from '../../components/integrations-tabs'
+import Callout from 'nextra-theme-docs/callout';
+import * as Integrations from '../../components/integrations-tabs';
 
 # Transaction signing
 
 <Integrations.Tabs />
 
 <Integrations.React>
-When building Stacks apps, very often you'll want to request the user to sign and broadcast a transaction to the network.
-To do this, you need to interact with a connected Stacks wallet which can receive and use these requests. `@micro-stacks/react` exposes
-a number of hooks that make this really easy.
+  When building Stacks apps, very often you'll want to request the user to sign and broadcast a
+  transaction to the network. To do this, you need to interact with a connected Stacks wallet which
+  can receive and use these requests. `@micro-stacks/react` exposes a number of hooks that make this
+  really easy.
 </Integrations.React>
 
 <Integrations.Vanilla>
-When building Stacks apps, very often you'll want to request the user to sign and broadcast a transaction to the network.
-To do this, you need to interact with a connected Stacks wallet which can receive and use these requests. `@micro-stacks/client` exposes
-a number of functions that make this really easy.
+  When building Stacks apps, very often you'll want to request the user to sign and broadcast a
+  transaction to the network. To do this, you need to interact with a connected Stacks wallet which
+  can receive and use these requests. `@micro-stacks/client` exposes a number of functions that make
+  this really easy.
 </Integrations.Vanilla>
-
 
 There are three main types of transactions you can work with:
 
@@ -31,12 +32,12 @@ is the shape of the shared parameters:
 
 ```ts
 interface TransactionOptionsBase {
-    onFinish?: (data: TxResponsePayload) => void;
-    onCancel?: (error: string) => void;
-    postConditionMode?: PostConditionMode;
-    postConditions?: (string | PostCondition)[];
-    sponsored?: boolean;
-    attachment?: string;
+  onFinish?: (data: TxResponsePayload) => void;
+  onCancel?: (error: string) => void;
+  postConditionMode?: PostConditionMode;
+  postConditions?: (string | PostCondition)[];
+  sponsored?: boolean;
+  attachment?: string;
 }
 ```
 
@@ -56,7 +57,6 @@ The `txId` will allow you to send users to an explorer, or to fetch data from an
 
 The `txRaw` is a deserialized instance of the `StacksTransaction` class that was submitted to the network.
 
-
 ### Post conditions
 
 Post conditions are conditions put onto a transaction that are intended to prevent unknowingly losing assets. A post condition
@@ -66,10 +66,10 @@ will prevent any asset that isn't defined in a post condition from being sent.
 for any assets that will transfer as a result of the transaction. It is strongly recommended to never pass `ALLOW`, as any number of
 transfers would be allowed to happen.
 
-<Callout type='info'>
-	To learn more about how best to work with post conditions, [check out the page on post conditions](./transactions/working-with-post-conditions).
+<Callout type="info">
+  To learn more about how best to work with post conditions, [check out the page on post
+  conditions](./transactions/working-with-post-conditions).
 </Callout>
-
 
 ### Sponsored transactions
 
@@ -82,8 +82,3 @@ To have the transaction signed with no fee, and not broadcast to the network, se
 
 Attachments are arbitrary hex-encoded data that can be included with a transaction. Currently, the only attachments that are
 supported by the network are `zonefile` attachments associated with BNS activity.
-
-
-
-
-

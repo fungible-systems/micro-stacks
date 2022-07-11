@@ -1,9 +1,9 @@
 ---
-description: "Learn about the different ways users can cryptographically sign messages, or sign Clarity values for use in smart contracts."
+description: 'Learn about the different ways users can cryptographically sign messages, or sign Clarity values for use in smart contracts.'
 ---
 
-import * as Integrations from '../../../components/integrations-tabs'
-import Callout from 'nextra-theme-docs/callout'
+import * as Integrations from 'components/integrations-tabs';
+import Callout from 'nextra-theme-docs/callout';
 
 # Standard message signing
 
@@ -11,8 +11,8 @@ import Callout from 'nextra-theme-docs/callout'
 
 Standard messaging signing allows for the signing of any arbitrary string message.
 
-<Callout type='info'>
-	If you're looking to sign Structured Data, please [click here](./structured-data).
+<Callout type="info">
+  If you're looking to sign Structured Data, please [click here](./structured-data).
 </Callout>
 
 ## Usage
@@ -25,6 +25,7 @@ already requested a signature). The pending state is handled all internally for 
 to manually handle any loading logic.
 
 As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and `onCancel` callback.
+
 </Integrations.React>
 
 <Integrations.Vanilla>
@@ -36,6 +37,7 @@ As with all of the hooks that interact with the wallet, you can also pass an `on
 To check the status of a request, you can check `client.isSignMessageRequestPending`, a boolean value to denote if there
 is a current request open (meaning the use has already requested a signature). The pending state is handled all internally
 for every wallet request, so you don't need to manually handle any loading logic.
+
 </Integrations.Vanilla>
 
 ## Example
@@ -52,12 +54,12 @@ const SignMessageComponent = () => {
   const { openSignMessage, isRequestPending } = useOpenSignMessage();
 
   const [payload, setPayload] = React.useState(null);
-  const [message, setMessage] = React.useState("");
+  const [message, setMessage] = React.useState('');
 
   const onClick = React.useCallback(async () => {
     await openSignMessage({
       message,
-      onFinish: (walletResponse) => {
+      onFinish: walletResponse => {
         setPayload(walletResponse);
       },
     });
@@ -66,18 +68,13 @@ const SignMessageComponent = () => {
   return (
     <div
       style={{
-        display: "grid",
-        gap: "20px",
+        display: 'grid',
+        gap: '20px',
       }}
     >
       <h5>Sign a message!</h5>
-      <input
-        style={{ display: "block" }}
-        onChange={(e) => setMessage(e.currentTarget.value)}
-      />
-      <button onClick={onClick}>
-        {isRequestPending ? "Loading..." : "Sign message"}
-      </button>
+      <input style={{ display: 'block' }} onChange={e => setMessage(e.currentTarget.value)} />
+      <button onClick={onClick}>{isRequestPending ? 'Loading...' : 'Sign message'}</button>
       <code>
         <pre>{JSON.stringify(payload, null, 2)}</pre>
       </code>
@@ -85,27 +82,28 @@ const SignMessageComponent = () => {
   );
 };
 ```
+
 </Integrations.React>
 
 <Integrations.Vanilla>
+
 ```js
 import { client } from './micro-stacks-client';
 
 const payload = await client.signMessage({
   message: 'hello world',
-  onFinish: (response) => console.log(response),
-  onCancel: (error) => console.error(error)
-})
+  onFinish: response => console.log(response),
+  onCancel: error => console.error(error),
+});
 
-const isRequestPending = client.isSignMessageRequestPending
-
+const isRequestPending = client.isSignMessageRequestPending;
 ```
+
 </Integrations.Vanilla>
 
 ## Verification
 
 To verify a signed message, you can import `verifyMessageSignature` from `micro-stacks/connect`.
-
 
 ### Example
 
@@ -117,9 +115,14 @@ const message = 'hi there how are you';
 
 // from the wallet
 const payload = {
-  signature: '0c956388e3bf84a2873b2fdd9c6845cceb14cea0e342bdc233dbc25e32e84aa77d483f80160541c92bf3d48beed82dcbea58c3d3f93d7cbc3fbefdbd48cecf2e01',
+  signature:
+    '0c956388e3bf84a2873b2fdd9c6845cceb14cea0e342bdc233dbc25e32e84aa77d483f80160541c92bf3d48beed82dcbea58c3d3f93d7cbc3fbefdbd48cecf2e01',
   publicKey: '035b08fd4d14786187f51a3360864665fa437a9ad22bbdf7ae716d4599f26943a7',
 };
 
-const isValid = verifyMessageSignature({ message, signature: payload.signature, publicKey: payload.publicKey });
+const isValid = verifyMessageSignature({
+  message,
+  signature: payload.signature,
+  publicKey: payload.publicKey,
+});
 ```

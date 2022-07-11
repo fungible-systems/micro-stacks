@@ -1,58 +1,63 @@
 ---
-description: "Get started building the next generation of Stacks apps using micro-stacks. With integrations for React, Svelte, Vue, and vanilla bindings."
+description: 'Get started building the next generation of Stacks apps using micro-stacks. With integrations for React, Svelte, Vue, and vanilla bindings.'
 ---
-import {InstallTabs} from '../../components/install-tabs'
-import * as Integrations from '../../components/integrations-tabs'
-import Callout from 'nextra-theme-docs/callout'
+
+import { InstallTabs } from 'components/install-tabs';
+import * as Integrations from 'components/integrations-tabs';
+import Callout from 'nextra-theme-docs/callout';
 
 # Getting started
 
-<Integrations.Tabs/>
+<Integrations.Tabs />
 
 <Integrations.React>
-`@micro-stacks/react` is a collection of React Hooks containing everything you need to start working with Stacks. This package makes it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
+  `@micro-stacks/react` is a collection of React Hooks containing everything you need to start
+  working with Stacks. This package makes it easy to connect to a Stacks wallet, sign messages,
+  interact with clarity smart contracts, and much more!
 </Integrations.React>
 
 <Integrations.Svelte>
-`@micro-stacks/svelte` is the official Svelte library for building Stacks apps with `micro-stacks`. It contains everything you need to start working with Stacks. This package makes it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
+  `@micro-stacks/svelte` is the official Svelte library for building Stacks apps with
+  `micro-stacks`. It contains everything you need to start working with Stacks. This package makes
+  it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and
+  much more!
 </Integrations.Svelte>
 
 <Integrations.Vue>
-`@micro-stacks/vue` is the official Vue.js library for building Stacks apps with `micro-stacks`. It contains everything you need to start working with Stacks. This package makes it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
+  `@micro-stacks/vue` is the official Vue.js library for building Stacks apps with `micro-stacks`.
+  It contains everything you need to start working with Stacks. This package makes it easy to
+  connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
 </Integrations.Vue>
 
 <Integrations.Solid>
-`@micro-stacks/solidjs` is the official Solid.js library for building Stacks apps with `micro-stacks`. It contains everything you need to start working with Stacks. This package makes it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
+  `@micro-stacks/solidjs` is the official Solid.js library for building Stacks apps with
+  `micro-stacks`. It contains everything you need to start working with Stacks. This package makes
+  it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and
+  much more!
 </Integrations.Solid>
 
 <Integrations.Vanilla>
-`@micro-stacks/client` is an all-in-one class containing everything you need to start working with Stacks. The client makes it easy to connect to a Stacks wallet, sign messages, interact with clarity smart contracts, and much more!
+  `@micro-stacks/client` is an all-in-one class containing everything you need to start working with
+  Stacks. The client makes it easy to connect to a Stacks wallet, sign messages, interact with
+  clarity smart contracts, and much more!
 </Integrations.Vanilla>
 
 ## Installation
 
 <Integrations.React>
-  <InstallTabs>
-    @micro-stacks/react@beta
-  </InstallTabs>
+  <InstallTabs>@micro-stacks/react@beta</InstallTabs>
 </Integrations.React>
 
 <Integrations.Svelte>
-  <InstallTabs>
-    @micro-stacks/svelte@beta
-  </InstallTabs>
+  <InstallTabs>@micro-stacks/svelte@beta</InstallTabs>
 </Integrations.Svelte>
 
 <Integrations.Vue>
-  <InstallTabs>
-    @micro-stacks/vue@beta
-  </InstallTabs>
+  <InstallTabs>@micro-stacks/vue@beta</InstallTabs>
 </Integrations.Vue>
 
 <Integrations.Solid>
-  <InstallTabs>
-    @micro-stacks/solidjs@beta
-  </InstallTabs>
+  <InstallTabs>@micro-stacks/solidjs@beta</InstallTabs>
 </Integrations.Solid>
 
 <Integrations.Vanilla>
@@ -60,27 +65,25 @@ import Callout from 'nextra-theme-docs/callout'
 		If you are building an app using a framework like React, Svelte, Vue, or Solid.js, it is <strong>strongly recommended</strong> that you make use of the official integrations.
 	</Callout>
 
-	<InstallTabs>
-		@micro-stacks/client@beta
-	</InstallTabs>
-</Integrations.Vanilla>
+    <InstallTabs>
+    	@micro-stacks/client@beta
+    </InstallTabs>
 
+</Integrations.Vanilla>
 
 ## Setting up the client
 
 <Integrations.React>
 To add `@micro-stacks/react` to your application, we only need to import the `ClientProvider` and pass it some details about your app: `appName` and `appIconUrl`. This component creates the React Context that all other functions within this package make use of.
 
-```tsx {7-8}
+```tsx {6}
 import * as MicroStacks from '@micro-stacks/react';
 
 // your app
 function App() {
   return (
-    <MicroStacks.ClientProvider
-      appName="My sick app"
-      appIconUrl="APP_ICON.png">
-        <Router />
+    <MicroStacks.ClientProvider appName="My sick app" appIconUrl="APP_ICON.png">
+      <Router />
     </MicroStacks.ClientProvider>
   );
 }
@@ -109,7 +112,9 @@ Or you can use the function `mountClient` and pass it the same details.
   </main>
 </ClientProvider>
 ```
+
 Or if you want to use `mountClient`:
+
 ```svelte {3,5-8}
 <script lang="ts">
   // App.svelte file
@@ -125,6 +130,7 @@ Or if you want to use `mountClient`:
   // app stuff
 </main>
 ```
+
 </Integrations.Svelte>
 
 <Integrations.Vue>
@@ -147,6 +153,7 @@ provideClient({
   <img alt="Vue logo" src="./assets/logo.png" />
 </template>
 ```
+
 </Integrations.Vue>
 
 <Integrations.Vanilla>
@@ -155,18 +162,17 @@ The `client` is the powerhouse of functionality which will drive all elements of
 Stacks wallet. To get started, you need to initiate your app with an instance of `MicroStacksClient`. Typically it's recommended
 to create a new file `micro-stacks-client.ts` (or `.js`) that exports your client so you can use it throughout your application.
 
-
 ```tsx
 // micro-stacks-client.ts
 
 import { createClient } from '@micro-stacks/client';
 
 const client = createClient({
-    appName: 'My cool app',
-    appIconUrl: 'https://mycool.app/my-cool-app-logo.png'
-})
+  appName: 'My cool app',
+  appIconUrl: 'https://mycool.app/my-cool-app-logo.png',
+});
 
-export { client }
+export { client };
 ```
 
 ```ts
@@ -175,18 +181,19 @@ export { client }
 import { client } from './micro-stacks-client.ts';
 
 const handleAuth = async () => {
-  if(!client.hasSession) await client.authenticate()
-}
+  if (!client.hasSession) await client.authenticate();
+};
 ```
 
 In this example, we've created a new `client` and then created a function that will request the user to authenticate if
 if there is no current session.
+
 </Integrations.Vanilla>
 
 <Callout>
-	Please note: if the app needs to interact with a Stacks wallet, `appName` and `appIconUrl` are required.
+  Please note: if the app needs to interact with a Stacks wallet, `appName` and `appIconUrl` are
+  required.
 </Callout>
-
 
 ### Parameters
 
@@ -197,6 +204,7 @@ The client can take a number of additional options:
 An optional callback that fires when authentication is completed successfully.
 
 #### `onSignOut`
+
 An optional callback that fires when a session is cleared. Useful if building a server-side rendered app.
 
 #### `network`
@@ -204,7 +212,8 @@ An optional callback that fires when a session is cleared. Useful if building a 
 Change the default network for the app. Available options: `mainnet`, `testnet`, `new StacksNetwork()`.
 
 <Callout type={'info'}>
-	You can read more about networks in Stacks apps on [the Networks page](/docs/getting-started/networks).
+  You can read more about networks in Stacks apps on [the Networks
+  page](/docs/getting-started/networks).
 </Callout>
 
 #### `storage`
@@ -220,9 +229,11 @@ interface Storage {
 ```
 
 #### `onPersistState`
+
 A callback to persist an instance of the client state as a dehydrated string value. Read more about persistence on [the Advanced Patterns page](/docs/getting-started/advanced-patterns).
 
 #### `dehydratedState`
+
 A string value of the dehydrated state of the client for hydration. Or a function that returns the value: `(key: string) => string | undefined` Read more about persistence on [the Advanced Patterns page](/docs/getting-started/advanced-patterns).
 
 ## Using the client
@@ -241,6 +252,3 @@ Now that you've set up your app, feel free to dig into some of the features you 
 - [What makes a Stacks app?](/guides/stacks-apps)
 - [Working with Post Conditions](/guides/working-with-post-conditions)
 - [Building a Remix app](/guides/with-remix)
-
-
-

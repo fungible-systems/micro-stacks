@@ -1,4 +1,4 @@
-import {InstallTabs} from 'components/install-tabs'
+import { InstallTabs } from 'components/install-tabs';
 
 # Core
 
@@ -6,9 +6,7 @@ The core package `micro-stacks` is a collection of many different sub-modules wh
 
 ## Installation
 
-<InstallTabs>
-micro-stacks
-</InstallTabs>
+<InstallTabs>micro-stacks</InstallTabs>
 
 While there is a single package to install, each module within `micro-stacks` can be safely imported without polluting
 your application with code from other modules. This allows for very high levels of tree-shakeability.
@@ -23,9 +21,7 @@ The `micro-stacks/clarity` module includes all the code required to interact wit
 import { uintCV } from 'micro-stacks/clarity';
 
 const clarityValue = uintCV('10');
-
 ```
-
 
 ### **Common**
 
@@ -40,16 +36,13 @@ wallet. This included functionality around authentication and signing transactio
 
 As the name implies, this module handles all of the crypto related functionality.
 
-
 ### **Network**
 
 `micro-stacks/network` handles anything to do with constructing network objects related to Stacks.&#x20;
 
-
 ### **Storage**
 
 This module is how you would interact with Gaia. It allows for you to safely store your users data encrypted.&#x20;
-
 
 ### **Transactions**
 

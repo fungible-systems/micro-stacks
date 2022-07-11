@@ -1,8 +1,9 @@
 ---
-description: "Learn how to request users sign a Stacks transaction to transfer STX tokens from an app."
+description: 'Learn how to request users sign a Stacks transaction to transfer STX tokens from an app.'
 ---
-import Callout from 'nextra-theme-docs/callout'
-import * as Integrations from '../../../components/integrations-tabs'
+
+import Callout from 'nextra-theme-docs/callout';
+import * as Integrations from 'components/integrations-tabs';
 
 # Sending STX tokens
 
@@ -11,9 +12,10 @@ import * as Integrations from '../../../components/integrations-tabs'
 This is the simplest type of Stacks transaction: a STX token transfer transaction. This is for requesting a connected wallet to
 transfer an amount of STX to a given recipient, with an optional message (a.k.a. memo).
 
-<Callout type='info'>
-	This transaction type is for the native Stacks token (STX) only. To transfer other types of tokens such as fungible or non-fungible tokens,
-	 see the [calling contract functions](/docs/transactions/contract-calls) page.
+<Callout type="info">
+  This transaction type is for the native Stacks token (STX) only. To transfer other types of tokens
+  such as fungible or non-fungible tokens, see the [calling contract
+  functions](/docs/transactions/contract-calls) page.
 </Callout>
 
 ## Usage
@@ -24,6 +26,7 @@ transfer an amount of STX to a given recipient, with an optional message (a.k.a.
 ```jsx
 import { useOpenStxTokenTransfer } from '@micro-stacks/react';
 ```
+
 </Integrations.React>
 
 ### Parameters
@@ -35,20 +38,21 @@ import { useOpenStxTokenTransfer } from '@micro-stacks/react';
 ### Example
 
 <Integrations.React>
+
 ```ts
 import { useOpenStxTokenTransfer } from '@micro-stacks/react';
 
 const MyComponent = () => {
-  const { openStxTokenTransfer, isRequestPending } = useOpenStxTokenTransfer()
+  const { openStxTokenTransfer, isRequestPending } = useOpenStxTokenTransfer();
 
   const handleTokenTransfer = async () => {
-      openStxTokenTransfer({
-  	  recipient: 'SP000000000000000000002Q6VF78',
-  	  amount: 20n, // 0.00002 STX
-  	  memo: 'hello world'
-    })
-  }
-}
+    openStxTokenTransfer({
+      recipient: 'SP000000000000000000002Q6VF78',
+      amount: 20n, // 0.00002 STX
+      memo: 'hello world',
+    });
+  };
+};
 ```
-</Integrations.React>
 
+</Integrations.React>

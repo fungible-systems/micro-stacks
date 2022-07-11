@@ -1,8 +1,9 @@
 ---
-description: "Learn about the different ways users can cryptographically sign messages, or sign Clarity values for use in smart contracts."
+description: 'Learn about the different ways users can cryptographically sign messages, or sign Clarity values for use in smart contracts.'
 ---
-import * as Integrations from '../../components/integrations-tabs'
-import Callout from 'nextra-theme-docs/callout'
+
+import * as Integrations from '../../components/integrations-tabs';
+import Callout from 'nextra-theme-docs/callout';
 
 # Message Signing
 
@@ -15,6 +16,7 @@ which we'd want to sign something that is not a transaction. Taken from the SIP-
 > without a designated trusted third party. To perform these actions, a user signs a transaction and broadcasts it to the network.
 >
 > However, there are situations in which it is desirable to produce signed messages that are not transactions:
+>
 > - prove to an external application or entity that a user is in control of an address;
 > - authorize an action to be performed by a smart contract at a later stage (like a meta transaction, see below);
 > - participate in an off-chain mechanism that is later settled on-chain (like a subnet).
@@ -31,5 +33,6 @@ or Xverse will be the application that ends up signing messages.
 ## SIP-018 message signing
 
 There are two main types of messages that you can sign:
+
 - [Standard message signing](./message-signing/standard-messages): an arbitrary string value.
 - [Structured data signing](./message-signing/structured-data): either a hex encoded Clarity value, or a `ClarityValue`.
