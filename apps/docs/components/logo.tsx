@@ -1,6 +1,12 @@
 export const Logo = ({ size = 44 }) => {
   return (
-    <svg style={{ display: 'block' }} width={size} height={size} viewBox="0 0 44 44" fill="none">
+    <svg
+      style={{ display: 'block' }}
+      width={size}
+      height={size}
+      viewBox="0 0 44 44"
+      fill="none"
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"

@@ -56,7 +56,9 @@ const SignMessageComponent = () => {
   const [payload, setPayload] = React.useState(null);
   const [value, setValue] = React.useState('');
 
-  const message = tupleCV({ message: stringAsciiCV(value) });
+  const message = tupleCV({
+    message: stringAsciiCV(value),
+  });
 
   const onClick = React.useCallback(async () => {
     await openSignStructuredMessage({
@@ -75,7 +77,10 @@ const SignMessageComponent = () => {
       }}
     >
       <h5>Sign a message!</h5>
-      <input style={{ display: 'block' }} onChange={e => setMessage(e.currentTarget.value)} />
+      <input
+        style={{ display: 'block' }}
+        onChange={e => setMessage(e.currentTarget.value)}
+      />
       <button onClick={onClick}>{isRequestPending ? 'Loading...' : 'Sign message'}</button>
       <code>
         <pre>{JSON.stringify(payload, null, 2)}</pre>
@@ -94,7 +99,9 @@ import { client } from './micro-stacks-client';
 import { stringAsciiCV, tupleCV } from 'micro-stacks/clarity';
 
 // a clarity tuple with a stringAsciiCV value
-const message = tupleCV({ message: stringAsciiCV('hello world') });
+const message = tupleCV({
+  message: stringAsciiCV('hello world'),
+});
 
 const payload = await client.signStructuredMessage({
   message,
@@ -118,7 +125,9 @@ import { stringAsciiCV, tupleCV } from 'micro-stacks/clarity';
 import { verifyStructuredMessageSignature } from 'micro-stacks/connect';
 
 // original message
-const message = tupleCV({ message: stringAsciiCV('hi there') });
+const message = tupleCV({
+  message: stringAsciiCV('hi there'),
+});
 
 // from the wallet
 const payload = {

@@ -131,7 +131,10 @@ const buttonLabel = auth.isRequestPending
 </script>
 
 <template>
-  <button type="button" v-on:click="() => onClick()">
+  <button
+    type="button"
+    v-on:click="() => onClick()"
+  >
     {{ buttonLabel }}
   </button>
 </template>
