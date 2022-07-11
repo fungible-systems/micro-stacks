@@ -1,5 +1,7 @@
 ---
-description: The Stacks blockchain native support for "sponsored transactions", which are transactions that have fees paid for by a third party.
+description:
+  The Stacks blockchain native support for "sponsored transactions", which are transactions that
+  have fees paid for by a third party.
 ---
 
 import * as Integrations from 'components/integrations-tabs';
@@ -9,16 +11,22 @@ import Callout from 'nextra-theme-docs/callout';
 
 <Integrations.Tabs />
 
-One of the unique features of the Stacks blockchain is that it has native support for "sponsored transactions". A sponsored transaction is signed by a user, but the fee is paid for by a third party. This allows for improved user experiences where a user doesn't need to own Stacks in order to make transactions.
+One of the unique features of the Stacks blockchain is that it has native support for "sponsored
+transactions". A sponsored transaction is signed by a user, but the fee is paid for by a third
+party. This allows for improved user experiences where a user doesn't need to own Stacks in order to
+make transactions.
 
 ## Implementing sponsored transactions
 
 In most cases, the flow for a sponsored transactions is:
 
-- When [signing a transaction](/docs/transactions), include `sponsored: true` as one of the transaction options
-- After the transaction is signed, the callback includes a `txRaw` property, which is a hex-encoded transaction. This transaction is **not** broadcasted to the blockchain yet.
+- When [signing a transaction](/docs/transactions), include `sponsored: true` as one of the
+  transaction options
+- After the transaction is signed, the callback includes a `txRaw` property, which is a hex-encoded
+  transaction. This transaction is **not** broadcasted to the blockchain yet.
 - Pass the `txRaw` encoded transaction to an API route
-- In the API route, sign the transaction using a different private key. The account controlled by this private key is paying the fee.
+- In the API route, sign the transaction using a different private key. The account controlled by
+  this private key is paying the fee.
 
 ### Signing transactions
 
@@ -27,7 +35,10 @@ In most cases, the flow for a sponsored transactions is:
   calls](/docs/transactions/contract-calls).
 </Callout>
 
-In order to implement sponsored transactions, you **must** include the `sponsored: true` parameter. Each of the transaction signing functions support this parameter. When this option is included, the transaction payload is signed slightly differently. Additionally, the transaction is not immediately broadcasted.
+In order to implement sponsored transactions, you **must** include the `sponsored: true` parameter.
+Each of the transaction signing functions support this parameter. When this option is included, the
+transaction payload is signed slightly differently. Additionally, the transaction is not immediately
+broadcasted.
 
 <Integrations.React>
 
@@ -75,9 +86,12 @@ const signTx = async () => {
 
 ### Server-side sponsoring transactions
 
-When implementing sponsored transactions, we need a backend API that supports signing a transaction as the sponsor. To do this, use the `sponsorTransaction` function from `micro-stacks/transactions`. We'll need to provide the transaction and our private key as parameters.
+When implementing sponsored transactions, we need a backend API that supports signing a transaction
+as the sponsor. To do this, use the `sponsorTransaction` function from `micro-stacks/transactions`.
+We'll need to provide the transaction and our private key as parameters.
 
-You'll need a private key in order to sign the transaction as a sponsor. In this example, the private key is configured as an environment variable.
+You'll need a private key in order to sign the transaction as a sponsor. In this example, the
+private key is configured as an environment variable.
 
 ```ts
 import {
@@ -108,15 +122,19 @@ export const sponsorHex = async (txHex: string) => {
 
 The `sponsorTransaction` parameters are:
 
-- `transaction`: A `StacksTransaction` instance. This **must** already be signed by the original sender
-- `sponsorPrivateKey`: a hex private key, which corresponds to the account paying the transaction fee
+- `transaction`: A `StacksTransaction` instance. This **must** already be signed by the original
+  sender
+- `sponsorPrivateKey`: a hex private key, which corresponds to the account paying the transaction
+  fee
 - `network`: the `StacksNetwork` we want to interface with
 - `fee`: optionally, a fee can be provided. If `fee` is omitted, then a fee estimation is used.
-- `sponsorNonce`: optionally, we can specify the nonce used. This is helpful in cases where our backend needs to handle many consecutive sponsored transactions.
+- `sponsorNonce`: optionally, we can specify the nonce used. This is helpful in cases where our
+  backend needs to handle many consecutive sponsored transactions.
 
 ### Putting it all together
 
-Now that we have a backend API setup to handle sponsoring, we can use it after signing the transaction.
+Now that we have a backend API setup to handle sponsoring, we can use it after signing the
+transaction.
 
 <Integrations.React>
 
@@ -197,7 +215,9 @@ const signTxAndSponsor = async () => {
 
 ### Authorizing sponsored transactions
 
-Most of the time, you'll want to only sponsor specific transactions. For example, you might want to only sponsor your app's contracts, or only sponsor transactions for specific users. You can implement that kind of authorization before signing.
+Most of the time, you'll want to only sponsor specific transactions. For example, you might want to
+only sponsor your app's contracts, or only sponsor transactions for specific users. You can
+implement that kind of authorization before signing.
 
 ```ts
 export function verifyContractCall(tx: StacksTransaction) {
@@ -224,7 +244,10 @@ export async function sponsorTx(tx: StacksTransaction) {
 
 ### Managing sponsor nonce
 
-In production, you might want to keep track of your sponsor account's nonce in a custom way. By default, `sponsorTransaction` fetches the sponsor's nonce from the network. If you have many requests to sponsor transactions coming in simultaneously, you should keep track of your nonce using some central data store.
+In production, you might want to keep track of your sponsor account's nonce in a custom way. By
+default, `sponsorTransaction` fetches the sponsor's nonce from the network. If you have many
+requests to sponsor transactions coming in simultaneously, you should keep track of your nonce using
+some central data store.
 
 ```ts
 export async function sponsorTx(tx: StacksTransaction) {

@@ -1,5 +1,7 @@
 ---
-description: 'Learn about the different network options on Stacks and how to add network switching functionality to your decentralized apps.'
+description:
+  'Learn about the different network options on Stacks and how to add network switching
+  functionality to your decentralized apps.'
 ---
 
 import { InstallTabs } from 'components/install-tabs';
@@ -10,13 +12,14 @@ import Callout from 'nextra-theme-docs/callout';
 
 <Integrations.Tabs />
 
-Within most blockchain ecosystems, there is a concept of "networks". Within Stacks, networks are of either two "chain modes": `testnet` or `mainnet`.
-Mainnet refers to the primary Stacks blockchain, where real transactions and activity occur. Testnet is a staging or non-production
-instance of the network. There can be many instances of testnet, but only one of mainnet.
+Within most blockchain ecosystems, there is a concept of "networks". Within Stacks, networks are of
+either two "chain modes": `testnet` or `mainnet`. Mainnet refers to the primary Stacks blockchain,
+where real transactions and activity occur. Testnet is a staging or non-production instance of the
+network. There can be many instances of testnet, but only one of mainnet.
 
-Unlike in Ethereum or other chains,
-where the wallet controls what network is set for a given application, that responsibility lies with the apps. This means
-an app could be operating only in testnet, where the user might have their wallet set to mainnet.
+Unlike in Ethereum or other chains, where the wallet controls what network is set for a given
+application, that responsibility lies with the apps. This means an app could be operating only in
+testnet, where the user might have their wallet set to mainnet.
 
 ## Changing the default network
 
@@ -47,4 +50,5 @@ export default App;
 
 ### Toggling networks in-app
 
-Sometimes you'll be building an app that can work in many different networks, or take a custom RPC api endpoint.
+Sometimes you'll be building an app that can work in many different networks, or take a custom RPC
+api endpoint.

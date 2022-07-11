@@ -1,5 +1,7 @@
 ---
-description: 'Get started building the next generation of Stacks apps using micro-stacks. With integrations for React, Svelte, Vue, and vanilla bindings.'
+description:
+  'Get started building the next generation of Stacks apps using micro-stacks. With integrations for
+  React, Svelte, Vue, and vanilla bindings.'
 ---
 
 import { InstallTabs } from 'components/install-tabs';
@@ -99,7 +101,8 @@ export default App;
 <Integrations.Svelte>
 To add `@micro-stacks/svelte` to your application, there are two main ways to do it:
 
-Import the `ClientProvider` and pass it some details about your app: `appName` and `appIconUrl`. This component creates the Context that all other functions within this package make use of.
+Import the `ClientProvider` and pass it some details about your app: `appName` and `appIconUrl`.
+This component creates the Context that all other functions within this package make use of.
 
 Or you can use the function `mountClient` and pass it the same details.
 
@@ -142,14 +145,14 @@ To add `@micro-stacks/vue` to your application, we need to set the context for t
 
 ```vue {4, 6-9}
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import { provideClient } from '@micro-stacks/vue';
+  // This starter template is using Vue 3 <script setup> SFCs
+  // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+  import { provideClient } from '@micro-stacks/vue';
 
-provideClient({
-  appName: 'Vue + micro-stacks',
-  appIconUrl: window.location.href + 'assets/logo.png',
-});
+  provideClient({
+    appName: 'Vue + micro-stacks',
+    appIconUrl: window.location.href + 'assets/logo.png',
+  });
 </script>
 
 <template>
@@ -164,9 +167,11 @@ provideClient({
 
 <Integrations.Vanilla>
 
-The `client` is the powerhouse of functionality which will drive all elements of your app that interact with a connected
-Stacks wallet. To get started, you need to initiate your app with an instance of `MicroStacksClient`. Typically it's recommended
-to create a new file `micro-stacks-client.ts` (or `.js`) that exports your client so you can use it throughout your application.
+The `client` is the powerhouse of functionality which will drive all elements of your app that
+interact with a connected Stacks wallet. To get started, you need to initiate your app with an
+instance of `MicroStacksClient`. Typically it's recommended to create a new file
+`micro-stacks-client.ts` (or `.js`) that exports your client so you can use it throughout your
+application.
 
 ```tsx
 // micro-stacks-client.ts
@@ -191,8 +196,8 @@ const handleAuth = async () => {
 };
 ```
 
-In this example, we've created a new `client` and then created a function that will request the user to authenticate if
-if there is no current session.
+In this example, we've created a new `client` and then created a function that will request the user
+to authenticate if if there is no current session.
 
 </Integrations.Vanilla>
 
@@ -211,11 +216,13 @@ An optional callback that fires when authentication is completed successfully.
 
 #### `onSignOut`
 
-An optional callback that fires when a session is cleared. Useful if building a server-side rendered app.
+An optional callback that fires when a session is cleared. Useful if building a server-side rendered
+app.
 
 #### `network`
 
-Change the default network for the app. Available options: `mainnet`, `testnet`, `new StacksNetwork()`.
+Change the default network for the app. Available options: `mainnet`, `testnet`,
+`new StacksNetwork()`.
 
 <Callout type={'info'}>
   You can read more about networks in Stacks apps on [the Networks
@@ -236,15 +243,19 @@ interface Storage {
 
 #### `onPersistState`
 
-A callback to persist an instance of the client state as a dehydrated string value. Read more about persistence on [the Advanced Patterns page](/docs/getting-started/advanced-patterns).
+A callback to persist an instance of the client state as a dehydrated string value. Read more about
+persistence on [the Advanced Patterns page](/docs/getting-started/advanced-patterns).
 
 #### `dehydratedState`
 
-A string value of the dehydrated state of the client for hydration. Or a function that returns the value: `(key: string) => string | undefined` Read more about persistence on [the Advanced Patterns page](/docs/getting-started/advanced-patterns).
+A string value of the dehydrated state of the client for hydration. Or a function that returns the
+value: `(key: string) => string | undefined` Read more about persistence on
+[the Advanced Patterns page](/docs/getting-started/advanced-patterns).
 
 ## Using the client
 
-Now that you've set up your app, feel free to dig into some of the features you can start making use of:
+Now that you've set up your app, feel free to dig into some of the features you can start making use
+of:
 
 - [Authentication](/docs/authentication)
 - [Networks](/docs/getting-started/networks)

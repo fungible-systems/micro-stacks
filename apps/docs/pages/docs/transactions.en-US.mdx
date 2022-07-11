@@ -27,8 +27,8 @@ There are three main types of transactions you can work with:
 
 ## Shared parameters
 
-Before we dig into each specific type of transaction, there are some parameters that all transactions can make use of. This
-is the shape of the shared parameters:
+Before we dig into each specific type of transaction, there are some parameters that all
+transactions can make use of. This is the shape of the shared parameters:
 
 ```ts
 interface TransactionOptionsBase {
@@ -43,8 +43,9 @@ interface TransactionOptionsBase {
 
 ### `onFinish` and `onCancel`
 
-All callbacks that interact with a connected wallet can make use of `onFinish` and `onCancel`. When someone initiates a request
-from an app and it finishes successfully, the wallet will return a payload to the requesting app with the following shape:
+All callbacks that interact with a connected wallet can make use of `onFinish` and `onCancel`. When
+someone initiates a request from an app and it finishes successfully, the wallet will return a
+payload to the requesting app with the following shape:
 
 ```json
 {
@@ -53,18 +54,22 @@ from an app and it finishes successfully, the wallet will return a payload to th
 }
 ```
 
-The `txId` will allow you to send users to an explorer, or to fetch data from an API for the newly submitted transaction.
+The `txId` will allow you to send users to an explorer, or to fetch data from an API for the newly
+submitted transaction.
 
-The `txRaw` is a deserialized instance of the `StacksTransaction` class that was submitted to the network.
+The `txRaw` is a deserialized instance of the `StacksTransaction` class that was submitted to the
+network.
 
 ### Post conditions
 
-Post conditions are conditions put onto a transaction that are intended to prevent unknowingly losing assets. A post condition
-will prevent any asset that isn't defined in a post condition from being sent.
+Post conditions are conditions put onto a transaction that are intended to prevent unknowingly
+losing assets. A post condition will prevent any asset that isn't defined in a post condition from
+being sent.
 
-`postConditionMode` can be set to either `ALLOW` or `DENY`. The default is always `DENY`, meaning you will need to set post conditions
-for any assets that will transfer as a result of the transaction. It is strongly recommended to never pass `ALLOW`, as any number of
-transfers would be allowed to happen.
+`postConditionMode` can be set to either `ALLOW` or `DENY`. The default is always `DENY`, meaning
+you will need to set post conditions for any assets that will transfer as a result of the
+transaction. It is strongly recommended to never pass `ALLOW`, as any number of transfers would be
+allowed to happen.
 
 <Callout type="info">
   To learn more about how best to work with post conditions, [check out the page on post
@@ -73,12 +78,14 @@ transfers would be allowed to happen.
 
 ### Sponsored transactions
 
-Sponsored transactions are transactions that will be submitted to the network at a later date, and the fees will be covered by
-another account.
+Sponsored transactions are transactions that will be submitted to the network at a later date, and
+the fees will be covered by another account.
 
-To have the transaction signed with no fee, and not broadcast to the network, set `sponsored` to `true`.
+To have the transaction signed with no fee, and not broadcast to the network, set `sponsored` to
+`true`.
 
 ### Attachments
 
-Attachments are arbitrary hex-encoded data that can be included with a transaction. Currently, the only attachments that are
-supported by the network are `zonefile` attachments associated with BNS activity.
+Attachments are arbitrary hex-encoded data that can be included with a transaction. Currently, the
+only attachments that are supported by the network are `zonefile` attachments associated with BNS
+activity.

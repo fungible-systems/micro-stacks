@@ -1,5 +1,7 @@
 ---
-description: 'Learn how to add web3 auth to your decentralized apps on Stacks. Interact with Stacks based wallets and authenticate your users.'
+description:
+  'Learn how to add web3 auth to your decentralized apps on Stacks. Interact with Stacks based
+  wallets and authenticate your users.'
 ---
 
 import Callout from 'nextra-theme-docs/callout';
@@ -9,8 +11,9 @@ import * as Integrations from '../../components/integrations-tabs';
 
 <Integrations.Tabs />
 
-The foundation of any Stacks based application is authentication. With `micro-stacks`, you are able to add authentication to
-any JavaScript/TypeScript application. Stacks authentication is dependent on your users having a compatible wallet to authenticate with.
+The foundation of any Stacks based application is authentication. With `micro-stacks`, you are able
+to add authentication to any JavaScript/TypeScript application. Stacks authentication is dependent
+on your users having a compatible wallet to authenticate with.
 
 <Callout type={'info'}>
   The two primary wallets in the Stacks ecosystem are: the [Hiro Web
@@ -34,8 +37,9 @@ any JavaScript/TypeScript application. Stacks authentication is dependent on you
 
 <Integrations.React>
 
-The primary way you'll implement authentication is via the `useAuth` hook. This hook exposes a few callbacks for
-different functions: `openAuthRequest`, `signOut`, along with some helper variables: `isRequestPending` `isSignedIn`.
+The primary way you'll implement authentication is via the `useAuth` hook. This hook exposes a few
+callbacks for different functions: `openAuthRequest`, `signOut`, along with some helper variables:
+`isRequestPending` `isSignedIn`.
 
 Check out the sample below for a very simple `WalletConnectButton` component:
 
@@ -73,8 +77,9 @@ export const WalletConnectButton = () => {
 
 <Integrations.Svelte>
 
-The primary way you'll implement authentication is via the `getAuth` function. This function exposes a few callbacks for
-different functions: `openAuthRequest`, `signOut`, along with some helper reactive variables: `isRequestPending` `isSignedIn`.
+The primary way you'll implement authentication is via the `getAuth` function. This function exposes
+a few callbacks for different functions: `openAuthRequest`, `signOut`, along with some helper
+reactive variables: `isRequestPending` `isSignedIn`.
 
 Check out the sample below for a very simple `WalletConnectButton` component:
 
@@ -114,20 +119,20 @@ Check out the sample below for a very simple `WalletConnectButton` component:
 
 ```vue
 <script setup lang="ts">
-import { useAuth } from '@micro-stacks/vue';
+  import { useAuth } from '@micro-stacks/vue';
 
-// using the experimental Reactivity Transform
-// @see https://vuejs.org/guide/extras/reactivity-transform.html#reactivity-transform
-const auth = $(useAuth());
+  // using the experimental Reactivity Transform
+  // @see https://vuejs.org/guide/extras/reactivity-transform.html#reactivity-transform
+  const auth = $(useAuth());
 
-const onClick = () => {
-  !auth.isSignedIn ? auth.openAuthRequest() : auth.signOut();
-};
-const buttonLabel = auth.isRequestPending
-  ? 'pending...'
-  : auth.isSignedIn
-  ? 'Sign out'
-  : 'Connect Stacks Wallet';
+  const onClick = () => {
+    !auth.isSignedIn ? auth.openAuthRequest() : auth.signOut();
+  };
+  const buttonLabel = auth.isRequestPending
+    ? 'pending...'
+    : auth.isSignedIn
+    ? 'Sign out'
+    : 'Connect Stacks Wallet';
 </script>
 
 <template>
@@ -149,8 +154,9 @@ const buttonLabel = auth.isRequestPending
   client](./#overview) correctly.
 </Callout>
 
-The micro-stacks client will handle persistence for you, so all you need to do is have you users call `authenticate` from the client,
-and once they have selected an account, the client will update automatically.
+The micro-stacks client will handle persistence for you, so all you need to do is have you users
+call `authenticate` from the client, and once they have selected an account, the client will update
+automatically.
 
 ```typescript
 import { client } from './my-client';
@@ -197,7 +203,8 @@ To access the current signed in user data, you'll want to make use of the `getAc
 import { getAccount } from '@micro-stacks/svelte';
 ```
 
-This function will return a _reactive_ (will automatically update as state changes) object with the shape:
+This function will return a _reactive_ (will automatically update as state changes) object with the
+shape:
 
 ```ts
 interface Account {
@@ -246,7 +253,8 @@ To access the current signed in user data, you'll want to make use of the `useAc
 import { useAccount } from '@micro-stacks/vue';
 ```
 
-This hook will return a _reactive_ (will automatically update as state changes) object with the shape:
+This hook will return a _reactive_ (will automatically update as state changes) object with the
+shape:
 
 ```ts
 interface Account {
@@ -261,16 +269,16 @@ interface Account {
 
 ```vue
 <script setup lang="ts">
-import { useAccount } from '@micro-stacks/vue';
+  import { useAccount } from '@micro-stacks/vue';
 
-const account = $(useAccount());
+  const account = $(useAccount());
 
-const appPrivateKey = account.appPrivateKey;
-const stxAddress = account.stxAddress;
-const rawAddress = account.rawAddress;
-const identityAddress = account.identityAddress;
-const decentralizedID = account.decentralizedID;
-const profileUrl = account.profileUrl;
+  const appPrivateKey = account.appPrivateKey;
+  const stxAddress = account.stxAddress;
+  const rawAddress = account.rawAddress;
+  const identityAddress = account.identityAddress;
+  const decentralizedID = account.decentralizedID;
+  const profileUrl = account.profileUrl;
 </script>
 ```
 
@@ -290,8 +298,8 @@ const appPrivateKey = client.account.appPrivateKey;
 
 ## Server side session
 
-If you are building an application that uses server side rendering, or want to share state with an api route, checkout these
-handy resources for working with Stacks apps & server rendering:
+If you are building an application that uses server side rendering, or want to share state with an
+api route, checkout these handy resources for working with Stacks apps & server rendering:
 
 [Advanced patterns: server side rendering](/docs/getting-started/advanced-patterns)
 

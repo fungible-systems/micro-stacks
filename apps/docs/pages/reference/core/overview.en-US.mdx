@@ -2,20 +2,23 @@ import { InstallTabs } from 'components/install-tabs';
 
 # Core
 
-The core package `micro-stacks` is a collection of many different sub-modules which all serve different purposes.
+The core package `micro-stacks` is a collection of many different sub-modules which all serve
+different purposes.
 
 ## Installation
 
 <InstallTabs>micro-stacks</InstallTabs>
 
-While there is a single package to install, each module within `micro-stacks` can be safely imported without polluting
-your application with code from other modules. This allows for very high levels of tree-shakeability.
+While there is a single package to install, each module within `micro-stacks` can be safely imported
+without polluting your application with code from other modules. This allows for very high levels of
+tree-shakeability.
 
 ## Modules
 
 ### **Clarity**
 
-The `micro-stacks/clarity` module includes all the code required to interact with Clarity in a JavaScript environment. This includes things like parsing and constructing Clarity Values.
+The `micro-stacks/clarity` module includes all the code required to interact with Clarity in a
+JavaScript environment. This includes things like parsing and constructing Clarity Values.
 
 ```ts
 import { uintCV } from 'micro-stacks/clarity';
@@ -29,8 +32,9 @@ This module exports helpful utilities that many of the other modules make use of
 
 ### **Connect**
 
-`micro-stacks/connect` is the module that handles all communication between a given application and any Stacks based
-wallet. This included functionality around authentication and signing transactions.&#x20;
+`micro-stacks/connect` is the module that handles all communication between a given application and
+any Stacks based wallet. This included functionality around authentication and signing
+transactions.&#x20;
 
 ### **Crypto**
 
@@ -38,12 +42,15 @@ As the name implies, this module handles all of the crypto related functionality
 
 ### **Network**
 
-`micro-stacks/network` handles anything to do with constructing network objects related to Stacks.&#x20;
+`micro-stacks/network` handles anything to do with constructing network objects related to
+Stacks.&#x20;
 
 ### **Storage**
 
-This module is how you would interact with Gaia. It allows for you to safely store your users data encrypted.&#x20;
+This module is how you would interact with Gaia. It allows for you to safely store your users data
+encrypted.&#x20;
 
 ### **Transactions**
 
-This module deals with constructing Stacks Transactions that then can be signed by a given wallet.&#x20;
+This module deals with constructing Stacks Transactions that then can be signed by a given
+wallet.&#x20;

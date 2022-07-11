@@ -1,5 +1,6 @@
 ---
-description: 'Learn how to build a decentralized Stacks-based app using the full stack web framework Next.js.'
+description:
+  'Learn how to build a decentralized Stacks-based app using the full stack web framework Next.js.'
 ---
 
 import { InstallTabs } from 'components/install-tabs';
@@ -7,8 +8,9 @@ import Callout from 'nextra-theme-docs/callout';
 
 # Build a Stacks app with Next.js
 
-Next.js is a very popular framework built on top of React. With `@micro-stacks/react` and `@micro-stacks/client`,
-we will be able to create robust and high performance Stacks apps that provide a delightful user experience.
+Next.js is a very popular framework built on top of React. With `@micro-stacks/react` and
+`@micro-stacks/client`, we will be able to create robust and high performance Stacks apps that
+provide a delightful user experience.
 
 In this guide you will learn about:
 
@@ -20,14 +22,15 @@ In this guide you will learn about:
 <Callout type={'info'}>
 You can view the result of this guide online at this demo: [nextjs-example.micro-stacks.dev](https://nextjs-example.micro-stacks.dev)
 
-And view the source files [on GitHub](https://github.com/fungible-systems/micro-stacks-nextjs-example)
+And view the source files
+[on GitHub](https://github.com/fungible-systems/micro-stacks-nextjs-example)
 
 </Callout>
 
 ## Getting started
 
-To get started, we're going to create a new Next.js app with Typescript by running the following command and
-following the prompts:
+To get started, we're going to create a new Next.js app with Typescript by running the following
+command and following the prompts:
 
 ```bash
 npx create-next-app@latest --ts
@@ -37,9 +40,10 @@ npx create-next-app@latest --ts
 
 ## Client Provider
 
-Our first step will be to `import * as MicroStacks from "@micro-stacks/react";` and wrap the `_app.tsx` file in our
-`MicroStacks.ClientProvider` component. This component allows for all of the related hooks to access a shared session
-client within the application. We've also added two props to the `ClientProvider`: `appName` and `appIconUrl`.
+Our first step will be to `import * as MicroStacks from "@micro-stacks/react";` and wrap the
+`_app.tsx` file in our `MicroStacks.ClientProvider` component. This component allows for all of the
+related hooks to access a shared session client within the application. We've also added two props
+to the `ClientProvider`: `appName` and `appIconUrl`.
 
 ```tsx {8-9}
 import '../styles/globals.css';
@@ -62,8 +66,9 @@ export default MyApp;
 
 ## Authentication
 
-Now that we've wrapped our app in the `ClientProvider`, we can start making use of all the hooks and other functions
-that `@micro-stacks/react` exports. Here is a simple `WalletConnectButton` component we can use to authenticate a user.
+Now that we've wrapped our app in the `ClientProvider`, we can start making use of all the hooks and
+other functions that `@micro-stacks/react` exports. Here is a simple `WalletConnectButton` component
+we can use to authenticate a user.
 
 ### Wallet connect button
 
@@ -88,7 +93,8 @@ export const WalletConnectButton = () => {
 };
 ```
 
-In our `pages/index.tsx` file, we can `import { WalletConnectButton } from "../components/wallet-connect-button";` and render it:
+In our `pages/index.tsx` file, we can
+`import { WalletConnectButton } from "../components/wallet-connect-button";` and render it:
 
 ```tsx {3, 12}
 import type { NextPage } from 'next';
@@ -111,8 +117,9 @@ const Home: NextPage = () => {
 export default Home;
 ```
 
-Now, if you click the button, you should see the state change to loading and the Hiro Web Wallet pop up. Before we
-authenticate, we should create a component that will let us know who is currently logged in:
+Now, if you click the button, you should see the state change to loading and the Hiro Web Wallet pop
+up. Before we authenticate, we should create a component that will let us know who is currently
+logged in:
 
 ### User card component
 
@@ -153,20 +160,21 @@ export default Home;
 
 ## Hydration mismatch
 
-Great! now we've successfully implemented stacks authentication. However, if you play around with what we've got so far,
-and refresh the page many times after logging in, you'll notice that there is a momentary flash of the unauthenticated state,
-or even worse, a big hydration warning like this:
+Great! now we've successfully implemented stacks authentication. However, if you play around with
+what we've got so far, and refresh the page many times after logging in, you'll notice that there is
+a momentary flash of the unauthenticated state, or even worse, a big hydration warning like this:
 
 ![A warning about hydration](/guides/with-nextjs/hydration-warning.png)
 
-We can do better! Since we're using Next.js, a SSR focused framework, let's learn how we can share session state between
-the client and server.
+We can do better! Since we're using Next.js, a SSR focused framework, let's learn how we can share
+session state between the client and server.
 
 ## Server side session data
 
-At a high level, what we're going to add now is the ability for our app to share state between the client and server contexts.
-What this means is we're able to "dehydrate" (aka deserialize) the `micro-stacks` client state, and save it in a way that
-the server is able to easily use. We're going to use cookies to share this state.
+At a high level, what we're going to add now is the ability for our app to share state between the
+client and server contexts. What this means is we're able to "dehydrate" (aka deserialize) the
+`micro-stacks` client state, and save it in a way that the server is able to easily use. We're going
+to use cookies to share this state.
 
 This gives us the ability to make use of an active session on the server and:
 
@@ -177,9 +185,10 @@ This gives us the ability to make use of an active session on the server and:
 
 ## Cookie sessions (iron-session)
 
-To start off, we need to add another dependency to our project. For our needs, we're going to make use of the library
-`iron-session`. This package will handle the encryption and generation of our cookies. It's highly recommended you use a
-package like `iron-session` or `next-auth`, versus rolling your own implementation.
+To start off, we need to add another dependency to our project. For our needs, we're going to make
+use of the library `iron-session`. This package will handle the encryption and generation of our
+cookies. It's highly recommended you use a package like `iron-session` or `next-auth`, versus
+rolling your own implementation.
 
 <InstallTabs>iron-session</InstallTabs>
 
@@ -205,7 +214,8 @@ declare module 'iron-session' {
 }
 ```
 
-We also need to create a .env.local file so we can securely store our `SECRET_COOKIE_PASSWORD` env variable.
+We also need to create a .env.local file so we can securely store our `SECRET_COOKIE_PASSWORD` env
+variable.
 
 ```
 # ⚠️ The SECRET_COOKIE_PASSWORD should never be inside your repository directly, it's here only to ease
@@ -218,9 +228,9 @@ SECRET_COOKIE_PASSWORD=2gyZ3GDw3LHZQKDhPmPDL3sjREVRXPr8
 
 ### Session helpers
 
-Next up, we're going to create a new file in the `common` folder named `session-helpers.ts`. This file will import `sessionOptions`
-which we created before, and then export a couple functions: `getIronSession` and `getDehydratedStateFromSession`. Don't worry,
-we'll go over these a bit later.
+Next up, we're going to create a new file in the `common` folder named `session-helpers.ts`. This
+file will import `sessionOptions` which we created before, and then export a couple functions:
+`getIronSession` and `getDehydratedStateFromSession`. Don't worry, we'll go over these a bit later.
 
 ```ts
 import * as Iron from 'iron-session';
@@ -243,19 +253,20 @@ export const getDehydratedStateFromSession = async (ctx: GetServerSidePropsConte
 <Callout>
 **Important**: we are using the function `cleanDehydratedState` here to remove any instance of an `appPrivateKey` from the `dehydratedState` of our client.
 
-This is important because we're going to be passing this data from the server to client, and we want to avoid accidentally leaking any private information.
+This is important because we're going to be passing this data from the server to client, and we want
+to avoid accidentally leaking any private information.
 
 </Callout>
 
 ## API routes
 
-We need to create two API routes to save our session and also for when we need to destroy it. The files we'll make are:
-`/pages/api/session/save.ts` and `/pages/api/session/destroy.ts`
+We need to create two API routes to save our session and also for when we need to destroy it. The
+files we'll make are: `/pages/api/session/save.ts` and `/pages/api/session/destroy.ts`
 
 ### api/session/save.ts
 
-This API route is what we're going to `POST` our session to. The route makes use of the higher order function `withIronSessionApiRoute`
-which is exported from `iron-session/next`.
+This API route is what we're going to `POST` our session to. The route makes use of the higher order
+function `withIronSessionApiRoute` which is exported from `iron-session/next`.
 
 ```ts
 import { withIronSessionApiRoute } from 'iron-session/next';
@@ -284,8 +295,9 @@ export default withIronSessionApiRoute(saveSessionRoute, sessionOptions);
 
 ### api/session/destroy.ts
 
-This API route is what we're going to `POST` to when we need to clear the current session. The route makes use of the higher
-order function `withIronSessionApiRoute` which is exported from `iron-session/next`.
+This API route is what we're going to `POST` to when we need to clear the current session. The route
+makes use of the higher order function `withIronSessionApiRoute` which is exported from
+`iron-session/next`.
 
 ```ts
 import { withIronSessionApiRoute } from 'iron-session/next';
@@ -302,16 +314,18 @@ export default withIronSessionApiRoute(destorySessionRoute, sessionOptions);
 
 ### Fetchers
 
-Since we're going to be fetching from our own application, we need to get the full URL of the app to fetch from, as relative paths
-are not supported. Let's create a new file: `common/constants.ts`. We're going to be deploying this app to Vercel, which has
-a useful environment variable for us to use 'NEXT_PUBLIC_VERCEL_URL':
+Since we're going to be fetching from our own application, we need to get the full URL of the app to
+fetch from, as relative paths are not supported. Let's create a new file: `common/constants.ts`.
+We're going to be deploying this app to Vercel, which has a useful environment variable for us to
+use 'NEXT_PUBLIC_VERCEL_URL':
 
 ```ts
 const VERCEL_URL = process.env.NEXT_PUBLIC_VERCEL_URL;
 export const API_URL = VERCEL_URL ? `https://${VERCEL_URL}` : 'http://localhost:3000';
 ```
 
-Now that we have these two API routes, let's create a couple fetchers for them in a new file `common/fetchers.ts`:
+Now that we have these two API routes, let's create a couple fetchers for them in a new file
+`common/fetchers.ts`:
 
 ```ts
 import { API_URL } from './constants';
@@ -339,12 +353,13 @@ export const destroySession = async () => {
 
 ## Authentication callbacks
 
-Now that we have all the pieces put together, if we go back to our `/pages/_app.tsx` file, we can import our new fetchers and
-add two props to the `MicroStacks.ClientProvider` component.
+Now that we have all the pieces put together, if we go back to our `/pages/_app.tsx` file, we can
+import our new fetchers and add two props to the `MicroStacks.ClientProvider` component.
 
 The two props we wil be:
 
-- `onPersistState`: this is a callback that runs anytime there is a state change that needs to be persisted
+- `onPersistState`: this is a callback that runs anytime there is a state change that needs to be
+  persisted
 - `onSignOut`: this callback runs when the user signs out of the current session
 
 We've also wrapped the fetcher functions in `useCallback`.
@@ -378,8 +393,9 @@ export default MyApp;
 
 ### Dehydrated state
 
-Before we test things out, we need to do one final thing: access our current session from the server if it exists. To do this,
-we're going to add a `getServerSideProps` function to our `/pages/index.tsx` file:
+Before we test things out, we need to do one final thing: access our current session from the server
+if it exists. To do this, we're going to add a `getServerSideProps` function to our
+`/pages/index.tsx` file:
 
 ```tsx {5, 7-13}
 import type { NextPage, GetServerSidePropsContext } from 'next';
@@ -413,7 +429,8 @@ const Home: NextPage = () => {
 export default Home;
 ```
 
-And back in our `pages/_app.tsx` file, we need to pass this `dehydratedState` prop to our `MyApp` component:
+And back in our `pages/_app.tsx` file, we need to pass this `dehydratedState` prop to our `MyApp`
+component:
 
 ```tsx {12}
 import '../styles/globals.css';
@@ -445,9 +462,9 @@ export default MyApp;
 
 ## Wrap up
 
-Now, if you clear your cookies/local storage and try to authenticate again and then refresh, you should no longer see that
-nasty hydration warning, and if you were to `console.log` the `stxAddress` in the `UserCard` component, you'll see the value
-log on the server and the client.
+Now, if you clear your cookies/local storage and try to authenticate again and then refresh, you
+should no longer see that nasty hydration warning, and if you were to `console.log` the `stxAddress`
+in the `UserCard` component, you'll see the value log on the server and the client.
 
 To wrap up, in this guide we covered:
 
