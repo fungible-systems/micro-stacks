@@ -91,7 +91,7 @@ importers:
       '@stacks/prettier-config': 0.0.10
       '@tailwindcss/typography': 0.5.3
       '@types/node': 18.0.3
-      chrome-aws-lambda: ^10.1.0
+      chrome-aws-lambda: 6.0.0
       fathom-client: 3.5.0
       jotai: 1.7.4
       next: 12.2.2
@@ -107,11 +107,11 @@ importers:
       '@nelson-ui/react': 0.1.6
       '@radix-ui/react-tabs': 0.1.5_react@18.2.0
       '@tailwindcss/typography': 0.5.3
-      chrome-aws-lambda: 10.1.0
+      chrome-aws-lambda: 6.0.0
       fathom-client: 3.5.0
       jotai: 1.7.4_26fd6b30eccd6c6dfb173f99e2f84708
       next: 12.2.2_0908d72966b1673abcfd19ae9fb41f04
-      next-api-og-image: 4.1.0_9dfa8cf75aaf9b110410496a3aac22ec
+      next-api-og-image: 4.1.0_d4e58aca9798548b92697dc63dc39da4
       nextra: 2.0.0-alpha.56_react@18.2.0
       nextra-theme-docs: 2.0.0-alpha.59_f99e3a6419e0a57c4e34511aec521b99
       patch-package: 6.4.7
@@ -4684,11 +4684,11 @@ packages:
     resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
     dev: false
 
-  /chrome-aws-lambda/10.1.0:
-    resolution: {integrity: sha512-NZQVf+J4kqG4sVhRm3WNmOfzY0OtTSm+S8rg77pwePa9RCYHzhnzRs8YvNI6L9tALIW6RpmefWiPURt3vURXcw==}
+  /chrome-aws-lambda/6.0.0:
+    resolution: {integrity: sha512-XnFo6AaE5ZYpHYmOmMoj1yCYFeRTx6uFCpJnVuDREWzXevzZvo3gzkyQ6qSKsPW91VGWeQI7wQgnOpW50e+Dzg==}
     engines: {node: '>= 10.16'}
     peerDependencies:
-      puppeteer-core: ^10.1.0
+      puppeteer-core: 6.0.x
     dependencies:
       lambdafs: 2.1.1
     dev: false
@@ -5190,7 +5190,7 @@ packages:
     dependencies:
       semver: 7.3.7
       shelljs: 0.8.5
-      typescript: 4.8.0-dev.20220711
+      typescript: 4.8.0-dev.20220713
     dev: true
 
   /duplexer/0.1.2:
@@ -8640,7 +8640,7 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
-  /next-api-og-image/4.1.0_9dfa8cf75aaf9b110410496a3aac22ec:
+  /next-api-og-image/4.1.0_d4e58aca9798548b92697dc63dc39da4:
     resolution: {integrity: sha512-zm747fAeschqdy36jmkObKqbwYhTA8zrsrsEy6Xgy5XNoxFVtYurXbk9IpcEWJBQCCYtazPNy27svUbE2lcf3Q==}
     peerDependencies:
       chrome-aws-lambda: '>=1.6.3'
@@ -8648,7 +8648,7 @@ packages:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
     dependencies:
-      chrome-aws-lambda: 10.1.0
+      chrome-aws-lambda: 6.0.0
       deepmerge: 4.2.2
       next: 12.2.2_0908d72966b1673abcfd19ae9fb41f04
       puppeteer-core: 10.4.0
@@ -11060,8 +11060,8 @@ packages:
     hasBin: true
     dev: true
 
-  /typescript/4.8.0-dev.20220711:
-    resolution: {integrity: sha512-Nz1HlAkzZJ/OYZxqDEdoNV9GMq61xUss3JjveQqtdTiwhouLMa6D69C5K+P/fZD/hfrkMf/iqaF7xqVtX5KvPg==}
+  /typescript/4.8.0-dev.20220713:
+    resolution: {integrity: sha512-bgvBy+eVzJfxLvylV2rp4wK8+UO38/LJXjKZ95F0pOQZU/9BfGEaXmTk0Ar2gsTmq7ewzZ6iTeIbQuumR4jZLA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true

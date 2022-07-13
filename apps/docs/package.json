@@ -16,7 +16,7 @@
     "@nelson-ui/react": "0.1.6",
     "@radix-ui/react-tabs": "0.1.5",
     "@tailwindcss/typography": "0.5.3",
-    "chrome-aws-lambda": "^10.1.0",
+    "chrome-aws-lambda": "6.0.0",
     "fathom-client": "3.5.0",
     "jotai": "1.7.4",
     "next": "12.2.2",
