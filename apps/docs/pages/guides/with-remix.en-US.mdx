@@ -4,6 +4,7 @@ description:
 ---
 
 import { InstallTabs } from 'components/install-tabs';
+import Callout from 'nextra-theme-docs/callout';
 
 # Build a Stacks app with Remix
 
@@ -101,13 +102,13 @@ we can use to authenticate a user.
 import { useAuth } from '@micro-stacks/react';
 
 export const WalletConnectButton = () => {
-  const { authenticate, isLoading, signOut, isSignedIn } = useAuth();
-  const label = isLoading ? 'Loading...' : isSignedIn ? 'Sign out' : 'Connect Stacks wallet';
+  const { openAuthRequest, isRequestPending, signOut, isSignedIn } = useAuth();
+  const label = isRequestPending ? 'Loading...' : isSignedIn ? 'Sign out' : 'Connect Stacks wallet';
   return (
     <button
       onClick={() => {
         if (isSignedIn) void signOut();
-        else void authenticate();
+        else void openAuthRequest();
       }}
     >
       {label}
@@ -119,7 +120,7 @@ export const WalletConnectButton = () => {
 In our `routes/index.tsx` file, we can
 `import { WalletConnectButton } from "~/components/wallet-connect-button";` and render it:
 
-```tsx {3, 9}
+```tsx {3, 14}
 // routes/index.tsx
 
 import { WalletConnectButton } from '~/components/wallet-connect-button';
@@ -132,7 +133,7 @@ export default function Index() {
         lineHeight: '1.4',
       }}
     >
-      <h1>Welcome to Remix</h1>
+      <h1>Welcome to Remix + micro-stacks</h1>
       <WalletConnectButton />
     </div>
   );
@@ -146,10 +147,10 @@ logged in:
 ### User card component
 
 ```tsx
-import { useStxAddress } from '@micro-stacks/react';
+import { useAccount } from '@micro-stacks/react';
 
 export const UserCard = () => {
-  const stxAddress = useStxAddress();
+  const { stxAddress } = useAccount();
   if (!stxAddress) return <h2>No active session</h2>;
   return <h2>{stxAddress}</h2>;
 };
@@ -157,7 +158,7 @@ export const UserCard = () => {
 
 And we can add that to our index route:
 
-```tsx {4, 11}
+```tsx {4, 16}
 // routes/index.tsx
 
 import { WalletConnectButton } from '~/components/wallet-connect-button';
@@ -171,7 +172,7 @@ export default function Index() {
         lineHeight: '1.4',
       }}
     >
-      <h1>Welcome to Remix</h1>
+      <h1>Welcome to Remix + micro-stacks</h1>
       <WalletConnectButton />
       <UserCard />
     </div>
@@ -257,90 +258,41 @@ export async function getSession(request: Request) {
 }
 ```
 
-### Micro-stacks Client on the server
-
-Next up, we'll create another file in the same `/app/common` folder named `client.server.ts`. This
-file will contain our micro-stacks specific code for replicating the client state on the server.
-
-The first thing we'll add to this file is a function to create our `micro-stacks` client on the
-server, `createServerClient`. We are going to pass it a custom storage driver, one that will make
-use of the cookie session storage we created above.
-
-```ts
-import type { Session } from '@remix-run/server-runtime/sessions';
-import { createClient, createStorage } from '@micro-stacks/client';
-
-export const createServerClient = (session: Session) =>
-  createClient({
-    storage: createStorage({
-      storage: {
-        getItem(key) {
-          return session.get(key);
-        },
-        setItem(key, value) {
-          session.set(key, value);
-        },
-        removeItem(key) {
-          session.unset(key);
-        },
-      },
-    }),
-  });
-```
-
-### Action handler
-
-Now, in that same file, we're going to add one more function that we're going to use in just a
-little bit. Let's add some imports to make use of our session helper functions from
-`session.server.ts`:
-
-```ts
-import { getSession, saveSession } from '~/common/session.server';
-```
-
-Then add the function `serverSideSessionHandler`:
-
-```ts
-export async function serverSideSessionHandler(request: Request) {
-  const [session, data] = await Promise.all([getSession(request), request.formData()]);
-
-  const dehydratedState = data.get('dehydratedState') as string | undefined;
-
-  if (dehydratedState) {
-    const client = createServerClient(session);
-    client.hydrate(dehydratedState);
-    return saveSession(session);
-  }
-  return null;
-}
-```
-
-At a high level, this function will:
-
-- Get the current session and any `FormData` from the current request in parallel
-- Check to see if `dehydratedState` exists in the `FormData`
-- If so, it will create a new server `Client` and then `hydrate` it
-- Finally it will save the session to the cookie, using the `saveSession` helper
-
 ### API Routes
 
 Now that we have all our server side helpers created, we need to create two API routes that our
 application can use to safely interact with setting or deleting the server side session. The two
 files we will create are:
 
-- `/app/routes/session/save.ts` - this route will handle saving our session
-- `/app/routes/session/destroy.ts` - this route will handle removing our session
+- `/app/routes/api/session/save.ts` - this route will handle saving our session
+- `/app/routes/api/session/destroy.ts` - this route will handle removing our session
 
 #### Saving the session
 
 ```ts
+import { getSession, saveSession } from '~/common/session.server';
 import type { ActionFunction } from '@remix-run/node';
-import { serverSideSessionHandler } from '~/common/client.server';
 
 export const action: ActionFunction = async ({ request }) => {
-  return serverSideSessionHandler(request);
+  const [session, data] = await Promise.all([getSession(request), request.formData()]);
+
+  const dehydratedState = data.get('dehydratedState') as string | undefined;
+
+  if (dehydratedState) {
+    await session.set('dehydratedState', dehydratedState);
+    return saveSession(session);
+  }
+
+  return null;
 };
 ```
+
+At a high level, this function will:
+
+- Get the current session and any `FormData` from the current request in parallel
+- Check to see if `dehydratedState` exists in the `FormData`
+- IF so, it will save the `dehydratedState` value to the session cookie, using the `saveSession`
+  helper
 
 #### Destroying the session
 
@@ -357,12 +309,12 @@ export const action: ActionFunction = async ({ request }) => {
 ### Authentication callbacks
 
 Now, to tie everything together, we need to create one more file:
-`/app/common/use-session-callbacks.ts`. This hook will contain two methods that will make use of the
+`/app/hooks/use-session-callbacks.ts`. This hook will contain two methods that will make use of the
 API routes and session helpers we made previously.
 
-- `handleSetSession`: this callback takes a string as an argument, and POSTs to the `/session/save`
-  route as `FormData`
-- `handleDestroySession`: this callback will POST to the `/session/destroy` route
+- `onPersistState`: this callback takes a string as an argument, and POSTs to the
+  `/api/session/save` route as `FormData`
+- `onSignOut`: this callback will POST to the `/api/session/destroy` route
 
 Both of these callbacks make use of the `useFetcher` hook from Remix. Check out their docs if you
 want to learn more.
@@ -378,17 +330,16 @@ export const useSessionCallbacks = () => {
    * Session callback
    *
    * This function will pass the dehydrated state of the micro-stacks client
-   * to the /session/save endpoint via a Remix Action.
+   * to the /api/session/save endpoint via a Remix Action.
    *
    */
-  const handleSetSession = useCallback(
+  const onPersistState = useCallback(
     async (dehydatedState: string) => {
-      console.log('setting session');
       const data = new FormData();
       data.set('dehydratedState', dehydatedState);
       await fetcher.submit(data, {
         method: 'post',
-        action: '/session/save',
+        action: '/api/session/save',
       });
     },
     [fetcher]
@@ -398,42 +349,62 @@ export const useSessionCallbacks = () => {
    * Sign out callback
    *
    * This function will destroy a session by sending a POST request to
-   * /session/destroy.
+   * /api/session/destroy.
    */
-  const handleDestroySession = useCallback(async () => {
+  const onSignOut = useCallback(async () => {
     await fetcher.submit(null, {
       method: 'post',
-      action: '/session/destroy',
+      action: '/api/session/destroy',
     });
   }, [fetcher]);
 
   return {
-    handleSetSession,
-    handleDestroySession,
+    onPersistState,
+    onSignOut,
   };
 };
 ```
 
 ### Hooking into authentication
 
-Now that we have all the pieces put together, if we go back to our `/app/root.tsx` file, we can
-import our new `useSessionCallbacks` hook, add two props to the `MicroStacks.ClientProvider`
-component, and we should be good to go!
+Now that we have all the pieces put together, if we go back to our `/app/root.tsx` file, we can add
+our new `useSessionCallbacks` hook, add two props to the `MicroStacks.ClientProvider` component.
 
-The two props we wil be:
+The two props we will be:
 
 - `onPersistState`: this is a callback that runs anytime there is a state change that needs to be
   persisted
 - `onSignOut`: this callback runs when the user signs out of the current session
 
-```tsx {7, 27-28}
+Additionally, we need to fetch the current session in a Remix Loader function (read more about them
+here). We will pass down the current session to the `MicroStacks.ClientProvider` as the prop
+`dehydratedState`.
+
+<Callout>
+  **Important:** we only want to pass the `dehydratedState` on the server, and we want to use the
+  function `cleanDehydratedState` to remove any instance of `appPrivateKey` from being passed
+  unencrypted to the client for rehydration.
+</Callout>
+
+```tsx {16-18, 26-36, 39-40, 42-45, 57-59}
 // root.tsx
 
-import type { MetaFunction } from '@remix-run/node';
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import type { LoaderFunction, MetaFunction } from '@remix-run/server-runtime';
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+} from '@remix-run/react';
+import { json } from '@remix-run/server-runtime';
 
 import * as MicroStacks from '@micro-stacks/react';
-import { useSessionCallbacks } from '~/common/use-session-callbacks';
+import { cleanDehydratedState } from '@micro-stacks/client';
+import { useSessionCallbacks } from '~/hooks/use-session-callbacks';
+import { getSession } from '~/common/session.server';
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
@@ -441,8 +412,27 @@ export const meta: MetaFunction = () => ({
   viewport: 'width=device-width,initial-scale=1',
 });
 
+export const loader: LoaderFunction = async ({ request }) => {
+  const session = await getSession(request);
+  return json({
+    // IMPORTANT:
+    // because this data gets sent to the client,
+    // we want to clean the dehydrated state.
+    // This function will remove any instance of the `appPrivateKey`
+    // from the data that gets sent to the client.
+    dehydratedState: cleanDehydratedState(session.get('dehydratedState')),
+  });
+};
+
 export default function App() {
-  const { handleSetSession, handleDestroySession } = useSessionCallbacks();
+  const { onPersistState, onSignOut } = useSessionCallbacks();
+  const data = useLoaderData<{ dehydratedState: string | undefined }>();
+
+  // only send it if we're on the server
+  // the client will hydrate from localStorage
+  const IS_SSR = typeof document === 'undefined';
+  const dehydratedState = IS_SSR ? data.dehydratedState : undefined;
+
   return (
     <html lang="en">
       <head>
@@ -451,10 +441,11 @@ export default function App() {
       </head>
       <body>
         <MicroStacks.ClientProvider
-          appName={'New Remix App'}
-          appIconUrl={'https://remix.run/remix-v1.jpg'}
-          onPersistState={handleSetSession}
-          onSignOut={handleDestroySession}
+          appName={'Remix + micro-stacks'}
+          appIconUrl={'/icon.png'}
+          dehydratedState={dehydratedState}
+          onPersistState={onPersistState}
+          onSignOut={onSignOut}
         >
           <Outlet />
           <ScrollRestoration />
