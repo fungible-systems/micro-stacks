@@ -30,15 +30,21 @@ const CallbacksProvider: React.FC<
  *   This hook will try to retry persistence in the case that there is no dehydrated state but an active session
  *  ------------------------------------------------------------------------------------------------------------------
  */
-function useEnsureSessionConsistency(config: ClientConfig, client: MicroStacksClient) {
+function useEnsureSessionConsistency(
+  enabled: boolean,
+  config: ClientConfig,
+  client: MicroStacksClient
+) {
   const mountRef = React.useRef(false);
 
   React.useEffect(() => {
-    if (config?.onPersistState && !mountRef.current) {
-      mountRef.current = true;
-      if (!config.dehydratedState && client.hasSession) void client.persist();
+    if (enabled) {
+      if (config?.onPersistState && !mountRef.current) {
+        mountRef.current = true;
+        if (!config.dehydratedState && client.hasSession) void client.persist();
+      }
     }
-  }, [client, config?.onPersistState, config?.dehydratedState]);
+  }, [enabled, client, config?.onPersistState, config?.dehydratedState]);
 }
 
 /** ------------------------------------------------------------------------------------------------------------------
@@ -50,12 +56,14 @@ export const ClientProvider: React.FC<
   PropsWithChildren<
     {
       client?: ReturnType<typeof getClient>;
+      ensureSessionConsistency?: boolean;
     } & ClientConfig
   >
 > = React.memo(
   ({
     children,
     client: clientProp,
+    ensureSessionConsistency,
     dehydratedState,
     appIconUrl,
     appName,
@@ -102,7 +110,7 @@ export const ClientProvider: React.FC<
       [config, clientProp]
     );
 
-    useEnsureSessionConsistency(config, client);
+    useEnsureSessionConsistency(ensureSessionConsistency ?? false, config, client);
 
     if (!clientProp) {
       const callbacksProvider = React.createElement(CallbacksProvider, {
