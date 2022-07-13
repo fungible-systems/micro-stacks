@@ -11,9 +11,9 @@ const tabState = atomWithStorage('integrations', 0);
 
 const items = [
   { label: 'React' },
-  { label: 'Svelte' },
-  { label: 'Vue' },
-  { label: 'Solid' },
+  { label: 'Svelte', disabled: true },
+  { label: 'Vue', disabled: true },
+  { label: 'Solid', disabled: true },
   { label: 'Vanilla' },
 ];
 
