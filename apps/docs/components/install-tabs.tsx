@@ -15,7 +15,7 @@ const useTabs = (): [number, SetAtom<number, any>] => {
   const tab = hasMounted ? _tab : 0;
   return [tab, setTab];
 };
-export const InstallTabs = ({ children, hideTabs = false }) => {
+export const InstallTabs = ({ children, hideTabs = false, isCreate = false }) => {
   const [tab, setTab] = useTabs();
   return (
     <Fragment>
@@ -42,7 +42,18 @@ export const InstallTabs = ({ children, hideTabs = false }) => {
               alignItems: 'center',
             }}
           >
-            {tab === 0 ? 'pnpm i ' : tab === 1 ? 'yarn add ' : 'npm install '}
+            {isCreate
+              ? tab === 0
+                ? 'pnpm create '
+                : tab === 1
+                ? 'yarn create '
+                : 'npm create '
+              : tab === 0
+              ? 'pnpm i '
+              : tab === 1
+              ? 'yarn add '
+              : 'npm install '}
+            {}
             {children}
           </span>
         </code>
