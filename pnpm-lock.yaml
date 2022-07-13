@@ -301,6 +301,18 @@ importers:
       typedoc-plugin-markdown: 3.13.3_typedoc@0.23.7
       typescript: 4.7.4
 
+  packages/create-ustx:
+    specifiers:
+      degit: 2.8.4
+      kolorist: 1.5.1
+      minimist: 1.2.6
+      prompts: 2.4.2
+    dependencies:
+      degit: 2.8.4
+      kolorist: 1.5.1
+      minimist: 1.2.6
+      prompts: 2.4.2
+
   packages/jotai:
     specifiers:
       '@micro-stacks/client': workspace:*
@@ -5046,6 +5058,12 @@ packages:
       object-keys: 1.1.1
     dev: true
 
+  /degit/2.8.4:
+    resolution: {integrity: sha512-vqYuzmSA5I50J882jd+AbAhQtgK6bdKUJIex1JNfEUPENCgYsxugzKVZlFyMwV4i06MmnV47/Iqi5Io86zf3Ng==}
+    engines: {node: '>=8.0.0'}
+    hasBin: true
+    dev: false
+
   /dependency-cruiser/11.11.0:
     resolution: {integrity: sha512-EYNEOVPY6Wo1b2ZanYHBaw46swuqYhsVPcI+BRty6n6sX3lTBcZGYADqEBmqotTJsh947W8tllJqe2Wt4UPlbg==}
     engines: {node: ^12.20||^14||>=16}
@@ -5142,7 +5160,7 @@ packages:
     dependencies:
       semver: 7.3.7
       shelljs: 0.8.5
-      typescript: 4.8.0-dev.20220711
+      typescript: 4.8.0-dev.20220713
     dev: true
 
   /duplexer/0.1.2:
@@ -7550,11 +7568,14 @@ packages:
   /kleur/3.0.3:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
-    dev: true
 
   /kleur/4.1.5:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
+
+  /kolorist/1.5.1:
+    resolution: {integrity: sha512-lxpCM3HTvquGxKGzHeknB/sUjuVoUElLlfYnXZT73K8geR9jQbroGlSCFBax9/0mpGoD3kzcMLnOlGQPJJNyqQ==}
+    dev: false
 
   /leven/3.1.0:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}
@@ -8431,7 +8452,6 @@ packages:
 
   /minimist/1.2.6:
     resolution: {integrity: sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==}
-    dev: true
 
   /mixme/0.5.4:
     resolution: {integrity: sha512-3KYa4m4Vlqx98GPdOHghxSdNtTvcP8E0kkaJ5Dlh+h2DRzF7zpuVVcA8B0QpKd11YJeP9QQ7ASkKzOeu195Wzw==}
@@ -9269,7 +9289,6 @@ packages:
     dependencies:
       kleur: 3.0.3
       sisteransi: 1.0.5
-    dev: true
 
   /prop-types/15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
@@ -9902,7 +9921,6 @@ packages:
 
   /sisteransi/1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
-    dev: true
 
   /slash/2.0.0:
     resolution: {integrity: sha512-ZYKh3Wh2z1PpEXWr0MpSBZ0V6mZHAQfYevttO11c51CaWjGTaadiKZ+wVt1PbMlDV5qhMFslpZCemhwOK7C89A==}
@@ -10856,8 +10874,8 @@ packages:
     hasBin: true
     dev: true
 
-  /typescript/4.8.0-dev.20220711:
-    resolution: {integrity: sha512-Nz1HlAkzZJ/OYZxqDEdoNV9GMq61xUss3JjveQqtdTiwhouLMa6D69C5K+P/fZD/hfrkMf/iqaF7xqVtX5KvPg==}
+  /typescript/4.8.0-dev.20220713:
+    resolution: {integrity: sha512-bgvBy+eVzJfxLvylV2rp4wK8+UO38/LJXjKZ95F0pOQZU/9BfGEaXmTk0Ar2gsTmq7ewzZ6iTeIbQuumR4jZLA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
