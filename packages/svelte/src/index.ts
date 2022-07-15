@@ -183,7 +183,7 @@ interface GetNetwork {
   setNetwork: (network: 'mainnet' | 'testnet' | StacksNetwork) => void;
 }
 
-export function geNetwork() {
+export function getNetwork() {
   const client = getMicroStacksClient();
 
   const modifyNetwork = (network: StacksNetwork): GetNetwork => {
