@@ -112,13 +112,16 @@ This component creates the Context that all other functions within this package 
 
 Or you can use the function `mountClient` and pass it the same details.
 
-```svelte {3,6}
+```svelte {3,7-8}
 <script lang="ts">
   // App.svelte file
   import { ClientProvider } from "@micro-stacks/svelte";
 </script>
 
-<ClientProvider appName="Svelte + micro-stacks" appIconUrl="/icon.png">
+<ClientProvider
+  appName="Svelte + micro-stacks"
+  appIconUrl="/icon.png"
+>
   <main>
     // app stuff
   </main>
@@ -170,6 +173,25 @@ To add `@micro-stacks/vue` to your application, we need to set the context for t
 ```
 
 </Integrations.Vue>
+
+<Integrations.Solid>
+To add `@micro-stacks/solid` to your application, we need to set the context for the client. We can import `CLientContext` and
+`useCreateClient` from `@micro-stacks/solid` to create the context that all other hooks make use of.
+
+```tsx {1, 4, 6}
+import { ClientContext, useCreateClient } from '@micro-stacks/solidjs';
+
+const App = () => {
+  const client = useCreateClient({ appName: 'solid + micro-stacks', appIconUrl: '/icon.png' });
+  return (
+    <ClientContext.Provider value={client}>{/* app components here */}</ClientContext.Provider>
+  );
+};
+
+export default App;
+```
+
+</Integrations.Solid>
 
 <Integrations.Vanilla>
 
