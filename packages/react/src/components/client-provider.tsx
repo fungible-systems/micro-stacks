@@ -116,13 +116,11 @@ export const ClientProvider: React.FC<
       ]
     );
 
-    const client = React.useMemo(
-      () =>
-        createClient({
-          config,
-          client: clientProp,
-        }),
-      [config, clientProp]
+    const [client] = React.useState(() =>
+      createClient({
+        config,
+        client: clientProp,
+      })
     );
 
     useEnsureSessionConsistency(client, config, enableSessionConsistencyEffect);
