@@ -65,6 +65,73 @@ export default App;
 
 </Integrations.React>
 
+<Integrations.Vue>
+
+```vue {9}
+<script setup lang="ts">
+  // This starter template is using Vue 3 <script setup> SFCs
+  // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+  import { provideClient } from '@micro-stacks/vue';
+
+  provideClient({
+    appName: 'Vue + micro-stacks',
+    appIconUrl: window.location.href + 'assets/logo.png',
+    onPersistState: (state: string) => saveToSessionCookie(state),
+  });
+</script>
+
+<template>
+  <img
+    alt="Vue logo"
+    src="./assets/logo.png"
+  />
+</template>
+```
+
+</Integrations.Vue>
+
+<Integrations.Svelte>
+
+```svelte {9}
+<script lang="ts">
+  // App.svelte file
+  import { ClientProvider } from "@micro-stacks/svelte";
+</script>
+
+<ClientProvider
+  appName="Svelte + micro-stacks"
+  appIconUrl="/icon.png"
+  onPersistState={(state: string) => saveToSessionCookie(state)}
+>
+  <main>
+    // app stuff
+  </main>
+</ClientProvider>
+```
+
+</Integrations.Svelte>
+
+<Integrations.Solid>
+
+```tsx {7}
+import { ClientContext, useCreateClient } from '@micro-stacks/solidjs';
+
+const App = () => {
+  const client = useCreateClient({
+    appName: 'solid + micro-stacks',
+    appIconUrl: '/icon.png',
+    onPersistState: (state: string) => saveToSessionCookie(state),
+  });
+  return (
+    <ClientContext.Provider value={client}>{/* app components here */}</ClientContext.Provider>
+  );
+};
+
+export default App;
+```
+
+</Integrations.Solid>
+
 ### `dehydratedState`
 
 Now, if you've persisted the state of the client, we need some way of feeding it back to our client
@@ -94,3 +161,73 @@ export default App;
 ```
 
 </Integrations.React>
+
+<Integrations.Vue>
+
+```vue {10}
+<script setup lang="ts">
+  // This starter template is using Vue 3 <script setup> SFCs
+  // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+  import { provideClient } from '@micro-stacks/vue';
+
+  provideClient({
+    appName: 'Vue + micro-stacks',
+    appIconUrl: window.location.href + 'assets/logo.png',
+    onPersistState: (state: string) => saveToSessionCookie(state),
+    dehydratedState, // fetch from the server
+  });
+</script>
+
+<template>
+  <img
+    alt="Vue logo"
+    src="./assets/logo.png"
+  />
+</template>
+```
+
+</Integrations.Vue>
+
+<Integrations.Svelte>
+
+```svelte {10}
+<script lang="ts">
+  // App.svelte file
+  import { ClientProvider } from "@micro-stacks/svelte";
+</script>
+
+<ClientProvider
+  appName="Svelte + micro-stacks"
+  appIconUrl="/icon.png"
+  onPersistState={(state: string) => saveToSessionCookie(state)}
+  dehydratedState={dehydratedState} {/* fetch from the server */}
+>
+  <main>
+    // app stuff
+  </main>
+</ClientProvider>
+```
+
+</Integrations.Svelte>
+
+<Integrations.Solid>
+
+```tsx {8}
+import { ClientContext, useCreateClient } from '@micro-stacks/solidjs';
+
+const App = ({ dehydratedState }) => {
+  const client = useCreateClient({
+    appName: 'solid + micro-stacks',
+    appIconUrl: '/icon.png',
+    onPersistState: (state: string) => saveToSessionCookie(state),
+    dehydratedState, // fetch from the server
+  });
+  return (
+    <ClientContext.Provider value={client}>{/* app components here */}</ClientContext.Provider>
+  );
+};
+
+export default App;
+```
+
+</Integrations.Solid>
