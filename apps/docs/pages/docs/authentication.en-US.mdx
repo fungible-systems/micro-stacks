@@ -147,6 +147,49 @@ Check out the sample below for a very simple `WalletConnectButton` component:
 
 </Integrations.Vue>
 
+<Integrations.Solid>
+The primary way you'll implement authentication is via the `useAuth` hook. This hook exposes a few callbacks for
+different functions: `openAuthRequest`, `signOut`, along with some helper reactive values: `isRequestPending` `isSignedIn`.
+
+Check out the sample below for a very simple `WalletConnectButton` component:
+
+```tsx
+import { Show } from 'solid-js';
+import { useAuth } from '@micro-stacks/solidjs';
+
+export const WalletConnectButton = () => {
+  const { openAuthRequest, signOut, isRequestPending, isSignedIn } = useAuth();
+
+  const label = (
+    <Show
+      when={isRequestPending()}
+      fallback={
+        <Show
+          when={!isSignedIn()}
+          fallback={'Sign out'}
+        >
+          Connect Stacks Wallet
+        </Show>
+      }
+    >
+      Loading...
+    </Show>
+  );
+  return (
+    <button
+      onClick={() => {
+        if (isSignedIn()) void signOut();
+        else void openAuthRequest();
+      }}
+    >
+      {label}
+    </button>
+  );
+};
+```
+
+</Integrations.Solid>
+
 <Integrations.Vanilla>
 
 <Callout type="info">
@@ -240,8 +283,13 @@ Once your users have authenticated, you will have access to their session state,
 ```ts
 import { client } from './my-client';
 
+const account = client.selectAccount(client.getState());
 const stxAddress = client.stxAddress;
-const appPrivateKey = client.account.appPrivateKey;
+const appPrivateKey = account.appPrivateKey;
+const rawAddress = account.rawAddress;
+const identityAddress = account.identityAddress;
+const decentralizedID = account.decentralizedID;
+const profileUrl = account.profileUrl;
 ```
 
 </Integrations.Vanilla>
@@ -283,6 +331,42 @@ interface Account {
 ```
 
 </Integrations.Vue>
+
+<Integrations.Solid>
+To access the current signed in user data, you'll want to make use of the `useAccount` hook:
+
+```ts
+import { useAccount } from '@micro-stacks/solid';
+```
+
+This hook will return a _reactive_ (will automatically update as state changes) object with the
+shape:
+
+```ts
+interface Account {
+  appPrivateKey?: string;
+  stxAddress?: string;
+  rawAddress?: [number, Uint8Array];
+  identityAddress?: string;
+  decentralizedID?: string;
+  profileUrl?: string;
+}
+```
+
+```ts
+import { useAccount } from '@micro-stacks/solid';
+
+const account = useAccount();
+
+const appPrivateKey = account().appPrivateKey;
+const stxAddress = account().stxAddress;
+const rawAddress = account().rawAddress;
+const identityAddress = account().identityAddress;
+const decentralizedID = account().decentralizedID;
+const profileUrl = account().profileUrl;
+```
+
+</Integrations.Solid>
 
 <Integrations.Vanilla>
 Once your users have authenticated, you will have access to their session state, such as their Stacks addresses and associated `appPrivateKey`.

@@ -23,9 +23,10 @@ testnet, where the user might have their wallet set to mainnet.
 
 ## Changing the default network
 
+The default network mode is set to `mainnet`. To change default mode of your application, you can
+pass `network="testnet"` (or an instance of `StacksNetwork`) to your client, like so:
+
 <Integrations.React>
-The default network mode is set to `mainnet`. To change default mode of your application, you can pass `network="testnet"`
-(or an instance of `StacksNetwork`) to your ClientProvider, like so:
 
 ```tsx {9}
 import * as MicroStacks from '@micro-stacks/react';
@@ -48,7 +49,158 @@ export default App;
 
 </Integrations.React>
 
+<Integrations.Svelte>
+
+```svelte {9}
+<script lang="ts">
+  // App.svelte file
+  import { ClientProvider } from "@micro-stacks/svelte";
+</script>
+
+<ClientProvider
+  appName="Svelte + micro-stacks"
+  appIconUrl="/icon.png"
+  network='testnet'
+>
+  <main>
+    // app stuff
+  </main>
+</ClientProvider>
+```
+
+</Integrations.Svelte>
+
+<Integrations.Vue>
+
+```vue {9}
+<script setup lang="ts">
+  // This starter template is using Vue 3 <script setup> SFCs
+  // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+  import { provideClient } from '@micro-stacks/vue';
+
+  provideClient({
+    appName: 'Vue + micro-stacks',
+    appIconUrl: window.location.href + 'assets/logo.png',
+    network: 'testnet',
+  });
+</script>
+
+<template>
+  <img
+    alt="Vue logo"
+    src="./assets/logo.png"
+  />
+</template>
+```
+
+</Integrations.Vue>
+
+<Integrations.Solid>
+
+```tsx {7}
+import { ClientContext, useCreateClient } from '@micro-stacks/solidjs';
+
+const App = () => {
+  const client = useCreateClient({
+    appName: 'solid + micro-stacks',
+    appIconUrl: '/icon.png'
+    network: 'testnet'
+  });
+
+  return (
+    <ClientContext.Provider value={client}>{/* app components here */}</ClientContext.Provider>
+  );
+};
+
+export default App;
+```
+
+</Integrations.Solid>
+
 ### Toggling networks in-app
 
 Sometimes you'll be building an app that can work in many different networks, or take a custom RPC
-api endpoint.
+api endpoint. In this case, you can create a button that will change the network:
+
+<Integrations.React>
+
+```tsx
+import { useNetwork } from '@micro-stacks/react';
+
+export const NetworkToggle = () => {
+  const { isMainnet, setNetwork } = useNetwork();
+  const networkMode = isMainnet ? 'mainnet' : 'testnet';
+
+  return (
+    <button onClick={() => setNetwork(isMainnet ? 'testnet' : 'mainnet')}>{networkMode}</button>
+  );
+};
+```
+
+</Integrations.React>
+
+<Integrations.Svelte>
+
+```svelte
+<script lang='ts'>
+  import { getNetwork } from '@micro-stacks/svelte';
+
+  const network = getNetwork();
+
+  $: label = $network.isMainnet
+    ? 'mainnet'
+    : 'testnet';
+
+  function onClick() {
+    $network.setNetwork($network.isMainnet ? 'testnet' : 'mainnet');
+  }
+</script>
+
+<button on:click={onClick}>
+  {label}
+</button>
+```
+
+</Integrations.Svelte>
+
+<Integrations.Vue>
+
+```vue
+<script setup lang="ts">
+  import { useNetwork } from '@micro-stacks/vue';
+
+  const network = $(useNetwork());
+
+  const onClick = () => {
+    network.setNetwork(network.isMainnet ? 'testnet' : 'mainnet');
+  };
+</script>
+
+<template>
+  <button
+    type="button"
+    v-on:click="() => onClick()"
+  >
+    {{ network.isMainnet ? 'mainnet' : 'testnet' }}
+  </button>
+</template>
+```
+
+</Integrations.Vue>
+
+<Integrations.Solid>
+
+```tsx
+import { useNetwork } from '@micro-stacks/solidjs';
+
+export const NetworkToggle = () => {
+  const { isMainnet, setNetwork } = useNetwork();
+  const networkMode = isMainnet() ? 'mainnet' : 'testnet';
+
+  return (
+    <button onClick={() => setNetwork(isMainnet() ? 'testnet' : 'mainnet')}>{networkMode}</button>
+  );
+};
+```
+
+</Integrations.Solid>
