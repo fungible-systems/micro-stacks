@@ -9,6 +9,7 @@ import type {
   ContractCallParams,
   ContractDeployParams,
   StxTransferParams,
+  State,
 } from '@micro-stacks/client';
 import type {
   FinishedTxData,
@@ -85,12 +86,12 @@ export const getMicroStacksClient = () => {
  */
 
 type SubscriptionFn<V> = (setter: (value: V) => void, client: MicroStacksClient) => () => void;
-type GetterFn<V> = (client: MicroStacksClient) => V;
+type GetterFn<V> = (options: { client: MicroStacksClient; state?: State }) => V;
 
 export function readableClientState<V>(getter: GetterFn<V>, subscribe: SubscriptionFn<V>) {
   return () => {
     const client = getMicroStacksClient();
-    return readable(getter(client), set => {
+    return readable(getter({ client }), set => {
       return subscribe(set, client);
     });
   };

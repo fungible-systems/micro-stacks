@@ -1,22 +1,14 @@
-import { State } from '../common/types';
 import { getClient } from '../create-client';
-import { MicroStacksClient } from '../micro-stacks-client';
+import type { State } from '../common/types';
+import type { MicroStacksClient } from '../micro-stacks-client';
 
-export function getStatus(client: MicroStacksClient = getClient()) {
-  const { statuses } = client;
-  return statuses;
-}
+export const getStatus = ({ client, state }: { client: MicroStacksClient; state?: State }) =>
+  client.selectStatuses(state || client.getState());
 
-export function watchStatus(
+export const watchStatus = (
   callback: (payload: State['statuses']) => void,
   client: MicroStacksClient = getClient()
-) {
-  const handleChange = () => callback(getStatus(client));
-  return client.subscribe(
-    ({ statuses }) => {
-      return statuses;
-    },
-    handleChange,
-    { equalityFn: (selected, previous) => selected === previous }
-  );
-}
+) =>
+  client.subscribe(client.selectStatuses, callback, {
+    equalityFn: (selected, previous) => selected === previous,
+  });

@@ -23,6 +23,7 @@ import {
 import { ChainID } from 'micro-stacks/common';
 
 import type {
+  State,
   MicroStacksClient,
   ContractCallParams,
   ContractDeployParams,
@@ -72,12 +73,12 @@ export const JotaiClientProvider: React.FC<PropsWithChildren<void>> = ({ childre
  */
 
 type SubscriptionFn<V> = (setter: (value: V) => void, client: MicroStacksClient) => () => void;
-type GetterFn<V> = (client: MicroStacksClient) => V;
+type GetterFn<V> = (options: { client: MicroStacksClient; state?: State }) => V;
 
 function atomWithMicroStacks<V>(getter: GetterFn<V>, subscribe: SubscriptionFn<V>) {
   return atom<V>(get => {
     const client = get(clientState);
-    const valueAtom = atom<V>(getter(client));
+    const valueAtom = atom<V>(getter({ client }));
     const subscriberAtom = atom<V, V>(
       get => {
         return get(valueAtom);
@@ -150,12 +151,12 @@ export const useAuthState = () => useAtomValue(authState);
 export const accountState = atom(get => {
   const account = get(currentAccountAtom);
   return {
-    appPrivateKey: account.appPrivateKey,
-    rawAddress: account.address,
+    appPrivateKey: account?.appPrivateKey ?? null,
+    rawAddress: account?.address ?? null,
     identityAddress: get(identityAddressAtom),
     decentralizedID: get(decentralizedIDAtom),
     stxAddress: get(stxAddressAtom),
-    profileUrl: account.profile_url,
+    profileUrl: account?.profile_url ?? null,
   };
 });
 
