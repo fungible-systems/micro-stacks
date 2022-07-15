@@ -1,32 +1,27 @@
-import { MicroStacksClient } from '@micro-stacks/client';
 import { useMicroStacksClient } from '../hooks/use-client';
-import { useEffect, useState } from 'react';
+import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/with-selector';
+import type { MicroStacksClient, State } from '@micro-stacks/client';
 
 /** ------------------------------------------------------------------------------------------------------------------
  *   Types
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-type SubscriptionFn<V> = (setter: (value: V) => void, client: MicroStacksClient) => () => void;
-type GetterFn<V> = (client: MicroStacksClient) => V;
+type GetterFn<V> = (options: { client: MicroStacksClient; state?: State }) => V;
 
 /** ------------------------------------------------------------------------------------------------------------------
  *   clientStateHookFactory
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-export function clientStateHookFactory<V>(
-  getter: GetterFn<V>,
-  subscribe: SubscriptionFn<V>
-): () => V {
-  // return the hook
+export function clientStateHookFactory<V>(selector: GetterFn<V>): () => V {
   return () => {
     const client = useMicroStacksClient();
-    const [state, setState] = useState<V>(getter(client));
-    useEffect(() => {
-      return subscribe(setState, client);
-    }, [client]);
-
-    return state;
+    return useSyncExternalStoreWithSelector(
+      client.subscribe,
+      client.getState,
+      client.getState,
+      state => selector({ client, state })
+    );
   };
 }

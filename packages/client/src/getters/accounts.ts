@@ -1,103 +1,58 @@
-import { MicroStacksClient } from '../micro-stacks-client';
 import equalityFn from 'fast-deep-equal/es6/index.js';
-import { State } from '../common/types';
 import { getClient } from '../create-client';
 
-export function getAccounts(client: MicroStacksClient = getClient()) {
-  const { accounts } = client;
-  return accounts;
+import type { MicroStacksClient } from '../micro-stacks-client';
+import type { Account, State } from '../common/types';
+
+interface Options {
+  client: MicroStacksClient;
+  state?: State;
 }
 
-export function watchAccounts(
+/** ------------------------------------------------------------------------------------------------------------------
+ *   getters
+ *  ------------------------------------------------------------------------------------------------------------------
+ */
+export const getAccounts = ({ client, state }: Options) =>
+  client.selectAccounts(state || client.getState());
+
+export const getCurrentAccount = ({ client, state }: Options) =>
+  client.selectAccount(state || client.getState());
+
+export const getStxAddress = ({ client, state }: Options) =>
+  client.selectStxAddress(state || client.getState());
+
+export const getIdentityAddress = ({ client, state }: Options) =>
+  client.selectIdentityAddress(state || client.getState());
+
+export const getDecentralizedID = ({ client, state }: Options) =>
+  client.selectDecentralizedID(state || client.getState());
+
+/** ------------------------------------------------------------------------------------------------------------------
+ *   subscribers
+ *  ------------------------------------------------------------------------------------------------------------------
+ */
+export const watchAccounts = (
   callback: (payload: State['accounts']) => void,
   client: MicroStacksClient = getClient()
-) {
-  const handleChange = () => callback(getAccounts());
+) => client.subscribe(client.selectAccounts, callback, { equalityFn });
 
-  // unsubscribe
-  return client.subscribe(({ accounts }) => accounts, handleChange, { equalityFn });
-}
-
-export function getCurrentAccount(client: MicroStacksClient = getClient()) {
-  const { accounts, currentAccountIndex } = client;
-  return accounts[currentAccountIndex] ?? { appPrivateKey: null, address: null };
-}
-
-export function getStxAddress(client: MicroStacksClient = getClient()) {
-  const { stxAddress } = client;
-  return stxAddress ?? null;
-}
-
-export function watchStxAddress(
-  callback: (payload: MicroStacksClient['stxAddress']) => void,
+export const watchCurrentAccount = (
+  callback: (payload?: Account) => void,
   client: MicroStacksClient = getClient()
-) {
-  const handleChange = () => callback(getStxAddress());
+) => client.subscribe(client.selectAccount, callback, { equalityFn });
 
-  // unsubscribe
-  return client.subscribe(
-    () => {
-      return client.stxAddress;
-    },
-    handleChange,
-    { equalityFn }
-  );
-}
-
-export function watchCurrentAccount(
-  callback: (payload: MicroStacksClient['accounts'][number]) => void,
+export const watchStxAddress = (
+  callback: (payload?: string) => void,
   client: MicroStacksClient = getClient()
-) {
-  const handleChange = () => callback(getCurrentAccount(client));
+) => client.subscribe(client.selectStxAddress, callback, { equalityFn });
 
-  // unsubscribe
-  return client.subscribe(
-    ({ accounts, currentAccountIndex }) => {
-      return accounts[currentAccountIndex] ?? { appPrivateKey: null, address: null };
-    },
-    handleChange,
-    { equalityFn }
-  );
-}
-
-export function getIdentityAddress(client: MicroStacksClient = getClient()) {
-  const { identityAddress } = client;
-  return identityAddress ?? null;
-}
-
-export function watchIdentityAddress(
-  callback: (payload: MicroStacksClient['stxAddress']) => void,
+export const watchIdentityAddress = (
+  callback: (payload?: string) => void,
   client: MicroStacksClient = getClient()
-) {
-  const handleChange = () => callback(getStxAddress());
+) => client.subscribe(client.selectIdentityAddress, callback, { equalityFn });
 
-  // unsubscribe
-  return client.subscribe(
-    () => {
-      return client.identityAddress;
-    },
-    handleChange,
-    { equalityFn }
-  );
-}
-
-export function getDecentralizedID(client: MicroStacksClient = getClient()) {
-  const { decentralizedID } = client;
-  return decentralizedID ?? null;
-}
-
-export function watchDecentralizedID(
-  callback: (payload: MicroStacksClient['stxAddress']) => void,
+export const watchDecentralizedID = (
+  callback: (payload?: string) => void,
   client: MicroStacksClient = getClient()
-) {
-  const handleChange = () => callback(getStxAddress());
-
-  // unsubscribe
-  return client.subscribe(
-    () => {
-      return client.decentralizedID;
-    },
-    handleChange,
-    { equalityFn }
-  );
-}
+) => client.subscribe(client.selectDecentralizedID, callback, { equalityFn });

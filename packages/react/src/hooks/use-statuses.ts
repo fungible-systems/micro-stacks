@@ -1,4 +1,4 @@
-import { getStatus, watchStatus } from '@micro-stacks/client';
+import { getStatus } from '@micro-stacks/client';
 import { clientStateHookFactory } from '../common/utils';
 
 /** ------------------------------------------------------------------------------------------------------------------
@@ -6,4 +6,4 @@ import { clientStateHookFactory } from '../common/utils';
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-export const useStatuses = clientStateHookFactory(getStatus, watchStatus);
+export const useStatuses = clientStateHookFactory(getStatus);

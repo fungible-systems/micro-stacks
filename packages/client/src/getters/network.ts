@@ -1,24 +1,12 @@
 import equalityFn from 'fast-deep-equal/es6/index.js';
-import { State } from '../common/types';
 import { getClient } from '../create-client';
-import { MicroStacksClient } from '../micro-stacks-client';
+import type { State } from '../common/types';
+import type { MicroStacksClient } from '../micro-stacks-client';
 
-export function getNetwork(client: MicroStacksClient = getClient()) {
-  const { network } = client;
-  return network;
-}
+export const getNetwork = ({ client, state }: { client: MicroStacksClient; state?: State }) =>
+  client.selectNetwork(state || client.getState());
 
-export function watchNetwork(
+export const watchNetwork = (
   callback: (payload: State['network']) => void,
   client: MicroStacksClient = getClient()
-) {
-  const handleChange = () => callback(getNetwork(client));
-
-  return client.subscribe(
-    ({ network }) => {
-      return network;
-    },
-    handleChange,
-    { equalityFn }
-  );
-}
+) => client.subscribe(client.selectNetwork, callback, { equalityFn });

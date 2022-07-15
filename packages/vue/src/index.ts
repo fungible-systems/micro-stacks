@@ -9,6 +9,7 @@ import type {
   ContractCallParams,
   ContractDeployParams,
   StxTransferParams,
+  State,
 } from '@micro-stacks/client';
 
 import type { SignedOptionsWithOnHandlers } from 'micro-stacks/connect';
@@ -60,12 +61,12 @@ export function injectClient() {
  */
 
 type SubscriptionFn<V> = (setter: (value: V) => void, client: MicroStacksClient) => () => void;
-type GetterFn<V> = (client: MicroStacksClient) => V;
+type GetterFn<V> = (options: { client: MicroStacksClient; state?: State }) => V;
 
 export function reactiveClientStateFactory<V>(getter: GetterFn<V>, subscribe: SubscriptionFn<V>) {
   return (): Ref<UnwrapRef<V>> => {
     const client = injectClient();
-    const store = reactive({ state: ref(getter(client.value)) });
+    const store = reactive({ state: ref(getter({ client: client.value })) });
 
     subscribe(v => {
       (store.state as any) = v;
@@ -115,12 +116,12 @@ export function useAccount() {
   const decentralizedID = useWatchDecentralizedID();
 
   return computed(() => ({
-    appPrivateKey: account?.value.appPrivateKey,
-    rawAddress: account?.value.address,
+    appPrivateKey: account?.value?.appPrivateKey,
+    rawAddress: account?.value?.address,
     stxAddress: stxAddress.value,
     identityAddress: identityAddress.value,
     decentralizedID: decentralizedID.value,
-    profileUrl: account?.value.profile_url,
+    profileUrl: account?.value?.profile_url,
   }));
 }
 

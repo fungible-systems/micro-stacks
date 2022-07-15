@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createClient, defaultStorage, getClient, MicroStacksClient } from '@micro-stacks/client';
+import { createClient, defaultStorage, getClient } from '@micro-stacks/client';
 import { MicroStacksClientContext } from '../common/context';
 import {
   useOnAuthenticationEffect,
@@ -7,7 +7,7 @@ import {
   useOnSignOutEffect,
 } from '../hooks/use-client-callbacks';
 
-import type { ClientConfig } from '@micro-stacks/client';
+import type { MicroStacksClient, ClientConfig } from '@micro-stacks/client';
 import type { PropsWithChildren } from 'react';
 
 /** ------------------------------------------------------------------------------------------------------------------
@@ -31,20 +31,33 @@ const CallbacksProvider: React.FC<
  *  ------------------------------------------------------------------------------------------------------------------
  */
 function useEnsureSessionConsistency(
-  enabled: boolean,
+  client: MicroStacksClient,
   config: ClientConfig,
-  client: MicroStacksClient
+  isEnabled: boolean
 ) {
   const mountRef = React.useRef(false);
 
   React.useEffect(() => {
-    if (enabled) {
+    if (isEnabled) {
       if (config?.onPersistState && !mountRef.current) {
         mountRef.current = true;
-        if (!config.dehydratedState && client.hasSession) void client.persist();
+        if (!config.dehydratedState && client.selectHasSession(client.getState()))
+          void client.persist();
       }
     }
-  }, [enabled, client, config?.onPersistState, config?.dehydratedState]);
+  }, [isEnabled, client, config?.onPersistState, config?.dehydratedState]);
+}
+
+/** ------------------------------------------------------------------------------------------------------------------
+ *   useTabSyncEffect
+ *
+ *   This hook will sync data between tabs on events that change the persisted state
+ *  ------------------------------------------------------------------------------------------------------------------
+ */
+function useTabSyncEffect(client: MicroStacksClient, isEnabled = false) {
+  React.useEffect(() => {
+    return client.tabSyncSubscription(isEnabled);
+  }, [client, isEnabled]);
 }
 
 /** ------------------------------------------------------------------------------------------------------------------
@@ -56,14 +69,16 @@ export const ClientProvider: React.FC<
   PropsWithChildren<
     {
       client?: ReturnType<typeof getClient>;
-      ensureSessionConsistency?: boolean;
+      enableSessionConsistencyEffect?: boolean;
+      enableTabSync?: boolean;
     } & ClientConfig
   >
 > = React.memo(
   ({
     children,
     client: clientProp,
-    ensureSessionConsistency,
+    enableSessionConsistencyEffect = false,
+    enableTabSync = false,
     dehydratedState,
     appIconUrl,
     appName,
@@ -110,7 +125,8 @@ export const ClientProvider: React.FC<
       [config, clientProp]
     );
 
-    useEnsureSessionConsistency(ensureSessionConsistency ?? false, config, client);
+    useEnsureSessionConsistency(client, config, enableSessionConsistencyEffect);
+    useTabSyncEffect(client, enableTabSync);
 
     return (
       <MicroStacksClientContext.Provider value={client}>

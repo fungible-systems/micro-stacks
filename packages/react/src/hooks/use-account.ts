@@ -4,11 +4,6 @@ import {
   getDecentralizedID,
   getIdentityAddress,
   getStxAddress,
-  watchAccounts,
-  watchCurrentAccount,
-  watchDecentralizedID,
-  watchIdentityAddress,
-  watchStxAddress,
 } from '@micro-stacks/client';
 
 import { clientStateHookFactory } from '../common/utils';
@@ -18,11 +13,11 @@ import { clientStateHookFactory } from '../common/utils';
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-const useWatchAccounts = clientStateHookFactory(getAccounts, watchAccounts);
-const useWatchAccount = clientStateHookFactory(getCurrentAccount, watchCurrentAccount);
-const useIdentityAddress = clientStateHookFactory(getIdentityAddress, watchIdentityAddress);
-const useDecentralizedID = clientStateHookFactory(getDecentralizedID, watchDecentralizedID);
-const useWatchStxAddress = clientStateHookFactory(getStxAddress, watchStxAddress);
+const useWatchAccounts = clientStateHookFactory(getAccounts);
+const useWatchAccount = clientStateHookFactory(getCurrentAccount);
+const useIdentityAddress = clientStateHookFactory(getIdentityAddress);
+const useDecentralizedID = clientStateHookFactory(getDecentralizedID);
+const useWatchStxAddress = clientStateHookFactory(getStxAddress);
 
 /** ------------------------------------------------------------------------------------------------------------------
  *   useAccount hook (derived state)

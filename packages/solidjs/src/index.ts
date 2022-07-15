@@ -31,6 +31,7 @@ import type {
   StxTransferParams,
   ClientConfig,
   Account,
+  State,
 } from '@micro-stacks/client';
 import type { SignedOptionsWithOnHandlers } from 'micro-stacks/connect';
 import type { ClarityValue } from 'micro-stacks/clarity';
@@ -84,12 +85,12 @@ export const useMicroStacksClient = () => {
  */
 
 type SubscriptionFn<V> = (setter: (value: V) => void, client: MicroStacksClient) => () => void;
-type GetterFn<V> = (client: MicroStacksClient) => V;
+type GetterFn<V> = (options: { client: MicroStacksClient; state?: State }) => V;
 
 function stateHookFactory<V>(getter: GetterFn<V>, subscribe: SubscriptionFn<V>): () => Accessor<V> {
   return () => {
     const client = useMicroStacksClient();
-    const [state, setState] = createSignal<V>(getter(client()));
+    const [state, setState] = createSignal<V>(getter({ client: client() }));
 
     const unsub = subscribe(v => setState(() => v), client());
 
@@ -148,23 +149,23 @@ export const useAuth = () => {
  */
 
 interface UseAccountState {
-  appPrivateKey: Accessor<string | null>;
-  rawAddress: Accessor<Account['address']>;
-  identityAddress: Accessor<string | null>;
-  decentralizedID: Accessor<string | null>;
-  stxAddress: Accessor<string | null>;
-  profileUrl: Accessor<string | null>;
+  appPrivateKey: Accessor<string | undefined>;
+  rawAddress: Accessor<Account['address'] | undefined>;
+  identityAddress: Accessor<string | undefined>;
+  decentralizedID: Accessor<string | undefined>;
+  stxAddress: Accessor<string | undefined>;
+  profileUrl: Accessor<string | undefined>;
 }
 
 export const useAccount = (): UseAccountState => {
   const account = useWatchCurrentAccount();
   return {
-    appPrivateKey: () => account().appPrivateKey ?? null,
-    rawAddress: () => account().address ?? null,
+    appPrivateKey: () => account()?.appPrivateKey,
+    rawAddress: () => account()?.address,
     identityAddress: useWatchIdentityAddress(),
     decentralizedID: useWatchDecentralizedID(),
     stxAddress: useWatchStxAddress(),
-    profileUrl: () => account().profile_url ?? null,
+    profileUrl: () => account()?.profile_url,
   };
 };
 

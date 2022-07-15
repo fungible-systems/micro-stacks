@@ -1,7 +1,7 @@
 import { useMicroStacksClient } from './use-client';
 import { ChainID, StacksNetwork } from 'micro-stacks/network';
 import { useCallback, useMemo } from 'react';
-import { getNetwork, watchNetwork } from '@micro-stacks/client';
+import { getNetwork } from '@micro-stacks/client';
 import { clientStateHookFactory } from '../common/utils';
 
 /** ------------------------------------------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ interface UseNetwork {
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-const useNetworkValue = clientStateHookFactory(getNetwork, watchNetwork);
+const useNetworkValue = clientStateHookFactory(getNetwork);
 
 /** ------------------------------------------------------------------------------------------------------------------
  *   useNetwork hook (derived and actions)

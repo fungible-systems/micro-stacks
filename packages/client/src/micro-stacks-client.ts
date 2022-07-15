@@ -85,18 +85,46 @@ export class MicroStacksClient {
     this.fetcher = config.fetcher || fetchPrivate;
   }
 
+  getState = () => this.store.getState();
+
   private setState(updater: State | ((state: State) => State)) {
     const newState = typeof updater === 'function' ? updater(this.store.getState()) : updater;
     this.store.setState(newState, true);
   }
 
   private resetState() {
-    this.setState(defaultState(this.config));
+    this.setState(state => ({
+      ...state,
+      accounts: [],
+      currentAccountIndex: 0,
+    }));
   }
 
   get subscribe() {
     return this.store.subscribe;
   }
+
+  private onStorageUpdate = (e: StorageEvent) => {
+    if (typeof document !== 'undefined') {
+      const currentUrl = window.location.host;
+      const eventUrl = new URL(e.url).host;
+      const isSame = currentUrl === eventUrl;
+      const isClientStorage = e.key === 'micro-stacks.store';
+
+      if (isSame && isClientStorage) {
+        const stateToHydrate = e.newValue as string;
+        this.hydrate(JSON.parse(stateToHydrate) as string);
+      }
+    }
+  };
+
+  tabSyncSubscription = (isEnabled?: boolean) => {
+    const IS_BROWSER = typeof document !== 'undefined';
+    if (IS_BROWSER && isEnabled) window.addEventListener('storage', this.onStorageUpdate);
+    return () => {
+      if (IS_BROWSER && isEnabled) window.removeEventListener('storage', this.onStorageUpdate);
+    };
+  };
 
   private get provider() {
     return getGlobalObject('StacksProvider');
@@ -159,75 +187,52 @@ export class MicroStacksClient {
   }
 
   /** ------------------------------------------------------------------------------------------------------------------
-   *   Session details
+   *   State selectors
    *  ------------------------------------------------------------------------------------------------------------------
    */
 
-  get hasSession() {
-    return Boolean(this.accounts.length > 0);
-  }
-
-  get accounts() {
-    return this.store.getState().accounts ?? [];
-  }
-
-  get currentAccountIndex() {
-    return this.store.getState().currentAccountIndex ?? 0;
-  }
-
-  get account() {
-    return this.accounts[this.currentAccountIndex];
-  }
-
-  get network(): StacksNetwork {
-    return this.store.getState().network ?? new StacksMainnet();
-  }
-
-  get networkChain(): 'testnet' | 'mainnet' {
-    return this.network.chainId === ChainID.Mainnet ? 'mainnet' : 'testnet';
-  }
-
-  get testnetStxAddress() {
-    if (!this.account) return null;
-    const [version, hash] = this.account.address;
-    return c32address(
-      version === StacksNetworkVersion.mainnetP2SH
-        ? StacksNetworkVersion.testnetP2SH
-        : StacksNetworkVersion.testnetP2PKH,
-      hexToBytes(hash)
-    );
-  }
-
-  get mainnetStxAddress() {
-    if (!this.account) return null;
-    const [version, hash] = this.account.address;
-    return c32address(version, hexToBytes(hash));
-  }
-
-  get stxAddress(): string | null {
-    if (!this.account) return null;
-    if (this.networkChain === 'testnet') return this.testnetStxAddress;
-    return this.mainnetStxAddress;
-  }
-
-  get appDetails(): undefined | { name: string; icon: string } {
-    const state = this.store.getState();
-    if (!state.appName || !state.appIconUrl) return;
-    return {
-      name: state.appName as string,
-      icon: state.appIconUrl as string,
-    };
-  }
-
-  get identityAddress(): string | undefined {
-    if (!this.hasSession || !this.account?.appPrivateKey) return undefined;
-    return privateKeyToBase58Address(this.account.appPrivateKey);
-  }
-
-  get decentralizedID(): string | undefined {
-    if (!this.identityAddress) return undefined;
-    return `did:btc-addr:${this.identityAddress}`;
-  }
+  selectHasSession = (state: State) => Boolean(state.accounts.length);
+  selectAccounts = (state: State) => state.accounts;
+  selectAccount = (state: State) =>
+    this.selectHasSession(state) ? state.accounts[state.currentAccountIndex] : undefined;
+  selectNetwork = (state: State) => state.network;
+  selectNetworkChain = (state: State) =>
+    state.network.chainId === ChainID.Mainnet ? 'mainnet' : 'testnet';
+  selectTestnetStxAddress = (state: State) => {
+    const account = this.selectAccount(state);
+    return account
+      ? c32address(
+          account.address[0] === StacksNetworkVersion.mainnetP2SH
+            ? StacksNetworkVersion.testnetP2SH
+            : StacksNetworkVersion.testnetP2PKH,
+          hexToBytes(account.address[1])
+        )
+      : undefined;
+  };
+  selectMainnetStxAddress = (state: State) => {
+    const account = this.selectAccount(state);
+    return account ? c32address(account.address[0], hexToBytes(account.address[1])) : undefined;
+  };
+  selectStxAddress = (state: State) =>
+    this.selectNetworkChain(state) === 'mainnet'
+      ? this.selectMainnetStxAddress(state)
+      : this.selectTestnetStxAddress(state);
+  selectAppDetails = (state: State) =>
+    state.appName && state.appIconUrl
+      ? {
+          name: state.appName,
+          icon: state.appIconUrl,
+        }
+      : undefined;
+  selectIdentityAddress = (state: State) => {
+    const account = this.selectAccount(state);
+    return account?.appPrivateKey ? privateKeyToBase58Address(account.appPrivateKey) : undefined;
+  };
+  selectDecentralizedID = (state: State) => {
+    const identityAddress = this.selectIdentityAddress(state);
+    return identityAddress ? `did:btc-addr:${identityAddress}` : undefined;
+  };
+  selectStatuses = (state: State) => state.statuses;
 
   /** ------------------------------------------------------------------------------------------------------------------
    *   Statuses
@@ -252,17 +257,17 @@ export class MicroStacksClient {
     this.setStatus(key, Status.IsIdle);
   }
 
-  get statuses() {
-    return this.store.getState().statuses;
-  }
+  statuses = () => {
+    return this.selectStatuses(this.getState());
+  };
 
-  get isSignMessageRequestPending() {
-    return this.statuses[StatusKeys.MessageSigning];
-  }
+  isSignMessageRequestPending = () => {
+    return this.statuses()[StatusKeys.MessageSigning];
+  };
 
-  get isSignStructuredMessageRequestPending() {
-    return this.statuses[StatusKeys.StructuredMessageSigning];
-  }
+  isSignStructuredMessageRequestPending = () => {
+    return this.statuses()[StatusKeys.StructuredMessageSigning];
+  };
 
   /** ------------------------------------------------------------------------------------------------------------------
    *   Authenticate
@@ -283,9 +288,11 @@ export class MicroStacksClient {
     onFinish?: (session: Omit<StacksSessionState, 'profile'>) => void;
     onCancel?: (error?: Error) => void;
   }) => {
+    const appDetails = this.selectAppDetails(this.getState());
+    const accounts = this.selectAccounts(this.getState());
     // first we need to make sure these are available
     invariantWithMessage(!!this.provider, MicroStacksErrors.StacksProviderNotFund);
-    invariantWithMessage(this.appDetails, MicroStacksErrors.AppDetailsNotDefined);
+    invariantWithMessage(appDetails, MicroStacksErrors.AppDetailsNotDefined);
 
     // now we set pending status
     this.setIsRequestPending(StatusKeys.Authentication);
@@ -293,14 +300,14 @@ export class MicroStacksClient {
     // authenticate request to the provider
     await authenticate(
       {
-        appDetails: this.appDetails,
+        appDetails: appDetails,
         // this is the on success callback
         onFinish: async ({ profile, ...session }) => {
           const [version, bytes] = c32addressDecode(session.addresses.mainnet);
 
           const address: [number, string] = [version, bytesToHex(bytes)];
 
-          const hasAccount = this.accounts.find(account => account.address === address);
+          const hasAccount = accounts.find(account => account.address === address);
           // if this is not currently saved, we should save it
           if (!hasAccount) {
             this.setState(state => ({
@@ -317,7 +324,7 @@ export class MicroStacksClient {
             // else just switch to the index
             this.setState(s => ({
               ...s,
-              currentAccountIndex: this.accounts.findIndex(account => account.address === address),
+              currentAccountIndex: accounts.findIndex(account => account.address === address),
             }));
           }
           // fire any of our callbacks
@@ -360,17 +367,21 @@ export class MicroStacksClient {
     nonce: string;
     version?: string;
   }) => {
+    const state = this.getState();
+    const appDetails = this.selectAppDetails(state);
+    const stxAddress = this.selectStxAddress(state);
+
     invariantWithMessage(!!this.provider, MicroStacksErrors.StacksProviderNotFund);
-    invariantWithMessage(this.appDetails, MicroStacksErrors.AppDetailsNotDefined);
-    invariantWithMessage(this.stxAddress, MicroStacksErrors.StxAddressNotAvailable);
+    invariantWithMessage(appDetails, MicroStacksErrors.AppDetailsNotDefined);
+    invariantWithMessage(stxAddress, MicroStacksErrors.StxAddressNotAvailable);
 
     const fallbackUri = getGlobalObject('document', { throwIfUnavailable: false })
       ? window.location.origin
       : '';
 
     return new SignInWithStacksMessage({
-      domain: this.appDetails.name,
-      address: this.stxAddress,
+      domain: appDetails.name,
+      address: stxAddress,
       statement: 'Sign in with Stacks',
       uri: domain ?? fallbackUri,
       version,
@@ -385,20 +396,25 @@ export class MicroStacksClient {
    */
 
   signTransaction: SignTransactionRequest = async (type, params) => {
+    const state = this.getState();
+    const appDetails = this.selectAppDetails(state);
+    const stxAddress = this.selectStxAddress(state);
+    const account = this.selectAccount(state);
+    const network = this.selectNetwork(state);
     invariantWithMessage(!!this.provider, MicroStacksErrors.StacksProviderNotFund);
-    invariantWithMessage(this.appDetails, MicroStacksErrors.AppDetailsNotDefined);
-    invariantWithMessage(this.stxAddress, MicroStacksErrors.StxAddressNotAvailable);
-    invariantWithMessage(this.account, MicroStacksErrors.NoSession);
+    invariantWithMessage(appDetails, MicroStacksErrors.AppDetailsNotDefined);
+    invariantWithMessage(stxAddress, MicroStacksErrors.StxAddressNotAvailable);
+    invariantWithMessage(account, MicroStacksErrors.NoSession);
 
     this.setIsRequestPending(StatusKeys.TransactionSigning);
 
     let result: FinishedTxData | undefined;
 
     const sharedParams = {
-      appDetails: this.appDetails,
-      privateKey: this.account.appPrivateKey,
-      stxAddress: this.stxAddress,
-      network: this.network,
+      appDetails: appDetails,
+      privateKey: account.appPrivateKey,
+      stxAddress: stxAddress,
+      network: network,
       postConditionMode: params.postConditionMode,
       postConditions: params.postConditions,
       attachment: params.attachment,
@@ -439,20 +455,25 @@ export class MicroStacksClient {
    */
 
   signMessage = async (params: SignedOptionsWithOnHandlers<{ message: string }>) => {
+    const state = this.getState();
+    const appDetails = this.selectAppDetails(state);
+    const stxAddress = this.selectStxAddress(state);
+    const account = this.selectAccount(state);
+    const network = this.selectNetwork(state);
     invariantWithMessage(!!this.provider, MicroStacksErrors.StacksProviderNotFund);
-    invariantWithMessage(this.appDetails, MicroStacksErrors.AppDetailsNotDefined);
-    invariantWithMessage(this.stxAddress, MicroStacksErrors.StxAddressNotAvailable);
-    invariantWithMessage(this.account, MicroStacksErrors.NoSession);
+    invariantWithMessage(appDetails, MicroStacksErrors.AppDetailsNotDefined);
+    invariantWithMessage(stxAddress, MicroStacksErrors.StxAddressNotAvailable);
+    invariantWithMessage(account, MicroStacksErrors.NoSession);
     invariantWithMessage(params.message, MicroStacksErrors.NoMessagePassedToSignMessage);
 
     this.setIsRequestPending(StatusKeys.MessageSigning);
     let result: SignatureData | undefined;
 
     await handleSignMessageRequest({
-      appDetails: this.appDetails,
-      privateKey: this.account.appPrivateKey,
-      stxAddress: this.stxAddress,
-      network: this.network,
+      appDetails: appDetails,
+      privateKey: account.appPrivateKey,
+      stxAddress: stxAddress,
+      network: network,
       message: params.message,
       onFinish: payload => {
         result = payload;
@@ -483,24 +504,29 @@ export class MicroStacksClient {
       };
     }>
   ) => {
+    const state = this.getState();
+    const appDetails = this.selectAppDetails(state);
+    const stxAddress = this.selectStxAddress(state);
+    const account = this.selectAccount(state);
+    const network = this.selectNetwork(state);
     invariantWithMessage(!!this.provider, MicroStacksErrors.StacksProviderNotFund);
-    invariantWithMessage(this.appDetails, MicroStacksErrors.AppDetailsNotDefined);
-    invariantWithMessage(this.stxAddress, MicroStacksErrors.StxAddressNotAvailable);
-    invariantWithMessage(this.account, MicroStacksErrors.NoSession);
+    invariantWithMessage(appDetails, MicroStacksErrors.AppDetailsNotDefined);
+    invariantWithMessage(stxAddress, MicroStacksErrors.StxAddressNotAvailable);
+    invariantWithMessage(account, MicroStacksErrors.NoSession);
     invariantWithMessage(params.message, MicroStacksErrors.NoMessagePassedToSignMessage);
 
     this.setIsRequestPending(StatusKeys.StructuredMessageSigning);
     let result: SignatureData | undefined;
 
     await handleSignStructuredDataRequest({
-      appDetails: this.appDetails,
-      privateKey: this.account.appPrivateKey,
-      stxAddress: this.stxAddress,
-      network: this.network,
+      appDetails: appDetails,
+      privateKey: account.appPrivateKey,
+      stxAddress: stxAddress,
+      network: network,
       domain: {
-        name: params.domain?.name ?? this.appDetails.name,
+        name: params.domain?.name ?? appDetails.name,
         version: params.domain?.version ?? '1.0.0',
-        chainId: params.domain?.chainId ?? this.network.chainId,
+        chainId: params.domain?.chainId ?? network.chainId,
       },
       message: params.message,
       onFinish: payload => {
@@ -528,7 +554,7 @@ export class MicroStacksClient {
         network: network === 'mainnet' ? new StacksMainnet() : new StacksTestnet(),
       }));
     else this.setState(s => ({ ...s, network }));
-    this.persist();
+    void this.persist();
   };
 
   /** ------------------------------------------------------------------------------------------------------------------
@@ -536,11 +562,13 @@ export class MicroStacksClient {
    *  ------------------------------------------------------------------------------------------------------------------
    */
 
-  get gaiaHubConfig() {
-    if (!this.hasSession || !this.account.appPrivateKey) return;
+  selectGaiaHubConfig(state: State) {
+    const hasSession = this.selectHasSession(state);
+    const account = this.selectAccount(state);
+    if (!hasSession || !account?.appPrivateKey) return;
     return generateGaiaHubConfigSync({
       gaiaHubUrl: 'https://hub.blockstack.org',
-      privateKey: this.account.appPrivateKey,
+      privateKey: account.appPrivateKey,
     });
   }
 
@@ -549,13 +577,16 @@ export class MicroStacksClient {
     contents: string | Uint8Array | ArrayBufferView | Blob,
     { encrypt = true, sign }: { encrypt?: boolean; sign?: boolean }
   ) => {
-    if (!this.gaiaHubConfig) return;
-    if (!this.hasSession) return;
-    if (!this.account.appPrivateKey) return;
+    const gaiaHubConfig = this.selectGaiaHubConfig(this.getState());
+    const hasSession = this.selectHasSession(this.getState());
+    const account = this.selectAccount(this.getState());
+    if (!gaiaHubConfig) return;
+    if (!hasSession) return;
+    if (!account?.appPrivateKey) return;
 
     return putFile(path, contents, {
-      privateKey: this.account.appPrivateKey,
-      gaiaHubConfig: this.gaiaHubConfig,
+      privateKey: account.appPrivateKey,
+      gaiaHubConfig,
       encrypt,
       sign,
       wasString: typeof contents === 'string',
@@ -563,13 +594,16 @@ export class MicroStacksClient {
   };
 
   getFile = (path: string, { decrypt = true, verify }: { decrypt?: boolean; verify?: boolean }) => {
-    if (!this.gaiaHubConfig) return;
-    if (!this.hasSession) return;
-    if (!this.account.appPrivateKey) return;
+    const gaiaHubConfig = this.selectGaiaHubConfig(this.getState());
+    const hasSession = this.selectHasSession(this.getState());
+    const account = this.selectAccount(this.getState());
+    if (!gaiaHubConfig) return;
+    if (!hasSession) return;
+    if (!account?.appPrivateKey) return;
 
     return getFile(path, {
-      privateKey: this.account.appPrivateKey,
-      gaiaHubConfig: this.gaiaHubConfig,
+      privateKey: account.appPrivateKey,
+      gaiaHubConfig,
       decrypt,
       verify,
     });
@@ -581,8 +615,10 @@ export class MicroStacksClient {
    */
 
   async fetchBNSName(): Promise<string | undefined> {
-    if (!this.hasSession || !this.stxAddress) return undefined;
-    const path = this.network.getCoreApiUrl() + `/v1/addresses/stacks/${this.stxAddress}`;
+    const stxAddress = this.selectStxAddress(this.getState());
+    const network = this.selectNetwork(this.getState());
+    if (!stxAddress) return undefined;
+    const path = network.getCoreApiUrl() + `/v1/addresses/stacks/${stxAddress}`;
     try {
       const res = await this.fetcher(path);
       const json: { names?: string[] } = await res.json();
@@ -595,10 +631,12 @@ export class MicroStacksClient {
 
   async fetchZoneFile(): Promise<any> {
     try {
-      if (!this.hasSession || !this.stxAddress) return undefined;
+      const stxAddress = this.selectStxAddress(this.getState());
+      const network = this.selectNetwork(this.getState());
+      if (!stxAddress) return undefined;
       const username = await this.fetchBNSName();
       if (!username) return undefined;
-      const path = this.network.getCoreApiUrl() + `/v1/names/${this.stxAddress}/zonefile`;
+      const path = network.getCoreApiUrl() + `/v1/names/${stxAddress}/zonefile`;
       const res = await this.fetcher(path);
       const payload = await res.json();
       return payload as { zonefile: string; address: string };
@@ -609,9 +647,10 @@ export class MicroStacksClient {
   }
 
   async fetchProfile(): Promise<Profile | undefined> {
-    if (!this.hasSession || !this.account?.profile_url) return undefined;
+    const account = this.selectAccount(this.getState());
+    if (!account?.profile_url) return undefined;
     try {
-      const res = await this.fetcher(this.account.profile_url);
+      const res = await this.fetcher(account.profile_url);
       const json = await res.json();
       return json as Profile;
     } catch (e) {

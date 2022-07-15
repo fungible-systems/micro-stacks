@@ -352,13 +352,16 @@ importers:
       '@types/randombytes': 2.0.0
       '@types/react': 18.0.15
       '@types/react-dom': 18.0.6
+      '@types/use-sync-external-store': 0.0.3
       micro-stacks: workspace:*
       react-async-hook: ^4.0.0
       tsup: 6.1.3
+      use-sync-external-store: ^1.2.0
     dependencies:
       '@micro-stacks/client': link:../client
       micro-stacks: link:../core
       react-async-hook: 4.0.0
+      use-sync-external-store: 1.2.0
     devDependencies:
       '@stacks/stacks-blockchain-api-types': 4.1.0
       '@types/common-tags': 1.8.1
@@ -367,6 +370,7 @@ importers:
       '@types/randombytes': 2.0.0
       '@types/react': 18.0.15
       '@types/react-dom': 18.0.6
+      '@types/use-sync-external-store': 0.0.3
       tsup: 6.1.3_typescript@4.7.4
 
   packages/solidjs:
@@ -3693,6 +3697,10 @@ packages:
   /@types/unist/2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: false
+
+  /@types/use-sync-external-store/0.0.3:
+    resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==}
+    dev: true
 
   /@types/yargs-parser/20.2.1:
     resolution: {integrity: sha512-7tFImggNeNBVMsn0vLrpn1H1uPrUBdnARPTpZoitY37ZrdJREzf7I16tMrlK3hen349gr1NYh8CmZQa7CTG6Aw==}
@@ -11038,6 +11046,12 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /use-sync-external-store/1.2.0:
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dev: false
 
   /util-deprecate/1.0.2:
