@@ -1,7 +1,7 @@
 {
   "name": "@micro-stacks/client",
   "private": false,
-  "version": "1.0.0-beta.9",
+  "version": "1.0.0-beta.10",
   "description": "Session client for Stacks apps using micro-stacks",
   "files": [
     "dist"
@@ -35,6 +35,7 @@
     "typecheck": "tsc --noEmit --target esnext",
     "dev:publish": "yalc publish --push",
     "dev:build": "pnpm build && yalc publish --push",
+    "publish:beta": "pnpm publish --tag beta",
     "lint": "pnpm lint:eslint && pnpm lint:prettier",
     "lint:eslint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
