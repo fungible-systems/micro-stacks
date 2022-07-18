@@ -1,4 +1,5 @@
-import { ref, provide, inject, Ref, reactive, toRefs, computed, UnwrapRef } from 'vue';
+import { ref, provide, inject, reactive, toRefs, computed, onMounted, onUnmounted } from 'vue';
+import type { Ref, UnwrapRef } from 'vue';
 
 import * as Client from '@micro-stacks/client';
 
@@ -60,18 +61,28 @@ export function injectClient() {
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-type SubscriptionFn<V> = (setter: (value: V) => void, client: MicroStacksClient) => () => void;
 type GetterFn<V> = (options: { client: MicroStacksClient; state?: State }) => V;
 
-export function reactiveClientStateFactory<V>(getter: GetterFn<V>, subscribe: SubscriptionFn<V>) {
+export function reactiveClientStateFactory<V>(getter: GetterFn<V>) {
   return (): Ref<UnwrapRef<V>> => {
     const client = injectClient();
     const store = reactive({ state: ref(getter({ client: client.value })) });
 
-    subscribe(v => {
-      (store.state as any) = v;
-    }, client.value);
+    const unsub = ref(null as null | (() => void));
 
+    onMounted(() => {
+      unsub.value = client.value.subscribe(
+        state => getter({ client: client.value, state }),
+        v => {
+          (store.state as any) = v;
+        },
+        { equalityFn: (a, b) => a === b }
+      );
+    });
+
+    onUnmounted(() => {
+      unsub.value?.();
+    });
     return toRefs(store).state;
   };
 }
@@ -81,28 +92,13 @@ export function reactiveClientStateFactory<V>(getter: GetterFn<V>, subscribe: Su
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-export const useWatchStxAddress = reactiveClientStateFactory(
-  Client.getStxAddress,
-  Client.watchStxAddress
-);
-export const useWatchAccounts = reactiveClientStateFactory(
-  Client.getAccounts,
-  Client.watchAccounts
-);
-export const useWatchAccount = reactiveClientStateFactory(
-  Client.getCurrentAccount,
-  Client.watchCurrentAccount
-);
-export const useWatchIdentityAddress = reactiveClientStateFactory(
-  Client.getIdentityAddress,
-  Client.watchIdentityAddress
-);
-export const useWatchNetwork = reactiveClientStateFactory(Client.getNetwork, Client.watchNetwork);
-export const useWatchStatuses = reactiveClientStateFactory(Client.getStatus, Client.watchStatus);
-export const useWatchDecentralizedID = reactiveClientStateFactory(
-  Client.getDecentralizedID,
-  Client.watchDecentralizedID
-);
+export const useWatchStxAddress = reactiveClientStateFactory(Client.getStxAddress);
+export const useWatchAccounts = reactiveClientStateFactory(Client.getAccounts);
+export const useWatchAccount = reactiveClientStateFactory(Client.getCurrentAccount);
+export const useWatchIdentityAddress = reactiveClientStateFactory(Client.getIdentityAddress);
+export const useWatchNetwork = reactiveClientStateFactory(Client.getNetwork);
+export const useWatchStatuses = reactiveClientStateFactory(Client.getStatus);
+export const useWatchDecentralizedID = reactiveClientStateFactory(Client.getDecentralizedID);
 
 /** ------------------------------------------------------------------------------------------------------------------
  *  Account (derived state)
@@ -115,14 +111,14 @@ export function useAccount() {
   const identityAddress = useWatchIdentityAddress();
   const decentralizedID = useWatchDecentralizedID();
 
-  return computed(() => ({
-    appPrivateKey: account?.value?.appPrivateKey,
-    rawAddress: account?.value?.address,
-    stxAddress: stxAddress.value,
-    identityAddress: identityAddress.value,
-    decentralizedID: decentralizedID.value,
-    profileUrl: account?.value?.profile_url,
-  }));
+  return {
+    appPrivateKey: computed(() => account?.value?.appPrivateKey),
+    rawAddress: computed(() => account?.value?.address),
+    stxAddress: computed(() => stxAddress.value),
+    identityAddress: computed(() => identityAddress.value),
+    decentralizedID: computed(() => decentralizedID.value),
+    profileUrl: computed(() => account?.value?.profile_url),
+  };
 }
 
 /** ------------------------------------------------------------------------------------------------------------------
@@ -135,20 +131,20 @@ export function useAuth() {
   const status = useWatchStatuses();
   const account = useAccount();
 
-  return computed(() => {
-    return {
-      /**
-       * actions
-       */
-      openAuthRequest: client.value.authenticate,
-      signOut: client.value.signOut,
-      /**
-       * state
-       */
-      isSignedIn: !!account.value.stxAddress,
-      isRequestPending: status.value[Client.StatusKeys.Authentication] === Client.Status.IsLoading,
-    };
-  });
+  return {
+    /**
+     * actions
+     */
+    openAuthRequest: computed(() => client.value.authenticate),
+    signOut: computed(() => client.value.signOut),
+    /**
+     * state
+     */
+    isSignedIn: computed(() => !!account.stxAddress.value),
+    isRequestPending: computed(
+      () => status.value[Client.StatusKeys.Authentication] === Client.Status.IsLoading
+    ),
+  };
 }
 
 /** ------------------------------------------------------------------------------------------------------------------
@@ -160,17 +156,16 @@ export const useNetwork = () => {
   const client = injectClient();
   const network = useWatchNetwork();
 
-  const isMainnet = network.value.chainId === ChainID.Mainnet;
   return {
     /**
      * actions
      */
-    setNetwork: client?.value.setNetwork,
+    set: computed(() => client?.value.setNetwork),
     /**
      * state
      */
     network,
-    isMainnet,
+    isMainnet: computed(() => network.value.chainId === ChainID.Mainnet),
   };
 };
 
@@ -179,26 +174,26 @@ export const useNetwork = () => {
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-export const useOpenContractCallState = () => {
+export const useOpenContractCall = () => {
   const client = injectClient();
   const status = useWatchStatuses();
 
-  const openContractCall = (params: ContractCallParams) =>
-      client.value.signTransaction(Client.TxType.ContractCall, {
-        ...params,
-        onFinish: payload => {
-          params?.onFinish?.(payload);
-        },
-        onCancel: error => {
-          params?.onCancel?.(error);
-        },
-      }),
-    isRequestPending =
-      status.value[Client.StatusKeys.TransactionSigning] === Client.Status.IsLoading;
-
   return {
-    openContractCall,
-    isRequestPending,
+    openContractCall: computed(
+      () => (params: ContractCallParams) =>
+        client.value.signTransaction(Client.TxType.ContractCall, {
+          ...params,
+          onFinish: payload => {
+            params?.onFinish?.(payload);
+          },
+          onCancel: error => {
+            params?.onCancel?.(error);
+          },
+        })
+    ),
+    isRequestPending: computed(
+      () => status.value[Client.StatusKeys.TransactionSigning] === Client.Status.IsLoading
+    ),
   };
 };
 
@@ -206,26 +201,26 @@ export const useOpenContractCallState = () => {
  *  Contract deploy (derived state)
  *  ------------------------------------------------------------------------------------------------------------------
  */
-export const useopenContractDeployState = () => {
+export const useOpenContractDeploy = () => {
   const client = injectClient();
   const status = useWatchStatuses();
 
-  const openContractDeploy = (params: ContractDeployParams) =>
-      client.value.signTransaction(Client.TxType.ContractDeploy, {
-        ...params,
-        onFinish: payload => {
-          params?.onFinish?.(payload);
-        },
-        onCancel: error => {
-          params?.onCancel?.(error);
-        },
-      }),
-    isRequestPending =
-      status.value[Client.StatusKeys.TransactionSigning] === Client.Status.IsLoading;
-
   return {
-    openContractDeploy,
-    isRequestPending,
+    openContractDeploy: computed(
+      () => (params: ContractDeployParams) =>
+        client.value.signTransaction(Client.TxType.ContractDeploy, {
+          ...params,
+          onFinish: payload => {
+            params?.onFinish?.(payload);
+          },
+          onCancel: error => {
+            params?.onCancel?.(error);
+          },
+        })
+    ),
+    isRequestPending: computed(
+      () => status.value[Client.StatusKeys.TransactionSigning] === Client.Status.IsLoading
+    ),
   };
 };
 
@@ -234,26 +229,26 @@ export const useopenContractDeployState = () => {
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-export const useOpenStxTokenTransferState = () => {
+export const useOpenStxTokenTransfer = () => {
   const client = injectClient();
   const status = useWatchStatuses();
 
-  const openStxTokenTransfer = (params: StxTransferParams) =>
-      client.value.signTransaction(Client.TxType.TokenTransfer, {
-        ...params,
-        onFinish: payload => {
-          params?.onFinish?.(payload);
-        },
-        onCancel: error => {
-          params?.onCancel?.(error);
-        },
-      }),
-    isRequestPending =
-      status.value[Client.StatusKeys.TransactionSigning] === Client.Status.IsLoading;
-
   return {
-    openStxTokenTransfer,
-    isRequestPending,
+    openStxTokenTransfer: computed(
+      () => (params: StxTransferParams) =>
+        client.value.signTransaction(Client.TxType.TokenTransfer, {
+          ...params,
+          onFinish: payload => {
+            params?.onFinish?.(payload);
+          },
+          onCancel: error => {
+            params?.onCancel?.(error);
+          },
+        })
+    ),
+    isRequestPending: computed(
+      () => status.value[Client.StatusKeys.TransactionSigning] === Client.Status.IsLoading
+    ),
   };
 };
 
@@ -262,25 +257,26 @@ export const useOpenStxTokenTransferState = () => {
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-export const useOpenSignMessageState = () => {
+export const useOpenSignMessage = () => {
   const client = injectClient();
   const status = useWatchStatuses();
 
-  const openSignMessage = (params: SignedOptionsWithOnHandlers<{ message: string }>) =>
-      client.value.signMessage({
-        ...params,
-        onFinish: payload => {
-          params?.onFinish?.(payload);
-        },
-        onCancel: error => {
-          params?.onCancel?.(error);
-        },
-      }),
-    isRequestPending = status.value[Client.StatusKeys.MessageSigning] === Client.Status.IsLoading;
-
   return {
-    openSignMessage,
-    isRequestPending,
+    openSignMessage: computed(
+      () => (params: SignedOptionsWithOnHandlers<{ message: string }>) =>
+        client.value.signMessage({
+          ...params,
+          onFinish: payload => {
+            params?.onFinish?.(payload);
+          },
+          onCancel: error => {
+            params?.onCancel?.(error);
+          },
+        })
+    ),
+    isRequestPending: computed(
+      () => status.value[Client.StatusKeys.MessageSigning] === Client.Status.IsLoading
+    ),
   };
 };
 /** ------------------------------------------------------------------------------------------------------------------
@@ -292,30 +288,31 @@ export const useOpenSignStructuredMessageState = () => {
   const client = injectClient();
   const status = useWatchStatuses();
 
-  const openSignStructuredMessage = (
-      params: SignedOptionsWithOnHandlers<{
-        message: string | ClarityValue;
-        domain?: {
-          name?: string;
-          version?: string;
-          chainId?: ChainID;
-        };
-      }>
-    ) =>
-      client.value.signStructuredMessage({
-        ...params,
-        onFinish: payload => {
-          params?.onFinish?.(payload);
-        },
-        onCancel: error => {
-          params?.onCancel?.(error);
-        },
-      }),
-    isRequestPending =
-      status.value[Client.StatusKeys.StructuredMessageSigning] === Client.Status.IsLoading;
-
-  return {
-    openSignStructuredMessage,
-    isRequestPending,
-  };
+  return () => ({
+    openSignStructuredMessage: computed(
+      () =>
+        (
+          params: SignedOptionsWithOnHandlers<{
+            message: string | ClarityValue;
+            domain?: {
+              name?: string;
+              version?: string;
+              chainId?: ChainID;
+            };
+          }>
+        ) =>
+          client.value.signStructuredMessage({
+            ...params,
+            onFinish: payload => {
+              params?.onFinish?.(payload);
+            },
+            onCancel: error => {
+              params?.onCancel?.(error);
+            },
+          })
+    ),
+    isRequestPending: computed(
+      () => status.value[Client.StatusKeys.StructuredMessageSigning] === Client.Status.IsLoading
+    ),
+  });
 };
