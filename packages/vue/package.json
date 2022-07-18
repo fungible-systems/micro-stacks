@@ -1,7 +1,7 @@
 {
   "name": "@micro-stacks/vue",
   "private": false,
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "Opinionated Vue integration for micro-stacks.",
   "files": [
     "dist"
@@ -32,6 +32,7 @@
     "typecheck": "tsc --noEmit --target esnext",
     "dev:publish": "yalc publish --push",
     "dev:build": "pnpm build && yalc publish --push",
+    "publish:beta": "pnpm publish --tag beta",
     "lint": "pnpm lint:eslint && pnpm lint:prettier",
     "lint:eslint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
