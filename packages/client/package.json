@@ -1,7 +1,7 @@
 {
   "name": "@micro-stacks/client",
   "private": false,
-  "version": "1.0.0-beta.10",
+  "version": "1.0.0-beta.11",
   "description": "Session client for Stacks apps using micro-stacks",
   "files": [
     "dist"
