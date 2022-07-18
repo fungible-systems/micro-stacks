@@ -1,20 +1,21 @@
-import { ref, provide, inject, reactive, toRefs, computed, onMounted, onUnmounted } from 'vue';
 import type { Ref, UnwrapRef } from 'vue';
+import { computed, inject, onMounted, onUnmounted, provide, reactive, ref, toRefs } from 'vue';
 
+import type {
+  ContractCallParams,
+  ContractDeployParams,
+  MicroStacksClient,
+  State,
+  StxTransferParams,
+} from '@micro-stacks/client';
 import * as Client from '@micro-stacks/client';
 
 import { ChainID } from 'micro-stacks/common';
 
-import type {
-  MicroStacksClient,
-  ContractCallParams,
-  ContractDeployParams,
-  StxTransferParams,
-  State,
-} from '@micro-stacks/client';
-
 import type { SignedOptionsWithOnHandlers } from 'micro-stacks/connect';
 import type { ClarityValue } from 'micro-stacks/clarity';
+
+const CONTEXT_KEY = 'micro-stacks-client';
 
 export function provideClient({
   appName,
@@ -25,34 +26,34 @@ export function provideClient({
   onPersistState,
   onSignOut,
   onAuthentication,
+  onNoWalletFound,
   fetcher,
 }: Client.ClientConfig) {
-  const config = {
-    appName,
-    appIconUrl,
-    storage,
-    network,
-    dehydratedState,
-    onPersistState,
-    onSignOut,
-    onAuthentication,
-    fetcher,
-  };
-
-  const client = ref<Client.MicroStacksClient>(
-    Client.createClient({
-      config,
-    })
+  return provide(
+    CONTEXT_KEY,
+    ref<Client.MicroStacksClient>(
+      Client.createClient({
+        config: {
+          appName,
+          appIconUrl,
+          storage,
+          network,
+          dehydratedState,
+          onPersistState,
+          onSignOut,
+          onAuthentication,
+          onNoWalletFound,
+          fetcher,
+        },
+      })
+    )
   );
-
-  return provide('micro-stacks-client', client);
 }
 
 export function injectClient() {
-  const client = inject<Ref<Client.MicroStacksClient> | undefined>('micro-stacks-client');
-  if (!client) {
+  const client = inject<Ref<Client.MicroStacksClient> | undefined>(CONTEXT_KEY);
+  if (!client)
     throw new Error('No MicroStacksClient set, mount the client in your app using provideClient');
-  }
   return client;
 }
 

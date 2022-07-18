@@ -9,6 +9,12 @@ export * from './connect/auth/types';
 export * from './connect/auth/decode-auth-response';
 export * from './connect/popup';
 export { genericTransactionPopupFactory } from './connect/popup-helper';
+export {
+  getWalletInstallUrl,
+  WALLET_INSTALL_URLS,
+  getBrowser,
+  getIsMobileDevice,
+} from './connect/common/browser-utils';
 
 // sign messages
 export {
@@ -30,3 +36,4 @@ export type {
   StructuredSignatureRequestOptions,
   SignedOptionsWithOnHandlers,
 } from './connect/message-signing/types';
+export type { Browsers } from './connect/common/browser-utils';

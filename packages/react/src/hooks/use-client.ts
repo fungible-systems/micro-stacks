@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { MicroStacksClientContext } from '../common/context';
+import { clientStateHookFactory } from '../common/utils';
 import type { Client } from '@micro-stacks/client';
 
 /** ------------------------------------------------------------------------------------------------------------------
@@ -15,4 +16,16 @@ export const useMicroStacksClient = () => {
     );
   }
   return client;
+};
+
+const useWatchAppDetails = clientStateHookFactory(opt => {
+  return opt.client.selectAppDetails(opt.state ?? opt.client.getState());
+});
+
+export const useAppDetails = () => {
+  const appDetails = useWatchAppDetails();
+  return {
+    appName: appDetails?.name,
+    appIconUrl: appDetails?.icon,
+  };
 };

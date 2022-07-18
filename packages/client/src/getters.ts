@@ -1,8 +1,7 @@
-import equalityFn from 'fast-deep-equal/es6/index.js';
-import { getClient } from '../create-client';
-
-import type { MicroStacksClient } from '../micro-stacks-client';
-import type { Account, State } from '../common/types';
+import { MicroStacksClient } from './micro-stacks-client';
+import { getClient } from './create-client';
+import equalityFn from 'fast-deep-equal/es6';
+import { Account, State } from './common/types';
 
 interface Options {
   client: MicroStacksClient;
@@ -28,10 +27,20 @@ export const getIdentityAddress = ({ client, state }: Options) =>
 export const getDecentralizedID = ({ client, state }: Options) =>
   client.selectDecentralizedID(state || client.getState());
 
+export const getNetwork = ({ client, state }: Options) =>
+  client.selectNetwork(state || client.getState());
+
+export const getStatus = ({ client, state }: Options) =>
+  client.selectStatuses(state || client.getState());
+
+export const getAppDetails = ({ client, state }: Options) =>
+  client.selectAppDetails(state || client.getState());
+
 /** ------------------------------------------------------------------------------------------------------------------
  *   subscribers
  *  ------------------------------------------------------------------------------------------------------------------
  */
+
 export const watchAccounts = (
   callback: (payload: State['accounts']) => void,
   client: MicroStacksClient = getClient()
@@ -56,3 +65,18 @@ export const watchDecentralizedID = (
   callback: (payload?: string) => void,
   client: MicroStacksClient = getClient()
 ) => client.subscribe(client.selectDecentralizedID, callback, { equalityFn });
+
+export const watchNetwork = (
+  callback: (payload: State['network']) => void,
+  client: MicroStacksClient = getClient()
+) => client.subscribe(client.selectNetwork, callback, { equalityFn });
+
+export const watchStatus = (
+  callback: (payload: State['statuses']) => void,
+  client: MicroStacksClient = getClient()
+) => client.subscribe(client.selectStatuses, callback, { equalityFn });
+
+export const watchAppDetails = (
+  callback: (payload?: { name?: string; icon?: string }) => void,
+  client: MicroStacksClient = getClient()
+) => client.subscribe(client.selectAppDetails, callback, { equalityFn });

@@ -3,6 +3,7 @@ import { createClient, defaultStorage, getClient } from '@micro-stacks/client';
 import { MicroStacksClientContext } from '../common/context';
 import {
   useOnAuthenticationEffect,
+  useOnNoWalletFoundEffect,
   useOnPersistEffect,
   useOnSignOutEffect,
 } from '../hooks/use-client-callbacks';
@@ -16,11 +17,12 @@ import type { PropsWithChildren } from 'react';
  */
 
 const CallbacksProvider: React.FC<
-  Pick<ClientConfig, 'onAuthentication' | 'onSignOut' | 'onPersistState'>
-> = React.memo(({ onPersistState, onAuthentication, onSignOut }) => {
+  Pick<ClientConfig, 'onAuthentication' | 'onSignOut' | 'onPersistState' | 'onNoWalletFound'>
+> = React.memo(({ onPersistState, onAuthentication, onSignOut, onNoWalletFound }) => {
   useOnAuthenticationEffect(onAuthentication);
   useOnSignOutEffect(onSignOut);
   useOnPersistEffect(onPersistState);
+  useOnNoWalletFoundEffect(onNoWalletFound);
   return null;
 });
 
@@ -86,6 +88,7 @@ export const ClientProvider: React.FC<
     storage = defaultStorage,
     onPersistState,
     onAuthentication,
+    onNoWalletFound,
     onSignOut,
   }) => {
     if (!!React.useContext(MicroStacksClientContext))
@@ -102,6 +105,7 @@ export const ClientProvider: React.FC<
         storage,
         onPersistState,
         onAuthentication,
+        onNoWalletFound,
         onSignOut,
       }),
       [
@@ -112,6 +116,7 @@ export const ClientProvider: React.FC<
         storage,
         onPersistState,
         onAuthentication,
+        onNoWalletFound,
         onSignOut,
       ]
     );
