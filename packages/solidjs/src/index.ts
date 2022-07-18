@@ -53,6 +53,7 @@ export function useCreateClient({
   storage = defaultStorage,
   onPersistState,
   onAuthentication,
+  onNoWalletFound,
   onSignOut,
 }: ClientConfig & { client?: MicroStacksClient }) {
   const config = {
@@ -63,19 +64,17 @@ export function useCreateClient({
     storage,
     onPersistState,
     onAuthentication,
+    onNoWalletFound,
     onSignOut,
   };
 
-  const [client] = createSignal(createClient({ config, client: clientProp }));
-
-  return client;
+  return createSignal(createClient({ config, client: clientProp }))[0];
 }
 
 export const useMicroStacksClient = () => {
   const client = useContext(ClientContext);
-  if (!client) {
+  if (!client)
     throw new Error('No MicroStacksClient set, wrap your app in ClientContext.Provider to set one');
-  }
   return client;
 };
 

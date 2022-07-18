@@ -3,6 +3,7 @@ import type {
   Profile,
   SignatureData,
   SignedOptionsWithOnHandlers,
+  StacksProvider,
   StacksSessionState,
 } from 'micro-stacks/connect';
 import {
@@ -126,8 +127,29 @@ export class MicroStacksClient {
     };
   };
 
-  private get provider() {
-    return getGlobalObject('StacksProvider');
+  private getStacksProvider(): undefined | StacksProvider {
+    return getGlobalObject('StacksProvider', { throwIfUnavailable: false });
+  }
+
+  subscribeToStacksProvider(callback: () => void, intervalMs = 100): () => void {
+    if (!!this.getStacksProvider()) {
+      callback();
+      return () => {
+        return;
+      };
+    } else {
+      const id = setInterval(() => {
+        const hasProvider = !!this.getStacksProvider();
+        if (hasProvider) {
+          callback();
+          clearInterval(id);
+        }
+      }, intervalMs);
+
+      return () => {
+        if (typeof id !== 'undefined') clearInterval(id);
+      };
+    }
   }
 
   private get storeKey() {
@@ -142,6 +164,10 @@ export class MicroStacksClient {
     return this.store.getState()?.onAuthentication;
   }
 
+  private get onNoWalletFound() {
+    return this.store.getState()?.onNoWalletFound;
+  }
+
   private get onSignOut() {
     return this.store.getState()?.onSignOut;
   }
@@ -152,6 +178,14 @@ export class MicroStacksClient {
       onPersistState,
     }));
     this.config.onPersistState = onPersistState;
+  };
+
+  setOnNoWalletFound = (onNoWalletFound: () => void | Promise<void>) => {
+    this.setState(s => ({
+      ...s,
+      onNoWalletFound,
+    }));
+    this.config.onPersistState = onNoWalletFound;
   };
 
   setOnSignOut = (onSignOut: ClientConfig['onSignOut']) => {
@@ -269,6 +303,17 @@ export class MicroStacksClient {
     return this.statuses()[StatusKeys.StructuredMessageSigning];
   };
 
+  async handleNoStacksProviderFound() {
+    if (typeof this.getStacksProvider() === 'undefined') {
+      if (typeof this.onNoWalletFound !== 'undefined') {
+        await this.onNoWalletFound();
+        return;
+      }
+      invariantWithMessage(this.getStacksProvider(), MicroStacksErrors.StacksProviderNotFund);
+      return;
+    }
+  }
+
   /** ------------------------------------------------------------------------------------------------------------------
    *   Authenticate
    *
@@ -288,11 +333,13 @@ export class MicroStacksClient {
     onFinish?: (session: Omit<StacksSessionState, 'profile'>) => void;
     onCancel?: (error?: Error) => void;
   }) => {
-    const appDetails = this.selectAppDetails(this.getState());
-    const accounts = this.selectAccounts(this.getState());
+    await this.handleNoStacksProviderFound();
+
     // first we need to make sure these are available
-    invariantWithMessage(!!this.provider, MicroStacksErrors.StacksProviderNotFund);
+    const appDetails = this.selectAppDetails(this.getState());
     invariantWithMessage(appDetails, MicroStacksErrors.AppDetailsNotDefined);
+
+    const accounts = this.selectAccounts(this.getState());
 
     // now we set pending status
     this.setIsRequestPending(StatusKeys.Authentication);
@@ -367,11 +414,12 @@ export class MicroStacksClient {
     nonce: string;
     version?: string;
   }) => {
+    void this.handleNoStacksProviderFound();
+
     const state = this.getState();
     const appDetails = this.selectAppDetails(state);
     const stxAddress = this.selectStxAddress(state);
 
-    invariantWithMessage(!!this.provider, MicroStacksErrors.StacksProviderNotFund);
     invariantWithMessage(appDetails, MicroStacksErrors.AppDetailsNotDefined);
     invariantWithMessage(stxAddress, MicroStacksErrors.StxAddressNotAvailable);
 
@@ -396,12 +444,14 @@ export class MicroStacksClient {
    */
 
   signTransaction: SignTransactionRequest = async (type, params) => {
+    await this.handleNoStacksProviderFound();
+
     const state = this.getState();
     const appDetails = this.selectAppDetails(state);
     const stxAddress = this.selectStxAddress(state);
     const account = this.selectAccount(state);
     const network = this.selectNetwork(state);
-    invariantWithMessage(!!this.provider, MicroStacksErrors.StacksProviderNotFund);
+
     invariantWithMessage(appDetails, MicroStacksErrors.AppDetailsNotDefined);
     invariantWithMessage(stxAddress, MicroStacksErrors.StxAddressNotAvailable);
     invariantWithMessage(account, MicroStacksErrors.NoSession);
@@ -455,12 +505,13 @@ export class MicroStacksClient {
    */
 
   signMessage = async (params: SignedOptionsWithOnHandlers<{ message: string }>) => {
+    await this.handleNoStacksProviderFound();
+
     const state = this.getState();
     const appDetails = this.selectAppDetails(state);
     const stxAddress = this.selectStxAddress(state);
     const account = this.selectAccount(state);
     const network = this.selectNetwork(state);
-    invariantWithMessage(!!this.provider, MicroStacksErrors.StacksProviderNotFund);
     invariantWithMessage(appDetails, MicroStacksErrors.AppDetailsNotDefined);
     invariantWithMessage(stxAddress, MicroStacksErrors.StxAddressNotAvailable);
     invariantWithMessage(account, MicroStacksErrors.NoSession);
@@ -504,12 +555,13 @@ export class MicroStacksClient {
       };
     }>
   ) => {
+    await this.handleNoStacksProviderFound();
+
     const state = this.getState();
     const appDetails = this.selectAppDetails(state);
     const stxAddress = this.selectStxAddress(state);
     const account = this.selectAccount(state);
     const network = this.selectNetwork(state);
-    invariantWithMessage(!!this.provider, MicroStacksErrors.StacksProviderNotFund);
     invariantWithMessage(appDetails, MicroStacksErrors.AppDetailsNotDefined);
     invariantWithMessage(stxAddress, MicroStacksErrors.StxAddressNotAvailable);
     invariantWithMessage(account, MicroStacksErrors.NoSession);
@@ -548,6 +600,7 @@ export class MicroStacksClient {
    *  ------------------------------------------------------------------------------------------------------------------
    */
   setNetwork = (network: 'mainnet' | 'testnet' | StacksNetwork) => {
+    void this.handleNoStacksProviderFound();
     if (typeof network === 'string')
       this.setState(s => ({
         ...s,

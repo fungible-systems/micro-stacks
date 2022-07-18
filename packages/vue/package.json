@@ -28,11 +28,11 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "tsup --config ../configs/tsup.config.ts",
+    "build": "tsup src/index.ts --config ../configs/tsup.config.ts",
     "typecheck": "tsc --noEmit --target esnext",
     "dev:publish": "yalc publish --push",
     "dev:build": "pnpm build && yalc publish --push",
-    "publish:beta": "pnpm build && pnpm publish --tag beta",
+    "publish:beta": "pnpm publish --tag beta",
     "lint": "pnpm lint:eslint && pnpm lint:prettier",
     "lint:eslint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",

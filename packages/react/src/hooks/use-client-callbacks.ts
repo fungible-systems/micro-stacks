@@ -10,6 +10,10 @@ type ConfigCallback<K extends keyof ClientConfig> = ClientConfig[K];
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
+export const useSetOnNoWalletFoundState = () => {
+  return useMicroStacksClient().setOnNoWalletFound;
+};
+
 export const useSetOnPersistState = () => {
   return useMicroStacksClient().setOnPersistState;
 };
@@ -30,25 +34,33 @@ export const useSetOnSignOut = () => {
  */
 
 export const useOnAuthenticationEffect = (callback: ConfigCallback<'onAuthentication'>) => {
-  const setOnAuthentication = useSetOnAuthentication();
+  const setter = useSetOnAuthentication();
   const wrapped = useEvent(callback);
   useEffect(() => {
-    if (callback) setOnAuthentication(wrapped);
-  }, []);
+    if (callback) setter(wrapped);
+  }, [callback, setter, wrapped]);
 };
 
 export const useOnSignOutEffect = (callback: ConfigCallback<'onSignOut'>) => {
-  const setOnSignOut = useSetOnSignOut();
+  const setter = useSetOnSignOut();
   const wrapped = useEvent(callback);
   useEffect(() => {
-    if (callback) setOnSignOut(wrapped);
-  }, []);
+    if (callback) setter(wrapped);
+  }, [callback, setter, wrapped]);
 };
 
 export const useOnPersistEffect = (callback: ConfigCallback<'onPersistState'>) => {
-  const setOnPersistState = useSetOnPersistState();
+  const setter = useSetOnPersistState();
   const wrapped = useEvent(callback);
   useEffect(() => {
-    if (callback) setOnPersistState(wrapped);
-  }, []);
+    if (callback) setter(wrapped);
+  }, [callback, setter, wrapped]);
+};
+
+export const useOnNoWalletFoundEffect = (callback: ConfigCallback<'onPersistState'>) => {
+  const setter = useSetOnNoWalletFoundState();
+  const wrapped = useEvent(callback);
+  useEffect(() => {
+    if (callback) setter(wrapped);
+  }, [callback, setter, wrapped]);
 };

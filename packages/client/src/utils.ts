@@ -72,6 +72,7 @@ export const defaultState = ({
   currentAccountIndex: 0,
   onPersistState: config.onPersistState,
   onAuthentication: config.onAuthentication,
+  onNoWalletFound: config.onNoWalletFound,
   onSignOut: config.onSignOut,
 });
 

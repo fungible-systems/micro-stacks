@@ -1,16 +1,15 @@
+import type {
+  ContractCallParams,
+  ContractDeployParams,
+  MicroStacksClient,
+  State,
+  StxTransferParams,
+} from '@micro-stacks/client';
 import * as Client from '@micro-stacks/client';
 import { getContext, setContext } from 'svelte';
 import { derived, readable } from 'svelte/store';
 import { ChainID } from 'micro-stacks/common';
 import { CLIENT_CONTEXT } from './common';
-
-import type {
-  MicroStacksClient,
-  ContractCallParams,
-  ContractDeployParams,
-  StxTransferParams,
-  State,
-} from '@micro-stacks/client';
 import type {
   FinishedTxData,
   SignatureData,
@@ -47,6 +46,7 @@ export const mountClient = ({
   onPersistState,
   onSignOut,
   onAuthentication,
+  onNoWalletFound,
   fetcher,
 }: Client.ClientConfig) => {
   const config = {
@@ -58,6 +58,7 @@ export const mountClient = ({
     onPersistState,
     onSignOut,
     onAuthentication,
+    onNoWalletFound,
     fetcher,
   };
 

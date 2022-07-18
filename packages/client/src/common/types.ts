@@ -103,6 +103,12 @@ export interface ClientConfig {
    * @param payload - StacksSessionState returned from the wallet
    */
   onAuthentication?: (payload: StacksSessionState) => void;
+  /**
+   * onNoWalletFound
+   * Function that fires on when an action is attempted but there is no
+   * instance of `StacksProvider` (user needs to install a wallet)
+   */
+  onNoWalletFound?: () => void | Promise<void>;
   fetcher?: (input: RequestInfo, init?: RequestInit) => Promise<Response>;
 }
 
@@ -129,6 +135,7 @@ export type State = {
   onPersistState?: ClientConfig['onPersistState'];
   onSignOut?: ClientConfig['onSignOut'];
   onAuthentication?: ClientConfig['onAuthentication'];
+  onNoWalletFound?: ClientConfig['onNoWalletFound'];
 };
 
 export type OpenSignMessageParams = SignedOptionsWithOnHandlers<{ message: string }>;

@@ -10,6 +10,7 @@ class ClientProvider extends SvelteComponentTyped<{
   onPersistState?: ClientConfig['onPersistState'];
   onSignOut?: ClientConfig['onSignOut'];
   onAuthentication?: ClientConfig['onAuthentication'];
+  onNoWalletFound?: ClientConfig['onNoWalletFound'];
   fetcher?: ClientConfig['fetcher'];
   client?: MicroStacksClient;
 }> {}
