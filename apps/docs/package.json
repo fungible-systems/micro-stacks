@@ -15,9 +15,9 @@
   "dependencies": {
     "@nelson-ui/react": "0.1.6",
     "@radix-ui/react-tabs": "0.1.5",
-    "@tailwindcss/typography": "0.5.3",
+    "@tailwindcss/typography": "0.5.4",
     "fathom-client": "3.5.0",
-    "jotai": "1.7.4",
+    "jotai": "1.7.5",
     "next": "12.2.2",
     "nextra": "2.0.0-alpha.56",
     "nextra-theme-docs": "2.0.0-alpha.59",
@@ -29,7 +29,7 @@
     "@next/bundle-analyzer": "12.2.2",
     "@next/eslint-plugin-next": "12.2.2",
     "@stacks/prettier-config": "0.0.10",
-    "@types/node": "18.0.3",
+    "@types/node": "18.0.6",
     "postinstall-postinstall": "2.1.0",
     "typescript": "4.7.4"
   },
