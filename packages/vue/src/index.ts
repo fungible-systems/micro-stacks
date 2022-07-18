@@ -160,7 +160,7 @@ export const useNetwork = () => {
     /**
      * actions
      */
-    set: computed(() => client?.value.setNetwork),
+    setNetwork: computed(() => client?.value.setNetwork),
     /**
      * state
      */
@@ -284,7 +284,7 @@ export const useOpenSignMessage = () => {
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-export const useOpenSignStructuredMessageState = () => {
+export const useOpenSignStructuredMessage = () => {
   const client = injectClient();
   const status = useWatchStatuses();
 
