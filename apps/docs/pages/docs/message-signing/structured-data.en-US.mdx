@@ -97,6 +97,62 @@ const SignMessageComponent = () => {
 ```
 
 </Integrations.React>
+<Integrations.Solid>
+Below you will find a simple component that renders an input and a button. The input is captured in a `useState` hook, and
+converted into a Clarity `tuple`, with the input value being converted to a `stringAscii` clarity value. This `message` is
+then piped into the `openSignStructuredMessage` callback, wrapped in a `useCallback` hook.
+
+```tsx
+import { useOpenSignStructuredMessage, useAuth } from '@micro-stacks/solidjs';
+import { createSignal } from 'solid-js';
+import { tupleCV, stringAsciiCV } from 'micro-stacks/clarity';
+import type { SignatureData } from 'micro-stacks/connect';
+
+export const SignStructuredMessageComponent = () => {
+  const { isSignedIn } = useAuth();
+  const { openSignStructuredMessage, isRequestPending } = useOpenSignStructuredMessage();
+
+  const [payload, setPayload] = createSignal(null as SignatureData | null);
+  const [value, setValue] = createSignal('');
+
+  const message = () =>
+    tupleCV({
+      message: stringAsciiCV(value()),
+    });
+
+  const onClick = async () => {
+    await openSignStructuredMessage({
+      message: message(),
+      onFinish: walletResponse => {
+        setPayload(walletResponse);
+      },
+    });
+  };
+
+  if (!isSignedIn()) return null;
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gap: '20px',
+      }}
+    >
+      <h5>Sign a structured message!</h5>
+      <input
+        style={{ display: 'block' }}
+        onChange={e => setValue(e.currentTarget.value)}
+      />
+      <button onClick={onClick}>{isRequestPending() ? 'Loading...' : 'Sign message'}</button>
+      <code>
+        <pre>{JSON.stringify(payload(), null, 2)}</pre>
+      </code>
+    </div>
+  );
+};
+```
+
+</Integrations.Solid>
 
 <Integrations.Vanilla>
 
