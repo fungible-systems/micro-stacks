@@ -1,24 +1,24 @@
 import { deserializeAddress } from './common/utils';
 import {
-  serializeCV,
-  trueCV,
-  falseCV,
-  noneCV,
-  someCV,
   bufferCV,
-  intCV,
-  uintCV,
-  responseOkCV,
-  responseErrorCV,
-  listCV,
-  tupleCV,
-  standardPrincipalCVFromAddress,
   contractPrincipalCVFromStandard,
+  falseCV,
+  intCV,
+  listCV,
+  noneCV,
+  responseErrorCV,
+  responseOkCV,
+  serializeCV,
+  someCV,
+  standardPrincipalCVFromAddress,
   stringAsciiCV,
   stringUtf8CV,
+  trueCV,
+  tupleCV,
+  uintCV,
 } from 'micro-stacks/clarity';
 
-import { bytesToHex, BufferReader, concatByteArrays } from 'micro-stacks/common';
+import { BufferReader, bytesToHex, concatByteArrays } from 'micro-stacks/common';
 
 describe('Serialization Test Vectors', () => {
   test('Int 1 Vector', () => {

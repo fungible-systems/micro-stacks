@@ -1,10 +1,10 @@
 import {
-  ClarityType,
   CLARITY_INT_SIZE,
+  ClarityType,
   MAX_I128,
+  MAX_U128,
   MIN_I128,
   MIN_U128,
-  MAX_U128,
 } from '../common/constants';
 import { IntegerType, intToBigInt, intToBytes } from 'micro-stacks/common';
 

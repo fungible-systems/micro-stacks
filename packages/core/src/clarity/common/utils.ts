@@ -3,11 +3,11 @@ import {
   BufferArray,
   BufferReader,
   bytesToHex,
+  bytesToUtf8,
   hexStringToInt,
   hexToBytes,
   intToHexString,
   utf8ToBytes,
-  bytesToUtf8,
 } from 'micro-stacks/common';
 import { MAX_STRING_LENGTH_BYTES, PostConditionPrincipalID } from './constants';
 
