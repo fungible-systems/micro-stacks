@@ -1,19 +1,26 @@
 {
   "index": {
-	"title": "Introduction",
-	"type": "page",
-	"hidden": true
+    "title": "Introduction",
+    "type": "page",
+    "hidden": true
   },
   "docs": {
-	"title": "Docs",
-	"type": "page"
+    "title": "Docs",
+    "type": "page"
   },
   "guides": {
-	"title": "Guides",
-	"type": "page"
+    "title": "Guides",
+    "type": "page"
+  },
+  "blog": {
+    "title": "Blog",
+    "type": "page",
+    "theme": {
+      "sidebar": false
+    }
   },
   "reference": {
-	"title": "Reference",
-	"type": "page"
+    "title": "Reference",
+    "type": "page"
   }
 }

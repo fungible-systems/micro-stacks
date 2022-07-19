@@ -1,0 +1,127 @@
+---
+title: Announcing micro-stacks v1.0.0
+---
+
+# Announcing v1
+
+Today I'm very happy to announce the release of `micro-stacks` v1.0.0! `micro-stacks` has been a
+nights and weekends project for me for over a year, first starting as a project to better understand
+the inner-workings of Stacks and to be able to build apps with modern frontend tooling like Vite and
+SkyPack.
+
+For those unaware, `micro-stacks` is a collection of JavaScript/TypeScript libraries for building
+robust Stacks based apps.
+
+With this release, there are many important updates that I'm excited to share.
+
+## tl;dr
+
+- new `micro-stacks@1.0.0`
+- new `@micro-stacks/client` library for managing app-state
+- new framework specific bindings:
+  - React - `@micro-stacks/react`
+  - Svelte - `@micro-stacks/svelte`
+  - Vue - `@micro-stacks/vue`
+  - Solidjs - `@micro-stacks/solidjs`
+- new docs -> [check them out!](https://micro-stacks.dev/docs/overview)
+- new examples and `yarn create ustx`
+- security audit for core library
+
+## New client library
+
+While working on earlier version of the library, there has always been just one package:
+`micro-stacks`. This package contains many sub-modules that are separate, and are broken out based
+on function, e.g.: `micro-stacks/clarity`, `micro-stacks/transactions`, etc. This is great when you
+know what each module does, but it's less great when you have no idea and there aren't docs
+explaining all the different functions and what they do. Often I would get feedback from folks that
+there were too many things to have to think about when wanting to accomplish the foundational
+functionality that is found in all Stacks apps: authentication, transaction signing, and using Gaia.
+
+With that in mind, I wanted to create a new abstraction on top of all the libraries that would make
+these functions really easy to use, while also pushing developers towards building apps with more of
+a focus towards user experience. What I mean by this are things like properly handling sessions in
+the context of server side rendered applications, or providing feedback when certain actions happen,
+such as authenticating or signing a transaction.
+
+This new abstraction is a new library: `@micro-stacks/client`. This package is what handles all
+user-session state within Stacks apps, exposes easy-to-use functions that make use of the current
+user session like signing transactions, signing messages, Gaia related functions, and
+encryption/decryption.
+
+This package is the foundation for all framework-specific bindings and provides a much better
+developer-experience when compared to implementing these functions by hand with the lower-level
+`micro-stacks` package.
+
+## Framework bindings
+
+With the creation of `@micro-stacks/client`, we now have a much higher ability to create framework
+specific binds for `micro-stacks`. This means we now have first-class support for all major
+JavaScript frameworks: React, Preact, Svelte, Vue, and even Solidjs. The API between the
+framework-specific packages are all very similar, so if you're working on multiple projects that
+have different requirements, you don't need to re-learn how to interact with `micro-stacks`.
+
+The framework-specific bindings all use the best-practices for each specific framework, offering
+reactive state values and performant functions to accomplish everything you need when building apps:
+authentication, transaction signing, message signing, and storage!
+
+## Starter kits
+
+In addition to new framework-specific bindings, there are now up-to-date examples for all of these
+frameworks. You can explore these projects here, or get started today by running `yarn create ustx`
+to scaffold out any of these starter kits:
+
+**React**
+
+- react _(javascript)_
+- react-ts _(typescript)_
+- next.js _(typescript)_
+- remix _(typescript)_
+
+**Vue**
+
+- vue _(javascript)_
+- vue-ts _(typescript)_
+- nuxt coming soon _(typescript)_
+
+**Preact**
+
+- preact _(javascript)_
+- preact-ts
+
+**Solid**
+
+- solidjs _(javascript)_
+- solidjs-ts
+
+**Svelte**
+
+- svelte _(javascript)_
+- svelte-ts _(typescript)_
+- sveltekit _(typescript)_
+
+## New documentation
+
+In addition to the new starter kits, the documentation for `micro-stacks` has been completely
+re-written from the ground up, with a focus on the most common path a developer will take when
+building out a new Stacks app.
+
+Additionally, there are more in-depth guides around building apps with meta-frameworks like Remix
+and Next.js.
+
+## Security audit
+
+The core `micro-stacks` package successfully completed a security audit (paid for by the Stacks
+foundation, thank you!) from KoinFabrik. Thankfully nothing of concern was found. To read the audit
+and any comments about what was found, check out this page in the GitHub repository.
+
+## Looking forward
+
+My primary goal in working on `micro-stacks` and all of the additional libraries/documentation has
+always been to help folks build better Stacks apps. With that in mind, there is so much more I'm
+excited to build:
+
+- Example apps with Sponsored Transactions
+- Example apps with Clarinet built-in
+- New ways to build Post Conditions
+- New tooling to work with projects like `clarigen`
+- and much more!

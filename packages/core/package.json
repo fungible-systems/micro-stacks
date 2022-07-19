@@ -1,135 +1,135 @@
 {
   "name": "micro-stacks",
   "private": false,
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "Tiny libraries for building Stacks apps.",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "import": "dist/index.mjs",
-  "react-native": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "files": [
+    "**"
+  ],
+  "type": "module",
+  "types": "./index.d.ts",
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "import": "./index.mjs",
   "exports": {
     "./package.json": "./package.json",
     "./api": {
-      "types": "./dist/api.d.ts",
-      "module": "./dist/api.mjs",
-      "main": "./dist/api.mjs",
-      "import": "./dist/api.mjs",
-      "react-native": "./dist/api.js",
-      "default": "./dist/api.js"
+      "types": "./api.d.ts",
+      "module": "./api.mjs",
+      "main": "./api.mjs",
+      "import": "./api.mjs",
+      "react-native": "./api.js",
+      "default": "./api.js"
     },
     "./connect": {
-      "types": "./dist/connect.d.ts",
-      "module": "./dist/connect.mjs",
-      "main": "./dist/connect.mjs",
-      "import": "./dist/connect.mjs",
-      "react-native": "./dist/connect.js",
-      "default": "./dist/connect.js"
+      "types": "./connect.d.ts",
+      "module": "./connect.mjs",
+      "main": "./connect.mjs",
+      "import": "./connect.mjs",
+      "react-native": "./connect.js",
+      "default": "./connect.js"
     },
     "./common": {
-      "types": "./dist/common.d.ts",
-      "module": "./dist/common.mjs",
-      "main": "./dist/common.mjs",
-      "import": "./dist/common.mjs",
-      "react-native": "./dist/common.js",
-      "default": "./dist/common.js"
+      "types": "./common.d.ts",
+      "module": "./common.mjs",
+      "main": "./common.mjs",
+      "import": "./common.mjs",
+      "react-native": "./common.js",
+      "default": "./common.js"
     },
     "./clarity": {
-      "types": "./dist/clarity.d.ts",
-      "module": "./dist/clarity.mjs",
-      "main": "./dist/clarity.mjs",
-      "import": "./dist/clarity.mjs",
-      "react-native": "./dist/clarity.js",
-      "default": "./dist/clarity.js"
+      "types": "./clarity.d.ts",
+      "module": "./clarity.mjs",
+      "main": "./clarity.mjs",
+      "import": "./clarity.mjs",
+      "react-native": "./clarity.js",
+      "default": "./clarity.js"
     },
     "./crypto": {
-      "types": "./dist/crypto.d.ts",
-      "module": "./dist/crypto.mjs",
-      "main": "./dist/crypto.mjs",
-      "import": "./dist/crypto.mjs",
-      "react-native": "./dist/crypto.js",
-      "default": "./dist/crypto.js"
+      "types": "./crypto.d.ts",
+      "module": "./crypto.mjs",
+      "main": "./crypto.mjs",
+      "import": "./crypto.mjs",
+      "react-native": "./crypto.js",
+      "default": "./crypto.js"
     },
     "./crypto-aes": {
-      "types": "./dist/crypto-aes.d.ts",
-      "module": "./dist/crypto-aes.mjs",
-      "main": "./dist/crypto-aes.mjs",
-      "import": "./dist/crypto-aes.mjs",
-      "react-native": "./dist/crypto-aes.js",
-      "default": "./dist/crypto-aes.js"
+      "types": "./crypto-aes.d.ts",
+      "module": "./crypto-aes.mjs",
+      "main": "./crypto-aes.mjs",
+      "import": "./crypto-aes.mjs",
+      "react-native": "./crypto-aes.js",
+      "default": "./crypto-aes.js"
     },
     "./crypto-sha": {
-      "types": "./dist/crypto-sha.d.ts",
-      "module": "./dist/crypto-sha.mjs",
-      "main": "./dist/crypto-sha.mjs",
-      "import": "./dist/crypto-sha.mjs",
-      "react-native": "./dist/crypto-sha.js",
-      "default": "./dist/crypto-sha.js"
+      "types": "./crypto-sha.d.ts",
+      "module": "./crypto-sha.mjs",
+      "main": "./crypto-sha.mjs",
+      "import": "./crypto-sha.mjs",
+      "react-native": "./crypto-sha.js",
+      "default": "./crypto-sha.js"
     },
     "./crypto-pbkdf2": {
-      "types": "./dist/crypto-pbkdf2.d.ts",
-      "module": "./dist/crypto-pbkdf2.mjs",
-      "main": "./dist/crypto-pbkdf2.mjs",
-      "import": "./dist/crypto-pbkdf2.mjs",
-      "react-native": "./dist/crypto-pbkdf2.js",
-      "default": "./dist/crypto-pbkdf2.js"
+      "types": "./crypto-pbkdf2.d.ts",
+      "module": "./crypto-pbkdf2.mjs",
+      "main": "./crypto-pbkdf2.mjs",
+      "import": "./crypto-pbkdf2.mjs",
+      "react-native": "./crypto-pbkdf2.js",
+      "default": "./crypto-pbkdf2.js"
     },
     "./crypto-hmac-sha": {
-      "types": "./dist/crypto-hmac-sha.d.ts",
-      "module": "./dist/crypto-hmac-sha.mjs",
-      "main": "./dist/crypto-hmac-sha.mjs",
-      "import": "./dist/crypto-hmac-sha.mjs",
-      "react-native": "./dist/crypto-hmac-sha.js",
-      "default": "./dist/crypto-hmac-sha.js"
+      "types": "./crypto-hmac-sha.d.ts",
+      "module": "./crypto-hmac-sha.mjs",
+      "main": "./crypto-hmac-sha.mjs",
+      "import": "./crypto-hmac-sha.mjs",
+      "react-native": "./crypto-hmac-sha.js",
+      "default": "./crypto-hmac-sha.js"
     },
     "./network": {
-      "types": "./dist/network.d.ts",
-      "module": "./dist/network.mjs",
-      "main": "./dist/network.mjs",
-      "import": "./dist/network.mjs",
-      "react-native": "./dist/network.js",
-      "default": "./dist/network.js"
+      "types": "./network.d.ts",
+      "module": "./network.mjs",
+      "main": "./network.mjs",
+      "import": "./network.mjs",
+      "react-native": "./network.js",
+      "default": "./network.js"
     },
     "./storage": {
-      "types": "./dist/storage.d.ts",
-      "module": "./dist/storage.mjs",
-      "main": "./dist/storage.mjs",
-      "import": "./dist/storage.mjs",
-      "react-native": "./dist/storage.js",
-      "default": "./dist/storage.js"
+      "types": "./storage.d.ts",
+      "module": "./storage.mjs",
+      "main": "./storage.mjs",
+      "import": "./storage.mjs",
+      "react-native": "./storage.js",
+      "default": "./storage.js"
     },
     "./transactions": {
-      "types": "./dist/transactions.d.ts",
-      "module": "./dist/transactions.mjs",
-      "main": "./dist/transactions.mjs",
-      "import": "./dist/transactions.mjs",
-      "react-native": "./dist/transactions.js",
-      "default": "./dist/transactions.js"
+      "types": "./transactions.d.ts",
+      "module": "./transactions.mjs",
+      "main": "./transactions.mjs",
+      "import": "./transactions.mjs",
+      "react-native": "./transactions.js",
+      "default": "./transactions.js"
     },
     "./wallet-sdk": {
-      "types": "./dist/wallet-sdk.d.ts",
-      "module": "./dist/wallet-sdk.mjs",
-      "main": "./dist/wallet-sdk.mjs",
-      "import": "./dist/wallet-sdk.mjs",
-      "react-native": "./dist/wallet-sdk.js",
-      "default": "./dist/wallet-sdk.js"
+      "types": "./wallet-sdk.d.ts",
+      "module": "./wallet-sdk.mjs",
+      "main": "./wallet-sdk.mjs",
+      "import": "./wallet-sdk.mjs",
+      "react-native": "./wallet-sdk.js",
+      "default": "./wallet-sdk.js"
     },
     "./zone-file": {
-      "types": "./dist/zone-file.d.ts",
-      "module": "./dist/zone-file.mjs",
-      "main": "./dist/zone-file.mjs",
-      "import": "./dist/zone-file.mjs",
-      "react-native": "./dist/zone-file.js",
-      "default": "./dist/zone-file.js"
+      "types": "./zone-file.d.ts",
+      "module": "./zone-file.mjs",
+      "main": "./zone-file.mjs",
+      "import": "./zone-file.mjs",
+      "react-native": "./zone-file.js",
+      "default": "./zone-file.js"
     }
   },
-  "files": [
-    "dist"
-  ],
   "sideEffects": false,
   "scripts": {
     "prebuild": "shx rm -rf dist",
-    "build": "pnpm prebuild && concurrently 'pnpm:build:*'",
+    "build": "concurrently 'pnpm:build:*'",
     "build:api": "tsup-node src/api.ts --config ../configs/tsup.config.ts",
     "build:clarity": "tsup-node src/clarity.ts --config ../configs/tsup.config.ts",
     "build:connect": "tsup-node src/connect.ts --config ../configs/tsup.config.ts",
@@ -144,7 +144,9 @@
     "build:transactions": "tsup-node src/transactions.ts --config ../configs/tsup.config.ts",
     "build:wallet-sdk": "tsup-node src/wallet-sdk.ts --config ../configs/tsup.config.ts",
     "build:zone-file": "tsup-node src/zone-file.ts --config ../configs/tsup.config.ts",
-    "dev:build": "pnpm build && yalc publish --push",
+    "copy": "shx cp package.json dist && json -I -f dist/package.json -e \"this.private=false; this.devDependencies=undefined; this.optionalDependencies=undefined; this.scripts=undefined; this.husky=undefined; this.prettier=undefined; this.jest=undefined; this['lint-staged']=undefined;\"",
+    "dev:publish": "cd dist && yalc publish --push",
+    "dev:build": "pnpm build && pnpm copy && pnpm dev:publish",
     "eslint": "eslint --fix '{src,tests}/**/*.{js,ts,jsx,tsx}'",
     "eslint:ci": "eslint '{src,tests}/**/*.{js,ts,jsx,tsx}'",
     "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\" *.js",
@@ -154,6 +156,7 @@
     "test:coverage": "NODE_ENV=test jest --coverage",
     "typecheck": "tsc --noEmit",
     "prerelease": "pnpm build",
+    "publish:beta": "pnpm build && pnpm copy && pnpm publish dist --tag beta",
     "ci:publish": "pnpm build && pnpm publish --no-git-checks --access public",
     "ci:version": "pnpm changeset version && pnpm install --no-frozen-lockfile && git add ."
   },
@@ -182,7 +185,7 @@
   ],
   "author": "Thomas Osmonson",
   "contributors": [],
-  "license": "GPL-3.0-or-later",
+  "license": "LGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/aulneau/micro-stacks/issues"
   },
