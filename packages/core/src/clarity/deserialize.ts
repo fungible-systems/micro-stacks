@@ -17,8 +17,8 @@ import {
   BufferReader,
   bytesToAscii,
   bytesToUtf8,
-  hexToBytes,
   DeserializationError,
+  hexToBytes,
 } from 'micro-stacks/common';
 import { ClarityValue } from './clarity-value/types';
 

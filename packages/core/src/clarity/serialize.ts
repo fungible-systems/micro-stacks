@@ -2,12 +2,12 @@ import {
   asciiToBytes,
   BufferArray,
   compare,
+  concatByteArrays,
   hexToBytes,
   intToHexString,
   toTwos,
   utf8ToBytes,
   writeUInt32BE,
-  concatByteArrays,
 } from 'micro-stacks/common';
 
 import { ClarityType } from './common/constants';

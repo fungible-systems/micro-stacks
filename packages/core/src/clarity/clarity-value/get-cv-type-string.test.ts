@@ -1,21 +1,21 @@
 import { oneLineTrim } from 'common-tags';
 import {
-  trueCV,
-  falseCV,
-  noneCV,
-  someCV,
   bufferCV,
-  intCV,
-  uintCV,
-  standardPrincipalCV,
   contractPrincipalCV,
-  responseOkCV,
-  responseErrorCV,
+  falseCV,
+  getCVTypeString,
+  intCV,
   listCV,
-  tupleCV,
+  noneCV,
+  responseErrorCV,
+  responseOkCV,
+  someCV,
+  standardPrincipalCV,
   stringAsciiCV,
   stringUtf8CV,
-  getCVTypeString,
+  trueCV,
+  tupleCV,
+  uintCV,
 } from 'micro-stacks/clarity';
 import { utf8ToBytes } from 'micro-stacks/common';
 

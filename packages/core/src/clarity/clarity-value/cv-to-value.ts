@@ -1,7 +1,7 @@
-import { ClarityType } from '../common/constants';
 import { bytesToHex } from 'micro-stacks/common';
 import { principalToString } from '../types/principalCV';
 import { cvToJSON } from './cv-to-json';
+import { ClarityType } from '../common/constants';
 import { ClarityValue } from './types';
 
 /**

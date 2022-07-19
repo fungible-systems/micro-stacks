@@ -1,9 +1,9 @@
 import {
   Address,
-  LengthPrefixedString,
-  createAddress,
   addressToString,
+  createAddress,
   createLPString,
+  LengthPrefixedString,
 } from '../common/utils';
 import { ClarityType } from '../common/constants';
 import { utf8ToBytes } from 'micro-stacks/common';
