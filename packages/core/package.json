@@ -1,7 +1,7 @@
 {
   "name": "micro-stacks",
   "private": false,
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.6",
   "description": "Tiny libraries for building Stacks apps.",
   "files": [
     "dist"
