@@ -22,6 +22,33 @@ import { useOpenContractDeploy } from '@micro-stacks/react';
 
 </Integrations.React>
 
+<Integrations.Vue>
+`@micro-stacks/vue` exports a hook that you will use to call contract functions: `useOpenContractDeploy`.
+
+```jsx
+import { useOpenContractDeploy } from '@micro-stacks/vue';
+```
+
+</Integrations.Vue>
+
+<Integrations.Solid>
+`@micro-stacks/solidjs` exports a hook that you will use to call contract functions: `useOpenContractDeploy`.
+
+```jsx
+import { useOpenContractDeploy } from '@micro-stacks/solidjs';
+```
+
+</Integrations.Solid>
+
+<Integrations.Svelte>
+`@micro-stacks/svelte` exports a function that you will use to call contract functions: `getOpenContractDeploy`.
+
+```jsx
+import { getOpenContractDeploy } from '@micro-stacks/svelte';
+```
+
+</Integrations.Svelte>
+
 ### Parameters
 
 - `contractName`: the name of the contract.
@@ -60,7 +87,7 @@ export const ContractDeploy = () => {
   const { openContractDeploy, isRequestPending } = useOpenContractDeploy();
   const [response, setResponse] = useState(null);
 
-  const handleOpenContractDeploy = async () => {
+  const onClick = async () => {
     await openContractDeploy({
       contractName: `demo-deploy`,
       // the clarity contract above
@@ -83,7 +110,7 @@ export const ContractDeploy = () => {
           <code>{JSON.stringify(response, null, 2)}</code>
         </pre>
       )}
-      <button onClick={() => handleOpenContractDeploy()}>
+      <button onClick={() => onClick()}>
         {isRequestPending ? 'request pending...' : 'Deploy a contract'}
       </button>
     </div>
@@ -92,3 +119,88 @@ export const ContractDeploy = () => {
 ```
 
 </Integrations.React>
+
+<Integrations.Svelte>
+
+```svelte
+<script lang="ts">
+  import { getOpenContractDeploy } from "@micro-stacks/svelte";
+
+  const contractDeploy = getOpenContractDeploy();
+
+  $: buttonLabel = contractDeploy.isRequestPending ? "Loading...": "Sign transaction";
+
+  function onClick() {
+    await contractDeploy.openContractDeploy({
+      contractName: `demo-deploy`,
+      // the clarity contract above
+      codeBody,
+      onFinish: data => {
+        console.log('finished contract deploy!', data);
+      },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
+    });
+  }
+</script>
+```
+
+</Integrations.Svelte>
+
+<Integrations.Vue>
+
+```vue
+<script setup lang="ts">
+  import { useOpenContractDeploy } from '@micro-stacks/vue';
+
+  // using the experimental Reactivity Transform
+  // @see https://vuejs.org/guide/extras/reactivity-transform.html#reactivity-transform
+  const { openContractDeploy, isRequestPending } = $(useOpenContractDeploy());
+
+  const onClick = async () => {
+    await openContractDeploy({
+      contractName: `demo-deploy`,
+      // the clarity contract above
+      codeBody,
+      onFinish: data => {
+        console.log('finished contract deploy!', data);
+      },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
+    });
+  };
+
+  const buttonLabel = isRequestPending ? 'Loading...' : 'Sign transaction';
+</script>
+```
+
+</Integrations.Vue>
+
+<Integrations.Solid>
+
+```ts
+import { useOpenContractDeploy } from '@micro-stacks/solidjs';
+
+const MyComponent = () => {
+  const { openStxTokenTransfer, isRequestPending } = useOpenContractDeploy();
+
+  const onClick = async () => {
+    await openContractDeploy({
+      contractName: `demo-deploy`,
+      // the clarity contract above
+      codeBody,
+      onFinish: data => {
+        console.log('finished contract deploy!', data);
+      },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
+    });
+  };
+  const buttonLabel = isRequestPending ? 'Loading...' : 'Sign transaction';
+};
+```
+
+</Integrations.Solid>

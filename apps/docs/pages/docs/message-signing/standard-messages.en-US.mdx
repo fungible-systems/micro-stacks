@@ -20,20 +20,78 @@ Standard messaging signing allows for the signing of any arbitrary string messag
 ## Usage
 
 <Integrations.React>
-`@micro-stacks/react` exports a hook for this: `useOpenSignMessage`. This hook exposes the callback to interact with a
-connected wallet. The hook returns a callback, `openSignMessage` which takes a `message` of type `string` value.
-`isRequestPending` is also returned, a boolean value to denote if there is a current request open (meaning the use has
-already requested a signature). The pending state is handled all internally for every wallet request, so you don't need
-to manually handle any loading logic.
+
+`@micro-stacks/react` exports a hook for this: `useOpenSignMessage`. The hook returns a callback,
+`openSignMessage` which takes a `message` of type `string` value. `isRequestPending` is also
+returned, a boolean value to denote if there is a current request open (meaning the use has already
+requested a signature). The pending state is handled all internally for every wallet request, so you
+don't need to manually handle any loading logic.
 
 As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and
 `onCancel` callback.
 
+```jsx
+import { useOpenStxTokenTransfer } from '@micro-stacks/react';
+```
+
 </Integrations.React>
 
+<Integrations.Svelte>
+
+`@micro-stacks/svelte` exports a function for this: `getOpenSignMessage`. The function returns a
+callback, `openSignMessage` which takes a `message` of type `string` value. `isRequestPending` is
+also returned, a boolean value to denote if there is a current request open (meaning the use has
+already requested a signature). The pending state is handled all internally for every wallet
+request, so you don't need to manually handle any loading logic.
+
+As with all of the functions that interact with the wallet, you can also pass an `onFinish` and
+`onCancel` callback.
+
+```jsx
+import { getOpenStxTokenTransfer } from '@micro-stacks/svelte';
+```
+
+</Integrations.Svelte>
+
+<Integrations.Vue>
+
+`@micro-stacks/vue` exports a hook for this: `useOpenSignMessage`. The hook returns a callback,
+`openSignMessage` which takes a `message` of type `string` value. `isRequestPending` is also
+returned, a boolean value to denote if there is a current request open (meaning the use has already
+requested a signature). The pending state is handled all internally for every wallet request, so you
+don't need to manually handle any loading logic.
+
+As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and
+`onCancel` callback.
+
+```jsx
+import { useOpenStxTokenTransfer } from '@micro-stacks/vue';
+```
+
+</Integrations.Vue>
+
+<Integrations.Solid>
+
+`@micro-stacks/solidjs` exports a hook for this: `useOpenSignMessage`. The hook returns a callback,
+`openSignMessage` which takes a `message` of type `string` value. `isRequestPending` is also
+returned, a boolean value to denote if there is a current request open (meaning the use has already
+requested a signature). The pending state is handled all internally for every wallet request, so you
+don't need to manually handle any loading logic.
+
+As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and
+`onCancel` callback.
+
+```jsx
+import { useOpenStxTokenTransfer } from '@micro-stacks/solidjs';
+```
+
+</Integrations.Solid>
+
 <Integrations.Vanilla>
-When using `@micro-stacks/client`, the `client` has a method for message signing: `signMessage`. This method interacts
-directly with a connected wallet. The method `signMessage` takes a `message` of type `string` value.
+
+When using `@micro-stacks/client`, the `client` has a method for message signing: `signMessage`.
+This method interacts directly with a connected wallet. The method `signMessage` takes a `message`
+of type `string` value.
 
 As with all of the hooks that interact with the wallet, you can also pass an `onFinish` and
 `onCancel` callback.
@@ -125,6 +183,27 @@ Below you will find a simple component that renders an input and a button, the m
 ```
 
 </Integrations.Svelte>
+
+<Integrations.Vue>
+
+```vue
+<script setup lang="ts">
+  import { useOpenSignMessage } from '@micro-stacks/vue';
+  import type { SignatureData } from 'micro-stacks/connect';
+
+  // using the experimental Reactivity Transform
+  // @see https://vuejs.org/guide/extras/reactivity-transform.html#reactivity-transform
+  const { openSignMessage } = $(useOpenSignMessage());
+
+  function onSignMessage() {
+    openSignMessage({
+      message: 'hello world',
+    });
+  }
+</script>
+```
+
+</Integrations.Vue>
 
 <Integrations.Solid>
 Below you will find a simple component that renders an input and a button. The input is captured in a signal using `createSignal`, and piped

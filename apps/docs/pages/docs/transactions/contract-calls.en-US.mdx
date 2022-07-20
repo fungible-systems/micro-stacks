@@ -21,16 +21,49 @@ blockchain.
 
 ## Usage
 
+<Integrations.React>
+
 `@micro-stacks/react` exports a hook that you will use to call contract functions:
 `useOpenContractCall`.
-
-<Integrations.React>
 
 ```tsx
 import { useOpenContractCall } from '@micro-stacks/react';
 ```
 
 </Integrations.React>
+
+<Integrations.Svelte>
+
+`@micro-stacks/svelte` exports a function that you will use to call contract functions:
+`getOpenContractCall`.
+
+```tsx
+import { getOpenContractCall } from '@micro-stacks/react';
+```
+
+</Integrations.Svelte>
+
+<Integrations.Vue>
+
+`@micro-stacks/vue` exports a hook that you will use to call contract functions:
+`useOpenContractCall`.
+
+```tsx
+import { useOpenContractCall } from '@micro-stacks/vue';
+```
+
+</Integrations.Vue>
+
+<Integrations.Solid>
+
+`@micro-stacks/solidjs` exports a hook that you will use to call contract functions:
+`useOpenContractCall`.
+
+```tsx
+import { useOpenContractCall } from '@micro-stacks/solidjs';
+```
+
+</Integrations.Solid>
 
 ### Parameters
 
@@ -100,3 +133,152 @@ export const MyContractCallTx = () => {
 ```
 
 </Integrations.React>
+
+<Integrations.Svelte>
+
+```svelte
+<script lang="ts">
+  const contractCall = getOpenContractCall();
+  const account = getAccount();
+
+  const functionArgs = [
+    uintCV(1234),
+    intCV(-234),
+    bufferCV(utf8ToBytes('hello, world')),
+    stringAsciiCV('hey-ascii'),
+    stringUtf8CV('hey-utf8'),
+    standardPrincipalCV('ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3'),
+    trueCV(),
+  ];
+
+  const postConditions = [
+    makeStandardSTXPostCondition($account.stxAddress!, FungibleConditionCode.LessEqual, '100'),
+  ];
+
+  const onClick = async () => {
+    await $contractCall.openContractCall({
+      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+      contractName: 'faker',
+      functionName: 'rawr',
+      functionArgs,
+      postConditions,
+      attachment: 'This is an attachment',
+      onFinish: data => {
+        console.log('finished contract call!', data);
+      },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
+    });
+  };
+</script>
+```
+
+</Integrations.Svelte>
+
+<Integrations.Vue>
+
+```vue
+<script setup lang="ts">
+  import { useOpenContractCall } from '@micro-stacks/vue';
+
+  // using the experimental Reactivity Transform
+  // @see https://vuejs.org/guide/extras/reactivity-transform.html#reactivity-transform
+  const { openContractCall, isRequestPending } = $(useOpenContractCall());
+  const { stxAddress } = $(getAccount());
+
+  // import from `micro-stacks/clarity`
+  const functionArgs = [
+    uintCV(1234),
+    intCV(-234),
+    bufferCV(utf8ToBytes('hello, world')),
+    stringAsciiCV('hey-ascii'),
+    stringUtf8CV('hey-utf8'),
+    standardPrincipalCV('ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3'),
+    trueCV(),
+  ];
+
+  const postConditions = [
+    makeStandardSTXPostCondition(stxAddress!, FungibleConditionCode.LessEqual, '100'),
+  ];
+
+  const onClick = async () => {
+    await openContractCall({
+      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+      contractName: 'faker',
+      functionName: 'rawr',
+      functionArgs,
+      postConditions,
+      attachment: 'This is an attachment',
+      onFinish: data => {
+        console.log('finished contract call!', data);
+      },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
+    });
+  };
+
+  const buttonLabel = isRequestPending ? 'Loading...' : 'Sign transaction';
+</script>
+```
+
+</Integrations.Vue>
+
+<Integrations.Solid>
+
+```tsx
+export const MyContractCallTx = () => {
+  const { openContractCall, isRequestPending } = useOpenContractCall();
+  const { stxAddress } = useAccount();
+  const [response, setResponse] = createSignal(null);
+
+  const functionArgs = [
+    uintCV(1234),
+    intCV(-234),
+    bufferCV(utf8ToBytes('hello, world')),
+    stringAsciiCV('hey-ascii'),
+    stringUtf8CV('hey-utf8'),
+    standardPrincipalCV('ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3'),
+    trueCV(),
+  ];
+
+  const handleOpenContractCall = async () => {
+    const postConditions = [
+      makeStandardSTXPostCondition(stxAddress()!, FungibleConditionCode.LessEqual, '100'),
+    ];
+
+    await openContractCall({
+      contractAddress: 'ST1X6M947Z7E58CNE0H8YJVJTVKS9VW0PHEG3NHN3',
+      contractName: 'faker',
+      functionName: 'rawr',
+      functionArgs,
+      postConditions,
+      attachment: 'This is an attachment',
+      onFinish: async data => {
+        console.log('finished contract call!', data);
+        setResponse(data);
+      },
+      onCancel: () => {
+        console.log('popup closed!');
+      },
+    });
+  };
+
+  const buttonLabel = () => (isRequestPending() ? 'request pending...' : 'Call Contract');
+
+  return (
+    <div>
+      <h4>Faker contract call</h4>
+      <Show if={response()}>
+        <pre>
+          <code>{JSON.stringify(response, null, 2)}</code>
+        </pre>
+      </Show>
+      <button onClick={() => handleOpenContractCall()}>{buttonLabel()}</button>
+    </div>
+  );
+};
+```
+
+</Integrations.Solid>

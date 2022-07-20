@@ -37,8 +37,8 @@ In most cases, the flow for a sponsored transactions is:
 
 In order to implement sponsored transactions, you **must** include the `sponsored: true` parameter.
 Each of the transaction signing functions support this parameter. When this option is included, the
-transaction payload is signed slightly differently. Additionally, the transaction is not immediately
-broadcasted.
+transaction payload is signed slightly differently. Additionally, the transaction will not be
+immediately broadcast.
 
 <Integrations.React>
 
@@ -61,6 +61,65 @@ export const ContractCall = () => {
 ```
 
 </Integrations.React>
+
+<Integrations.Svelte>
+
+```svelte {9}
+<script lang="ts">
+  import { getOpenContractCall } from "@micro-stacks/svelte";
+
+  const contractCall = getOpenStxTokenTransfer();
+
+  function onClick() {
+   $contractCall.openContractCall({
+     ...params, // all the usual parameters
+     sponsored: true,
+   });
+  }
+</script>
+```
+
+</Integrations.Svelte>
+
+<Integrations.Vue>
+
+```vue {9}
+<script lang="ts">
+  import { useOpenContractCall } from '@micro-stacks/vue';
+
+  const { openContractCall } = useOpenContractCall();
+
+  const onClick = () => {
+    openContractCall({
+      ...params, // all the usual parameters
+      sponsored: true,
+    });
+  };
+</script>
+```
+
+</Integrations.Vue>
+
+<Integrations.Solid>
+
+```tsx {9}
+import { useOpenContractCall } from '@micro-stacks/solidjs';
+
+export const ContractCall = () => {
+  const { openContractCall } = useOpenContractCall();
+
+  const onClick = () => {
+    openContractCall({
+      ...params, // all the usual parameters
+      sponsored: true,
+    });
+  };
+
+  return <button onClick={onClick}>Sign Transaction</button>;
+};
+```
+
+</Integrations.Solid>
 
 <Integrations.Vanilla>
 
