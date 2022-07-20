@@ -8,117 +8,13 @@
   ],
   "exports": {
     "./package.json": "./dist/package.json",
-    "./api": {
-      "types": "./dist/api.d.ts",
-      "node-addons": "./dist/api.mjs",
-      "node": "./dist/api.mjs",
-      "import": "./dist/api.mjs",
-      "require": "./dist/api.js",
-      "default": "./dist/api.mjs"
-    },
-    "./connect": {
-      "types": "./dist/connect.d.ts",
-      "node-addons": "./dist/connect.mjs",
-      "node": "./dist/connect.mjs",
-      "import": "./dist/connect.mjs",
-      "require": "./dist/connect.js",
-      "default": "./dist/connect.mjs"
-    },
-    "./common": {
-      "types": "./dist/common.d.ts",
-      "node-addons": "./dist/common.mjs",
-      "node": "./dist/common.mjs",
-      "import": "./dist/common.mjs",
-      "require": "./dist/common.js",
-      "default": "./dist/common.mjs"
-    },
-    "./clarity": {
-      "types": "./dist/clarity.d.ts",
-      "node-addons": "./dist/clarity.mjs",
-      "node": "./dist/clarity.mjs",
-      "import": "./dist/clarity.mjs",
-      "require": "./dist/clarity.js",
-      "default": "./dist/clarity.mjs"
-    },
-    "./crypto": {
-      "types": "./dist/crypto.d.ts",
-      "node-addons": "./dist/crypto.mjs",
-      "node": "./dist/crypto.mjs",
-      "import": "./dist/crypto.mjs",
-      "require": "./dist/crypto.js",
-      "default": "./dist/crypto.mjs"
-    },
-    "./crypto-aes": {
-      "types": "./dist/crypto-aes.d.ts",
-      "node-addons": "./dist/crypto-aes.mjs",
-      "node": "./dist/crypto-aes.mjs",
-      "import": "./dist/crypto-aes.mjs",
-      "require": "./dist/crypto-aes.js",
-      "default": "./dist/crypto-aes.mjs"
-    },
-    "./crypto-sha": {
-      "types": "./dist/crypto-sha.d.ts",
-      "node-addons": "./dist/crypto-sha.mjs",
-      "node": "./dist/crypto-sha.mjs",
-      "import": "./dist/crypto-sha.mjs",
-      "require": "./dist/crypto-sha.js",
-      "default": "./dist/crypto-sha.mjs"
-    },
-    "./crypto-pbkdf2": {
-      "types": "./dist/crypto-pbkdf2.d.ts",
-      "node-addons": "./dist/crypto-pbkdf2.mjs",
-      "node": "./dist/crypto-pbkdf2.mjs",
-      "import": "./dist/crypto-pbkdf2.mjs",
-      "require": "./dist/crypto-pbkdf2.js",
-      "default": "./dist/crypto-pbkdf2.mjs"
-    },
-    "./crypto-hmac-sha": {
-      "types": "./dist/crypto-hmac-sha.d.ts",
-      "node-addons": "./dist/crypto-hmac-sha.mjs",
-      "node": "./dist/crypto-hmac-sha.mjs",
-      "import": "./dist/crypto-hmac-sha.mjs",
-      "require": "./dist/crypto-hmac-sha.js",
-      "default": "./dist/crypto-hmac-sha.mjs"
-    },
-    "./network": {
-      "types": "./dist/network.d.ts",
-      "node-addons": "./dist/network.mjs",
-      "node": "./dist/network.mjs",
-      "import": "./dist/network.mjs",
-      "require": "./dist/network.js",
-      "default": "./dist/network.mjs"
-    },
-    "./storage": {
-      "types": "./dist/storage.d.ts",
-      "node-addons": "./dist/storage.mjs",
-      "node": "./dist/storage.mjs",
-      "import": "./dist/storage.mjs",
-      "require": "./dist/storage.js",
-      "default": "./dist/storage.mjs"
-    },
-    "./transactions": {
-      "types": "./dist/transactions.d.ts",
-      "node-addons": "./dist/transactions.mjs",
-      "node": "./dist/transactions.mjs",
-      "import": "./dist/transactions.mjs",
-      "require": "./dist/transactions.js",
-      "default": "./dist/transactions.mjs"
-    },
-    "./wallet-sdk": {
-      "types": "./dist/wallet-sdk.d.ts",
-      "node-addons": "./dist/wallet-sdk.mjs",
-      "node": "./dist/wallet-sdk.mjs",
-      "import": "./dist/wallet-sdk.mjs",
-      "require": "./dist/wallet-sdk.js",
-      "default": "./dist/wallet-sdk.mjs"
-    },
-    "./zone-file": {
-      "types": "./dist/zone-file.d.ts",
-      "node-addons": "./dist/zone-file.mjs",
-      "node": "./dist/zone-file.mjs",
-      "import": "./dist/zone-file.mjs",
-      "require": "./dist/zone-file.js",
-      "default": "./dist/zone-file.mjs"
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "node-addons": "./dist/esm/*.js",
+      "node": "./dist/esm/*.js",
+      "import": "./dist/esm/*.js",
+      "require": "./dist/*.js",
+      "default": "./dist/esm/*.js"
     }
   },
   "sideEffects": false,
@@ -146,13 +42,7 @@
     }
   },
   "engines": {
-    "node": ">=12"
-  },
-  "prettier": "@stacks/prettier-config",
-  "lint-staged": {
-    "*.{js,ts,tsx,md}": [
-      "prettier --write"
-    ]
+    "node": ">=14"
   },
   "repository": {
     "type": "git",
