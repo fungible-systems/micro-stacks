@@ -8,13 +8,117 @@
   ],
   "exports": {
     "./package.json": "./package.json",
-    "./*": {
-      "types": "./*.d.ts",
-      "node-addons": "./*.mjs",
-      "node": "./*.mjs",
-      "import": "./*.mjs",
-      "require": "./dist/*.js",
-      "default": "./*.mjs"
+    "./api": {
+      "types": "./api.d.ts",
+      "module": "./api.mjs",
+      "main": "./api.mjs",
+      "import": "./api.mjs",
+      "react-native": "./api.js",
+      "default": "./api.js"
+    },
+    "./connect": {
+      "types": "./connect.d.ts",
+      "module": "./connect.mjs",
+      "main": "./connect.mjs",
+      "import": "./connect.mjs",
+      "react-native": "./connect.js",
+      "default": "./connect.js"
+    },
+    "./common": {
+      "types": "./common.d.ts",
+      "module": "./common.mjs",
+      "main": "./common.mjs",
+      "import": "./common.mjs",
+      "react-native": "./common.js",
+      "default": "./common.js"
+    },
+    "./clarity": {
+      "types": "./clarity.d.ts",
+      "module": "./clarity.mjs",
+      "main": "./clarity.mjs",
+      "import": "./clarity.mjs",
+      "react-native": "./clarity.js",
+      "default": "./clarity.js"
+    },
+    "./crypto": {
+      "types": "./crypto.d.ts",
+      "module": "./crypto.mjs",
+      "main": "./crypto.mjs",
+      "import": "./crypto.mjs",
+      "react-native": "./crypto.js",
+      "default": "./crypto.js"
+    },
+    "./crypto-aes": {
+      "types": "./crypto-aes.d.ts",
+      "module": "./crypto-aes.mjs",
+      "main": "./crypto-aes.mjs",
+      "import": "./crypto-aes.mjs",
+      "react-native": "./crypto-aes.js",
+      "default": "./crypto-aes.js"
+    },
+    "./crypto-sha": {
+      "types": "./crypto-sha.d.ts",
+      "module": "./crypto-sha.mjs",
+      "main": "./crypto-sha.mjs",
+      "import": "./crypto-sha.mjs",
+      "react-native": "./crypto-sha.js",
+      "default": "./crypto-sha.js"
+    },
+    "./crypto-pbkdf2": {
+      "types": "./crypto-pbkdf2.d.ts",
+      "module": "./crypto-pbkdf2.mjs",
+      "main": "./crypto-pbkdf2.mjs",
+      "import": "./crypto-pbkdf2.mjs",
+      "react-native": "./crypto-pbkdf2.js",
+      "default": "./crypto-pbkdf2.js"
+    },
+    "./crypto-hmac-sha": {
+      "types": "./crypto-hmac-sha.d.ts",
+      "module": "./crypto-hmac-sha.mjs",
+      "main": "./crypto-hmac-sha.mjs",
+      "import": "./crypto-hmac-sha.mjs",
+      "react-native": "./crypto-hmac-sha.js",
+      "default": "./crypto-hmac-sha.js"
+    },
+    "./network": {
+      "types": "./network.d.ts",
+      "module": "./network.mjs",
+      "main": "./network.mjs",
+      "import": "./network.mjs",
+      "react-native": "./network.js",
+      "default": "./network.js"
+    },
+    "./storage": {
+      "types": "./storage.d.ts",
+      "module": "./storage.mjs",
+      "main": "./storage.mjs",
+      "import": "./storage.mjs",
+      "react-native": "./storage.js",
+      "default": "./storage.js"
+    },
+    "./transactions": {
+      "types": "./transactions.d.ts",
+      "module": "./transactions.mjs",
+      "main": "./transactions.mjs",
+      "import": "./transactions.mjs",
+      "react-native": "./transactions.js",
+      "default": "./transactions.js"
+    },
+    "./wallet-sdk": {
+      "types": "./wallet-sdk.d.ts",
+      "module": "./wallet-sdk.mjs",
+      "main": "./wallet-sdk.mjs",
+      "import": "./wallet-sdk.mjs",
+      "react-native": "./wallet-sdk.js",
+      "default": "./wallet-sdk.js"
+    },
+    "./zone-file": {
+      "types": "./zone-file.d.ts",
+      "module": "./zone-file.mjs",
+      "main": "./zone-file.mjs",
+      "import": "./zone-file.mjs",
+      "react-native": "./zone-file.js",
+      "default": "./zone-file.js"
     }
   },
   "sideEffects": false,
