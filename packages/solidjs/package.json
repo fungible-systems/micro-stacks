@@ -1,7 +1,7 @@
 {
   "name": "@micro-stacks/solidjs",
   "private": false,
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0",
   "description": "Opinionated Solid.js integration for micro-stacks.",
   "files": [
     "dist"
