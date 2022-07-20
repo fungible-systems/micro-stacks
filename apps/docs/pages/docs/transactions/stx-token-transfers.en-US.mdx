@@ -31,6 +31,33 @@ import { useOpenStxTokenTransfer } from '@micro-stacks/react';
 
 </Integrations.React>
 
+<Integrations.Svelte>
+`@micro-stacks/svelte` exports a function that you will use to call contract functions: `getOpenStxTokenTransfer`.
+
+```jsx
+import { getOpenStxTokenTransfer } from '@micro-stacks/svelte';
+```
+
+</Integrations.Svelte>
+
+<Integrations.Vue>
+`@micro-stacks/vue` exports a hook that you will use to call contract functions: `useOpenStxTokenTransfer`.
+
+```jsx
+import { useOpenStxTokenTransfer } from '@micro-stacks/vue';
+```
+
+</Integrations.Vue>
+
+<Integrations.Solid>
+`@micro-stacks/solidjs` exports a hook that you will use to call contract functions: `useOpenStxTokenTransfer`.
+
+```jsx
+import { useOpenStxTokenTransfer } from '@micro-stacks/solidjs';
+```
+
+</Integrations.Solid>
+
 ### Parameters
 
 - `recipient`: The recipient of the token transfer (can be either standard principal or contract
@@ -59,3 +86,69 @@ const MyComponent = () => {
 ```
 
 </Integrations.React>
+
+<Integrations.Svelte>
+
+```svelte
+<script lang="ts">
+  import { getOpenStxTokenTransfer } from "@micro-stacks/svelte";
+
+  const stxTransfer = getOpenStxTokenTransfer();
+
+  $: buttonLabel = $stxTransfer.isRequestPending ? "Loading...": "Sign transaction";
+
+  function onClick() {
+    await stxTransfer.openStxTokenTransfer({
+      recipient: 'SP000000000000000000002Q6VF78',
+      amount: 20n, // 0.00002 STX
+      memo: 'hello world',
+    });
+  }
+</script>
+```
+
+</Integrations.Svelte>
+
+<Integrations.Vue>
+
+```vue
+<script setup lang="ts">
+  import { useOpenStxTokenTransfer } from '@micro-stacks/vue';
+
+  // using the experimental Reactivity Transform
+  // @see https://vuejs.org/guide/extras/reactivity-transform.html#reactivity-transform
+  const { openStxTokenTransfer, isRequestPending } = $(useOpenStxTokenTransfer());
+
+  const onClick = async () => {
+    await openStxTokenTransfer({
+      recipient: 'SP000000000000000000002Q6VF78',
+      amount: 20n, // 0.00002 STX
+      memo: 'hello world',
+    });
+  };
+
+  const buttonLabel = isRequestPending ? 'Loading...' : 'Sign transaction';
+</script>
+```
+
+</Integrations.Vue>
+
+<Integrations.Solid>
+
+```ts
+import { useOpenStxTokenTransfer } from '@micro-stacks/solidjs';
+
+const MyComponent = () => {
+  const { openStxTokenTransfer } = useOpenStxTokenTransfer();
+
+  const handleTokenTransfer = async () => {
+    openStxTokenTransfer({
+      recipient: 'SP000000000000000000002Q6VF78',
+      amount: 20n, // 0.00002 STX
+      memo: 'hello world',
+    });
+  };
+};
+```
+
+</Integrations.Solid>
