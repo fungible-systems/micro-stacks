@@ -26,7 +26,6 @@ export default defineConfig(
     outDir: 'dist',
     splitting: true,
     treeshake: true,
-    legacyOutput: true,
     clean: true,
     target: 'node16',
     external,

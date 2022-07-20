@@ -22,7 +22,7 @@
     "prebuild": "shx rm -rf dist",
     "build": "tsup-node",
     "postbuild": "pnpm copy",
-    "copy": "shx cp package.json dist && json -I -f dist/package.json -e \"this.private=false; this.devDependencies=undefined; this.optionalDependencies=undefined; this.scripts=undefined; this.husky=undefined; this.prettier=undefined; this.jest=undefined; this['lint-staged']=undefined;\"",
+    "copy": "shx cp package.json dist && json -I -f dist/package.json -e \"this.files=['**']; this.private=false; this.devDependencies=undefined; this.optionalDependencies=undefined; this.scripts=undefined; this.husky=undefined; this.prettier=undefined; this.jest=undefined; this['lint-staged']=undefined;\"",
     "dev:publish": "yalc publish dist --push",
     "dev:build": "pnpm build && pnpm dev:publish",
     "prepublish:beta": "pnpm build",
