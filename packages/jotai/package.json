@@ -1,7 +1,7 @@
 {
   "name": "@micro-stacks/jotai",
   "private": false,
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Opinionated React integration for micro-stacks.",
   "files": [
     "dist"
