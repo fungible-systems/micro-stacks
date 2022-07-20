@@ -1,18 +1,32 @@
 ---
 title: Announcing micro-stacks v1.0.0
+description:
+  With the release of micro-stacks v1 comes many new improvements and framework libraries for React,
+  Vue, Svelte, and Solidjs.
+image: 'https://micro-stacks.dev/assets/blog/announcing-v1.png'
 ---
 
-# Announcing v1
+import { InstallTabs } from 'components/install-tabs';
+import * as Integrations from 'components/integrations-tabs';
+import Callout from 'nextra-theme-docs/callout';
 
-Today I'm very happy to announce the release of `micro-stacks` v1.0.0! `micro-stacks` has been a
-nights and weekends project for me for over a year, first starting as a project to better understand
-the inner-workings of Stacks and to be able to build apps with modern frontend tooling like Vite and
-SkyPack.
+![Announcing V1](/assets/blog/announcing-v1.png)
 
-For those unaware, `micro-stacks` is a collection of JavaScript/TypeScript libraries for building
-robust Stacks based apps.
+<br />
 
-With this release, there are many important updates that I'm excited to share.
+# Announcing micro-stacks v1 and more!
+
+Today I'm very happy to announce the release of `micro-stacks@1.0.0` (and a bunch of new libraries)!
+
+This has been a nights and weekends project for me for over a year and a half, first starting as a
+project to better understand the inner-workings of Stacks and to be able to build apps with modern
+frontend tooling like Vite and SkyPack. Now `micro-stacks` is my go-to tooling for building modern,
+robust Stacks applications and programs, along with the fine folks at [Gamma](https://gamma.io),
+[Ryder](https://www.ryder.id/), [StackerDAOs](https://stackerdaos.com/),
+[CityCoins](https://www.citycoins.co/), [Mechanism](https://mechanism.so),
+[Zest](https://www.zestprotocol.com/), and more.
+
+With this release, there are many important updates that I'm excited to share!
 
 ## tl;dr
 
@@ -23,8 +37,8 @@ With this release, there are many important updates that I'm excited to share.
   - Svelte - `@micro-stacks/svelte`
   - Vue - `@micro-stacks/vue`
   - Solidjs - `@micro-stacks/solidjs`
-- new docs -> [check them out!](https://micro-stacks.dev/docs/overview)
-- new examples and `yarn create ustx`
+- brand new docs -> [check them out!](/docs/overview)
+- new guides, example projects, and `npx create-ustx`
 - security audit for core library
 
 ## New client library
@@ -67,37 +81,73 @@ authentication, transaction signing, message signing, and storage!
 ## Starter kits
 
 In addition to new framework-specific bindings, there are now up-to-date examples for all of these
-frameworks. You can explore these projects here, or get started today by running `yarn create ustx`
-to scaffold out any of these starter kits:
+frameworks. You can explore the source files for
+[these projects here](https://github.com/fungible-systems/micro-stacks-examples).
 
-**React**
+In addition to viewing the examples on GitHub, you can quickly create a new Stacks app with this
+command: `npx create-ustx` or with your package manager of choice:
 
-- react _(javascript)_
-- react-ts _(typescript)_
-- next.js _(typescript)_
-- remix _(typescript)_
+<InstallTabs isCreate>ustx</InstallTabs>
 
-**Vue**
+### Example projects
 
-- vue _(javascript)_
-- vue-ts _(typescript)_
+#### React & Preact
+
+React has always been widely supported by micro-stacks, but now there are specific examples and
+design choices made to support new features like React 18 concurrent mode and more!
+
+- [React](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-react)
+  _(javascript)_
+- [React](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-react-ts)
+  _(typescript)_
+- [React with Jotai](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-react-jotai-ts)
+  _(typescript)_
+- [Next.js](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-nextjs)
+  _(typescript)_
+- [Remix](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-remix)
+  _(typescript)_
+- [Preact](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-preact)
+  _(javascript)_
+- [Preact](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-preact-ts)
+  _(typescript)_
+
+#### Vue
+
+Vue is a very popular frontend framer that many Stackers want to use to build out Stacks apps.
+`@micro-stacks/vue` exposes the same API as the React bindings, but made for Vue and the reactive
+stores found within Vue.
+
+- [Vue](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-vue)
+  _(javascript)_
+- [Vue](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-vue-ts)
+  _(typescript)_
 - nuxt coming soon _(typescript)_
 
-**Preact**
+#### Svelte
 
-- preact _(javascript)_
-- preact-ts
+Svelte is a framework created by [Rich Harris](https://twitter.com/Rich_Harris) that is quite
+popular and is also sponsored by Vercel. Many teams in the Stacks ecosystem opt for Svelte (or
+SvelteKit) because they prefer the fundamentals of the framework and care about frontend
+performance. `@micro-stacks/svelte` is built specifically for Svelte stores and follows the
+conventions such that developers familiar with Svelte should have no issue picking this library up.
 
-**Solid**
+- [Svelte](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-svelte)
+  _(javascript)_
+- [Svelte](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-svelte-ts)
+  _(typescript)_
+- [SvelteKit](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-sveltekit)
+  _(typescript)_
 
-- solidjs _(javascript)_
-- solidjs-ts
+#### Solid
 
-**Svelte**
+Solid.js is a new up and coming reactive javascript framework that boasts insane performance spects
+and shares a similar API to React/Preact. `@micro-stacks/solidjs` shares the same API as the react
+package, but built specific for how Solidjs handles state and updates.
 
-- svelte _(javascript)_
-- svelte-ts _(typescript)_
-- sveltekit _(typescript)_
+- [Solid.js](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-solidjs)
+  _(javascript)_
+- [Solid.js](https://github.com/fungible-systems/micro-stacks-examples/tree/main/examples/with-solidjs-ts)
+  _(typescript)_
 
 ## New documentation
 
@@ -105,8 +155,24 @@ In addition to the new starter kits, the documentation for `micro-stacks` has be
 re-written from the ground up, with a focus on the most common path a developer will take when
 building out a new Stacks app.
 
-Additionally, there are more in-depth guides around building apps with meta-frameworks like Remix
-and Next.js.
+Every section within the docs contain content specific to whichever library you're looking to use:
+React, Svelte, Vue, Solid, or the Vanilla client module. Each framework integration will have its
+own set of examples specific to the library you've selected. Here is an overview of the new content:
+
+- [Authentication](/docs/authentication)
+- [Networks](/docs/getting-started/networks)
+- [Advanced patterns & SSR](/docs/getting-started/advanced-patterns)
+- [Transaction signing](/docs/transactions)
+- [Sponsored transactions](/docs/transactions/sponsored-transactions)
+- [Working with Post Conditions](/docs/transactions/working-with-post-conditions)
+- [Message signing (SIP-018)](/docs/message-signing)
+- [Gaia & storage](/docs/storage)
+
+Outside of the common patterns and features of most apps, there are two new in-depth guides that you
+can check out if you're building a React-based Stacks app:
+
+- [Building a Remix app](/guides/with-remix)
+- [Building a Next.js app](/guides/with-nextjs)
 
 ## Security audit
 
@@ -120,10 +186,11 @@ My primary goal in working on `micro-stacks` and all of the additional libraries
 always been to help folks build better Stacks apps. With that in mind, there is so much more I'm
 excited to build:
 
-- Example apps with Sponsored Transactions
-- Example apps with Clarinet built-in
-- New ways to build Post Conditions
-- New tooling to work with projects like `clarigen`
+- Example apps with [Sponsored Transactions](/docs/transactions/sponsored-transactions)
+- Example apps with [Clarinet](https://github.com/hirosystems/clarinet) built-in
+- New ways to build [Post Conditions](/docs/transactions/working-with-post-conditions)
+- New tooling to work with projects like [`clarigen`](https://github.com/mechanismHQ/clarigen)
+- Advanced recipes and more tooling improvements
 - and much more!
 
 Thanks for reading and please reach out with any questions/comments/feature requests
