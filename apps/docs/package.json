@@ -17,7 +17,7 @@
     "@radix-ui/react-tabs": "0.1.5",
     "@tailwindcss/typography": "0.5.4",
     "fathom-client": "3.5.0",
-    "jotai": "1.7.5",
+    "jotai": "1.7.6",
     "next": "12.2.2",
     "nextra": "2.0.0-alpha.56",
     "nextra-theme-docs": "2.0.0-alpha.59",
