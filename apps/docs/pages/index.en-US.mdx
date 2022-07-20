@@ -6,6 +6,7 @@ import Callout from 'nextra-theme-docs/callout';
 import Bleed from 'nextra-theme-docs/bleed';
 import * as Integrations from 'components/integrations-tabs';
 import { Logo } from 'components/logo';
+import * as Overview from 'components/overview';
 
 {<h1 className="text-center font-extrabold md:text-5xl mt-8">
 
@@ -25,65 +26,16 @@ interact with Stacks based wallets, construct transactions, post conditions, and
   · [Core](/reference/core) · [GitHub](https://github.com/fungible-systems/micro-stacks)
 </div>
 
-## Overview
+<br />
+<br />
 
-<Integrations.Tabs />
-
-<Integrations.React>
-
-```tsx
-import { useAuth } from '@micro-stacks/react';
-
-export const WalletConnectButton = () => {
-  const { openAuthRequest, isRequestPending, signOut, isSignedIn } = useAuth();
-  const label = isRequestPending ? 'Loading...' : isSignedIn ? 'Sign out' : 'Connect Stacks wallet';
-  return (
-    <button
-      onClick={async () => {
-        if (isSignedIn) await signOut();
-        else await openAuthRequest();
-      }}
-    >
-      {label}
-    </button>
-  );
-};
-```
-
-In this example, we've imported the `useAuth` hook and created a simple `WalletConnect` style
-button. This is all you need to add web3 style Stacks authentication to your app!
-
-</Integrations.React>
-
-<Integrations.Vanilla>
-
-```typescript
-import { createClient } from '@micro-stacks/client';
-
-const client = createClient({
-  appName: 'My cool app',
-  appIconUrl: 'https://mycool.app/my-cool-app-logo.png',
-});
-
-const authenticate = async () => {
-  await client.authenticate({
-    onFinish: async () => {
-      await client.signMessage({
-        message: 'hello world',
-        onFinish: payload => console.log(payload),
-      });
-    },
-  });
-};
-```
-
-In this example, we've imported `createClient` from `@micro-stacks/client`, created a new `client`,
-and then requested the user authenticate, and once authentication completes, will be requested to
-sign a message. This is all you need to add web3 style Stacks authentication to your app!
-
-</Integrations.Vanilla>
-
-Want to learn more? [Get Started](/docs/getting-started) with `micro-stacks`.
+<Overview.Grid columns={2}>
+  <Overview.GetStarted />
+  <Overview.Authentication />
+  <Overview.TransactionSigning />
+  <Overview.MessageSigning />
+  <Overview.PostConditions />
+</Overview.Grid>
 
 ## Features
 
@@ -93,10 +45,11 @@ Want to learn more? [Get Started](/docs/getting-started) with `micro-stacks`.
 - Un-opinionated core
 - Robust framework integrations
   - React
-  - Svelte _(coming soon)_
-  - Vue _(coming soon)_
+  - Svelte
+  - Vue
+  - Solidjs
   - React Jotai
-- Built from the ground up to work with Wallet-based authentication
+- Built from the ground up to work with wallet-based authentication
 - Highly typed -- written in typescript
 - Well tested
 - Audited
