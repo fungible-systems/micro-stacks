@@ -54,7 +54,7 @@ export const clientState = atom<MicroStacksClient>(get => {
  */
 
 // this goes below `ClientProvider` in your app
-export const JotaiClientProvider: React.FC<PropsWithChildren<void>> = ({ children }) => {
+export const JotaiClientProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const client = useMicroStacksClient();
 
   const props = useMemo(
