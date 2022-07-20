@@ -1,6 +1,6 @@
-import { defineConfig } from 'tsup';
+import type { Options } from 'tsup';
 
-export default defineConfig({
+export const DEFAULT_CONFIG_OPTIONS: Options = {
   format: ['cjs', 'esm'],
   outDir: 'dist',
   splitting: true,
@@ -25,4 +25,4 @@ export default defineConfig({
   minifyIdentifiers: true,
   minifySyntax: true,
   minifyWhitespace: true,
-});
+};

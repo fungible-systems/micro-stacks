@@ -1,7 +1,7 @@
 {
   "name": "@micro-stacks/client",
   "private": false,
-  "version": "1.0.0-beta.11",
+  "version": "1.0.0-beta.12",
   "description": "Session client for Stacks apps using micro-stacks",
   "files": [
     "dist"
@@ -10,28 +10,18 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "import": "./dist/index.mjs",
-  "browser": "./dist/index.global.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
       "main": "./dist/index.js",
       "module": "./dist/index.mjs",
-      "import": "./dist/index.mjs",
-      "browser": "./dist/index.global.js"
-    },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "require": "./dist/*.js",
-      "main": "./dist/*.js",
-      "module": "./dist/*.mjs",
-      "import": "./dist/*.mjs",
-      "browser": "./dist/*.global.js"
+      "import": "./dist/index.mjs"
     }
   },
   "sideEffects": false,
   "scripts": {
-    "build": "tsup src/index.ts --config ../../configs/tsup.config.ts --format=cjs,esm,iife",
+    "build": "tsup src/index.ts",
     "typecheck": "tsc --noEmit --target esnext",
     "dev:publish": "yalc publish --push",
     "dev:build": "pnpm build && yalc publish --push",
@@ -48,7 +38,7 @@
   "prettier": "@stacks/prettier-config",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aulneau/micro-stacks-monorepo.git"
+    "url": "git+https://github.com/aulneau/micro-stacks.git"
   },
   "keywords": [
     "stacks",
@@ -59,9 +49,9 @@
   "contributors": [],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fungible-systems/micro-stacks-monorepo/issues"
+    "url": "https://github.com/fungible-systems/micro-stacks/issues"
   },
-  "homepage": "https://github.com/fungible-systems/micro-stacks-monorepo",
+  "homepage": "https://github.com/fungible-systems/micro-stacks",
   "devDependencies": {
     "@stacks/stacks-blockchain-api-types": "4.1.0",
     "@types/common-tags": "1.8.1",

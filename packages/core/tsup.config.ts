@@ -16,6 +16,7 @@ const modules = [
   'wallet-sdk',
   'zone-file',
 ];
+
 const external = modules.map(module => `micro-stacks/${module}`);
 
 export default defineConfig(
