@@ -1,29 +1,32 @@
 {
   "name": "micro-stacks",
   "private": false,
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-beta.7",
   "description": "Tiny libraries for building Stacks apps.",
   "files": [
     "dist"
   ],
   "exports": {
-    "./package.json": "./dist/package.json",
+    "./package.json": "./package.json",
     "./*": {
-      "types": "./dist/*.d.ts",
-      "node-addons": "./dist/esm/*.js",
-      "node": "./dist/esm/*.js",
-      "import": "./dist/esm/*.js",
+      "types": "./*.d.ts",
+      "node-addons": "./*.mjs",
+      "node": "./*.mjs",
+      "import": "./*.mjs",
       "require": "./dist/*.js",
-      "default": "./dist/esm/*.js"
+      "default": "./*.mjs"
     }
   },
   "sideEffects": false,
   "scripts": {
-    "build": "tsup",
+    "prebuild": "shx rm -rf dist",
+    "build": "tsup-node",
+    "postbuild": "pnpm copy",
+    "copy": "shx cp package.json dist && json -I -f dist/package.json -e \"this.private=false; this.devDependencies=undefined; this.optionalDependencies=undefined; this.scripts=undefined; this.husky=undefined; this.prettier=undefined; this.jest=undefined; this['lint-staged']=undefined;\"",
     "dev:publish": "yalc publish dist --push",
     "dev:build": "pnpm build && pnpm dev:publish",
     "prepublish:beta": "pnpm build",
-    "publish:beta": "pnpm publish --tag beta",
+    "publish:beta": "pnpm publish dist --tag beta",
     "ci:publish": "pnpm build && pnpm publish --no-git-checks --access public",
     "ci:version": "pnpm changeset version && pnpm install --no-frozen-lockfile && git add .",
     "eslint": "eslint --fix '{src,tests}/**/*.{js,ts,jsx,tsx}'",
