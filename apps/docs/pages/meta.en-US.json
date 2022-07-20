@@ -18,5 +18,10 @@
     "theme": {
       "sidebar": false
     }
+  },
+  "reference": {
+    "title": "Reference",
+    "type": "page",
+    "hidden": true
   }
 }
