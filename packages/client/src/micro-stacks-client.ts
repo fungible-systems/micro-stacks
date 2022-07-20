@@ -31,6 +31,9 @@ import { Status, StatusKeys, STORE_KEY, TxType } from './common/constants';
 import {
   c32address,
   c32addressDecode,
+  decryptContent,
+  encryptContent,
+  EncryptContentOptions,
   privateKeyToBase58Address,
   StacksNetworkVersion,
 } from 'micro-stacks/crypto';
@@ -44,7 +47,7 @@ export class MicroStacksClient {
   storage: ClientStorage;
   store: Mutate<
     StoreApi<State>,
-    [['zustand/subscribeWithSelector', never], ['zustand/persist', Partial<State>]]
+    [['zustand/subscribeWithSelector', never], ['zustand/persist', State]]
   >;
   debug?: DebugOptions;
   fetcher: (input: RequestInfo, init?: RequestInit) => Promise<Response>;
@@ -303,15 +306,16 @@ export class MicroStacksClient {
     return this.statuses()[StatusKeys.StructuredMessageSigning];
   };
 
-  async handleNoStacksProviderFound() {
+  handleNoStacksProviderFound() {
     if (typeof this.getStacksProvider() === 'undefined') {
       if (typeof this.onNoWalletFound !== 'undefined') {
-        await this.onNoWalletFound();
-        return;
+        void this.onNoWalletFound();
+        return false;
       }
       invariantWithMessage(this.getStacksProvider(), MicroStacksErrors.StacksProviderNotFund);
-      return;
+      return false;
     }
+    return true;
   }
 
   /** ------------------------------------------------------------------------------------------------------------------
@@ -333,7 +337,7 @@ export class MicroStacksClient {
     onFinish?: (session: Omit<StacksSessionState, 'profile'>) => void;
     onCancel?: (error?: Error) => void;
   }) => {
-    await this.handleNoStacksProviderFound();
+    if (!this.handleNoStacksProviderFound()) return;
 
     // first we need to make sure these are available
     const appDetails = this.selectAppDetails(this.getState());
@@ -414,7 +418,7 @@ export class MicroStacksClient {
     nonce: string;
     version?: string;
   }) => {
-    void this.handleNoStacksProviderFound();
+    if (!this.handleNoStacksProviderFound()) return;
 
     const state = this.getState();
     const appDetails = this.selectAppDetails(state);
@@ -444,7 +448,7 @@ export class MicroStacksClient {
    */
 
   signTransaction: SignTransactionRequest = async (type, params) => {
-    await this.handleNoStacksProviderFound();
+    if (!this.handleNoStacksProviderFound()) return;
 
     const state = this.getState();
     const appDetails = this.selectAppDetails(state);
@@ -461,10 +465,10 @@ export class MicroStacksClient {
     let result: FinishedTxData | undefined;
 
     const sharedParams = {
-      appDetails: appDetails,
       privateKey: account.appPrivateKey,
-      stxAddress: stxAddress,
-      network: network,
+      appDetails,
+      stxAddress,
+      network,
       postConditionMode: params.postConditionMode,
       postConditions: params.postConditions,
       attachment: params.attachment,
@@ -505,7 +509,7 @@ export class MicroStacksClient {
    */
 
   signMessage = async (params: SignedOptionsWithOnHandlers<{ message: string }>) => {
-    await this.handleNoStacksProviderFound();
+    if (!this.handleNoStacksProviderFound()) return;
 
     const state = this.getState();
     const appDetails = this.selectAppDetails(state);
@@ -524,7 +528,7 @@ export class MicroStacksClient {
       appDetails: appDetails,
       privateKey: account.appPrivateKey,
       stxAddress: stxAddress,
-      network: network,
+      network,
       message: params.message,
       onFinish: payload => {
         result = payload;
@@ -555,7 +559,7 @@ export class MicroStacksClient {
       };
     }>
   ) => {
-    await this.handleNoStacksProviderFound();
+    if (!this.handleNoStacksProviderFound()) return;
 
     const state = this.getState();
     const appDetails = this.selectAppDetails(state);
@@ -574,7 +578,7 @@ export class MicroStacksClient {
       appDetails: appDetails,
       privateKey: account.appPrivateKey,
       stxAddress: stxAddress,
-      network: network,
+      network,
       domain: {
         name: params.domain?.name ?? appDetails.name,
         version: params.domain?.version ?? '1.0.0',
@@ -600,7 +604,6 @@ export class MicroStacksClient {
    *  ------------------------------------------------------------------------------------------------------------------
    */
   setNetwork = (network: 'mainnet' | 'testnet' | StacksNetwork) => {
-    void this.handleNoStacksProviderFound();
     if (typeof network === 'string')
       this.setState(s => ({
         ...s,
@@ -630,13 +633,17 @@ export class MicroStacksClient {
     contents: string | Uint8Array | ArrayBufferView | Blob,
     { encrypt = true, sign }: { encrypt?: boolean; sign?: boolean }
   ) => {
-    const gaiaHubConfig = this.selectGaiaHubConfig(this.getState());
     const hasSession = this.selectHasSession(this.getState());
+    const gaiaHubConfig = this.selectGaiaHubConfig(this.getState());
     const account = this.selectAccount(this.getState());
-    if (!gaiaHubConfig) return;
-    if (!hasSession) return;
-    if (!account?.appPrivateKey) return;
-
+    if (!hasSession) {
+      console.warn(MicroStacksErrors.NoSession);
+      return;
+    }
+    if (!account?.appPrivateKey || !gaiaHubConfig) {
+      console.warn(MicroStacksErrors.NoAppPrivateKey);
+      return;
+    }
     return putFile(path, contents, {
       privateKey: account.appPrivateKey,
       gaiaHubConfig,
@@ -647,12 +654,17 @@ export class MicroStacksClient {
   };
 
   getFile = (path: string, { decrypt = true, verify }: { decrypt?: boolean; verify?: boolean }) => {
-    const gaiaHubConfig = this.selectGaiaHubConfig(this.getState());
     const hasSession = this.selectHasSession(this.getState());
+    const gaiaHubConfig = this.selectGaiaHubConfig(this.getState());
     const account = this.selectAccount(this.getState());
-    if (!gaiaHubConfig) return;
-    if (!hasSession) return;
-    if (!account?.appPrivateKey) return;
+    if (!hasSession) {
+      console.warn(MicroStacksErrors.NoSession);
+      return;
+    }
+    if (!account?.appPrivateKey || !gaiaHubConfig) {
+      console.warn(MicroStacksErrors.NoAppPrivateKey);
+      return;
+    }
 
     return getFile(path, {
       privateKey: account.appPrivateKey,
@@ -670,14 +682,17 @@ export class MicroStacksClient {
   async fetchBNSName(): Promise<string | undefined> {
     const stxAddress = this.selectStxAddress(this.getState());
     const network = this.selectNetwork(this.getState());
-    if (!stxAddress) return undefined;
+    if (!stxAddress) {
+      console.warn('No Stacks address found while trying to fetch BNS name');
+      return undefined;
+    }
     const path = network.getCoreApiUrl() + `/v1/addresses/stacks/${stxAddress}`;
     try {
       const res = await this.fetcher(path);
       const json: { names?: string[] } = await res.json();
       return json?.names?.[0];
     } catch (e) {
-      console.log('[micro-stacks/react] fetchBNSName failed', e);
+      console.log('[@micro-stacks/client] fetchBNSName failed', e);
     }
     return undefined;
   }
@@ -686,15 +701,16 @@ export class MicroStacksClient {
     try {
       const stxAddress = this.selectStxAddress(this.getState());
       const network = this.selectNetwork(this.getState());
-      if (!stxAddress) return undefined;
-      const username = await this.fetchBNSName();
-      if (!username) return undefined;
+      if (!stxAddress) {
+        console.warn('No Stacks address found while trying to fetch zonefile name');
+        return undefined;
+      }
       const path = network.getCoreApiUrl() + `/v1/names/${stxAddress}/zonefile`;
       const res = await this.fetcher(path);
       const payload = await res.json();
       return payload as { zonefile: string; address: string };
     } catch (e) {
-      console.log('[micro-stacks/react] fetchZoneFile failed', e);
+      console.log('[@micro-stacks/client] fetchZoneFile failed', e);
     }
     return undefined;
   }
@@ -707,8 +723,37 @@ export class MicroStacksClient {
       const json = await res.json();
       return json as Profile;
     } catch (e) {
-      console.log('[micro-stacks/react] getProfile failed', e);
+      console.log('[@micro-stacks/client] fetchProfile failed', e);
     }
     return undefined;
+  }
+
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   Encryption
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
+
+  encrypt(content: string | Uint8Array, options: EncryptContentOptions = {}) {
+    if (options?.publicKey && options?.privateKey)
+      throw Error('Error: do not pass both `publicKey` and `privateKey` to client.encrypt');
+
+    return encryptContent(content, {
+      ...options,
+      privateKey: options.privateKey ?? this.selectAccount(this.getState())?.appPrivateKey,
+    });
+  }
+
+  decrypt(
+    content: string,
+    options: {
+      privateKey: string;
+    }
+  ) {
+    const privateKey = options.privateKey ?? this.selectAccount(this.getState())?.appPrivateKey;
+    if (!privateKey) throw Error('You must pass a `privateKey` value to client.decrypt');
+
+    return decryptContent(content, {
+      privateKey,
+    });
   }
 }

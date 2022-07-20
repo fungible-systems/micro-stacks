@@ -5,4 +5,5 @@ export enum MicroStacksErrors {
   NoSession = 'There is not current user session available. Please make sure the user has signed in before attempting this action.',
   NoMessagePassedToSignMessage = 'No message found -- a message is required when requesting a message signature.',
   JWTCouldNotBeMade = 'Transaction JWT could not be created',
+  NoAppPrivateKey = 'The current user session has no `appPrivateKey` defined. Certain actions require an `appPrivateKey`, such as using gaia or encryption.',
 }

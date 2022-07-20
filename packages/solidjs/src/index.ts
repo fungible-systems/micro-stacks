@@ -1,20 +1,13 @@
 import { Accessor } from 'solid-js/types/reactive/signal';
 
-import { createContext, createSignal, onCleanup, useContext } from 'solid-js';
+import { createContext, createSignal, onCleanup, useContext, onMount } from 'solid-js';
 import {
-  watchAccounts,
-  watchCurrentAccount,
-  watchStatus,
-  watchNetwork,
-  watchIdentityAddress,
-  watchDecentralizedID,
   getAccounts,
   getCurrentAccount,
   getStatus,
   getNetwork,
   getIdentityAddress,
   getDecentralizedID,
-  watchStxAddress,
   getStxAddress,
   TxType,
   StatusKeys,
@@ -83,17 +76,24 @@ export const useMicroStacksClient = () => {
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-type SubscriptionFn<V> = (setter: (value: V) => void, client: MicroStacksClient) => () => void;
 type GetterFn<V> = (options: { client: MicroStacksClient; state?: State }) => V;
 
-function stateHookFactory<V>(getter: GetterFn<V>, subscribe: SubscriptionFn<V>): () => Accessor<V> {
+function stateHookFactory<V>(getter: GetterFn<V>): () => Accessor<V> {
   return () => {
     const client = useMicroStacksClient();
     const [state, setState] = createSignal<V>(getter({ client: client() }));
 
-    const unsub = subscribe(v => setState(() => v), client());
+    let unsub: undefined | (() => void);
 
-    onCleanup(unsub);
+    onMount(() => {
+      unsub = client().subscribe(state => getter({ client: client(), state }) as any, setState, {
+        equalityFn: (a, b) => a === b,
+      });
+    });
+
+    onCleanup(() => {
+      unsub?.();
+    });
 
     return state;
   };
@@ -104,13 +104,13 @@ function stateHookFactory<V>(getter: GetterFn<V>, subscribe: SubscriptionFn<V>):
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-export const useWatchStxAddress = stateHookFactory(getStxAddress, watchStxAddress);
-export const useWatchAccounts = stateHookFactory(getAccounts, watchAccounts);
-export const useWatchCurrentAccount = stateHookFactory(getCurrentAccount, watchCurrentAccount);
-export const useWatchIdentityAddress = stateHookFactory(getIdentityAddress, watchIdentityAddress);
-export const useWatchNetwork = stateHookFactory(getNetwork, watchNetwork);
-export const useWatchStatus = stateHookFactory(getStatus, watchStatus);
-export const useWatchDecentralizedID = stateHookFactory(getDecentralizedID, watchDecentralizedID);
+export const useWatchStxAddress = stateHookFactory(getStxAddress);
+export const useWatchAccounts = stateHookFactory(getAccounts);
+export const useWatchCurrentAccount = stateHookFactory(getCurrentAccount);
+export const useWatchIdentityAddress = stateHookFactory(getIdentityAddress);
+export const useWatchNetwork = stateHookFactory(getNetwork);
+export const useWatchStatus = stateHookFactory(getStatus);
+export const useWatchDecentralizedID = stateHookFactory(getDecentralizedID);
 
 /** ------------------------------------------------------------------------------------------------------------------
  *  Authentication (derived state)
