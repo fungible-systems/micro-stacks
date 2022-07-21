@@ -83,19 +83,19 @@ export const QuickStart = () => {
       >
         <InstallTabs hideTabs>
           <Integrations.React>
-            <>@micro-stacks/react@beta</>
+            <>@micro-stacks/react</>
           </Integrations.React>
           <Integrations.Svelte>
-            <>@micro-stacks/svelte@beta</>
+            <>@micro-stacks/svelte</>
           </Integrations.Svelte>
           <Integrations.Vue>
-            <>@micro-stacks/vue@beta</>
+            <>@micro-stacks/vue</>
           </Integrations.Vue>
           <Integrations.Solid>
-            <>@micro-stacks/solidjs@beta</>
+            <>@micro-stacks/solidjs</>
           </Integrations.Solid>
           <Integrations.Vanilla>
-            <>@micro-stacks/client@beta</>
+            <>@micro-stacks/client</>
           </Integrations.Vanilla>
         </InstallTabs>
         <div>
