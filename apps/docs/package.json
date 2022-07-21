@@ -19,8 +19,8 @@
     "fathom-client": "3.5.0",
     "jotai": "1.7.6",
     "next": "12.2.2",
-    "nextra": "2.0.0-alpha.56",
-    "nextra-theme-docs": "2.0.0-alpha.59",
+    "nextra": "2.0.0-beta.6",
+    "nextra-theme-docs": "2.0.0-beta.6",
     "patch-package": "6.4.7",
     "react": "18.2.0",
     "react-dom": "18.2.0"
