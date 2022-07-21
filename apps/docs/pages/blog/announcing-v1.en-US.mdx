@@ -26,17 +26,20 @@ Today I'm very happy to announce the release of `micro-stacks@1.0.0` (and a bunc
 
 This has been a nights and weekends project for me for over a year and a half, first starting as a
 project to better understand the inner-workings of Stacks and to be able to build apps with modern
-frontend tooling like Vite and SkyPack. Now `micro-stacks` is my go-to tooling for building modern,
-robust Stacks applications and programs, along with the fine folks at [Gamma](https://gamma.io),
+frontend tooling like [Vite](https://vitejs.dev/), [Parcel](https://parceljs.org/), and
+[SkyPack](https://www.skypack.dev/).
+
+Now `micro-stacks` is widely considered to be the go-to JavaScript tooling for building modern,
+robust Stacks applications and libraries, used by the fine folks at [Gamma](https://gamma.io),
 [Ryder](https://www.ryder.id/), [StackerDAOs](https://stackerdaos.com/),
 [CityCoins](https://www.citycoins.co/), [Mechanism](https://mechanism.so),
-[Zest](https://www.zestprotocol.com/), and more.
+[Zest](https://www.zestprotocol.com/), and more everyday.
 
 With this release, there are many important updates that I'm excited to share!
 
 ## tl;dr
 
-- new `micro-stacks@1.0.0`
+- `micro-stacks@1.0.0` - stable, audited release
 - new `@micro-stacks/client` library for managing app-state
 - new framework specific bindings:
   - React - `@micro-stacks/react`
@@ -45,25 +48,25 @@ With this release, there are many important updates that I'm excited to share!
   - Solidjs - `@micro-stacks/solidjs`
 - brand new docs -> [check them out!](/docs/overview)
 - new guides, example projects, and `npx create-ustx`
-- security audit for core library
 
 ## New client library
 
-While working on earlier version of the library, there has always been just one package:
+While working on earlier versions of the library, there has always been just one package:
 `micro-stacks`. This package contains many sub-modules that are separate, and are broken out based
-on function, e.g.: `micro-stacks/clarity`, `micro-stacks/transactions`, etc. This is great when you
-know what each module does, but it's less great when you have no idea and there aren't docs
-explaining all the different functions and what they do. Often I would get feedback from folks that
-there were too many things to have to think about when wanting to accomplish the foundational
-functionality that is found in all Stacks apps: authentication, transaction signing, and using Gaia.
+on function, e.g.: `micro-stacks/clarity` for handling Clarity related stuff,
+`micro-stacks/transactions` for Stacks transactions, etc. This is great when you know what each
+module does, but it's less great when you have no idea and there aren't docs explaining all the
+different functions and what they do. Often I would get feedback from folks that there were too many
+things to have to think about when wanting to accomplish the foundational functionality that is
+found in all Stacks apps: authentication, transaction signing, and using Gaia.
 
-With that in mind, I wanted to create a new abstraction on top of all the libraries that would make
-these functions really easy to use, while also pushing developers towards building apps with more of
-a focus towards user experience. What I mean by this are things like properly handling sessions in
-the context of server side rendered applications, or providing feedback when certain actions happen,
-such as authenticating or signing a transaction.
+With that in mind, I wanted to create a new abstraction on top of the more primitive libraries that
+would make these functions really easy to use, while also pushing developers towards building apps
+with more of a focus towards user experience. What I mean by this are things like properly handling
+sessions in the context of server side rendered applications, or providing feedback when certain
+actions happen, such as authenticating or signing a transaction.
 
-This new abstraction is a new library: `@micro-stacks/client`. This package is what handles all user
+This abstraction is a new library: `@micro-stacks/client`. This package is what handles all user
 session state within Stacks apps, exposes easy-to-use functions that make use of the current user
 session like signing transactions, signing messages, Gaia related functions, and
 encryption/decryption.
@@ -75,7 +78,7 @@ developer-experience when compared to implementing these functions by hand with 
 ## New framework-specific libraries
 
 With the creation of `@micro-stacks/client`, we now have a much higher ability to create framework
-specific binds for `micro-stacks`. This means we now have first-class support for all major
+specific libraries for `micro-stacks`. This means we now have first-class support for all major
 JavaScript frameworks: [React](https://reactjs.org/), [Jotai](https://jotai.org/),
 [Preact](https://preactjs.com/), [Svelte](https://svelte.dev/), [Vue](https://vuejs.org/), and even
 [Solid.js](https://www.solidjs.com/).
@@ -94,8 +97,8 @@ In addition to new framework-specific libraries, there are now up-to-date exampl
 frameworks. You can explore the source files for
 [these projects here](https://github.com/fungible-systems/micro-stacks-examples).
 
-In addition to viewing the examples on GitHub, you can quickly create a new Stacks app with this
-command: `npx create-ustx` or with your package manager of choice:
+In addition to viewing the examples on GitHub, you can quickly create a new Stacks app with the
+command `npx create-ustx` or with your package manager of choice:
 
 <InstallTabs isCreate>ustx</InstallTabs>
 
@@ -169,6 +172,7 @@ Every section within the docs contain content specific to whichever library you'
 React, Svelte, Vue, Solid, or the Vanilla client module. Each framework integration will have its
 own set of examples specific to the library you've selected. Here is an overview of the new content:
 
+- [Getting started](/docs/getting-started)
 - [Authentication](/docs/authentication)
 - [Networks](/docs/getting-started/networks)
 - [Advanced patterns & SSR](/docs/getting-started/advanced-patterns)
@@ -187,8 +191,10 @@ can check out if you're building a React-based Stacks app:
 ## Security audit
 
 The core `micro-stacks` package successfully completed a security audit (paid for by the Stacks
-foundation, thank you!) from KoinFabrik. Thankfully nothing of concern was found. To read the audit
-and any comments about what was found, check out this page in the GitHub repository.
+foundation, thank you!) from [CoinFabrik](https://www.coinfabrik.com/). Thankfully nothing of
+concern was found. To read the audit and any comments about what was found, check out
+[this page](https://github.com/fungible-systems/micro-stacks/tree/main/packages/core/audit) in the
+GitHub repository.
 
 ## Looking forward
 
