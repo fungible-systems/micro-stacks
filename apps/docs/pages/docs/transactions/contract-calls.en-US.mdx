@@ -38,7 +38,7 @@ import { useOpenContractCall } from '@micro-stacks/react';
 `getOpenContractCall`.
 
 ```tsx
-import { getOpenContractCall } from '@micro-stacks/react';
+import { getOpenContractCall } from '@micro-stacks/svelte';
 ```
 
 </Integrations.Svelte>
@@ -79,6 +79,18 @@ import { useOpenContractCall } from '@micro-stacks/solidjs';
 <Integrations.React>
 
 ```tsx
+import {
+  uintCV,
+  intCV,
+  bufferCV,
+  stringAsciiCV,
+  stringUtf8CV,
+  standardPrincipalCV,
+  trueCV,
+} from 'micro-stacks/clarity';
+import { utf8ToBytes } from 'micro-stacks/common';
+import { FungibleConditionCode, makeStandardSTXPostCondition } from 'micro-stacks/transactions';
+
 export const MyContractCallTx = () => {
   const { openContractCall, isRequestPending } = useOpenContractCall();
   const { stxAddress } = useAccount();
@@ -138,6 +150,18 @@ export const MyContractCallTx = () => {
 
 ```svelte
 <script lang="ts">
+  import {
+    uintCV,
+    intCV,
+    bufferCV,
+    stringAsciiCV,
+    stringUtf8CV,
+    standardPrincipalCV,
+    trueCV,
+  } from 'micro-stacks/clarity';
+  import { utf8ToBytes } from 'micro-stacks/common';
+  import { FungibleConditionCode, makeStandardSTXPostCondition } from 'micro-stacks/transactions';
+
   const contractCall = getOpenContractCall();
   const account = getAccount();
 
@@ -180,6 +204,17 @@ export const MyContractCallTx = () => {
 
 ```vue
 <script setup lang="ts">
+  import {
+    uintCV,
+    intCV,
+    bufferCV,
+    stringAsciiCV,
+    stringUtf8CV,
+    standardPrincipalCV,
+    trueCV,
+  } from 'micro-stacks/clarity';
+  import { utf8ToBytes } from 'micro-stacks/common';
+  import { FungibleConditionCode, makeStandardSTXPostCondition } from 'micro-stacks/transactions';
   import { useOpenContractCall } from '@micro-stacks/vue';
 
   // using the experimental Reactivity Transform
@@ -228,6 +263,18 @@ export const MyContractCallTx = () => {
 <Integrations.Solid>
 
 ```tsx
+import {
+  uintCV,
+  intCV,
+  bufferCV,
+  stringAsciiCV,
+  stringUtf8CV,
+  standardPrincipalCV,
+  trueCV,
+} from 'micro-stacks/clarity';
+import { utf8ToBytes } from 'micro-stacks/common';
+import { FungibleConditionCode, makeStandardSTXPostCondition } from 'micro-stacks/transactions';
+
 export const MyContractCallTx = () => {
   const { openContractCall, isRequestPending } = useOpenContractCall();
   const { stxAddress } = useAccount();
