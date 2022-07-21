@@ -5,11 +5,18 @@ description:
 ---
 
 import * as Integrations from 'components/integrations-tabs';
+import { WithAuth } from 'components/with-auth';
 import Callout from 'nextra-theme-docs/callout';
 
 # Standard message signing
 
 <Integrations.Tabs />
+
+<WithAuth>
+
+This will only show up if you have authenticated!
+
+</WithAuth>
 
 Standard messaging signing allows for the signing of any arbitrary string message.
 
