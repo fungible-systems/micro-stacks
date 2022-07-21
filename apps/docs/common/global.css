@@ -88,3 +88,22 @@ html {
   height: 140px;
   margin: -140px 0 0;
 }
+
+@media screen and (max-width: 768px) {
+  .install-tabs{
+    margin-left: -24px;
+    margin-right: -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  div[data-rehype-pretty-code-fragment] pre {
+    margin-left: -24px;
+    margin-right: -24px;
+    border-radius: 0;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+
+

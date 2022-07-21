@@ -28,7 +28,7 @@ export const TabsRow = () => {
 
   return (
     <div
-      className={'bg-white dark:bg-dark'}
+      className={'install-tabs bg-white dark:bg-dark'}
       style={{
         zIndex: 99,
         position: 'sticky',
