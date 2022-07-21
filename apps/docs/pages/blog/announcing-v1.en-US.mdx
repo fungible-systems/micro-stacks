@@ -168,7 +168,7 @@ In addition to the new starter kits, the documentation for `micro-stacks` has be
 re-written from the ground up, with a focus on the most common path a developer will take when
 building out a new Stacks app.
 
-Every section within the docs contain content specific to whichever library you're looking to use:
+Every section within the docs contains content specific to whichever library you're looking to use:
 React, Svelte, Vue, Solid, or the Vanilla client module. Each framework integration will have its
 own set of examples specific to the library you've selected. Here is an overview of the new content:
 
@@ -183,18 +183,20 @@ own set of examples specific to the library you've selected. Here is an overview
 - [Gaia & storage](/docs/storage)
 
 Outside of the common patterns and features of most apps, there are two new in-depth guides that you
-can check out if you're building a React-based Stacks app:
+can check out if you're building a React-based Stacks app. These are great because they dig into how
+to handle state on the server, and provide a much better end user experience for folks using your
+apps. Check them out:
 
 - [Building a Remix app](/guides/with-remix)
 - [Building a Next.js app](/guides/with-nextjs)
 
 ## Security audit
 
-The core `micro-stacks` package successfully completed a security audit (paid for by the Stacks
-foundation, thank you!) from [CoinFabrik](https://www.coinfabrik.com/). Thankfully nothing of
-concern was found. To read the audit and any comments about what was found, check out
-[this page](https://github.com/fungible-systems/micro-stacks/tree/main/packages/core/audit) in the
-GitHub repository.
+The core `micro-stacks` package successfully completed a security audit (paid for by the
+[Stacks foundation](https://stacks.org), thank you!) from [CoinFabrik](https://www.coinfabrik.com/).
+Thankfully nothing of concern was found. To read the audit, check out
+[this directory](https://github.com/fungible-systems/micro-stacks/tree/main/packages/core/audit) in
+the GitHub repository.
 
 ## Looking forward
 
@@ -206,7 +208,9 @@ excited to build:
 - Example apps with [Clarinet](https://github.com/hirosystems/clarinet) built-in
 - New ways to build [Post Conditions](/docs/transactions/working-with-post-conditions)
 - New tooling to work with projects like [`clarigen`](https://github.com/mechanismHQ/clarigen)
-- Advanced recipes and more tooling improvements
+- 100% deno support
+- React native support -> with RN v0.70.0 `micro-stacks` will _simply_ work :)
+- Advanced recipes and more tooling improvements, like code generation and static analysis tools
 - and much more!
 
 Thanks for reading and please reach out with any questions/comments/feature requests
