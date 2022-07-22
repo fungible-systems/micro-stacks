@@ -8,7 +8,6 @@ const rehypePrettyCodeOptions = {
   getHighlighter: options => {
     return getHighlighter({
       ...options,
-      theme: 'material-darker',
       langs: [
         ...BUNDLED_LANGUAGES,
         {
