@@ -8,7 +8,6 @@ Stacks based wallets, construct transactions, post conditions, and more!
 
 [Overview](https://micro-stacks.dev/docs/overview) · [Get Started](https://micro-stacks.dev/docs/getting-started)
 · [Guides](https://micro-stacks.dev/guides/stacks-apps)
-· [Core](https://micro-stacks.dev/reference/core)
 
 ## Features
 
