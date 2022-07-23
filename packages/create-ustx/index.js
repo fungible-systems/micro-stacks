@@ -7,14 +7,7 @@ import minimist from 'minimist';
 import prompts from 'prompts';
 import degit from 'degit';
 
-import {
-  blue,
-  cyan,
-  green,
-  magenta,
-  red,
-  reset,
-} from 'kolorist';
+import { blue, cyan, green, magenta, red, reset } from 'kolorist';
 
 // Avoids auto conversion to number of the project name by defining that the args
 // non associated with an option ( _ ) needs to be parsed as a string. See #4606
@@ -78,36 +71,54 @@ const FRAMEWORKS = [
         display: 'TypeScript',
         color: green,
       },
-      {
-        name: 'nuxt',
-        display: 'TypeScript',
-        color: green,
-      },
+      // {
+      //   name: 'nuxt',
+      //   display: 'TypeScript',
+      //   color: green,
+      // },
     ],
   },
   {
     name: 'solidjs',
     color: magenta,
+    variants: [
+      {
+        name: 'solidjs',
+        display: 'JavaScript',
+        color: magenta,
+      },
+      {
+        name: 'solidjs-ts',
+        display: 'TypeScript',
+        color: magenta,
+      },
+    ],
   },
   {
     name: 'svelte',
     color: red,
     variants: [
       {
+        name: 'svelte',
+        display: 'JavaScript',
+        color: red,
+      },
+      {
         name: 'svelte-ts',
+        display: 'TypeScript',
         color: red,
       },
       {
         name: 'sveltekit',
+        display: 'TypeScript',
         color: red,
       },
     ],
   },
-
 ];
 
 const TEMPLATES = FRAMEWORKS.map(
-  (f) => (f.variants && f.variants.map((v) => v.name)) || [f.name],
+  f => (f.variants && f.variants.map(v => v.name)) || [f.name]
 ).reduce((a, b) => a.concat(b), []);
 
 const renameFiles = {
@@ -119,8 +130,7 @@ async function init() {
   let template = argv.template || argv.t;
 
   const defaultTargetDir = 'micro-stacks-project';
-  const getProjectName = () =>
-    targetDir === '.' ? path.basename(path.resolve()) : targetDir;
+  const getProjectName = () => (targetDir === '.' ? path.basename(path.resolve()) : targetDir);
 
   let result = {};
 
@@ -132,18 +142,15 @@ async function init() {
           name: 'projectName',
           message: reset('Project name:'),
           initial: defaultTargetDir,
-          onState: (state) => {
+          onState: state => {
             targetDir = formatTargetDir(state.value) || defaultTargetDir;
           },
         },
         {
-          type: () =>
-            !fs.existsSync(targetDir) || isEmpty(targetDir) ? null : 'confirm',
+          type: () => (!fs.existsSync(targetDir) || isEmpty(targetDir) ? null : 'confirm'),
           name: 'overwrite',
           message: () =>
-            (targetDir === '.'
-              ? 'Current directory'
-              : `Target directory "${targetDir}"`) +
+            (targetDir === '.' ? 'Current directory' : `Target directory "${targetDir}"`) +
             ` is not empty. Remove existing files and continue?`,
         },
         {
@@ -160,20 +167,17 @@ async function init() {
           name: 'packageName',
           message: reset('Package name:'),
           initial: () => toValidPackageName(getProjectName()),
-          validate: (dir) =>
-            isValidPackageName(dir) || 'Invalid package.json name',
+          validate: dir => isValidPackageName(dir) || 'Invalid package.json name',
         },
         {
           type: template && TEMPLATES.includes(template) ? null : 'select',
           name: 'framework',
           message:
             typeof template === 'string' && !TEMPLATES.includes(template)
-              ? reset(
-                `"${template}" isn't a valid template. Please choose from below: `,
-              )
+              ? reset(`"${template}" isn't a valid template. Please choose from below: `)
               : reset('Select a framework:'),
           initial: 0,
-          choices: FRAMEWORKS.map((framework) => {
+          choices: FRAMEWORKS.map(framework => {
             const frameworkColor = framework.color;
             return {
               title: frameworkColor(framework.name),
@@ -182,16 +186,18 @@ async function init() {
           }),
         },
         {
-          type: (framework) =>
-            framework && framework.variants ? 'select' : null,
+          type: framework => (framework && framework.variants ? 'select' : null),
           name: 'variant',
           message: reset('Select a variant:'),
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          choices: (framework) =>
-            framework.variants.map((variant) => {
+          choices: framework =>
+            framework.variants.map(variant => {
               const variantColor = variant.color;
               return {
-                title: variantColor(variant.name),
+                title: variantColor(
+                  variant.display ? `${variant.name} (${variant.display})` : variant.name
+                ),
                 value: variant.name,
               };
             }),
@@ -201,7 +207,7 @@ async function init() {
         onCancel: () => {
           throw new Error(red('✖') + ' Operation cancelled');
         },
-      },
+      }
     );
   } catch (cancelled) {
     console.log(cancelled.message);
@@ -230,9 +236,7 @@ async function init() {
   await emitter.clone(root);
 
   // update the package.json name
-  const pkg = JSON.parse(
-    fs.readFileSync(path.join(root, `package.json`), 'utf-8'),
-  );
+  const pkg = JSON.parse(fs.readFileSync(path.join(root, `package.json`), 'utf-8'));
 
   pkg.name = packageName || getProjectName();
 
@@ -279,9 +283,7 @@ function copy(src, dest) {
  * @param {string} projectName
  */
 function isValidPackageName(projectName) {
-  return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(
-    projectName,
-  );
+  return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(projectName);
 }
 
 /**
@@ -343,6 +345,6 @@ function pkgFromUserAgent(userAgent) {
   };
 }
 
-init().catch((e) => {
+init().catch(e => {
   console.error(e);
 });

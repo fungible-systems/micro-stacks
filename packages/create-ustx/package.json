@@ -1,6 +1,6 @@
 {
   "name": "create-ustx",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "license": "MIT",
   "author": "Thomas Osmonson",
@@ -19,13 +19,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fungible-systems/micro-stacks-examples.git",
+    "url": "git+https://github.com/fungible-systems/micro-stacks.git",
     "directory": "packages/create-ustx"
   },
   "bugs": {
-    "url": "https://github.com/fungible-systems/micro-stacks-examples/issues"
+    "url": "https://github.com/fungible-systems/micro-stacks/issues"
   },
-  "homepage": "https://github.com/fungible-systems/micro-stacks-examples/tree/main/packages/create-ustx#readme",
+  "homepage": "https://github.com/fungible-systems/micro-stacks/tree/main/packages/create-ustx#readme",
   "dependencies": {
     "degit": "2.8.4",
     "kolorist": "1.5.1",
