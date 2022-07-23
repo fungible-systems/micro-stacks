@@ -13,6 +13,7 @@
     "lint:prettier:fix": "prettier --write \"./**/*.{ts,tsx,md,mdx}\""
   },
   "dependencies": {
+    "@codesandbox/sandpack-react": "^1.3.0",
     "@micro-stacks/client": "1.0.0",
     "@micro-stacks/react": "1.0.0",
     "@nelson-ui/react": "0.1.6",

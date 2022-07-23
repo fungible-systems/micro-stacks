@@ -7,6 +7,25 @@ description:
 import * as Integrations from 'components/integrations-tabs';
 import { WithAuth } from 'components/with-auth';
 import Callout from 'nextra-theme-docs/callout';
+import { Sandpack } from "@codesandbox/sandpack-react";
+
+export const CodeSandbox = ({ id, tests }) => {
+  return (
+    <div className="mb-8 h-96 overflow-hidden rounded-md border-b border-gray-200 shadow-lg dark:border-gray-800 dark:!shadow-none sm:rounded-lg">
+      <iframe
+        title={id}
+        className="h-60 w-full"
+        src={`https://codesandbox.io/embed/${id}?codemirror=1&fontsize=14&hidenavigation=1&theme=light&hidedevtools=1${
+          tests ? '&previewwindow=tests' : ''
+        }`}
+        allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+        sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+        loading="lazy"
+        style={{ height: "22rem" }}
+      />
+    </div>
+  );
+};
 
 # Standard message signing
 
@@ -16,6 +35,7 @@ import Callout from 'nextra-theme-docs/callout';
 
 This will only show up if you have authenticated!
 
+<CodeSandbox id="ilm7t7" />
 </WithAuth>
 
 Standard messaging signing allows for the signing of any arbitrary string message.
