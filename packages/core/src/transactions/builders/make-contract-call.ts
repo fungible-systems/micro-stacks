@@ -1,9 +1,9 @@
 import { StacksTransaction } from '../transaction';
 import { StacksMainnet } from 'micro-stacks/network';
 import { AddressHashMode, PostConditionMode } from '../common/constants';
-import { createContractCallPayload } from '../payload';
-import { ClarityAbi } from 'micro-stacks/clarity';
-import { validateContractCall } from '../contract-abi';
+import { ContractCallPayload, createContractCallPayload } from '../payload';
+import { ClarityAbi, getCVTypeString } from 'micro-stacks/clarity';
+import { getTypeString, matchClarityType } from '../../clarity/contract-abi';
 import {
   createMultiSigSpendingCondition,
   createSingleSigSpendingCondition,
@@ -31,6 +31,52 @@ import {
 import { getNonce } from '../fetchers/get-nonce';
 import { getAbi } from '../fetchers/get-abi';
 import { estimateContractFunctionCall } from '../fetchers/estimate-contract-function-call';
+
+/**
+ * Validates a contract-call payload with a contract ABI
+ *
+ * @param {ContractCallPayload} payload - a contract-call payload
+ * @param {ClarityAbi} abi - a contract ABI
+ *
+ * @returns {boolean} true if the payloads functionArgs type check against those in the ABI
+ */
+export function validateContractCall(payload: ContractCallPayload, abi: ClarityAbi): boolean {
+  const filtered = abi.functions.filter(fn => fn.name === payload.functionName.content);
+  if (filtered.length === 1) {
+    const abiFunc = filtered[0];
+    const abiArgs = abiFunc.args;
+
+    if (payload.functionArgs.length !== abiArgs.length) {
+      throw new Error(
+        `Clarity function expects ${abiArgs.length} argument(s) but received ${payload.functionArgs.length}`
+      );
+    }
+
+    for (let i = 0; i < payload.functionArgs.length; i++) {
+      const payloadArg = payload.functionArgs[i];
+      const abiArg = abiArgs[i];
+
+      if (!matchClarityType(payloadArg, abiArg.type)) {
+        const argNum = i + 1;
+        throw new Error(
+          `Clarity function \`${
+            payload.functionName.content
+          }\` expects argument ${argNum} to be of type ${getTypeString(
+            abiArg.type
+          )}, not ${getCVTypeString(payloadArg)}`
+        );
+      }
+    }
+
+    return true;
+  } else if (filtered.length === 0) {
+    throw new Error(`ABI doesn't contain a function with the name ${payload.functionName.content}`);
+  } else {
+    throw new Error(
+      `Malformed ABI. Contains multiple functions with the name ${payload.functionName.content}`
+    );
+  }
+}
 
 /**
  * Generates an unsigned Clarity smart contract function call transaction

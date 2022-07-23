@@ -22,7 +22,12 @@ import { default as create } from 'zustand/vanilla';
 import type { ClarityValue } from 'micro-stacks/clarity';
 import type { ClientStorage } from './common/storage';
 import { defaultStorage, noopStorage } from './common/storage';
-import type { ClientConfig, SignTransactionRequest, State } from './common/types';
+import type {
+  ClientConfig,
+  ContractCallParams,
+  SignTransactionRequest,
+  State,
+} from './common/types';
 import { DebugOptions } from './common/types';
 import { persist, subscribeWithSelector } from 'zustand/middleware';
 import { bytesToHex, fetchPrivate, getGlobalObject, hexToBytes } from 'micro-stacks/common';
@@ -39,8 +44,17 @@ import {
 } from 'micro-stacks/crypto';
 import { SignInWithStacksMessage } from './siwms';
 import { generateGaiaHubConfigSync, getFile, putFile } from 'micro-stacks/storage';
-import { defaultState, getDebugState, hydrate, serialize, VERSION } from './utils';
+import {
+  defaultState,
+  fetchAbi,
+  getDebugState,
+  hydrate,
+  serialize,
+  validateFunctionCallWithAbi,
+  VERSION,
+} from './utils';
 import { MicroStacksErrors } from './common/errors';
+import { ClarityAbi } from 'micro-stacks/clarity';
 
 export class MicroStacksClient {
   config: ClientConfig;
@@ -482,6 +496,40 @@ export class MicroStacksClient {
         ? makeContractCallToken
         : makeContractDeployToken;
 
+    // validate inputs from abi
+    if (type === TxType.ContractCall) {
+      const _params: ContractCallParams = params as any;
+
+      let abi: ClarityAbi | undefined =
+        typeof _params?.validateWithAbi === 'object'
+          ? (_params.validateWithAbi as ClarityAbi)
+          : undefined;
+
+      const shouldFetchABI =
+        !abi &&
+        (_params?.validateWithAbi === true || typeof _params.validateWithAbi === 'undefined');
+
+      if (shouldFetchABI)
+        abi = await fetchAbi({
+          network: this.selectNetwork(this.getState()),
+          contractName: _params.contractName,
+          contractAddress: _params.contractAddress,
+        })(this.fetcher);
+
+      if (abi) {
+        const result = validateFunctionCallWithAbi({
+          functionName: _params.functionName,
+          functionArgs: _params.functionArgs,
+          abi,
+        });
+
+        if (!result.isValid) {
+          if (params.onError) params?.onError?.(result.error);
+          else throw Error(result.error);
+        }
+      }
+    }
+
     // todo: types would be great
     const token = await fn({ ...sharedParams, ...params } as any);
 
@@ -494,8 +542,8 @@ export class MicroStacksClient {
         params?.onFinish?.(payload);
         this.setIsIdle(StatusKeys.TransactionSigning);
       },
-      onCancel: error => {
-        params?.onCancel?.(error);
+      onCancel: () => {
+        params?.onCancel?.();
         this.setIsIdle(StatusKeys.TransactionSigning);
       },
     });

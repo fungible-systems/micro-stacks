@@ -14,7 +14,8 @@ export * from './keys';
 
 export * from './types';
 export * from './common/constants';
-export * from './contract-abi';
+// TODO: in next major remove this export
+export * from '../clarity/contract-abi';
 export * from './signer';
 export * from './authorization';
 export * from './common/utils';
@@ -27,7 +28,7 @@ export { makeStandardFungiblePostCondition } from './builders/post-conditions';
 export { makeContractSTXPostCondition } from './builders/post-conditions';
 export { makeStandardSTXPostCondition } from './builders/post-conditions';
 export { makeContractCall } from './builders/make-contract-call';
-export { makeUnsignedContractCall } from './builders/make-contract-call';
+export { makeUnsignedContractCall, validateContractCall } from './builders/make-contract-call';
 export { makeContractDeploy } from './builders/make-contract-deploy';
 export { makeSTXTokenTransfer } from './builders/make-stx-token-transfer';
 export { makeUnsignedSTXTokenTransfer } from './builders/make-stx-token-transfer';

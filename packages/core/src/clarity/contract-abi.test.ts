@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import path from 'path';
-import { createContractCallPayload } from './payload';
+import { createContractCallPayload } from '../transactions/payload';
 
 import {
   trueCV,
@@ -22,10 +22,11 @@ import {
   ClarityAbiType,
 } from 'micro-stacks/clarity';
 
-import { validateContractCall, abiFunctionToString, parseToCV } from './contract-abi';
+import { abiFunctionToString, parseToCV } from './contract-abi';
 
 import { oneLineTrim } from 'common-tags';
 import { utf8ToBytes } from 'micro-stacks/common';
+import { validateContractCall } from 'micro-stacks/transactions';
 
 const TEST_ABI: ClarityAbi = JSON.parse(
   readFileSync(path.join(__dirname, '../../tests/mocks/abi/test-abi.json')).toString()

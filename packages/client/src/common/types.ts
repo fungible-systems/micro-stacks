@@ -23,22 +23,25 @@ export type ContractCallParams = Omit<
   ContractCallTxOptions,
   'network' | 'privateKey' | 'appDetails' | 'stxAddress'
 > & {
+  onError?: (error: string) => void;
   onFinish?: (payload: FinishedTxData) => void;
-  onCancel?: (error?: string) => void;
+  onCancel?: () => void;
 };
 export type StxTransferParams = Omit<
   StxTransferTxOptions,
   'network' | 'privateKey' | 'appDetails' | 'stxAddress'
 > & {
+  onError?: (error: string) => void;
   onFinish?: (payload: FinishedTxData) => void;
-  onCancel?: (error?: string) => void;
+  onCancel?: () => void;
 };
 export type ContractDeployParams = Omit<
   ContractDeployTxOptions,
   'network' | 'privateKey' | 'appDetails' | 'stxAddress'
 > & {
+  onError?: (error: string) => void;
   onFinish?: (payload: FinishedTxData) => void;
-  onCancel?: (error?: string) => void;
+  onCancel?: () => void;
 };
 
 export interface SignTransactionRequest {

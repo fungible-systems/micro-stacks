@@ -9,11 +9,9 @@ import {
   falseCV,
   trueCV,
   ClarityType,
-  getCVTypeString,
   bufferCVFromString,
   stringAsciiCV,
   stringUtf8CV,
-  ClarityAbi,
   ClarityAbiFunction,
   ClarityAbiType,
   ClarityAbiTypePrimitive,
@@ -26,9 +24,8 @@ import {
   ClarityAbiTypeList,
   ClarityAbiTypeId,
   ClarityAbiTypeUnion,
-} from 'micro-stacks/clarity';
+} from '../clarity';
 import { utf8ToBytes, cloneDeep, NotImplementedError } from 'micro-stacks/common';
-import { ContractCallPayload } from './payload';
 
 export const isClarityAbiPrimitive = (val: ClarityAbiType): val is ClarityAbiTypePrimitive =>
   typeof val === 'string';
@@ -83,9 +80,9 @@ export function getTypeUnion(val: ClarityAbiType): ClarityAbiTypeUnion {
   }
 }
 
-function encodeClarityValue(type: ClarityAbiType, val: string): ClarityValue;
-function encodeClarityValue(type: ClarityAbiTypeUnion, val: string): ClarityValue;
-function encodeClarityValue(
+export function encodeClarityValue(type: ClarityAbiType, val: string): ClarityValue;
+export function encodeClarityValue(type: ClarityAbiTypeUnion, val: string): ClarityValue;
+export function encodeClarityValue(
   input: ClarityAbiTypeUnion | ClarityAbiType,
   val: string
 ): ClarityValue {
@@ -135,8 +132,6 @@ function encodeClarityValue(
   }
 }
 
-export { encodeClarityValue };
-
 export function getTypeString(val: ClarityAbiType): string {
   if (isClarityAbiPrimitive(val)) {
     if (val === 'int128') {
@@ -171,7 +166,7 @@ export function abiFunctionToString(func: ClarityAbiFunction): string {
     .join(' ')}))`;
 }
 
-function matchType(cv: ClarityValue, abiType: ClarityAbiType): boolean {
+export function matchClarityType(cv: ClarityValue, abiType: ClarityAbiType): boolean {
   const union = getTypeUnion(abiType);
 
   switch (cv.type) {
@@ -205,17 +200,17 @@ function matchType(cv: ClarityValue, abiType: ClarityAbiType): boolean {
     case ClarityType.OptionalSome:
       return (
         union.id === ClarityAbiTypeId.ClarityAbiTypeOptional &&
-        matchType(cv.value, union.type.optional)
+        matchClarityType(cv.value, union.type.optional)
       );
     case ClarityType.ResponseErr:
       return (
         union.id === ClarityAbiTypeId.ClarityAbiTypeResponse &&
-        matchType(cv.value, union.type.response.error)
+        matchClarityType(cv.value, union.type.response.error)
       );
     case ClarityType.ResponseOk:
       return (
         union.id === ClarityAbiTypeId.ClarityAbiTypeResponse &&
-        matchType(cv.value, union.type.response.ok)
+        matchClarityType(cv.value, union.type.response.ok)
       );
     case ClarityType.PrincipalContract:
       return (
@@ -228,7 +223,7 @@ function matchType(cv: ClarityValue, abiType: ClarityAbiType): boolean {
       return (
         union.id == ClarityAbiTypeId.ClarityAbiTypeList &&
         union.type.list.length >= cv.list.length &&
-        cv.list.every(val => matchType(val, union.type.list.type))
+        cv.list.every(val => matchClarityType(val, union.type.list.type))
       );
     case ClarityType.Tuple:
       if (union.id == ClarityAbiTypeId.ClarityAbiTypeTuple) {
@@ -241,7 +236,7 @@ function matchType(cv: ClarityValue, abiType: ClarityAbiType): boolean {
           // if key exists in cv tuple, check if its type matches the abi
           // return false if key doesn't exist
           if (val) {
-            if (!matchType(val, abiTupleEntry.type)) {
+            if (!matchClarityType(val, abiTupleEntry.type)) {
               return false;
             }
             delete tuple[key];
@@ -255,52 +250,6 @@ function matchType(cv: ClarityValue, abiType: ClarityAbiType): boolean {
       }
     default:
       return false;
-  }
-}
-
-/**
- * Validates a contract-call payload with a contract ABI
- *
- * @param {ContractCallPayload} payload - a contract-call payload
- * @param {ClarityAbi} abi - a contract ABI
- *
- * @returns {boolean} true if the payloads functionArgs type check against those in the ABI
- */
-export function validateContractCall(payload: ContractCallPayload, abi: ClarityAbi): boolean {
-  const filtered = abi.functions.filter(fn => fn.name === payload.functionName.content);
-  if (filtered.length === 1) {
-    const abiFunc = filtered[0];
-    const abiArgs = abiFunc.args;
-
-    if (payload.functionArgs.length !== abiArgs.length) {
-      throw new Error(
-        `Clarity function expects ${abiArgs.length} argument(s) but received ${payload.functionArgs.length}`
-      );
-    }
-
-    for (let i = 0; i < payload.functionArgs.length; i++) {
-      const payloadArg = payload.functionArgs[i];
-      const abiArg = abiArgs[i];
-
-      if (!matchType(payloadArg, abiArg.type)) {
-        const argNum = i + 1;
-        throw new Error(
-          `Clarity function \`${
-            payload.functionName.content
-          }\` expects argument ${argNum} to be of type ${getTypeString(
-            abiArg.type
-          )}, not ${getCVTypeString(payloadArg)}`
-        );
-      }
-    }
-
-    return true;
-  } else if (filtered.length === 0) {
-    throw new Error(`ABI doesn't contain a function with the name ${payload.functionName.content}`);
-  } else {
-    throw new Error(
-      `Malformed ABI. Contains multiple functions with the name ${payload.functionName.content}`
-    );
   }
 }
 
