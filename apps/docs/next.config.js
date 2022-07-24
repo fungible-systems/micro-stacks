@@ -38,10 +38,6 @@ module.exports = withNextra({
     localeDetection: false,
   },
   reactStrictMode: true,
-  experimental: {
-    legacyBrowsers: false,
-    browsersListForSwc: true,
-  },
   webpack(config, { isServer }) {
     const fallback = config.resolve.fallback || (config.resolve.fallback = {});
     const alias = config.resolve.alias || (config.resolve.alias = {});
