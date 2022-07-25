@@ -4,6 +4,9 @@
   "type": "module",
   "license": "MIT",
   "author": "Thomas Osmonson",
+  "scripts": {
+    "ci:publish": "pnpm publish --no-git-checks --access public"
+  },
   "bin": {
     "create-ustx": "index.js",
     "csa": "index.js"
