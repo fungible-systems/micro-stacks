@@ -10,11 +10,11 @@ import React, { PropsWithChildren } from 'react';
 const tabState = atomWithStorage('integrations', 0);
 
 const items = [
-  { label: 'React' },
-  { label: 'Svelte' },
-  { label: 'Vue' },
-  { label: 'Solid' },
-  { label: 'Vanilla' },
+  { label: <>{'React'}</> },
+  { label: <>{'Svelte'}</> },
+  { label: <>{'Vue'}</> },
+  { label: <>{'Solid'}</> },
+  { label: <>{'Vanilla'}</> },
 ];
 
 const useTabs = (): [number, SetAtom<number, any>] => {
@@ -38,12 +38,13 @@ export const TabsRow = () => {
       }}
     >
       <Tabs
-        suppressHydrationWarning={true}
         selectedIndex={tab}
         defaultIndex={0}
         onChange={setTab}
         items={items}
-      />
+      >
+        {null}
+      </Tabs>
     </div>
   );
 };

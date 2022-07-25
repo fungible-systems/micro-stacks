@@ -1,12 +1,13 @@
 import { Fragment } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { Tabs } from 'nextra-theme-docs/tabs';
+import { Tabs, Tab } from 'nextra-theme-docs/tabs';
 
 import { atomWithStorage } from 'jotai/utils';
 import { useAtom } from 'jotai';
 import { useHasMounted } from '../common/use-has-mounted';
 import { SetAtom } from 'jotai/core/atom';
+import React from 'react';
 
 const tabState = atomWithStorage('install-tabs', 0);
 const useTabs = (): [number, SetAtom<number, any>] => {
@@ -21,43 +22,42 @@ export const InstallTabs = ({ children, hideTabs = false, isCreate = false }) =>
     <Fragment>
       {hideTabs ? null : (
         <Tabs
-          suppressHydrationWarning={true}
           selectedIndex={tab}
           defaultIndex={0}
           onChange={setTab}
-          items={[{ label: 'pnpm' }, { label: 'yarn' }, { label: 'npm' }]}
-        />
-      )}
-
-      <pre
-        style={{
-          width: '100%',
-        }}
-      >
-        <code>
-          <span
-            className={'line'}
+          items={[{ label: <>pnpm</> }, { label: <>yarn</> }, { label: <>npm</> }]}
+        >
+          <pre
             style={{
-              display: 'flex',
-              alignItems: 'center',
+              width: '100%',
             }}
           >
-            {isCreate
-              ? tab === 0
-                ? 'pnpm create '
-                : tab === 1
-                ? 'yarn create '
-                : 'npm create '
-              : tab === 0
-              ? 'pnpm i '
-              : tab === 1
-              ? 'yarn add '
-              : 'npm install '}
-            {}
-            {children}
-          </span>
-        </code>
-      </pre>
+            <code>
+              <span
+                className={'line'}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                {!isCreate ? (
+                  <React.Fragment>
+                    <Tab>{'pnpm i ' + children}</Tab>
+                    <Tab>{'yarn add ' + children}</Tab>
+                    <Tab>{'npm install ' + children}</Tab>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <Tab>{`pnpm create ` + children}</Tab>
+                    <Tab>{'yarn create ' + children}</Tab>
+                    <Tab>{'npm create ' + children}</Tab>
+                  </React.Fragment>
+                )}
+              </span>
+            </code>
+          </pre>
+        </Tabs>
+      )}
     </Fragment>
   );
 };
