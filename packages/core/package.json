@@ -1,6 +1,9 @@
 {
   "name": "micro-stacks",
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "1.1.0",
   "description": "Tiny libraries for building Stacks apps.",
   "files": [

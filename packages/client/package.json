@@ -1,6 +1,9 @@
 {
   "name": "@micro-stacks/client",
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "1.0.1",
   "description": "Session client for Stacks apps using micro-stacks",
   "files": [

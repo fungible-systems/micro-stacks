@@ -1,6 +1,9 @@
 {
   "name": "@micro-stacks/vue",
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "1.0.1",
   "description": "Opinionated Vue integration for micro-stacks.",
   "files": [

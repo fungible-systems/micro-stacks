@@ -1,6 +1,9 @@
 {
   "name": "@micro-stacks/react",
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "1.0.1",
   "description": "Opinionated React integration for micro-stacks.",
   "files": [
