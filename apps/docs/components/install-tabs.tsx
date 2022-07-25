@@ -16,46 +16,57 @@ const useTabs = (): [number, SetAtom<number, any>] => {
   const tab = hasMounted ? _tab : 0;
   return [tab, setTab];
 };
+
+const CodeWrapper = ({ children }) => (
+  <pre
+    style={{
+      width: '100%',
+    }}
+  >
+    <code>
+      <span
+        className={'line'}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        {children}
+      </span>
+    </code>
+  </pre>
+);
 export const InstallTabs = ({ children, hideTabs = false, isCreate = false }) => {
   const [tab, setTab] = useTabs();
+  const inner = (
+    <CodeWrapper>
+      {!isCreate ? (
+        <Fragment>
+          {tab === 0 && <>pnpm i {children}</>}
+          {tab === 1 && <>yarn add {children}</>}
+          {tab === 2 && <>npm install {children}</>}
+        </Fragment>
+      ) : (
+        <Fragment>
+          {tab === 0 && <>pnpm create {children}</>}
+          {tab === 1 && <>yarn create {children}</>}
+          {tab === 2 && <>npm create {children}</>}
+        </Fragment>
+      )}
+    </CodeWrapper>
+  );
   return (
     <Fragment>
-      {hideTabs ? null : (
+      {hideTabs ? (
+        inner
+      ) : (
         <Tabs
           selectedIndex={tab}
           defaultIndex={0}
           onChange={setTab}
           items={[{ label: <>pnpm</> }, { label: <>yarn</> }, { label: <>npm</> }]}
         >
-          <pre
-            style={{
-              width: '100%',
-            }}
-          >
-            <code>
-              <span
-                className={'line'}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                {!isCreate ? (
-                  <React.Fragment>
-                    <Tab>{'pnpm i ' + children}</Tab>
-                    <Tab>{'yarn add ' + children}</Tab>
-                    <Tab>{'npm install ' + children}</Tab>
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    <Tab>{`pnpm create ` + children}</Tab>
-                    <Tab>{'yarn create ' + children}</Tab>
-                    <Tab>{'npm create ' + children}</Tab>
-                  </React.Fragment>
-                )}
-              </span>
-            </code>
-          </pre>
+          {inner}
         </Tabs>
       )}
     </Fragment>
