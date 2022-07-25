@@ -144,8 +144,8 @@
     "test": "NODE_ENV=test jest --passWithNoTests",
     "test:coverage": "NODE_ENV=test jest --coverage",
     "typecheck": "tsc --noEmit",
-    "prepublish": "cd dist",
-    "prepublishOnly": "cd dist"
+    "prepublishOnly": "pnpm run build && && shx mkdir ../micro-stacks && shx cp -r ./dist/* ../micro-stacks && cd ../ && shx rm -rf ./core && mv ./micro-stacks ./core",
+    "postpublish": "git clean -fd"
   },
   "husky": {
     "hooks": {
