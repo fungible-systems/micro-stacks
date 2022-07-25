@@ -39,7 +39,8 @@
     "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\" *.js",
     "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx}\"",
     "ci:publish": "pnpm build && pnpm publish --no-git-checks --access public",
-    "ci:version": "pnpm changeset version && pnpm install --no-frozen-lockfile && git add ."
+    "ci:version": "pnpm changeset version && pnpm install --no-frozen-lockfile && git add .",
+    "prepublishOnly": "pnpm build"
   },
   "repository": {
     "type": "git",
