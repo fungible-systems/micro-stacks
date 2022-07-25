@@ -1,4 +1,4 @@
-import { Accessor } from 'solid-js/types/reactive/signal';
+import type { Accessor } from 'solid-js';
 
 import { createContext, createSignal, onCleanup, useContext, onMount } from 'solid-js';
 import {

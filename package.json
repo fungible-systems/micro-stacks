@@ -18,7 +18,7 @@
     "publish:beta": "pnpm publish -r --no-git-checks --tag beta --access public",
     "deps": "npx taze major -r",
     "deps:write": "npx taze major -r -w",
-    "ci:publish": "pnpm build:packages && pnpm publish -r --no-git-checks --access public",
+    "ci:publish": "pnpm build:packages && changeset publish",
     "ci:version": "pnpm changeset version && pnpm install --no-frozen-lockfile && git add ."
   },
   "prettier": "@stacks/prettier-config",
@@ -61,7 +61,7 @@
     "prettier": "2.7.1",
     "prettier-plugin-svelte": "2.7.0",
     "shx": "^0.3.4",
-    "tsup": "6.2.0",
+    "tsup": "6.1.3",
     "turbo": "^1.3.4",
     "typescript": "4.7.4"
   }
