@@ -131,7 +131,7 @@
     "dev:build": "pnpm build && pnpm dev:publish",
     "prepublish:beta": "pnpm build",
     "publish:beta": "pnpm publish dist --tag beta",
-    "ci:publish": "pnpm build && pnpm publish dist --no-git-checks --access public",
+    "ci:publish": "pnpm publish dist --no-git-checks --access public",
     "ci:version": "pnpm changeset version && pnpm install --no-frozen-lockfile && git add .",
     "eslint": "eslint --fix '{src,tests}/**/*.{js,ts,jsx,tsx}'",
     "eslint:ci": "eslint '{src,tests}/**/*.{js,ts,jsx,tsx}'",
