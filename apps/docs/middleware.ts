@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+// @ts-ignore TODO: should be fixed soon upstream
 import { locales } from 'nextra/locales';
 
 const redirects: Record<string, string> = {
