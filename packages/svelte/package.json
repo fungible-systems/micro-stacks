@@ -38,8 +38,7 @@
     "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\" *.js",
     "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx}\"",
     "ci:publish": "pnpm build && pnpm publish --no-git-checks --access public",
-    "ci:version": "pnpm changeset version && pnpm install --no-frozen-lockfile && git add .",
-    "prepublishOnly": "pnpm build"
+    "ci:version": "pnpm changeset version && pnpm install --no-frozen-lockfile && git add ."
   },
   "repository": {
     "type": "git",
@@ -61,7 +60,7 @@
     "prettier": "2.7.1",
     "prettier-plugin-svelte": "2.7.0",
     "svelte": "^3.49.0",
-    "tsup": "6.2.0",
+    "tsup": "6.1.3",
     "typescript": "4.7.4"
   },
   "dependencies": {
