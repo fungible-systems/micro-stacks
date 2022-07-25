@@ -35,3 +35,6 @@ jobs:
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           build-script: "build:packages"
+          pattern: "packages/**/dist/*.{js,mjs}"
+          exclude: "{**/*.map,**/node_modules/**}"
+
