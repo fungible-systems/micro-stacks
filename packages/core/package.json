@@ -141,7 +141,7 @@
     "test": "NODE_ENV=test jest --passWithNoTests",
     "test:coverage": "NODE_ENV=test jest --coverage",
     "typecheck": "tsc --noEmit",
-    "prerelease": "pnpm build && cd dist"
+    "prepublish": "cd dist"
   },
   "husky": {
     "hooks": {
