@@ -13,7 +13,7 @@ jobs:
         node-version: [ 18 ]
 
     steps:
-      - name: Checkout Master
+      - name: Checkout Main
         uses: actions/checkout@v3
 
       - name: Install Node.js
