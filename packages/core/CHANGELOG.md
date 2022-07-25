@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 1.1.1
+
+### Patch Changes
+
+- [`2aef106a`](https://github.com/fungible-systems/micro-stacks/commit/2aef106a80a4476ccb4997f0199690a72732eeb1) Thanks [@aulneau](https://github.com/aulneau)! - Version bump for build issues
+
 ## 1.1.0
 
 ### Minor Changes
