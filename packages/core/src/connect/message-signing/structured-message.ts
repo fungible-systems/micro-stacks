@@ -52,9 +52,7 @@ export const getStructuredDataHashes = (options: {
   };
 };
 
-export const generateSignStructuredDataPayload = async (
-  options: StructuredSignatureRequestOptions
-) => {
+export const generateSignStructuredDataPayload = (options: StructuredSignatureRequestOptions) => {
   const message: string =
     typeof options.message !== 'string' ? cvToHex(options.message) : options.message;
 
