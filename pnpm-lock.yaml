@@ -160,6 +160,7 @@ importers:
       '@typescript-eslint/parser': 5.30.7
       bip32: 3.0.1
       bn.js: 5.2.1
+      common-tags: ^1.8.2
       concurrently: 7.3.0
       cross-fetch: 3.1.5
       eslint: 8.20.0
@@ -176,6 +177,7 @@ importers:
       jsontokens: 3.1.1
       msw: 0.44.2
       prettier: 2.7.1
+      schema-dts: ^1.1.0
       shx: 0.3.4
       ts-jest: 28.0.7
       ts-node: 10.9.1
@@ -215,6 +217,7 @@ importers:
       '@typescript-eslint/parser': 5.30.7_he2ccbldppg44uulnyq4rwocfa
       bip32: 3.0.1
       bn.js: 5.2.1
+      common-tags: 1.8.2
       concurrently: 7.3.0
       cross-fetch: 3.1.5
       eslint: 8.20.0
@@ -231,6 +234,7 @@ importers:
       jsontokens: 3.1.1
       msw: 0.44.2_typescript@4.7.4
       prettier: 2.7.1
+      schema-dts: 1.1.0_typescript@4.7.4
       shx: 0.3.4
       ts-jest: 28.0.7_qfrsgica3z6cdgxy6jhs4zk72q
       ts-node: 10.9.1_tdn3ypgnfy6bmey2q4hu5jonwi
@@ -4759,6 +4763,11 @@ packages:
   /commander/6.2.1:
     resolution: {integrity: sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==}
     engines: {node: '>= 6'}
+    dev: true
+
+  /common-tags/1.8.2:
+    resolution: {integrity: sha512-gk/Z852D2Wtb//0I+kRFNKKE9dIIVirjoqPoA1wJU+XePVXZfGeBpk45+A1rKO4Q43prqWBNY/MiIeRLbPWUaA==}
+    engines: {node: '>=4.0.0'}
     dev: true
 
   /commondir/1.0.1:
@@ -9314,6 +9323,14 @@ packages:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
     dependencies:
       loose-envify: 1.4.0
+
+  /schema-dts/1.1.0_typescript@4.7.4:
+    resolution: {integrity: sha512-vdmbs/5ycj4zyKpZIDqTcy+IZi4s7c38RVAYuDmRi7zgxUT8wRWPMLzg0jr7FjdVunYu9yZ00F3+XcZTTFcTOQ==}
+    peerDependencies:
+      typescript: '>=4.1.0'
+    dependencies:
+      typescript: 4.7.4
+    dev: true
 
   /schema-inspector/2.0.1:
     resolution: {integrity: sha512-lqR4tOVfoqf9Z8cgX/zvXuWPnTWCqrc4WSgeSPDDc1bWbMABaqdSTY98xj7iRKHOIRtKjc4M8EWCgUu5ASlHkg==}
