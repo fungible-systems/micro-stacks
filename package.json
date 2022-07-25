@@ -18,8 +18,8 @@
     "publish:beta": "pnpm publish -r --no-git-checks --tag beta --access public",
     "deps": "npx taze major -r",
     "deps:write": "npx taze major -r -w",
-    "ci:publish": "pnpm build:packages && ci:publish:packages",
-    "ci:publish:packages": "turbo run ci:publish --filter='./packages/*'",
+    "prepublish:ci": "pnpm build:packages",
+    "publish:ci": "changeset publish",
     "ci:version": "pnpm changeset version && pnpm install --no-frozen-lockfile && git add ."
   },
   "prettier": "@stacks/prettier-config",
