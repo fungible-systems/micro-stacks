@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 1.1.0
+
+### Minor Changes
+
+- [#129](https://github.com/fungible-systems/micro-stacks/pull/129) [`2abc5dfc`](https://github.com/fungible-systems/micro-stacks/commit/2abc5dfc6a825e22cbacd9d27cac3eace8363456) Thanks [@aulneau](https://github.com/aulneau)! - This update fixes a bug where the network was not passed to the signed message token payload, resulting in the wallet UI to always default to testnet. This has no affect on the signed messages, and was only a UI issue.
+
 ## 0.6.1
 
 ### Patch Changes

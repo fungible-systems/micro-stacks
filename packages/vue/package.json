@@ -1,7 +1,7 @@
 {
   "name": "@micro-stacks/vue",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Opinionated Vue integration for micro-stacks.",
   "files": [
     "dist"
