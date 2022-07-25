@@ -73,10 +73,10 @@
   "homepage": "https://github.com/fungible-systems/micro-stacks",
   "devDependencies": {
     "@vue/shared": "3.2.37",
-    "tsup": "6.1.3",
+    "tsup": "6.2.0",
+    "typescript": "4.7.4",
     "vue": "^3.2.37",
-    "vue-tsc": "^0.38.9",
-    "typescript": "4.7.4"
+    "vue-tsc": "^0.39.0"
   },
   "dependencies": {
     "@micro-stacks/client": "workspace:*",

@@ -20,8 +20,8 @@ const rehypePrettyCodeOptions = {
     });
   },
 };
-
-const withNextra = require('nextra')({
+/** @type {import('nextra').NextraConfig} */
+const config = {
   theme: 'nextra-theme-docs',
   themeConfig: './theme.config.js',
   unstable_flexsearch: true,
@@ -29,7 +29,9 @@ const withNextra = require('nextra')({
   mdxOptions: {
     rehypePrettyCodeOptions,
   },
-});
+};
+
+const withNextra = require('nextra')(config);
 
 module.exports = withNextra({
   i18n: {
@@ -44,10 +46,6 @@ module.exports = withNextra({
   },
   webpack(config, { isServer }) {
     const fallback = config.resolve.fallback || (config.resolve.fallback = {});
-    const alias = config.resolve.alias || (config.resolve.alias = {});
-
-    alias['@micro-stacks/react'] = path.resolve(__dirname, 'node_modules', '@micro-stacks/react');
-
     if (!isServer) fallback['crypto'] = fallback['stream'] = false;
     return config;
   },

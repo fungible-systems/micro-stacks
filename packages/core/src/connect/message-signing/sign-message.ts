@@ -23,6 +23,7 @@ export const handleSignMessageRequest = async (
   try {
     const token = await generateSignMessagePayload({
       message: options.message,
+      network: options.network,
       privateKey: options.privateKey,
       stxAddress: options.stxAddress,
       authOrigin: options.authOrigin,
