@@ -11,6 +11,7 @@ import { Status, StatusKeys, TxType } from './constants';
 import { ChainID } from 'micro-stacks/network';
 import { SignedOptionsWithOnHandlers } from 'micro-stacks/connect';
 import { ClarityValue } from 'micro-stacks/clarity';
+import { GaiaHubConfig } from 'micro-stacks/storage/gaia/types';
 
 export interface AppDetails {
   /** A human-readable name for your application */
@@ -115,6 +116,16 @@ export interface ClientConfig {
    * instance of `StacksProvider` (user needs to install a wallet)
    */
   onNoWalletFound?: () => void | Promise<void>;
+  /**
+   * gaiaConfig
+   * Configuration options for any optional storage functionality
+   */
+  gaiaConfig?: {
+    gaiaHubUrl?: string;
+    gaiaReadUrl?: string;
+    gaiaHubConfig?: GaiaHubConfig;
+    privateKey?: string;
+  };
   fetcher?: (input: RequestInfo, init?: RequestInit) => Promise<Response>;
 }
 

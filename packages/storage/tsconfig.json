@@ -1,0 +1,38 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "noEmit": false,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@micro-stacks/client": [
+        "../client/src"
+      ],
+      "micro-stacks/*": [
+        "../core/src/*"
+      ],
+      "@micro-stacks/storage": [
+        "../storage/src"
+      ]
+    },
+    "types": [
+      "vitest/globals"
+    ]
+  },
+  "references": [
+    {
+      "path": "../client/tsconfig.json"
+    },
+    {
+      "path": "../storage/tsconfig.json"
+    },
+    {
+      "path": "../core/tsconfig.json"
+    }
+  ],
+  "include": [
+    "src/**/*",
+    "tests/**/*"
+  ]
+}

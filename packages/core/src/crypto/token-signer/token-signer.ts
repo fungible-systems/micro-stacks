@@ -5,6 +5,17 @@ import { derToJoseES256 } from './ecdsa-sig-formatter';
 import { Json, SignedToken } from './types';
 import { createSigningInput } from './create-signing-input';
 import { MissingParametersError, utf8ToBytes } from 'micro-stacks/common';
+import * as secp256k1 from '@noble/secp256k1';
+import { hmac } from '@noble/hashes/hmac';
+import { sha256 } from '@noble/hashes/sha256';
+
+function handleSetHasher() {
+  secp256k1.utils.hmacSha256Sync = (key: Uint8Array, ...msgs: Uint8Array[]) => {
+    const h = hmac.create(sha256, key);
+    msgs.forEach(msg => h.update(msg));
+    return h.digest();
+  };
+}
 
 export class TokenSigner {
   tokenType: string;
@@ -97,6 +108,7 @@ export class TokenSigner {
     signingInput: string,
     signingInputHash: Uint8Array
   ): SignedToken | string {
+    if (typeof secp256k1.utils.hmacSha256Sync === 'undefined') handleSetHasher();
     const sig = signSync(signingInputHash, this.rawPrivateKey, {
       // whether a signature s should be no more than 1/2 prime order.
       // true makes signatures compatible with libsecp256k1

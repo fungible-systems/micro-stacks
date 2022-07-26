@@ -46,5 +46,6 @@ export interface GenerateGaiaHubConfigOptions {
   gaiaHubUrl: string;
   privateKey: string;
   associationToken?: string;
+  gaiaReadUrl?: string;
   scopes?: GaiaAuthScope[];
 }
