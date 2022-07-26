@@ -14,6 +14,7 @@ export * from './hooks/use-open-contract-deploy';
 export * from './hooks/use-open-contract-call';
 export * from './hooks/use-open-stx-token-transfer';
 export * from './hooks/use-gaia';
+export * from './hooks/use-storage';
 
 /** ------------------------------------------------------------------------------------------------------------------
  *   Client Provider

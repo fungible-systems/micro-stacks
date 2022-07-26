@@ -9,11 +9,11 @@
       "@micro-stacks/client": [
         "../client/src"
       ],
-      "@micro-stacks/react": [
-        "../react/src"
-      ],
       "micro-stacks/*": [
         "../core/src/*"
+      ],
+      "@micro-stacks/storage": [
+        "../storage/src"
       ]
     }
   },
@@ -22,10 +22,10 @@
       "path": "../client/tsconfig.json"
     },
     {
-      "path": "../core/tsconfig.json"
+      "path": "../storage/tsconfig.json"
     },
     {
-      "path": "../react/tsconfig.json"
+      "path": "../core/tsconfig.json"
     }
   ],
   "include": [

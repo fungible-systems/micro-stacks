@@ -1,0 +1,35 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "noEmit": false,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@micro-stacks/client": [
+        "../client/src"
+      ],
+      "@micro-stacks/react": [
+        "../integration-react/src"
+      ],
+      "micro-stacks/*": [
+        "../core/src/*"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "../client/tsconfig.json"
+    },
+    {
+      "path": "../core/tsconfig.json"
+    },
+    {
+      "path": "../integration-react/tsconfig.json"
+    }
+  ],
+  "include": [
+    "src/**/*",
+    "tests/**/*"
+  ]
+}

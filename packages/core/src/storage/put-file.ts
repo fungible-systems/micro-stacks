@@ -12,7 +12,7 @@ import { isRecoverableGaiaError, megabytesToBytes, PayloadTooLargeError } from '
 
 import type { GaiaHubConfig } from './gaia/types';
 import type { PutFileOptions } from './common/types';
-import { bytesToHex } from 'micro-stacks/common';
+import { fetchPrivate, bytesToHex } from 'micro-stacks/common';
 
 export async function putFile(
   path: string,
@@ -20,7 +20,13 @@ export async function putFile(
   options: PutFileOptions
 ): Promise<string> {
   let { privateKey } = options;
-  const { encrypt, sign: shouldSign, gaiaHubConfig, cipherTextEncoding } = options;
+  const {
+    fetcher = fetchPrivate,
+    encrypt,
+    sign: shouldSign,
+    gaiaHubConfig,
+    cipherTextEncoding,
+  } = options;
   let { contentType = '' } = options;
 
   const maxUploadBytes = megabytesToBytes(gaiaHubConfig.max_file_upload_size_megabytes);
@@ -76,12 +82,14 @@ export async function putFile(
             contents,
             hubConfig,
             contentType,
+            fetcher,
           }),
           uploadToGaiaHub({
             filename: `${path}${SIGNATURE_FILE_SUFFIX}`,
             contents: JSON.stringify(signatureResponse),
             hubConfig,
             contentType: 'application/json',
+            fetcher,
           }),
         ])
       )[0];
@@ -138,6 +146,7 @@ export async function putFile(
         contents: contentForUpload,
         hubConfig,
         contentType,
+        fetcher,
       });
       return writeResponse.publicURL;
     };
