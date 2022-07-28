@@ -195,10 +195,10 @@ import { useNetwork } from '@micro-stacks/solidjs';
 
 export const NetworkToggle = () => {
   const { isMainnet, setNetwork } = useNetwork();
-  const networkMode = isMainnet() ? 'mainnet' : 'testnet';
-
   return (
-    <button onClick={() => setNetwork(isMainnet() ? 'testnet' : 'mainnet')}>{networkMode}</button>
+    <button onClick={() => setNetwork(isMainnet() ? 'testnet' : 'mainnet')}>
+      {isMainnet() ? 'mainnet' : 'testnet'}
+    </button>
   );
 };
 ```
