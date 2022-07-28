@@ -153,21 +153,6 @@ import { useAuth } from '@micro-stacks/solidjs';
 export const WalletConnectButton = () => {
   const { openAuthRequest, signOut, isRequestPending, isSignedIn } = useAuth();
 
-  const label = (
-    <Show
-      when={isRequestPending()}
-      fallback={
-        <Show
-          when={!isSignedIn()}
-          fallback={'Sign out'}
-        >
-          Connect Stacks Wallet
-        </Show>
-      }
-    >
-      Loading...
-    </Show>
-  );
   return (
     <button
       onClick={() => {
@@ -175,7 +160,11 @@ export const WalletConnectButton = () => {
         else void openAuthRequest();
       }}
     >
-      {label}
+      <Solid.Show when={!isRequestPending()} fallback={"Loading..."}>
+        <Solid.Show when={!isSignedIn()} fallback={"Sign out"}>
+          Connect Stacks Wallet
+        </Solid.Show>
+      </Solid.Show>
     </button>
   );
 };
@@ -329,7 +318,7 @@ interface Account {
 To access the current signed in user data, you'll want to make use of the `useAccount` hook:
 
 ```ts
-import { useAccount } from '@micro-stacks/solid';
+import { useAccount } from '@micro-stacks/solidjs';
 ```
 
 This hook will return a _reactive_ (will automatically update as state changes) object with the
@@ -347,7 +336,7 @@ interface Account {
 ```
 
 ```ts
-import { useAccount } from '@micro-stacks/solid';
+import { useAccount } from '@micro-stacks/solidjs';
 
 const account = useAccount();
 
