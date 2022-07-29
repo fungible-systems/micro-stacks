@@ -82,11 +82,8 @@ html {
   scroll-behavior: smooth;
 }
 
-:target:before {
-  content: "";
-  display: block;
-  height: 140px;
-  margin: -140px 0 0;
+article .subheading-anchor {
+  margin-top: -140px !important;
 }
 
 @media screen and (max-width: 768px) {
@@ -105,5 +102,6 @@ html {
   }
 }
 
-
-
+pre > code {
+  display: grid;
+}

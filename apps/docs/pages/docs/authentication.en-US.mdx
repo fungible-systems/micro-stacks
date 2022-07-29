@@ -36,7 +36,7 @@ callbacks for different functions: `openAuthRequest`, `signOut`, along with some
 
 Check out the sample below for a very simple `WalletConnectButton` component:
 
-```typescript
+```typescript filename="wallet-connect-button.tsx"
 import { useAuth } from '@micro-stacks/react';
 
 export const WalletConnectButton = () => {
@@ -76,7 +76,7 @@ reactive variables: `isRequestPending` `isSignedIn`.
 
 Check out the sample below for a very simple `WalletConnectButton` component:
 
-```svelte
+```svelte filename="wallet-connect-button.svelte"
 <script lang="ts">
   import { getAuth } from "@micro-stacks/svelte";
 
@@ -110,7 +110,7 @@ different functions: `openAuthRequest`, `signOut`, along with some helper reacti
 
 Check out the sample below for a very simple `WalletConnectButton` component:
 
-```vue
+```vue filename="wallet-connect-button.vue"
 <script setup lang="ts">
   import { useAuth } from '@micro-stacks/vue';
 
@@ -146,7 +146,7 @@ different functions: `openAuthRequest`, `signOut`, along with some helper reacti
 
 Check out the sample below for a very simple `WalletConnectButton` component:
 
-```tsx
+```tsx filename="wallet-connect-button.tsx"
 import { Show } from 'solid-js';
 import { useAuth } from '@micro-stacks/solidjs';
 
@@ -160,8 +160,14 @@ export const WalletConnectButton = () => {
         else void openAuthRequest();
       }}
     >
-      <Solid.Show when={!isRequestPending()} fallback={"Loading..."}>
-        <Solid.Show when={!isSignedIn()} fallback={"Sign out"}>
+      <Solid.Show
+        when={!isRequestPending()}
+        fallback={'Loading...'}
+      >
+        <Solid.Show
+          when={!isSignedIn()}
+          fallback={'Sign out'}
+        >
           Connect Stacks Wallet
         </Solid.Show>
       </Solid.Show>
@@ -183,7 +189,7 @@ The micro-stacks client will handle persistence for you, so all you need to do i
 call `authenticate` from the client, and once they have selected an account, the client will update
 automatically.
 
-```typescript
+```typescript filename="auth.ts"
 import { client } from './my-client';
 
 const authenticate = async () => {
@@ -231,20 +237,18 @@ import { getAccount } from '@micro-stacks/svelte';
 This function will return a _reactive_ (will automatically update as state changes) object with the
 shape:
 
-```ts
-interface Account {
-  appPrivateKey?: string;
-  stxAddress?: string;
-  rawAddress?: [number, Uint8Array];
-  identityAddress?: string;
-  decentralizedID?: string;
-  profileUrl?: string;
-}
-```
-
-```svelte
+```svelte filename="account.svelte"
 <script lang="ts">
   import { getAccount } from "@micro-stacks/svelte";
+
+  interface Account {
+    appPrivateKey?: string;
+    stxAddress?: string;
+    rawAddress?: [number, Uint8Array];
+    identityAddress?: string;
+    decentralizedID?: string;
+    profileUrl?: string;
+  }
 
   const account = getAccount();
 

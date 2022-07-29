@@ -1,7 +1,7 @@
 // next.config.js
 const { getHighlighter, BUNDLED_LANGUAGES } = require('shiki');
 const fs = require('fs');
-const path = require('path');
+
 const grammar = fs.readFileSync(require.resolve('./common/clarity-tmlanguage.json'), 'utf-8');
 
 const rehypePrettyCodeOptions = {
