@@ -28,10 +28,9 @@ pass `network="testnet"` (or an instance of `StacksNetwork`) to your client, lik
 
 <Integrations.React>
 
-```tsx {9}
+```tsx {8} filename="app.tsx"
 import * as MicroStacks from '@micro-stacks/react';
 
-// your app
 function App() {
   return (
     <MicroStacks.ClientProvider
@@ -51,9 +50,8 @@ export default App;
 
 <Integrations.Svelte>
 
-```svelte {9}
+```svelte {8}  filename="app.svelte"
 <script lang="ts">
-  // App.svelte file
   import { ClientProvider } from "@micro-stacks/svelte";
 </script>
 
@@ -72,7 +70,7 @@ export default App;
 
 <Integrations.Vue>
 
-```vue {9}
+```vue {9}  filename="app.vue"
 <script setup lang="ts">
   // This starter template is using Vue 3 <script setup> SFCs
   // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
@@ -97,7 +95,7 @@ export default App;
 
 <Integrations.Solid>
 
-```tsx {7}
+```tsx {7}  filename="app.tsx"
 import { ClientContext, useCreateClient } from '@micro-stacks/solidjs';
 
 const App = () => {
@@ -124,7 +122,7 @@ api endpoint. In this case, you can create a button that will change the network
 
 <Integrations.React>
 
-```tsx
+```tsx filename="network-toggle.tsx"
 import { useNetwork } from '@micro-stacks/react';
 
 export const NetworkToggle = () => {
@@ -141,7 +139,7 @@ export const NetworkToggle = () => {
 
 <Integrations.Svelte>
 
-```svelte
+```svelte filename="network-toggle.svelte"
 <script lang='ts'>
   import { getNetwork } from '@micro-stacks/svelte';
 
@@ -165,7 +163,7 @@ export const NetworkToggle = () => {
 
 <Integrations.Vue>
 
-```vue
+```vue filename="network-toggle.vue"
 <script setup lang="ts">
   import { useNetwork } from '@micro-stacks/vue';
 
@@ -190,7 +188,7 @@ export const NetworkToggle = () => {
 
 <Integrations.Solid>
 
-```tsx
+```tsx filename="network-toggle.tsx"
 import { useNetwork } from '@micro-stacks/solidjs';
 
 export const NetworkToggle = () => {

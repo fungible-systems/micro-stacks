@@ -84,7 +84,7 @@ import Callout from 'nextra-theme-docs/callout';
 <Integrations.React>
 To add `@micro-stacks/react` to your application, we only need to import the `ClientProvider` and pass it some details about your app: `appName` and `appIconUrl`. This component creates the React Context that all other functions within this package make use of.
 
-```tsx {7-8}
+```tsx {7-8} filename="app.tsx"
 import * as MicroStacks from '@micro-stacks/react';
 
 // your app
@@ -112,9 +112,8 @@ This component creates the Context that all other functions within this package 
 
 Or you can use the function `mountClient` and pass it the same details.
 
-```svelte {3,7-8}
+```svelte {2,6-7} filename="app.svelte"
 <script lang="ts">
-  // App.svelte file
   import { ClientProvider } from "@micro-stacks/svelte";
 </script>
 
@@ -130,7 +129,7 @@ Or you can use the function `mountClient` and pass it the same details.
 
 Or if you want to use `mountClient`:
 
-```svelte {3,5-8}
+```svelte {3,5-8} filename="app.svelte"
 <script lang="ts">
   // App.svelte file
   import { mountClient } from "@micro-stacks/svelte";
@@ -152,7 +151,7 @@ Or if you want to use `mountClient`:
 To add `@micro-stacks/vue` to your application, we need to set the context for the client. There is a function
 `provideClient` which sets the context for the app and all the functions to make use of.
 
-```vue {4, 6-9}
+```vue {4, 6-9} filename="app.vue"
 <script setup lang="ts">
   // This starter template is using Vue 3 <script setup> SFCs
   // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
@@ -178,7 +177,7 @@ To add `@micro-stacks/vue` to your application, we need to set the context for t
 To add `@micro-stacks/solidjs` to your application, we need to set the context for the client. We can import `CLientContext` and
 `useCreateClient` from `@micro-stacks/solidjs` to create the context that all other hooks make use of.
 
-```tsx {1, 4, 6}
+```tsx {1, 4, 6} filename="app.tsx"
 import { ClientContext, useCreateClient } from '@micro-stacks/solidjs';
 
 const App = () => {
@@ -201,9 +200,7 @@ instance of `MicroStacksClient`. Typically it's recommended to create a new file
 `micro-stacks-client.ts` (or `.js`) that exports your client so you can use it throughout your
 application.
 
-```tsx
-// micro-stacks-client.ts
-
+```tsx filename="micro-stacks-client.ts"
 import { createClient } from '@micro-stacks/client';
 
 const client = createClient({
@@ -214,10 +211,8 @@ const client = createClient({
 export { client };
 ```
 
-```ts
-// auth.ts
-
-import { client } from './micro-stacks-client.ts';
+```ts filename="auth.ts"
+import { client } from './micro-stacks-client';
 
 const handleAuth = async () => {
   if (!client.hasSession) await client.authenticate();

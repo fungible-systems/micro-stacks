@@ -13,6 +13,7 @@
     "lint:prettier:fix": "prettier --write \"./**/*.{ts,tsx,md,mdx}\""
   },
   "dependencies": {
+    "@code-hike/mdx": "^0.7.2",
     "@nelson-ui/react": "0.1.6",
     "@radix-ui/react-tabs": "1.0.0",
     "@tailwindcss/typography": "0.5.4",
@@ -23,7 +24,8 @@
     "nextra-theme-docs": "2.0.0-beta.11",
     "patch-package": "6.4.7",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "shiki": "^0.10.1"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "12.2.3",
