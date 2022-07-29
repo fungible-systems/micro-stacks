@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "turbo run lint",
     "build": "turbo run build --parallel",
-    "test": "turbo run test --parallel",
+    "test": "turbo run test",
     "build:packages": "turbo run build --parallel --filter='./packages/*'",
     "build:docs": "turbo run build --filter=@micro-stacks/docs",
     "dev:docs": "turbo run dev --filter=@micro-stacks/docs",
