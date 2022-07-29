@@ -1,8 +1,8 @@
 import { Model } from '../src';
 
-export const createTestModel = <T = { hello: string }>() =>
+export const createTestModel = <T = { hello: string }>(type: string) =>
   new Model<T>({
-    type: 'SomeModel',
+    type: type,
     adapter: makeTestAdapter(new Map()),
   });
 

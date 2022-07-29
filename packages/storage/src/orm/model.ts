@@ -1,5 +1,5 @@
 import { GaiaORM } from './orm';
-import { KvAdapter, WithMeta } from './types';
+import { KvAdapter, WithMeta, WithMetaOptional } from './types';
 
 const listCache = new Map<string, number>();
 const cache = new Map<string, number>();
@@ -51,16 +51,16 @@ export class Model<Schema> {
    *   Save
    *  ------------------------------------------------------------------------------------------------------------------
    */
-  save = async (value: WithMeta<Schema>): Promise<WithMeta<Schema>> => {
+  save = async (value: WithMetaOptional<Schema>): Promise<WithMeta<Schema>> => {
     const id = value._id ?? this.makeId?.(value);
     if (id && !value._id) value['_id'] = id;
     const result = await this.driver.save(this.type, value);
-    this.incrementSaveNonce();
 
     if (this.getHasListCache()) {
       this.listCache.set(result._id, result._createdAt);
       this.setListFetchCount();
     }
+    this.incrementSaveNonce();
     return result;
   };
 
@@ -68,7 +68,7 @@ export class Model<Schema> {
    *   Save many
    *  ------------------------------------------------------------------------------------------------------------------
    */
-  saveMany = async (values: WithMeta<Schema>[]): Promise<WithMeta<Schema>[]> => {
+  saveMany = async (values: WithMetaOptional<Schema>[]): Promise<WithMeta<Schema>[]> => {
     const results = await this.driver.saveMany(
       this.type,
       values.map(value => {
@@ -113,31 +113,29 @@ export class Model<Schema> {
    *  ------------------------------------------------------------------------------------------------------------------
    */
   list = async (options?: { orderBy?: 'created_at_desc' | 'created_at_asc' }) => {
-    const results: { id: string; createdAt: number }[] = [];
+    const results: Record<string, { id: string; createdAt: number }> = {};
 
-    if (this.getCanUseCachedList() && this.getHasListCache()) {
+    const hasCachedValue = this.getCanUseCachedList() && this.getHasListCache();
+
+    if (hasCachedValue) {
       // if we have fetched list since last save and we have cache
       for (const [id, createdAt] of this.listCache.entries()) {
-        results.push({ id, createdAt });
+        results[id] = { id, createdAt };
       }
     } else {
       for (const [id, createdAt] of Object.entries(await this.driver.list(this.type))) {
         this.listCache.set(id, createdAt);
-        results.push({
-          id,
-          createdAt,
-        });
+        results[id] = { id, createdAt };
       }
       this.setListFetchCount();
     }
 
     if (options?.orderBy)
-      return results.sort((a, b) =>
-        options?.orderBy === 'created_at_asc'
-          ? a.createdAt - b.createdAt
-          : b.createdAt - a.createdAt
-      );
-    return results;
+      return Object.values(results).sort((a, b) => {
+        if (options?.orderBy !== 'created_at_asc') return a.createdAt < b.createdAt ? 1 : -1;
+        return a.createdAt > b.createdAt ? 1 : -1;
+      });
+    return Object.values(results);
   };
 
   /** ------------------------------------------------------------------------------------------------------------------

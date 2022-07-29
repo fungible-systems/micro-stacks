@@ -11,9 +11,7 @@ describe('ORM tests', () => {
   it('can set and get a value', async () => {
     const TEST_ORM = makeTestOrm();
     const result = await TEST_ORM.save(TYPE, VALUE);
-
     const value = await TEST_ORM.findById(TYPE, result._id);
-
     expect(value).toEqual(result);
   });
 

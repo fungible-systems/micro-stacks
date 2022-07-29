@@ -118,7 +118,7 @@ export class GaiaORM<Type extends string, Schema extends KvItem> {
 
     await this.fileQueue.add(() => this.adapter.set(filename, this.serialize(contents)));
 
-    if (isNew) void this.indexQueue.add(() => this.updateIndex(type, _id, _createdAt));
+    if (isNew) await this.indexQueue.add(() => this.updateIndex(type, _id, _createdAt));
 
     return {
       _id,

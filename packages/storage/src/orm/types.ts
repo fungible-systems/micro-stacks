@@ -15,4 +15,5 @@ export interface KvAdapter {
   list(prefix?: string): Promise<string[]>;
 }
 
-export type WithMeta<T> = T & { _id?: string; _createdAt?: number };
+export type WithMeta<T> = T & { _id: string; _createdAt: number };
+export type WithMetaOptional<T> = T & { _id?: string; _createdAt?: number };
