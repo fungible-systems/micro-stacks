@@ -52,24 +52,30 @@ export function makeScopedGaiaAuthTokenSync(options: ScopedGaiaTokenOptions): st
   return `v1:${token}`;
 }
 
-const DEFAULT_PAYLOAD = (server_url: string): HubInfo => ({
+const DEFAULT_PAYLOAD = (read_url_prefix: string): HubInfo => ({
   challenge_text: '["gaiahub","0","gaia-0","blockstack_storage_please_sign"]',
   latest_auth_version: 'v1',
   max_file_upload_size_megabytes: 20,
-  read_url_prefix: `${server_url}/hub/`,
+  read_url_prefix,
 });
 
 /**
  * Generates a gaia hub config to share with someone so they can edit a file
  */
 export async function generateGaiaHubConfig(
-  { gaiaHubUrl, privateKey, associationToken, scopes }: GenerateGaiaHubConfigOptions,
+  {
+    gaiaHubUrl = 'https://gaia.blockstack.org',
+    privateKey,
+    associationToken,
+    scopes,
+    gaiaReaderUrl = 'https://gaia.blockstack.org/hub/',
+  }: GenerateGaiaHubConfigOptions,
   options?: {
     fetchHubInfo?: boolean;
     fetcher?: FetcherFn;
   }
 ): Promise<GaiaHubConfig> {
-  let hubInfo = DEFAULT_PAYLOAD(gaiaHubUrl ?? 'https://gaia.blockstack.org');
+  let hubInfo = DEFAULT_PAYLOAD(gaiaReaderUrl);
 
   if (options?.fetchHubInfo) {
     try {
@@ -106,8 +112,13 @@ export async function generateGaiaHubConfig(
 
 // sync version
 export function generateGaiaHubConfigSync(options: GenerateGaiaHubConfigOptions): GaiaHubConfig {
-  const { gaiaHubUrl, privateKey, associationToken, scopes } = options;
-  const hubInfo = DEFAULT_PAYLOAD(gaiaHubUrl ?? 'https://gaia.blockstack.org');
+  const {
+    gaiaHubUrl = 'https://gaia.blockstack.org',
+    privateKey,
+    associationToken,
+    scopes,
+  } = options;
+  const hubInfo = DEFAULT_PAYLOAD(gaiaHubUrl);
 
   const { read_url_prefix: url_prefix, max_file_upload_size_megabytes } = hubInfo;
 
