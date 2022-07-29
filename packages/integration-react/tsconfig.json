@@ -11,12 +11,18 @@
       ],
       "micro-stacks/*": [
         "../core/src/*"
+      ],
+      "@micro-stacks/storage": [
+        "../storage/src/*"
       ]
     }
   },
   "references": [
     {
       "path": "../client/tsconfig.json"
+    },
+    {
+      "path": "../storage/tsconfig.json"
     },
     {
       "path": "../core/tsconfig.json"

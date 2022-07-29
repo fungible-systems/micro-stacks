@@ -76,6 +76,7 @@
   },
   "dependencies": {
     "@micro-stacks/client": "workspace:*",
+    "@micro-stacks/storage": "workspace:*",
     "micro-stacks": "workspace:*",
     "react-async-hook": "^4.0.0",
     "use-sync-external-store": "^1.2.0"

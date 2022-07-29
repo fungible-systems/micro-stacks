@@ -1,29 +1,18 @@
-import { createClientAdapter } from './client-adapter';
-import { MicroStacksClient } from '@micro-stacks/client';
-import { extractField, extractId, noop, uuidv4 } from './utils';
-
-export interface KvItem {
-  _id?: string;
-
-  [key: string]: any;
-}
-
-export interface KvAdapter {
-  set(key: string, value: string): Promise<void>;
-
-  get(key: string): Promise<string | null>;
-
-  delete(key: string): Promise<void>;
-
-  list(prefix?: string): Promise<string[]>;
-}
+import { uuidv4 } from './utils';
+import { KvAdapter, KvItem, WithMeta } from './types';
+import PQueue from 'p-queue';
 
 export class GaiaORM<Type extends string, Schema extends KvItem> {
   private adapter: KvAdapter;
   private fileExtension?: string;
-  private kvIgnoredFields: string[] = ['_id'];
-  private serialize: <T>(v: T) => string;
-  private deserialize: <T>(v: string) => T;
+  private serialize: <T = Schema>(v: T) => string;
+  private deserialize: <T = Schema>(v: string) => T;
+  private indexQueue = new PQueue({
+    concurrency: 1,
+  });
+  private fileQueue = new PQueue({
+    concurrency: 10,
+  });
 
   constructor(
     adapter: KvAdapter,
@@ -45,190 +34,227 @@ export class GaiaORM<Type extends string, Schema extends KvItem> {
       }`;
   }
 
-  private cleanPath = (path: string) =>
-    typeof this.fileExtension === 'string' ? path.replace(this.fileExtension, '') : path;
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   Internal functions
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
 
   private withExtension = (path: string) =>
     !this.fileExtension || path.endsWith(this.fileExtension)
       ? path
       : `${path}${this.fileExtension ?? ''}`;
 
-  async save(type: Type, obj: Schema) {
-    const id = obj._id || uuidv4();
+  private makeIndexFilename = (type: Type) => this.withExtension(`${type}.orm_index`);
 
-    await Promise.all(
-      Object.entries(obj).map(async ([fieldKey, value]) => {
-        if (this.kvIgnoredFields.includes(fieldKey)) return;
+  private makeFilename = (type: Type, id: string, createdAt: string | number) =>
+    this.withExtension(`${type}:${id}:${createdAt}`);
 
-        const key = this.withExtension(`${type}:${id}:${fieldKey}`);
-        await this.adapter.set(key, this.serialize(value));
-      })
-    );
-
-    return id;
+  private async updateIndex(type: Type, id: string, createdAt: number) {
+    const filename = this.makeIndexFilename(type);
+    const current = await this.adapter.get(filename);
+    const obj: Record<string, number> = current ? JSON.parse(current) : {};
+    const match = obj[id];
+    if (!match)
+      await this.adapter.set(
+        filename,
+        JSON.stringify({
+          ...obj,
+          [id]: createdAt,
+        })
+      );
   }
 
+  private async updateIndexMany(type: Type, entries: Record<string, number>) {
+    const filename = this.makeIndexFilename(type);
+    const current = await this.adapter.get(filename);
+    const obj: Record<string, number> = current ? JSON.parse(current) : {};
+    const nonMatches: Record<string, number> = {};
+    for (const [id, createdAt] of Object.entries(entries)) {
+      const match = obj[id];
+      if (!match) nonMatches[id] = createdAt;
+    }
+    if (Object.keys(nonMatches).length) {
+      await this.adapter.set(
+        filename,
+        JSON.stringify({
+          ...obj,
+          ...nonMatches,
+        })
+      );
+    }
+  }
+
+  private async fetchIndex(type: Type): Promise<Record<string, number>> {
+    const filename = this.makeIndexFilename(type);
+    const index = await this.adapter.get(filename);
+    if (!index) {
+      void this.adapter.set(filename, JSON.stringify({}));
+      return {};
+    }
+    return JSON.parse(index);
+  }
+
+  private async getFile(type: Type, id: string, createdAt: string | number) {
+    const value = await this.adapter.get(this.makeFilename(type, id, createdAt));
+    if (!value) return null;
+    return this.deserialize(value);
+  }
+
+  private cleanContents(contents: Schema) {
+    const { _id, _createdAt, ...rest } = contents;
+    return rest;
+  }
+
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   Save model entry
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
+  async save(type: Type, contents: Schema) {
+    const isNew = !contents._id && !contents._createdAt;
+    const _id: string = contents._id ?? uuidv4();
+    const _createdAt: number = contents._createdAt ? parseInt(contents._createdAt) : Date.now();
+
+    const filename = this.makeFilename(type, _id, _createdAt);
+
+    await this.fileQueue.add(() => this.adapter.set(filename, this.serialize(contents)));
+
+    if (isNew) void this.indexQueue.add(() => this.updateIndex(type, _id, _createdAt));
+
+    return {
+      _id,
+      _createdAt,
+      ...contents,
+    };
+  }
+
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   Save many model entries
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
+  async saveMany(type: Type, entries: Schema[]) {
+    const files: Record<string, [Schema, { _id: string; _createdAt: number }]> = {};
+    const indexUpdates: Record<string, number> = {};
+
+    for (const contents of entries) {
+      const isNew = !contents._id && !contents._createdAt;
+      const _id: string = contents._id ?? uuidv4();
+      const _createdAt: number = contents._createdAt ? parseInt(contents._createdAt) : Date.now();
+      const filename = this.makeFilename(type, _id, _createdAt);
+      if (isNew) indexUpdates[_id] = _createdAt;
+      files[filename] = [contents, { _id, _createdAt }];
+    }
+
+    await Promise.all([
+      this.indexQueue.add(() => this.updateIndexMany(type, indexUpdates)),
+      this.fileQueue.addAll(
+        Object.entries(files).map(([filename, [contents]]) => {
+          return () => this.adapter.set(filename, this.serialize(this.cleanContents(contents)));
+        })
+      ),
+    ]);
+
+    return Object.values(files).map(([contents, meta]) => ({ ...contents, ...meta }));
+  }
+
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   Delete model entry
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
   async delete(type: Type, id: string) {
-    const keys = await this.adapter.list(`${type}:${id}:`);
-
-    await Promise.all(
-      keys.map(async key => {
-        await this.adapter.delete(key);
-      })
-    );
+    const index = await this.fetchIndex(type);
+    const createdAt = index[id];
+    if (!createdAt) {
+      console.warn('cannot find file to delete');
+      return;
+    }
+    await this.adapter.delete(this.makeFilename(type, id, createdAt));
   }
 
-  async getIds(type: Type) {
-    const prefix = `${type}:`;
-    const keys = await this.adapter.list(prefix);
-    return [...new Set(keys.map(extractId))];
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   List model entries (id, createdAt)
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
+  async list(
+    type: Type,
+    options?: { orderBy?: 'created_at_desc' | 'created_at_asc' }
+  ): Promise<Record<string, number>> {
+    const index = await this.fetchIndex(type);
+
+    if (Object.keys(index).length === 0) return {};
+
+    if (!options?.orderBy) return index;
+
+    const sorted: Record<string, number> = {};
+
+    for (const [id, createdAt] of Object.entries(index).sort((a, b) =>
+      options?.orderBy === 'created_at_asc' ? a[1] - b[1] : b[1] - a[1]
+    )) {
+      sorted[id] = createdAt;
+    }
+
+    return sorted;
   }
 
-  async findOne(type: Type, id: string) {
-    const prefix = `${type}:${id}:`;
-    const keys = await this.adapter.list(prefix);
-    if (keys.length === 0) return null;
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   Find entry by ID
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
+  async findById(
+    type: Type,
+    _id: string
+  ): Promise<(Schema & { _id: string; _createdAt: number }) | null> {
+    const _createdAt = (await this.fetchIndex(type))[_id];
+    if (_createdAt) return this.findExact(type, _id, _createdAt);
+    return null;
+  }
 
-    const data: KvItem = await keys.reduce(async (obj, key) => {
-      const value = await this.adapter.get(key);
-      const fieldName = extractField(this.cleanPath(key));
-      if (value === null || typeof fieldName === 'undefined') return obj;
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   Find entry by ID & createdAt
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
+  async findExact(
+    type: Type,
+    _id: string,
+    _createdAt: number
+  ): Promise<(Schema & { _id: string; _createdAt: number }) | null> {
+    const value = await this.getFile(type, _id, _createdAt);
+    if (value)
       return {
-        ...(await obj),
-        [fieldName]: this.deserialize(value),
+        _id,
+        _createdAt,
+        ...value,
       };
-    }, Promise.resolve({}));
-
-    data._id = id;
-
-    return data;
+    return null;
   }
 
-  async findAll(type: Type) {
-    const prefix = `${type}:`;
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   Find many of model
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
+  async findMany(
+    type: Type,
+    options?: {
+      orderBy?: 'created_at_desc' | 'created_at_asc' | ((a: Schema, b: Schema) => number);
+    }
+  ): Promise<WithMeta<Schema>[]> {
+    const index = await this.list(type, {
+      orderBy: typeof options?.orderBy === 'string' ? options?.orderBy : undefined,
+    });
 
-    const keys = await this.adapter.list(prefix);
-    const data: { [key: string]: KvItem } = await keys.reduce(
-      async (obj: Promise<{ [key: string]: KvItem }>, key) => {
-        const value = await this.adapter.get(key);
-        const id = extractId(key);
-        const fieldName = extractField(this.cleanPath(key));
-        if (value === null || typeof fieldName === 'undefined') return obj;
+    const results: WithMeta<Schema>[] = [];
 
-        let current = (await obj)[id];
-        if (typeof current === 'undefined') current = {};
-        current[fieldName] = this.deserialize(value);
+    for (const [_id, _createdAt] of Object.entries(index)) {
+      const value = await this.getFile(type, _id, _createdAt);
+      if (value)
+        results.push({
+          _id,
+          _createdAt,
+          ...value,
+        });
+    }
 
-        return {
-          ...(await obj),
-          [id]: current,
-        };
-      },
-      Promise.resolve({})
-    );
+    if (typeof options?.orderBy === 'function') return results.sort(options.orderBy);
 
-    return Object.entries(data).map(([key, value]) => ({
-      _id: key,
-      ...value,
-    }));
+    return results;
   }
-
-  async exists(type: Type, id: string) {
-    const keys = await this.adapter.list(`${type}:${id}:`);
-    return keys.length > 0;
-  }
-
-  async getAttributes(type: Type, id: string) {
-    const prefix = `${type}:${id}:`;
-    const keys = await this.adapter.list(prefix);
-    if (keys.length === 0) return null;
-    return keys.map(key => key.replace(prefix, '').replace('.json', ''));
-  }
-
-  async getAttribute(type: Type, id: string, attribute: keyof Schema) {
-    const value = await this.adapter.get(`${type}:${id}:${String(attribute)}`);
-
-    if (value === null) return null;
-
-    return this.deserialize<Schema[typeof attribute]>(value);
-  }
-}
-
-export class Model<Schema> {
-  private type: string;
-  private storage: GaiaORM<typeof this.type, Schema>;
-  private getId?: (value: Schema) => string;
-  private setIsLoading?: (value: boolean) => void;
-
-  constructor({
-                type,
-                client,
-                getId,
-                setIsLoading,
-              }: {
-    type: string;
-    client: MicroStacksClient;
-    getId?: (value: Schema) => string;
-    setIsLoading?: (v: boolean) => void;
-    fetcher?: any;
-  }) {
-    this.type = type;
-    this.storage = new GaiaORM<typeof type, Schema>(createClientAdapter(client));
-    this.getId = getId;
-    this.setIsLoading = setIsLoading ?? noop;
-  }
-
-  create = async (value: Schema) => {
-    this.setIsLoading?.(true);
-    const _id = this.getId?.(value);
-    await this.storage.save(this.type, { ...value, _id });
-    this.setIsLoading?.(false);
-  };
-
-  update = async (value: { _id: string } & Partial<Omit<Schema, '_id'>>) => {
-    this.setIsLoading?.(true);
-    await this.storage.save(this.type, value as any);
-    this.setIsLoading?.(false);
-  };
-
-  findUnique = async (id: string) => {
-    this.setIsLoading?.(true);
-    const result = await this.storage.findOne(this.type, id);
-    this.setIsLoading?.(false);
-    return result;
-  };
-
-  findProperty = async (id: string, key: keyof Schema) => {
-    this.setIsLoading?.(true);
-    const result = await this.storage.getAttribute(this.type, id, key);
-    this.setIsLoading?.(false);
-    return result;
-  };
-
-  findMany = async () => {
-    this.setIsLoading?.(true);
-    const result = await this.storage.findAll(this.type);
-    this.setIsLoading?.(false);
-    return result;
-  };
-
-  listAllIds = async () => {
-    this.setIsLoading?.(true);
-    const result = await this.storage.getIds(this.type);
-    this.setIsLoading?.(false);
-    return result;
-  };
-
-  listProperties = async (id: string) => {
-    this.setIsLoading?.(true);
-    const result = await this.storage.getAttributes(this.type, id);
-    this.setIsLoading?.(false);
-    return result;
-  };
-
-  delete = async (id: string) => {
-    this.setIsLoading?.(true);
-    await this.storage.delete(this.type, id);
-    this.setIsLoading?.(false);
-  };
 }

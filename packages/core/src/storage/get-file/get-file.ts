@@ -3,11 +3,14 @@ import { handleSignedEncryptedContents } from './sign';
 import { getFileContents, getFileSignedUnencrypted } from './getters';
 
 import { decryptContent } from 'micro-stacks/crypto';
-import { getGlobalObject } from 'micro-stacks/common';
+import { fetchPrivate, getGlobalObject } from 'micro-stacks/common';
 
 import type { GetFileOptions } from '../common/types';
 
-export async function getFile(path: string, getFileOptions: GetFileOptions) {
+export async function getFile(
+  path: string,
+  { fetcher = fetchPrivate, ...getFileOptions }: GetFileOptions
+) {
   const options: GetFileOptions = {
     decrypt: true,
     verify: false,
@@ -29,6 +32,7 @@ export async function getFile(path: string, getFileOptions: GetFileOptions) {
     zoneFileLookupURL: options.zoneFileLookupURL,
     forceText: !!options.decrypt,
     gaiaHubConfig: options.gaiaHubConfig,
+    fetcher,
   });
   if (storedContents === null) return storedContents;
 

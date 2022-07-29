@@ -1,6 +1,6 @@
 import type { GaiaHubConfig } from '../gaia/types';
 import type { EncryptionOptions } from 'micro-stacks/crypto';
-
+export type FetcherFn = (input: RequestInfo, init?: RequestInit) => Promise<Response>;
 /**
  * Specify a valid MIME type, encryption options, and whether to sign the [[UserSession.putFile]].
  */
@@ -21,6 +21,7 @@ export interface PutFileOptions extends EncryptionOptions {
   encrypt?: boolean | string;
   gaiaHubConfig: GaiaHubConfig;
   privateKey?: string;
+  fetcher?: FetcherFn;
 }
 
 export interface GetFileUrlOptions {
@@ -60,10 +61,12 @@ export interface GetFileOptions extends GetFileUrlOptions {
   verify?: boolean;
   gaiaHubConfig: GaiaHubConfig;
   privateKey?: string;
+  fetcher?: FetcherFn;
 }
 
 export interface ProfileLookupOptions {
   username: string;
   verify?: boolean;
   zoneFileLookupURL?: string;
+  fetcher?: FetcherFn;
 }

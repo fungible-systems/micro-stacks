@@ -12,6 +12,7 @@ import { lookupProfile } from '../lookup-profile';
 
 import type { GaiaHubConfig } from '../gaia/types';
 import type { GetFileOptions, GetFileUrlOptions } from '../common/types';
+import { FetcherFn } from '../common/types';
 
 /**
  * Fetch the public read URL of a user file for the specified app.
@@ -19,6 +20,7 @@ import type { GetFileOptions, GetFileUrlOptions } from '../common/types';
  * @param {String} username - The Blockstack ID of the user to look up
  * @param {String} appOrigin - The app origin
  * @param {String} [zoneFileLookupURL=null] - The URL
+ * @param {FetcherFn} [fetcher=fetchPrivate] - The URL
  * to use for zonefile lookup. If falsey, this will use the
  * blockstack.js's [[getNameInfo]] function instead.
  * @return {Promise<string>} that resolves to the public read URL of the file
@@ -28,9 +30,14 @@ export async function getUserAppFileUrl(
   path: string,
   username: string,
   appOrigin: string,
-  zoneFileLookupURL?: string
+  zoneFileLookupURL?: string,
+  fetcher?: FetcherFn
 ): Promise<string | undefined> {
-  const profile = await lookupProfile({ username, zoneFileLookupURL });
+  const profile = await lookupProfile({
+    username,
+    zoneFileLookupURL,
+    fetcher: fetcher ?? fetchPrivate,
+  });
   let bucketUrl: string | undefined;
   if (!profile) return;
   if (profile.hasOwnProperty('apps')) {
@@ -59,7 +66,10 @@ export async function getUserAppFileUrl(
  */
 export async function getFileUrl(
   path: string,
-  options: GetFileUrlOptions & { gaiaHubConfig: GaiaHubConfig }
+  options: GetFileUrlOptions & {
+    gaiaHubConfig: GaiaHubConfig;
+    fetcher?: FetcherFn;
+  }
 ): Promise<string> {
   let readUrl: string | undefined;
   if (options.username) {
@@ -67,10 +77,11 @@ export async function getFileUrl(
       path,
       options.username,
       options.app!,
-      options.zoneFileLookupURL
+      options.zoneFileLookupURL,
+      options.fetcher ?? fetchPrivate
     );
   } else {
-    readUrl = await getFullReadUrl(path, options.gaiaHubConfig);
+    readUrl = getFullReadUrl(path, options.gaiaHubConfig);
   }
 
   if (!readUrl) {
@@ -91,13 +102,14 @@ export async function getGaiaAddress(options: {
   gaiaHubConfig?: GaiaHubConfig;
   username?: string;
   zoneFileLookupURL?: string;
+  fetcher?: FetcherFn;
 }): Promise<string> {
-  const { app, username, zoneFileLookupURL, gaiaHubConfig } = options;
+  const { app, username, zoneFileLookupURL, gaiaHubConfig, fetcher = fetchPrivate } = options;
   let fileUrl: string | undefined;
   if (username) {
-    fileUrl = await getUserAppFileUrl('/', username!, app, zoneFileLookupURL);
+    fileUrl = await getUserAppFileUrl('/', username!, app, zoneFileLookupURL, fetcher);
   } else if (gaiaHubConfig) {
-    fileUrl = await getFullReadUrl('/', gaiaHubConfig);
+    fileUrl = getFullReadUrl('/', gaiaHubConfig);
   }
   const matches = /([13][a-km-zA-HJ-NP-Z0-9]{26,35})/.exec(fileUrl!);
   if (!matches) {
@@ -120,22 +132,31 @@ export async function getFileContents(options: {
   zoneFileLookupURL?: string;
   forceText: boolean;
   gaiaHubConfig: GaiaHubConfig;
+  fetcher?: (input: RequestInfo, init?: RequestInit) => Promise<Response>;
 }): Promise<string | Uint8Array | null> {
-  const { path, forceText, app, username, zoneFileLookupURL, gaiaHubConfig } = options;
+  const {
+    path,
+    forceText,
+    app,
+    username,
+    zoneFileLookupURL,
+    gaiaHubConfig,
+    fetcher = fetchPrivate,
+  } = options;
   const readUrl = await getFileUrl(path, {
     app,
     username,
     zoneFileLookupURL,
     gaiaHubConfig,
+    fetcher,
   });
-  const response = await fetchPrivate(readUrl);
+  const response = await fetcher(readUrl);
   if (!response.ok) {
     throw await getBlockstackErrorFromResponse(response, `getFile ${path} failed.`, null);
   }
   let contentType = response.headers.get('Content-Type');
-  if (typeof contentType === 'string') {
-    contentType = contentType.toLowerCase();
-  }
+
+  if (typeof contentType === 'string') contentType = contentType.toLowerCase();
 
   if (
     forceText ||
@@ -159,7 +180,7 @@ export async function getFileContents(options: {
  * @ignore
  */
 export async function getFileSignedUnencrypted(path: string, options: GetFileOptions) {
-  const { app, username, zoneFileLookupURL, gaiaHubConfig } = options;
+  const { app, username, zoneFileLookupURL, gaiaHubConfig, fetcher = fetchPrivate } = options;
   // future optimization note:
   //    in the case of _multi-player_ reads, this does a lot of excess
   //    profile lookups to figure out where to read files
@@ -174,6 +195,7 @@ export async function getFileSignedUnencrypted(path: string, options: GetFileOpt
         zoneFileLookupURL,
         forceText: false,
         gaiaHubConfig,
+        fetcher,
       }),
       getFileContents({
         path: sigPath,
@@ -182,12 +204,14 @@ export async function getFileSignedUnencrypted(path: string, options: GetFileOpt
         zoneFileLookupURL,
         forceText: true,
         gaiaHubConfig,
+        fetcher,
       }),
       getGaiaAddress({
         app: app!,
         username,
         zoneFileLookupURL,
         gaiaHubConfig,
+        fetcher,
       }),
     ]);
 
