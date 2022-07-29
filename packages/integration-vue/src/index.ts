@@ -11,6 +11,7 @@ import type {
 import * as Client from '@micro-stacks/client';
 
 import { ChainID } from 'micro-stacks/common';
+import { Storage, Model, createClientAdapter, GaiaConfig } from '@micro-stacks/storage';
 
 import type { SignedOptionsWithOnHandlers } from 'micro-stacks/connect';
 import type { ClarityValue } from 'micro-stacks/clarity';
@@ -316,4 +317,44 @@ export const useOpenSignStructuredMessage = () => {
       () => status.value[Client.StatusKeys.StructuredMessageSigning] === Client.Status.IsLoading
     ),
   });
+};
+
+/** ------------------------------------------------------------------------------------------------------------------
+ *   Storage
+ *  ------------------------------------------------------------------------------------------------------------------
+ */
+
+const useStorageInstance = (options?: { gaiaConfig?: GaiaConfig; disableEtagCache?: boolean }) => {
+  const client = injectClient();
+  return computed(() => new Storage({ client: client.value, ...options }));
+};
+
+type UseStorage = Pick<Storage, 'putFile' | 'getFile' | 'listFiles' | 'deleteFile'>;
+
+export const useStorage = (options?: { gaiaConfig?: GaiaConfig; disableEtagCache?: boolean }) => {
+  const storage = useStorageInstance(options);
+  return computed<UseStorage>(() => ({
+    getFile: storage.value.getFile,
+    putFile: storage.value.putFile,
+    listFiles: storage.value.listFiles,
+    deleteFile: storage.value.deleteFile,
+  }));
+};
+
+export const useModel = <T>(
+  type: string,
+  options?: {
+    gaiaConfig?: GaiaConfig;
+    disableEtagCache?: boolean;
+    makeId?: (data: T) => string;
+  }
+) => {
+  const storage = useStorageInstance({
+    gaiaConfig: options?.gaiaConfig,
+    disableEtagCache: options?.disableEtagCache,
+  });
+  return computed(
+    () =>
+      new Model<T>({ type, adapter: createClientAdapter(storage.value), makeId: options?.makeId })
+  );
 };

@@ -16,6 +16,7 @@ import {
   createClient,
 } from '@micro-stacks/client';
 import { ChainID } from 'micro-stacks/common';
+import { Storage, Model, createClientAdapter, GaiaConfig } from '@micro-stacks/storage';
 
 import type {
   MicroStacksClient,
@@ -337,6 +338,80 @@ export const useOpenSignStructuredMessage = () => {
     openSignStructuredMessage,
     isRequestPending,
   };
+};
+
+/** ------------------------------------------------------------------------------------------------------------------
+ *  Storage
+ *  ------------------------------------------------------------------------------------------------------------------
+ */
+
+const useStorageInstance = ({
+  gaiaConfig,
+  disableEtagCache,
+}: { gaiaConfig?: GaiaConfig; disableEtagCache?: boolean } = {}) => {
+  const client = useMicroStacksClient();
+
+  const options: any = {
+    disableEtagCache,
+  };
+
+  if (gaiaConfig) options['gaiaConfig'] = gaiaConfig;
+  else options.client = client;
+
+  const [storage] = createSignal(new Storage(options));
+  return storage;
+};
+
+export const useStorage = (
+  options: { gaiaConfig?: GaiaConfig; disableEtagCache?: boolean } = {}
+): {
+  getFile: Storage['getFile'];
+  putFile: Storage['putFile'];
+  listFiles: Storage['listFiles'];
+  deleteFile: Storage['deleteFile'];
+} => {
+  const storage = useStorageInstance(options);
+  return {
+    getFile(path, options) {
+      return storage().getFile(path, options);
+    },
+    putFile(path, contents, options) {
+      return storage().putFile(path, contents, options);
+    },
+    listFiles(options) {
+      return storage().listFiles(options);
+    },
+    deleteFile(path) {
+      return storage().deleteFile(path);
+    },
+  };
+};
+
+/** ------------------------------------------------------------------------------------------------------------------
+ *  Model
+ *  ------------------------------------------------------------------------------------------------------------------
+ */
+
+export const useModel = <T>(
+  type: string,
+  options?: {
+    gaiaConfig?: GaiaConfig;
+    disableEtagCache?: boolean;
+    makeId?: (data: T) => string;
+  }
+) => {
+  const storage = useStorageInstance({
+    gaiaConfig: options?.gaiaConfig,
+    disableEtagCache: options?.disableEtagCache,
+  });
+  const [model] = createSignal(
+    new Model({
+      type,
+      adapter: createClientAdapter(storage()),
+      makeId: options?.makeId,
+    })
+  );
+  return model;
 };
 
 /** ------------------------------------------------------------------------------------------------------------------

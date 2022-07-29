@@ -81,6 +81,7 @@
   },
   "dependencies": {
     "@micro-stacks/client": "workspace:*",
+    "@micro-stacks/storage": "workspace:*",
     "micro-stacks": "workspace:*"
   },
   "peerDependencies": {

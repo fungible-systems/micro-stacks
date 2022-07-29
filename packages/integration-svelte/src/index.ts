@@ -15,6 +15,7 @@ import type {
   SignatureData,
   SignedOptionsWithOnHandlers,
 } from 'micro-stacks/connect';
+import { createClientAdapter, GaiaConfig, Model, Storage } from '@micro-stacks/storage';
 import type { ClarityValue } from 'micro-stacks/clarity';
 import type { StacksNetwork } from 'micro-stacks/network';
 
@@ -409,23 +410,50 @@ export function getOpenSignStructuredMessage(
  *  ------------------------------------------------------------------------------------------------------------------
  */
 
-export const getFile = (
-  path: string,
-  { decrypt = true, verify }: { decrypt?: boolean; verify?: boolean }
-) => {
+const getStorageInstance = (options?: { gaiaConfig?: GaiaConfig; disableEtagCache?: boolean }) => {
   const client = getMicroStacksClient();
-
-  return client.getFile(path, { decrypt, verify });
+  return readable(
+    new Storage({
+      client,
+      gaiaConfig: options?.gaiaConfig,
+      disableEtagCache: options?.disableEtagCache,
+    })
+  );
 };
 
-export const putFile = (
-  path: string,
-  contents: string | Uint8Array | ArrayBufferView | Blob,
-  { encrypt = true, sign }: { encrypt?: boolean; sign?: boolean }
-) => {
-  const client = getMicroStacksClient();
+type GetStorage = Pick<Storage, 'putFile' | 'getFile' | 'listFiles' | 'deleteFile'>;
 
-  return client.putFile(path, contents, { sign, encrypt });
+export const getStorage = (options?: { gaiaConfig?: GaiaConfig; disableEtagCache?: boolean }) => {
+  return derived([getStorageInstance(options)], ([storage]) => {
+    const result: GetStorage = {
+      getFile: storage.getFile,
+      putFile: storage.putFile,
+      listFiles: storage.listFiles,
+      deleteFile: storage.deleteFile,
+    };
+    return result;
+  });
+};
+
+export const getModel = <T>(
+  type: string,
+  options?: {
+    gaiaConfig?: GaiaConfig;
+    disableEtagCache?: boolean;
+    makeId?: (data: T) => string;
+  }
+) => {
+  return derived(
+    [
+      getStorageInstance({
+        disableEtagCache: options?.disableEtagCache,
+        gaiaConfig: options?.gaiaConfig,
+      }),
+    ],
+    ([storage]) => {
+      return new Model<T>({ type, adapter: createClientAdapter(storage), makeId: options?.makeId });
+    }
+  );
 };
 
 /** ------------------------------------------------------------------------------------------------------------------

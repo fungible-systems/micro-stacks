@@ -1,6 +1,7 @@
 import React, { createElement, useMemo } from 'react';
 import { atom, Provider, useAtomValue } from 'jotai';
 import { useMicroStacksClient } from '@micro-stacks/react';
+import { createClientAdapter, GaiaConfig, Model, Storage } from '@micro-stacks/storage';
 import {
   watchAccounts,
   watchCurrentAccount,
@@ -341,6 +342,56 @@ export const openSignStructuredMessageState = atom(get => {
 });
 
 export const useOpenSignStructuredMessageState = () => useAtomValue(openSignStructuredMessageState);
+
+/** ------------------------------------------------------------------------------------------------------------------
+ *  Sign structured message (derived state)
+ *  ------------------------------------------------------------------------------------------------------------------
+ */
+interface StorageOptions {
+  gaiaConfig?: GaiaConfig;
+  disableEtagCache?: boolean;
+}
+
+const storageInstanceState = (options?: StorageOptions) =>
+  atom(get => {
+    const client = get(clientState);
+    return new Storage({ client, ...options });
+  });
+
+export const storageState = (options: StorageOptions) =>
+  atom(get => {
+    const storage = get(storageInstanceState(options));
+    return {
+      getFile: storage.getFile,
+      putFile: storage.putFile,
+      listFile: storage.listFiles,
+      deleteFile: storage.deleteFile,
+    };
+  });
+
+export const atomWithModel = <T>(
+  type: string,
+  options?: {
+    gaiaConfig?: GaiaConfig;
+    disableEtagCache?: boolean;
+    makeId?: (data: T) => string;
+  }
+) => {
+  return atom(get => {
+    return new Model({
+      type,
+      makeId: options?.makeId,
+      adapter: createClientAdapter(
+        get(
+          storageInstanceState({
+            gaiaConfig: options?.gaiaConfig,
+            disableEtagCache: options?.disableEtagCache,
+          })
+        )
+      ),
+    });
+  });
+};
 
 /** ------------------------------------------------------------------------------------------------------------------
  */

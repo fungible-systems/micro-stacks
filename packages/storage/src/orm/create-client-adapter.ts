@@ -1,18 +1,8 @@
-import type { MicroStacksClient } from '@micro-stacks/client';
 import type { KvAdapter } from './types';
 import { withJson } from '../utils';
 import { Storage } from '../storage';
 
-export function createClientAdapter(
-  client: MicroStacksClient,
-  options?: {
-    gaiaHubUrl?: string;
-  }
-): KvAdapter {
-  const storage = new Storage({
-    client,
-    gaiaHubUrl: options?.gaiaHubUrl,
-  });
+export function createClientAdapter(storage: Storage): KvAdapter {
   return {
     async get(key: string): Promise<string | null> {
       try {

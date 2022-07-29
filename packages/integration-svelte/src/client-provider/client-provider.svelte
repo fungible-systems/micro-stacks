@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { setContext } from 'svelte';
-  import { createClient, defaultStorage } from '@micro-stacks/client';
-  import { CLIENT_CONTEXT } from '../common';
-  import type { ClientConfig, MicroStacksClient } from '@micro-stacks/client';
+  import {setContext} from 'svelte';
+  import {createClient, defaultStorage} from '@micro-stacks/client';
+  import {CLIENT_CONTEXT} from '../common';
+  import type {ClientConfig, MicroStacksClient} from '@micro-stacks/client';
 
   export let appName: ClientConfig['appName'] = undefined;
   export let appIconUrl: ClientConfig['appIconUrl'] = undefined;
@@ -13,6 +13,7 @@
   export let onSignOut: ClientConfig['onSignOut'] = undefined;
   export let onAuthentication: ClientConfig['onAuthentication'] = undefined;
   export let onNoWalletFound: ClientConfig['onNoWalletFound'] = undefined;
+  export let gaiaConfig: ClientConfig['gaiaConfig'] = undefined;
   export let fetcher: ClientConfig['fetcher'] = undefined;
   export let client: MicroStacksClient | undefined = undefined;
 
@@ -28,6 +29,7 @@
       onSignOut,
       onAuthentication,
       onNoWalletFound,
+      gaiaConfig,
       fetcher
     }
   }));

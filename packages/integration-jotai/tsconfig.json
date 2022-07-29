@@ -12,6 +12,9 @@
       "@micro-stacks/react": [
         "../integration-react/src"
       ],
+      "@micro-stacks/storage": [
+        "../storage/src"
+      ],
       "micro-stacks/*": [
         "../core/src/*"
       ]
@@ -23,6 +26,9 @@
     },
     {
       "path": "../core/tsconfig.json"
+    },
+    {
+      "path": "../storage/tsconfig.json"
     },
     {
       "path": "../integration-react/tsconfig.json"

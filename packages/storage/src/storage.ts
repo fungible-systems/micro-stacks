@@ -1,12 +1,68 @@
 import { MicroStacksClient } from '@micro-stacks/client';
 import { getFile, putFile, generateGaiaHubConfig, GaiaHubConfig } from 'micro-stacks/storage';
 import { deleteFromGaiaHub, fetchWithEtagCache, listFiles } from './utils';
+
+const DEFAULT_GAIA_HUB_URL = 'https://hub.blockstack.org';
+const DEFAULT_GAIA_READER_URL = 'https://gaia.blockstack.org/hub/';
 const cacheMap = new Map<string, any>();
+
+export interface GaiaConfig {
+  gaiaHubUrl?: string;
+  gaiaReadUrl?: string;
+  gaiaHubConfig?: GaiaHubConfig;
+  privateKey?: string;
+}
+
 export class Storage {
+  /** ------------------------------------------------------------------------------------------------------------------
+   *  Constructor
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
+  constructor(options: {
+    client?: MicroStacksClient;
+    gaiaConfig?: GaiaConfig;
+    disableEtagCache?: boolean;
+  }) {
+    // if nothing is passed
+    if (!options.gaiaConfig && !options.client)
+      throw Error(
+        'There needs to be either an instance of Client or custom Gaia Hub Config params passed'
+      );
+
+    if (options.gaiaConfig && options.client)
+      throw Error(
+        'Both client and configurations for gaia have been passed, only pass one of them'
+      );
+
+    if (options?.client) {
+      this.client = options.client;
+      const gaiaConfig = this.client.getGaiaConfig();
+      if (gaiaConfig) this.gaiaConfig = gaiaConfig;
+    } else if (options.gaiaConfig) {
+      this.gaiaConfig = options.gaiaConfig;
+    }
+
+    this._cache = cacheMap;
+
+    const useEtagFetcher = typeof document !== 'undefined' && !options.disableEtagCache;
+    const etagFetcher = async (input: RequestInfo, init?: RequestInit) =>
+      fetchWithEtagCache(input, init, this.cache);
+
+    this.fetcher = useEtagFetcher ? etagFetcher : options.client?.fetcher ?? fetch;
+  }
+
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   Misc
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
+
   private client?: MicroStacksClient;
-  private readonly gaiaHubUrl: string = 'https://hub.blockstack.org';
-  private readonly privateKey?: string;
   private fetcher?: (input: RequestInfo, init?: RequestInit) => Promise<Response>;
+
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   Cache
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
   private _cache: Map<string, any>;
   private cache = () => ({
     get: (key: string) => {
@@ -19,56 +75,46 @@ export class Storage {
       this._cache.delete(key);
     },
   });
-
-  private getPrivateKey = () => {
-    return this.client
-      ? this.client.selectAccount(this.client.getState())?.appPrivateKey
-      : this.privateKey;
-  };
-
   private getCache = (key: string) => this.cache().get(key);
   private setCache = <T>(key: string, value: T) => this.cache().set(key, value);
 
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   Gaia config
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
+
+  private readonly gaiaConfig?: GaiaConfig;
+
+  private getPrivateKey = () => {
+    if (this.gaiaConfig?.privateKey) return this.gaiaConfig.privateKey;
+    const appPrivateKey = this.client?.selectAccount?.(this.client?.getState?.())?.appPrivateKey;
+    if (!appPrivateKey) throw Error('No app private key found');
+    return appPrivateKey;
+  };
+
   private getGaiaHubConfig = async (privateKey: string): Promise<GaiaHubConfig> => {
-    const cached = this.getCache(`${this.gaiaHubUrl}_GaiaHubConfig`);
+    if (this.gaiaConfig?.gaiaHubConfig) return this.gaiaConfig.gaiaHubConfig;
+
+    const opts = {
+      gaiaHubUrl: this.gaiaConfig?.gaiaHubUrl ?? DEFAULT_GAIA_HUB_URL,
+      gaiaReaderUrl: this.gaiaConfig?.gaiaReadUrl ?? DEFAULT_GAIA_READER_URL,
+      privateKey,
+    };
+    const key = `${JSON.stringify([opts.gaiaHubUrl, opts.gaiaHubUrl])}_GaiaHubConfig`;
+
+    const cached = this.getCache(key);
+
     if (cached) return JSON.parse(cached);
 
-    const gaiaHubConfig = await generateGaiaHubConfig(
-      {
-        gaiaHubUrl: this.gaiaHubUrl,
-        privateKey,
-      },
-      {
-        fetcher: this.fetcher,
-        fetchHubInfo: true,
-      }
-    );
+    const gaiaHubConfig = await generateGaiaHubConfig(opts, {
+      fetcher: this.fetcher,
+      fetchHubInfo: true,
+    });
 
-    this.setCache(`${this.gaiaHubUrl}_GaiaHubConfig`, JSON.stringify(gaiaHubConfig));
+    this.setCache(key, JSON.stringify(gaiaHubConfig));
 
     return gaiaHubConfig;
   };
-
-  constructor(options: {
-    client: MicroStacksClient;
-    gaiaHubUrl?: string;
-    privateKey?: string;
-    disableEtagCache?: boolean;
-  }) {
-    if (!options.client && !options.privateKey) throw Error('Need one');
-    if (options.client && options.privateKey) throw Error('should not have both');
-
-    if (options?.client) this.client = options.client;
-    if (options?.gaiaHubUrl) this.gaiaHubUrl = options.gaiaHubUrl;
-    if (options?.privateKey) this.privateKey = options.privateKey;
-
-    this._cache = cacheMap;
-
-    this.fetcher =
-      typeof document !== 'undefined' && !options.disableEtagCache
-        ? async (input, init) => fetchWithEtagCache(input, init, this.cache)
-        : fetch;
-  }
 
   /** ------------------------------------------------------------------------------------------------------------------
    *   Put file

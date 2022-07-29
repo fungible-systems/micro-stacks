@@ -9,6 +9,9 @@
       "@micro-stacks/client": [
         "../client/src"
       ],
+      "@micro-stacks/storage": [
+        "../storage/src"
+      ],
       "micro-stacks/*": [
         "../core/src/*"
       ]
@@ -17,6 +20,9 @@
   "references": [
     {
       "path": "../client/tsconfig.json"
+    },
+    {
+      "path": "../storage/tsconfig.json"
     },
     {
       "path": "../core/tsconfig.json"

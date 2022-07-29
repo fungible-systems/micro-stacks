@@ -74,6 +74,7 @@
   },
   "dependencies": {
     "@micro-stacks/client": "workspace:*",
+    "@micro-stacks/storage": "workspace:*",
     "@micro-stacks/react": "workspace:*",
     "jotai": "^1.7.6",
     "micro-stacks": "workspace:*"

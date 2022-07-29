@@ -1,18 +1,30 @@
 import { useMicroStacksClient } from './use-client';
 import { useCallback, useState } from 'react';
-import { Model, Storage, createClientAdapter } from '@micro-stacks/storage';
+import { Model, Storage, createClientAdapter, GaiaConfig } from '@micro-stacks/storage';
 
 type UseStorage = Pick<Storage, 'putFile' | 'getFile' | 'listFiles' | 'deleteFile'>;
 
-export const useStorage = (options?: { gaiaHubUrl?: string }): UseStorage => {
+const useStorageInstance = ({
+  gaiaConfig,
+  disableEtagCache,
+}: { gaiaConfig?: GaiaConfig; disableEtagCache?: boolean } = {}) => {
   const client = useMicroStacksClient();
-  const [storage] = useState(
-    () =>
-      new Storage({
-        client,
-        gaiaHubUrl: options?.gaiaHubUrl,
-      })
-  );
+
+  const options: any = {
+    disableEtagCache,
+  };
+
+  if (gaiaConfig) options['gaiaConfig'] = gaiaConfig;
+  else options.client = client;
+
+  const [storage] = useState(() => new Storage(options));
+  return storage;
+};
+
+export const useStorage = (
+  options: { gaiaConfig?: GaiaConfig; disableEtagCache?: boolean } = {}
+): UseStorage => {
+  const storage = useStorageInstance(options);
   return {
     putFile: useCallback((...args) => storage.putFile(...args), [storage]),
     getFile: useCallback((...args) => storage.getFile(...args), [storage]),
@@ -24,18 +36,20 @@ export const useStorage = (options?: { gaiaHubUrl?: string }): UseStorage => {
 export const useModel = <T>(
   type: string,
   options?: {
-    gaiaHubUrl?: string;
+    gaiaConfig?: GaiaConfig;
+    disableEtagCache?: boolean;
     makeId?: (data: T) => string;
   }
 ): Model<T> => {
-  const client = useMicroStacksClient();
+  const storage = useStorageInstance({
+    disableEtagCache: options?.disableEtagCache,
+    gaiaConfig: options?.gaiaConfig,
+  });
   const [model] = useState(
     () =>
       new Model<T>({
         type,
-        adapter: createClientAdapter(client, {
-          gaiaHubUrl: options?.gaiaHubUrl,
-        }),
+        adapter: createClientAdapter(storage),
         makeId: options?.makeId,
       })
   );

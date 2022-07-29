@@ -11,6 +11,7 @@ class ClientProvider extends SvelteComponentTyped<{
   onSignOut?: ClientConfig['onSignOut'];
   onAuthentication?: ClientConfig['onAuthentication'];
   onNoWalletFound?: ClientConfig['onNoWalletFound'];
+  gaiaConfig?: ClientConfig['gaiaConfig'];
   fetcher?: ClientConfig['fetcher'];
   client?: MicroStacksClient;
 }> {}
