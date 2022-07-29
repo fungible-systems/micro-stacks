@@ -13,7 +13,7 @@
         "../core/src/*"
       ],
       "@micro-stacks/storage": [
-        "../storage/src/*"
+        "../storage/src"
       ]
     }
   },
