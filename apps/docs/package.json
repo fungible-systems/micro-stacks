@@ -19,8 +19,8 @@
     "fathom-client": "3.5.0",
     "jotai": "1.7.6",
     "next": "12.2.3",
-    "nextra": "2.0.0-beta.10",
-    "nextra-theme-docs": "2.0.0-beta.10",
+    "nextra": "2.0.0-beta.11",
+    "nextra-theme-docs": "2.0.0-beta.11",
     "patch-package": "6.4.7",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -29,7 +29,7 @@
     "@next/bundle-analyzer": "12.2.3",
     "@next/eslint-plugin-next": "12.2.3",
     "@stacks/prettier-config": "0.0.10",
-    "@types/node": "18.6.1",
+    "@types/node": "18.6.2",
     "postinstall-postinstall": "2.1.0",
     "typescript": "4.7.4"
   },
