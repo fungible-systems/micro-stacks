@@ -10,7 +10,7 @@
         "../client/src"
       ],
       "@micro-stacks/react": [
-        "../react/src"
+        "../integration-react/src"
       ],
       "micro-stacks/*": [
         "../core/src/*"
@@ -25,7 +25,7 @@
       "path": "../core/tsconfig.json"
     },
     {
-      "path": "../react/tsconfig.json"
+      "path": "../integration-react/tsconfig.json"
     }
   ],
   "include": [
