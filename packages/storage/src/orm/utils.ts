@@ -9,10 +9,3 @@ export function uuidv4() {
     (c ^ (getRandomBytes(1)[0] & (15 >> (c / 4)))).toString(16)
   );
 }
-
-export const extractType = (key: string) => key.split(':')[0];
-export const extractId = (key: string) => key.split(':')[1];
-export const extractField = (key: string) => key.split(':')[2];
-export const extractCreatedAtFromField = (key: string) => key.split(':')[3];
-
-export function noop() {}
