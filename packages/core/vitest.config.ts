@@ -16,7 +16,6 @@ export default defineConfig(() => {
       setupFiles: ['./tests/setup.js'],
       globals: true,
       alias: aliases,
-      passWithNoTests: true,
     },
   };
 });
