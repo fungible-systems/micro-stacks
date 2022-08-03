@@ -38,7 +38,7 @@ describe('microblocks fetchers', () => {
   });
   afterEach(() => {
     server.resetHandlers();
-    jest.resetModules();
+    // jest.resetModules();
   });
   afterAll(() => {
     server.close();

@@ -1,6 +1,8 @@
+import {vi} from 'vitest'
 import { bytesToHex, hexToBytes } from 'micro-stacks/common';
 import { encryptMnemonic } from './encrypt-mnemonic';
 import { decryptMnemonic } from './decrypt-mnemonic';
+import { fail } from 'assert';
 
 describe('encryptMnemonic & decryptMnemonic', () => {
   const rawPhrase =
@@ -48,7 +50,7 @@ describe('encryptMnemonic & decryptMnemonic', () => {
   });
 
   it('should error', async () => {
-    const errorCallback = jest.fn();
+    const errorCallback = vi.fn();
 
     await encryptMnemonic('not a mnemonic phrase', 'password').then(() => {
       fail('Should have thrown on invalid mnemonic input');
