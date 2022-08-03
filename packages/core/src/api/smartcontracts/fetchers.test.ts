@@ -9,6 +9,21 @@ import * as TRANSACTION_EVENT_SMART_CONTRACT_LOG_200_RESPONSE from '../../../tes
 //import * as TRANSACTION_EVENT_NON_FUNGIBLE_ASSET_200_RESPONSE from '../../../../tests/mocks/api/smartcontracts/TransactionEventNonFungibleAsset200.json';
 import * as CONTRACT_SOURCE_200_RESPONSE from '../../../tests/mocks/api/smartcontracts/ContractSourceResponse200.json';
 
+// convert json modules to js objects
+const ABSTRACT_TRANSACTION_200_RESPONSE_OBJ = JSON.parse(
+  JSON.stringify(ABSTRACT_TRANSACTION_200_RESPONSE)
+);
+const CONTRACT_INTERFACE_RESPONSE_200_RESPONSE_OBJ = JSON.parse(
+  JSON.stringify(CONTRACT_INTERFACE_RESPONSE_200_RESPONSE)
+);
+const TRANSACTION_EVENT_SMART_CONTRACT_LOG_200_RESPONSE_OBJ = JSON.parse(
+  JSON.stringify(TRANSACTION_EVENT_SMART_CONTRACT_LOG_200_RESPONSE)
+);
+const CONTRACT_SOURCE_200_RESPONSE_OBJ = JSON.parse(
+  JSON.stringify(CONTRACT_SOURCE_200_RESPONSE)
+);
+
+
 const CONTRACT_DATA_MAP_ENTRY = {
   data: '0x0a0c000000010a6d6f6e737465722d69640100000000000000000000000000000001',
   proof: '0x123',
@@ -36,12 +51,12 @@ const lookup_key = 'lookup_key';
 
 export const GET_SMARTCONTRACTS_MOCKS = [
   rest.get(contractEndpoint(HIRO_TESTNET_DEFAULT) + '/' + contract_id, (_req, res, ctx) => {
-    return res(ctx.json(ABSTRACT_TRANSACTION_200_RESPONSE));
+    return res(ctx.json(ABSTRACT_TRANSACTION_200_RESPONSE_OBJ));
   }),
   rest.get(
     contractEndpoint(HIRO_TESTNET_DEFAULT) + '/' + contract_id + '/events',
     (_req, res, ctx) => {
-      return res(ctx.json(TRANSACTION_EVENT_SMART_CONTRACT_LOG_200_RESPONSE));
+      return res(ctx.json(TRANSACTION_EVENT_SMART_CONTRACT_LOG_200_RESPONSE_OBJ));
     }
   ),
   rest.get(
@@ -51,7 +66,7 @@ export const GET_SMARTCONTRACTS_MOCKS = [
       '/' +
       contract_name,
     (_req, res, ctx) => {
-      return res(ctx.json(CONTRACT_INTERFACE_RESPONSE_200_RESPONSE));
+      return res(ctx.json(CONTRACT_INTERFACE_RESPONSE_200_RESPONSE_OBJ));
     }
   ),
   rest.post(
@@ -63,7 +78,7 @@ export const GET_SMARTCONTRACTS_MOCKS = [
   rest.get(
     contractsEndpoint(HIRO_TESTNET_DEFAULT) + '/source/' + contract_address + '/' + contract_name,
     (_req, res, ctx) => {
-      return res(ctx.json(CONTRACT_SOURCE_200_RESPONSE));
+      return res(ctx.json(CONTRACT_SOURCE_200_RESPONSE_OBJ));
     }
   ),
   rest.post(
@@ -93,7 +108,7 @@ describe('smartcontracts fetchers', () => {
   test(fetchContractById.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, contract_id: contract_id, unanchored: false };
     const data = await fetchContractById(args);
-    expect(data).toEqual(ABSTRACT_TRANSACTION_200_RESPONSE);
+    expect(data).toEqual(ABSTRACT_TRANSACTION_200_RESPONSE_OBJ);
   });
 
   test(fetchContractEventsById.name, async () => {
@@ -105,7 +120,7 @@ describe('smartcontracts fetchers', () => {
       contract_id: contract_id,
     };
     const data = await fetchContractEventsById(args);
-    expect(data).toEqual(TRANSACTION_EVENT_SMART_CONTRACT_LOG_200_RESPONSE);
+    expect(data).toEqual(TRANSACTION_EVENT_SMART_CONTRACT_LOG_200_RESPONSE_OBJ);
   });
 
   test(fetchContractInterface.name, async () => {
@@ -116,7 +131,7 @@ describe('smartcontracts fetchers', () => {
       tip: tip,
     };
     const data = await fetchContractInterface(args);
-    expect(data).toEqual(CONTRACT_INTERFACE_RESPONSE_200_RESPONSE);
+    expect(data).toEqual(CONTRACT_INTERFACE_RESPONSE_200_RESPONSE_OBJ);
   });
 
   test(fetchContractDataMapEntry.name, async () => {
@@ -142,7 +157,7 @@ describe('smartcontracts fetchers', () => {
       tip: tip,
     };
     const data = await fetchContractSource(args);
-    expect(data).toEqual(CONTRACT_SOURCE_200_RESPONSE);
+    expect(data).toEqual(CONTRACT_SOURCE_200_RESPONSE_OBJ);
   });
 
   // TODO: the spec returns 'null'

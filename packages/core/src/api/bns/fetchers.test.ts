@@ -12,6 +12,7 @@ import * as BNS_NAMES_OWN_BY_ADDRESS_200_RESPONSE from '../../../tests/mocks/api
 import * as BNS_ALL_SUBDOMAINS_200_RESPONSE from '../../../tests/mocks/api/bns/bns-all-subdomains.json';
 import * as BNS_SUBDOMAINS_AT_TRANSACTION_200_RESPONSE from '../../../tests/mocks/api/bns/BnsGetSubdomainAtTx200.json';
 import * as BNS_NAMES_200_RESPONSE from '../../../tests/mocks/api/bns/bns-names.json';
+
 // convert json modules to js objects
 const BNS_GET_NAMESPACE_PRICE_200_RESPONSE_OBJECT = JSON.parse(JSON.stringify(BNS_GET_NAMESPACE_PRICE_200_RESPONSE));
 const BNS_GET_NAMES_PRICE_200_RESPONSE_OBJECT = JSON.parse(JSON.stringify(BNS_GET_NAMES_PRICE_200_RESPONSE));

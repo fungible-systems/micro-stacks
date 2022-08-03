@@ -4,6 +4,18 @@ import * as MICROBLOCK_200_RESPONSE from '../../../tests/mocks/api/microblocks/M
 import * as MICROBLOCK_404_RESPONSE from '../../../tests/mocks/api/microblocks/Microblock404.json';
 import * as UNANCHORED_TRANSACTION_LIST_200_RESPONSE from '../../../tests/mocks/api/microblocks/UnanchoredTransactionListResponse200.json';
 
+// convert json modules to js objects
+const MICROBLOCK_LIST_200_RESPONSE_OBJ = JSON.parse(
+  JSON.stringify(MICROBLOCK_LIST_200_RESPONSE)
+);
+const MICROBLOCK_200_RESPONSE_OBJ = JSON.parse(JSON.stringify(MICROBLOCK_200_RESPONSE));
+const MICROBLOCK_404_RESPONSE_OBJ = JSON.parse(
+  JSON.stringify(MICROBLOCK_404_RESPONSE)
+);
+const UNANCHORED_TRANSACTION_LIST_200_RESPONSE_OBJ = JSON.parse(
+  JSON.stringify(UNANCHORED_TRANSACTION_LIST_200_RESPONSE)
+);
+
 import { rest } from 'msw';
 import {
   fetchMicroblocks,
@@ -17,16 +29,16 @@ const hash = 'string';
 
 export const GET_MICROBLOCKS_MOCKS = [
   rest.get(microblockEndpoint(HIRO_TESTNET_DEFAULT), (_req, res, ctx) => {
-    return res(ctx.json(MICROBLOCK_LIST_200_RESPONSE));
+    return res(ctx.json(MICROBLOCK_LIST_200_RESPONSE_OBJ));
   }),
   rest.get(microblockEndpoint(HIRO_TESTNET_DEFAULT) + '/' + hash, (_req, res, ctx) => {
-    return res(ctx.json(MICROBLOCK_200_RESPONSE));
+    return res(ctx.json(MICROBLOCK_200_RESPONSE_OBJ));
   }),
   rest.get(microblockEndpoint(HIRO_TESTNET_DEFAULT) + '/' + 'foobar', (_req, res, ctx) => {
-    return res(ctx.json(MICROBLOCK_404_RESPONSE));
+    return res(ctx.json(MICROBLOCK_404_RESPONSE_OBJ));
   }),
   rest.get(microblockEndpoint(HIRO_TESTNET_DEFAULT) + '/unanchored/txs', (_req, res, ctx) => {
-    return res(ctx.json(UNANCHORED_TRANSACTION_LIST_200_RESPONSE));
+    return res(ctx.json(UNANCHORED_TRANSACTION_LIST_200_RESPONSE_OBJ));
   }),
 ];
 
@@ -47,24 +59,24 @@ describe('microblocks fetchers', () => {
   test(fetchMicroblocks.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, limit: 0, offset: 0 };
     const data = await fetchMicroblocks(args);
-    expect(data).toEqual(MICROBLOCK_LIST_200_RESPONSE);
+    expect(data).toEqual(MICROBLOCK_LIST_200_RESPONSE_OBJ);
   });
 
   test(fetchMicroblock.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, hash: hash };
     const data = await fetchMicroblock(args);
-    expect(data).toEqual(MICROBLOCK_200_RESPONSE);
+    expect(data).toEqual(MICROBLOCK_200_RESPONSE_OBJ);
   });
 
   test(fetchMicroblock.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, hash: 'foobar' };
     const data = await fetchMicroblock(args);
-    expect(data).toEqual(MICROBLOCK_404_RESPONSE);
+    expect(data).toEqual(MICROBLOCK_404_RESPONSE_OBJ);
   });
 
   test(fetchMicroblocksUnanchoredTransactions.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT };
     const data = await fetchMicroblocksUnanchoredTransactions(args);
-    expect(data).toEqual(UNANCHORED_TRANSACTION_LIST_200_RESPONSE);
+    expect(data).toEqual(UNANCHORED_TRANSACTION_LIST_200_RESPONSE_OBJ);
   });
 });

@@ -14,28 +14,39 @@ import {
 import { burnchainEndpoint } from '../utils';
 import { HIRO_TESTNET_DEFAULT } from 'micro-stacks/network';
 
+// convert json modules to js objects
+const BURNCHAIN_REWARD_SLOT_HOLDERS_LIST_200_RESPONSE_OBJ = JSON.parse(
+  JSON.stringify(BURNCHAIN_REWARD_SLOT_HOLDERS_LIST_200_RESPONSE)
+);
+const BURNCHAIN_REWARD_LIST_200_RESPONSE_OBJ = JSON.parse(
+  JSON.stringify(BURNCHAIN_REWARD_LIST_200_RESPONSE)
+);
+const BURNCHAIN_REWARDS_TOTAL_200_RESPONSE_OBJ = JSON.parse(
+  JSON.stringify(BURNCHAIN_REWARDS_TOTAL_200_RESPONSE)
+);
+
 const address = '1C56LYirKa3PFXFsvhSESgDy2acEHVAEt6';
 
 export const GET_BURNCHAIN_MOCKS = [
   rest.get(burnchainEndpoint(HIRO_TESTNET_DEFAULT) + '/reward_slot_holders', (_req, res, ctx) => {
-    return res(ctx.json(BURNCHAIN_REWARD_SLOT_HOLDERS_LIST_200_RESPONSE));
+    return res(ctx.json(BURNCHAIN_REWARD_SLOT_HOLDERS_LIST_200_RESPONSE_OBJ));
   }),
   rest.get(
     burnchainEndpoint(HIRO_TESTNET_DEFAULT) + '/reward_slot_holders/' + address,
     (_req, res, ctx) => {
-      return res(ctx.json(BURNCHAIN_REWARD_SLOT_HOLDERS_LIST_200_RESPONSE));
+      return res(ctx.json(BURNCHAIN_REWARD_SLOT_HOLDERS_LIST_200_RESPONSE_OBJ));
     }
   ),
   rest.get(burnchainEndpoint(HIRO_TESTNET_DEFAULT) + '/rewards', (_req, res, ctx) => {
-    return res(ctx.json(BURNCHAIN_REWARD_LIST_200_RESPONSE));
+    return res(ctx.json(BURNCHAIN_REWARD_LIST_200_RESPONSE_OBJ));
   }),
   rest.get(burnchainEndpoint(HIRO_TESTNET_DEFAULT) + '/rewards/' + address, (_req, res, ctx) => {
-    return res(ctx.json(BURNCHAIN_REWARD_LIST_200_RESPONSE));
+    return res(ctx.json(BURNCHAIN_REWARD_LIST_200_RESPONSE_OBJ));
   }),
   rest.get(
     burnchainEndpoint(HIRO_TESTNET_DEFAULT) + '/rewards/' + address + '/total',
     (_req, res, ctx) => {
-      return res(ctx.json(BURNCHAIN_REWARDS_TOTAL_200_RESPONSE));
+      return res(ctx.json(BURNCHAIN_REWARDS_TOTAL_200_RESPONSE_OBJ));
     }
   ),
 ];
@@ -57,30 +68,30 @@ describe('burnchain fetchers', () => {
   test(fetchBurnchainRewardSlotHolders.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, limit: 0, offset: 0 };
     const data = await fetchBurnchainRewardSlotHolders(args);
-    expect(data).toEqual(BURNCHAIN_REWARD_SLOT_HOLDERS_LIST_200_RESPONSE);
+    expect(data).toEqual(BURNCHAIN_REWARD_SLOT_HOLDERS_LIST_200_RESPONSE_OBJ);
   });
 
   test(fetchBurnchainRewardSlotHoldersByAddress.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, limit: 0, offset: 0, address: address };
     const data = await fetchBurnchainRewardSlotHoldersByAddress(args);
-    expect(data).toEqual(BURNCHAIN_REWARD_SLOT_HOLDERS_LIST_200_RESPONSE);
+    expect(data).toEqual(BURNCHAIN_REWARD_SLOT_HOLDERS_LIST_200_RESPONSE_OBJ);
   });
 
   test(fetchBurnchainRewards.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, limit: 0, offset: 0 };
     const data = await fetchBurnchainRewards(args);
-    expect(data).toEqual(BURNCHAIN_REWARD_LIST_200_RESPONSE);
+    expect(data).toEqual(BURNCHAIN_REWARD_LIST_200_RESPONSE_OBJ);
   });
 
   test(fetchBurnchainRewardsByAddress.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, limit: 0, offset: 0, address: address };
     const data = await fetchBurnchainRewardsByAddress(args);
-    expect(data).toEqual(BURNCHAIN_REWARD_LIST_200_RESPONSE);
+    expect(data).toEqual(BURNCHAIN_REWARD_LIST_200_RESPONSE_OBJ);
   });
 
   test(fetchTotalBurnchainRewardsByAddress.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, address: address };
     const data = await fetchTotalBurnchainRewardsByAddress(args);
-    expect(data).toEqual(BURNCHAIN_REWARDS_TOTAL_200_RESPONSE);
+    expect(data).toEqual(BURNCHAIN_REWARDS_TOTAL_200_RESPONSE_OBJ);
   });
 });

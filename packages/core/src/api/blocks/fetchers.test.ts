@@ -13,6 +13,14 @@ import {
 } from './fetchers';
 import { blockEndpoint } from '../utils';
 import { HIRO_TESTNET_DEFAULT } from 'micro-stacks/network';
+// convert json modules to js objects
+const BLOCK_LIST_200_RESPONSE_OBJ = JSON.parse(
+  JSON.stringify(BLOCK_LIST_200_RESPONSE)
+);
+const BLOCK_200_RESPONSE_OBJ = JSON.parse(JSON.stringify(BLOCK_200_RESPONSE));
+const BLOCK_404_RESPONSE_OBJ = JSON.parse(
+  JSON.stringify(BLOCK_404_RESPONSE)
+);
 
 const hash = '0xe77ba8cf6bb7c0e4f64adc83356289ed467d31a22354907b4bb814590058430f';
 const height = 3275;
@@ -21,42 +29,42 @@ const burn_block_height = 654439;
 
 export const GET_BLOCKS_MOCKS = [
   rest.get(blockEndpoint(HIRO_TESTNET_DEFAULT), (_req, res, ctx) => {
-    return res(ctx.json(BLOCK_LIST_200_RESPONSE));
+    return res(ctx.json(BLOCK_LIST_200_RESPONSE_OBJ));
   }),
   rest.get(blockEndpoint(HIRO_TESTNET_DEFAULT) + '/' + hash, (_req, res, ctx) => {
-    return res(ctx.json(BLOCK_200_RESPONSE));
+    return res(ctx.json(BLOCK_200_RESPONSE_OBJ));
   }),
   rest.get(blockEndpoint(HIRO_TESTNET_DEFAULT) + '/' + 'foobar', (_req, res, ctx) => {
-    return res(ctx.json(BLOCK_404_RESPONSE));
+    return res(ctx.json(BLOCK_404_RESPONSE_OBJ));
   }),
   rest.get(blockEndpoint(HIRO_TESTNET_DEFAULT) + '/by_height/' + height, (_req, res, ctx) => {
-    return res(ctx.json(BLOCK_200_RESPONSE));
+    return res(ctx.json(BLOCK_200_RESPONSE_OBJ));
   }),
   rest.get(blockEndpoint(HIRO_TESTNET_DEFAULT) + '/by_height/' + 123456789, (_req, res, ctx) => {
-    return res(ctx.json(BLOCK_404_RESPONSE));
+    return res(ctx.json(BLOCK_404_RESPONSE_OBJ));
   }),
   rest.get(
     blockEndpoint(HIRO_TESTNET_DEFAULT) + '/by_burn_block_hash/' + burn_block_hash,
     (_req, res, ctx) => {
-      return res(ctx.json(BLOCK_200_RESPONSE));
+      return res(ctx.json(BLOCK_200_RESPONSE_OBJ));
     }
   ),
   rest.get(
     blockEndpoint(HIRO_TESTNET_DEFAULT) + '/by_burn_block_hash/' + 'foobar',
     (_req, res, ctx) => {
-      return res(ctx.json(BLOCK_404_RESPONSE));
+      return res(ctx.json(BLOCK_404_RESPONSE_OBJ));
     }
   ),
   rest.get(
     blockEndpoint(HIRO_TESTNET_DEFAULT) + '/by_burn_block_height/' + burn_block_height,
     (_req, res, ctx) => {
-      return res(ctx.json(BLOCK_200_RESPONSE));
+      return res(ctx.json(BLOCK_200_RESPONSE_OBJ));
     }
   ),
   rest.get(
     blockEndpoint(HIRO_TESTNET_DEFAULT) + '/by_burn_block_height/' + 123456789,
     (_req, res, ctx) => {
-      return res(ctx.json(BLOCK_404_RESPONSE));
+      return res(ctx.json(BLOCK_404_RESPONSE_OBJ));
     }
   ),
 ];
@@ -78,54 +86,54 @@ describe('blocks fetchers', () => {
   test(fetchBlocks.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT };
     const data = await fetchBlocks(args);
-    expect(data).toEqual(BLOCK_LIST_200_RESPONSE);
+    expect(data).toEqual(BLOCK_LIST_200_RESPONSE_OBJ);
   });
 
   test(fetchBlock.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, hash: hash };
     const data = await fetchBlock(args);
-    expect(data).toEqual(BLOCK_200_RESPONSE);
+    expect(data).toEqual(BLOCK_200_RESPONSE_OBJ);
   });
 
   test(fetchBlock.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, hash: 'foobar' };
     const data = await fetchBlock(args);
-    expect(data).toEqual(BLOCK_404_RESPONSE);
+    expect(data).toEqual(BLOCK_404_RESPONSE_OBJ);
   });
 
   test(fetchBlockByHeight.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, height: height };
     const data = await fetchBlockByHeight(args);
-    expect(data).toEqual(BLOCK_200_RESPONSE);
+    expect(data).toEqual(BLOCK_200_RESPONSE_OBJ);
   });
 
   test(fetchBlockByHeight.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, height: 123456789 };
     const data = await fetchBlockByHeight(args);
-    expect(data).toEqual(BLOCK_404_RESPONSE);
+    expect(data).toEqual(BLOCK_404_RESPONSE_OBJ);
   });
 
   test(fetchBlockByBurnBlockHash.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, burn_block_hash: burn_block_hash };
     const data = await fetchBlockByBurnBlockHash(args);
-    expect(data).toEqual(BLOCK_200_RESPONSE);
+    expect(data).toEqual(BLOCK_200_RESPONSE_OBJ);
   });
 
   test(fetchBlockByBurnBlockHash.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, burn_block_hash: 'foobar' };
     const data = await fetchBlockByBurnBlockHash(args);
-    expect(data).toEqual(BLOCK_404_RESPONSE);
+    expect(data).toEqual(BLOCK_404_RESPONSE_OBJ);
   });
 
   test(fetchBlockByBurnBlockHeight.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, burn_block_height: burn_block_height };
     const data = await fetchBlockByBurnBlockHeight(args);
-    expect(data).toEqual(BLOCK_200_RESPONSE);
+    expect(data).toEqual(BLOCK_200_RESPONSE_OBJ);
   });
 
   test(fetchBlockByBurnBlockHeight.name, async () => {
     const args = { url: HIRO_TESTNET_DEFAULT, burn_block_height: 123456789 };
     const data = await fetchBlockByBurnBlockHeight(args);
-    expect(data).toEqual(BLOCK_404_RESPONSE);
+    expect(data).toEqual(BLOCK_404_RESPONSE_OBJ);
   });
 });
