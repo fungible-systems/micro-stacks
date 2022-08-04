@@ -24,13 +24,19 @@ export {
 export {
   handleSignStructuredDataRequest,
   generateSignStructuredDataPayload,
+  makeClarityHash,
+  getStructuredDataHashes,
+  makeStructuredDataHash,
+  makeDomainTuple,
 } from './connect/message-signing/structured-message';
 export { hashMessage, encodeMessage, decodeMessage } from './connect/message-signing/encoding';
 export {
   verifyMessageSignature,
+  verifyStructuredMessageSignature,
   recoverSignature,
   getPublicKeyFromSignature,
 } from './connect/message-signing/verify';
+
 export type {
   SignatureRequestOptions,
   StructuredSignatureRequestOptions,
