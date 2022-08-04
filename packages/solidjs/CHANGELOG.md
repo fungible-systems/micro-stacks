@@ -1,5 +1,13 @@
 # @micro-stacks/solidjs
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [[`f1296ab6`](https://github.com/fungible-systems/micro-stacks/commit/f1296ab6166f2bc6c35454520047163d28f6425b)]:
+  - micro-stacks@1.1.2
+  - @micro-stacks/client@1.0.3
+
 ## 1.0.2
 
 ### Patch Changes
