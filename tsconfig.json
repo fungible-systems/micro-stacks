@@ -31,17 +31,6 @@
     "esModuleInterop": true,
     "strictNullChecks": true,
     "jsx": "react",
-    "resolveJsonModule": true,
-    "outDir": "./dist",
-    "rootDir": ".",
-    "baseUrl": ".",
-    "paths": {
-      "@micro-stacks/react": [
-        "packages/react/src"
-      ],
-      "@micro-stacks/client": [
-        "packages/client/src"
-      ]
-    }
+    "resolveJsonModule": true
   }
 }

@@ -6,24 +6,23 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@micro-stacks/client": [
-        "../client/src"
-      ],
       "micro-stacks/*": [
         "../core/src/*"
+      ],
+      "@micro-stacks/client": [
+        "../client/src"
       ]
     }
   },
   "references": [
     {
-      "path": "../client/tsconfig.json"
+      "path": "../core/tsconfig.json"
     },
     {
-      "path": "../core/tsconfig.json"
+      "path": "../client/tsconfig.json"
     }
   ],
   "include": [
-    "src/**/*",
-    "tests/**/*"
+    "./src/**/*"
   ]
 }
