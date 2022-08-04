@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 1.1.2
+
+### Patch Changes
+
+- [`f1296ab6`](https://github.com/fungible-systems/micro-stacks/commit/f1296ab6166f2bc6c35454520047163d28f6425b) Thanks [@aulneau](https://github.com/aulneau)! - This update fixes an issue where certain message signing related functions were not exported correctly from `micro-stacks/connect`. `verifyStructuredMessageSignature` should now be exported, along with some helper functions to generate structured data hashes.
+
 ## 1.1.1
 
 ### Patch Changes
