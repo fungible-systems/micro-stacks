@@ -5,3 +5,4 @@ global.fetch = fetch;
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 global.setImmediate = setTimeout;
+await import('vi-fetch/setup');

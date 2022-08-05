@@ -6,7 +6,7 @@ import { getGaiaAddress } from '../account/get-gaia-address';
 import { validateMnemonic } from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
 
-describe(generateSecretKey, () => {
+describe('generateSecretKey', () => {
   test('generates a 24 word phrase by default', () => {
     const key = generateSecretKey();
     const words = key.split(' ');
@@ -24,7 +24,7 @@ describe(generateSecretKey, () => {
   });
 });
 
-describe(generateWallet, () => {
+describe('generateWallet', () => {
   test('backwards compatibility test', async () => {
     const secretKey =
       'sound idle panel often situate develop unit text design antenna ' +
