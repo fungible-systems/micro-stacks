@@ -1,4 +1,5 @@
 import { deserializeTransaction, StacksTransaction } from '../transaction';
+import { mockFetch, mockGet, mockPost } from 'vi-fetch';
 
 import {
   createSingleSigSpendingCondition,
@@ -30,7 +31,6 @@ import {
   publicKeyToString,
 } from '../keys';
 import { TransactionSigner } from '../signer';
-import fetchMock from 'jest-fetch-mock';
 import {
   bufferCVFromString,
   ClarityAbi,
@@ -103,11 +103,7 @@ const KV_STORE_CONTRACT = `(define-map store ((key (buff 32))) ((value (buff 32)
 
 describe('tx builders', function () {
   beforeEach(() => {
-    fetchMock.enableMocks();
-  });
-  afterEach(() => {
-    fetchMock.disableMocks();
-    fetchMock.resetMocks();
+    mockFetch.clearAll();
   });
   test('Make STX token transfer with set tx fee', async () => {
     const recipient = standardPrincipalCV('SP3FGQ8Z7JY9BWYZ5WM53E0M9NK7WHJF0691NZ159');
@@ -149,7 +145,7 @@ describe('tx builders', function () {
     const senderKey = 'edf9aee84d9b7abc145504dde6726c64f369d37ee34ded868fabd876c26570bc01';
     const memo = 'test memo';
 
-    fetchMock.mockOnce(`${estimateFeeRate}`);
+    mockGet(/.*/).willResolve(`${estimateFeeRate}`);
 
     const transaction = await makeSTXTokenTransfer({
       recipient,
@@ -875,18 +871,17 @@ describe('tx builders', function () {
 
     const transactionByteLength = transaction.serialize().byteLength;
 
-    fetchMock.mockOnce(`${estimateFeeRate}`);
+    const mock = mockGet(/.*/).willResolve(`${estimateFeeRate}`);
 
     const estimateFee = transactionByteLength * estimateFeeRate;
     const resultEstimateFee = await estimateTransfer(transaction);
 
-    fetchMock.mockOnce(`${estimateFeeRate}`);
     const network = new StacksTestnet();
     const resultEstimateFee2 = await estimateTransfer(transaction, network);
 
-    expect(fetchMock.mock.calls.length).toEqual(2);
-    expect(fetchMock.mock.calls[0][0]).toEqual(apiUrl);
-    expect(fetchMock.mock.calls[1][0]).toEqual(network.getTransferFeeEstimateApiUrl());
+    expect(mock.spy.calls[0][0]).toEqual(apiUrl);
+    expect(mock.spy.calls[1][0]).toEqual(network.getTransferFeeEstimateApiUrl());
+    expect(mock).toHaveFetchedTimes(2)
     expect(resultEstimateFee.toString()).toEqual(estimateFee.toString());
     expect(resultEstimateFee2.toString()).toEqual(estimateFee.toString());
   });
@@ -902,11 +897,9 @@ describe('tx builders', function () {
     const network = new StacksTestnet();
     const apiUrl = network.getAccountApiUrl(senderAddress);
 
-    fetchMock.mockOnce(`{"balance":"0", "nonce":${nonce}}`);
+    const mock =mockGet(/.*/).willResolve(`{"balance":"0", "nonce":${nonce}}`);
 
     const fetchNonce = await getNonce(senderAddress, network);
-
-    fetchMock.mockOnce(`{"balance":"0", "nonce":${nonce}}`);
 
     const transaction = await makeSTXTokenTransfer({
       recipient,
@@ -918,9 +911,9 @@ describe('tx builders', function () {
       anchorMode: AnchorMode.Any,
     });
 
-    expect(fetchMock.mock.calls.length).toEqual(2);
-    expect(fetchMock.mock.calls[0][0]).toEqual(apiUrl);
-    expect(fetchMock.mock.calls[1][0]).toEqual(apiUrl);
+    expect(mock.spy.calls.length).toEqual(2);
+    expect(mock.spy.calls[0][0]).toEqual(apiUrl);
+    expect(mock.spy.calls[1][0]).toEqual(apiUrl);
     expect(fetchNonce.toString()).toEqual(nonce.toString());
     expect(transaction.auth.spendingCondition?.nonce?.toString()).toEqual(nonce.toString());
   });
@@ -1088,12 +1081,12 @@ describe('tx builders', function () {
       sponsorNonce,
     };
 
-    fetchMock.mockOnce(`${estimateFeeRate}`);
+    const mock = mockGet(/.*/).willResolve(`${estimateFeeRate}`);
 
     const sponsorSignedTx = await sponsorTransaction(sponsorOptions);
 
-    expect(fetchMock.mock.calls.length).toEqual(1);
-    expect(fetchMock.mock.calls[0][0]).toEqual(network.getTransferFeeEstimateApiUrl());
+    expect(mock.spy.calls.length).toEqual(1);
+    expect(mock.spy.calls[0][0]).toEqual(network.getTransferFeeEstimateApiUrl());
 
     const sponsorSignedTxSerialized = sponsorSignedTx.serialize();
 
@@ -1156,7 +1149,6 @@ describe('tx builders', function () {
     const bufferReader = new BufferReader(sponsorSignedTxSerialized);
     const deserializedSponsorTx = deserializeTransaction(bufferReader);
 
-    expect(fetchMock.mock.calls.length).toEqual(0);
     expect(deserializedSponsorTx.auth.spendingCondition!.nonce!.toString()).toBe(nonce.toString());
     expect(deserializedSponsorTx.auth.spendingCondition!.fee!.toString()).toBe(fee.toString());
 
@@ -1205,8 +1197,6 @@ describe('tx builders', function () {
     };
 
     const sponsorSignedTx = await sponsorTransaction(sponsorOptions);
-
-    expect(fetchMock.mock.calls.length).toEqual(0);
 
     const sponsorSignedTxSerialized = sponsorSignedTx.serialize();
 
@@ -1264,12 +1254,12 @@ describe('tx builders', function () {
       fee: sponsorFee,
     };
 
-    fetchMock.mockOnce(`{"balance":"100000", "nonce":${sponsorNonce}}`);
+    const mock = mockGet(/.*/).willResolve(`{"balance":"100000", "nonce":${sponsorNonce}}`);
 
     const sponsorSignedTx = await sponsorTransaction(sponsorOptions);
 
-    expect(fetchMock.mock.calls.length).toEqual(1);
-    expect(fetchMock.mock.calls[0][0]).toEqual(network.getAccountApiUrl(sponsorAddress));
+    expect(mock.spy.calls.length).toEqual(1);
+    expect(mock.spy.calls[0][0]).toEqual(network.getAccountApiUrl(sponsorAddress));
 
     const sponsorSignedTxSerialized = sponsorSignedTx.serialize();
 
@@ -1310,13 +1300,13 @@ describe('tx builders', function () {
       anchorMode: AnchorMode.Any,
     });
 
-    fetchMock.mockOnce('success');
+    const mock = mockPost(/.*/).willResolve(`success`);
 
     const response: TxBroadcastResult = await broadcastTransaction(transaction, network);
 
-    expect(fetchMock.mock.calls.length).toEqual(1);
-    expect(fetchMock.mock.calls[0][0]).toEqual(network.getBroadcastApiUrl());
-    expect(fetchMock.mock.calls[0][1]?.body).toEqual(transaction.serialize());
+    expect(mock.spy.calls.length).toEqual(1);
+    expect(mock.spy.calls[0][0]).toEqual(network.getBroadcastApiUrl());
+    expect(mock.spy.calls[0][1]?.body).toEqual(transaction.serialize());
     expect(response as TxBroadcastResultOk).toEqual({ txid: 'success' });
   });
 
@@ -1341,7 +1331,7 @@ describe('tx builders', function () {
       anchorMode: AnchorMode.Any,
     });
 
-    fetchMock.mockOnce('success');
+    const mock = mockPost(/.*/).willResolve(`success`);
 
     const response: TxBroadcastResult = await broadcastTransaction(
       transaction,
@@ -1349,9 +1339,9 @@ describe('tx builders', function () {
       attachment
     );
 
-    expect(fetchMock.mock.calls.length).toEqual(1);
-    expect(fetchMock.mock.calls[0][0]).toEqual(network.getBroadcastApiUrl());
-    expect(fetchMock.mock.calls[0][1]?.body).toEqual(
+    expect(mock.spy.calls.length).toEqual(1);
+    expect(mock.spy.calls[0][0]).toEqual(network.getBroadcastApiUrl());
+    expect(mock.spy.calls[0][1]?.body).toEqual(
       JSON.stringify({
         tx: bytesToHex(transaction.serialize()),
         attachment: attachment.toString('hex'),
@@ -1392,7 +1382,7 @@ describe('tx builders', function () {
       txid: '0x4068179cb9169b969c80518d83890f8b808a70ab998dd227149221be9480a616',
     };
 
-    fetchMock.mockOnce(JSON.stringify(rejection), { status: 400 });
+    mockPost(/.*/).willFail(JSON.stringify(rejection), 400);
 
     const result = await broadcastTransaction(transaction, network);
     expect((result as TxBroadcastResultRejected).reason).toEqual(TxRejectedReason.BadNonce);
@@ -1418,7 +1408,7 @@ describe('tx builders', function () {
       memo,
       anchorMode: AnchorMode.Any,
     });
-    fetchMock.mockOnce('test', { status: 400 });
+    mockPost(/.*/).willFail(`test`, 400);
     await expect(broadcastTransaction(transaction, network)).rejects.toThrow();
   });
 
@@ -1434,7 +1424,7 @@ describe('tx builders', function () {
     const network = new StacksTestnet();
 
     const abi: ClarityAbi = KV_STORE_ABI;
-    fetchMock.mockOnce(JSON.stringify(abi));
+    const mock = mockGet(/.*/).willResolve(JSON.stringify(abi))
 
     await makeContractCall({
       contractAddress,
@@ -1450,8 +1440,8 @@ describe('tx builders', function () {
       anchorMode: AnchorMode.Any,
     });
 
-    expect(fetchMock.mock.calls.length).toEqual(1);
-    expect(fetchMock.mock.calls[0][0]).toEqual(network.getAbiApiUrl(contractAddress, contractName));
+    expect(mock.spy.calls.length).toEqual(1);
+    expect(mock.spy.calls[0][0]).toEqual(network.getAbiApiUrl(contractAddress, contractName));
   });
 
   test('Make contract-call with provided ABI validation', async () => {
@@ -1491,7 +1481,7 @@ describe('tx builders', function () {
     const network = new StacksTestnet();
 
     const abiUrl = network.getAbiApiUrl(contractAddress, contractName);
-    fetchMock.mockOnce('No contract interface data found', { status: 404 });
+    mockGet(/.*/).willFail(`'No contract interface data found'`, 404);
     await expect(
       makeContractCall({
         contractAddress,
@@ -1507,7 +1497,7 @@ describe('tx builders', function () {
         anchorMode: AnchorMode.Any,
       })
     ).rejects.toThrow(
-      `Error fetching contract ABI for contract "kv-store" at address ST3KC0MTNW34S1ZXD36JYKFD3JJMWA01M55DSJ4JE. Response 404: Not Found. Attempted to fetch ${abiUrl} and failed with the message: "No contract interface data found"`
+      `Error fetching contract ABI for contract "kv-store" at address ST3KC0MTNW34S1ZXD36JYKFD3JJMWA01M55DSJ4JE. Response 404: Not Found. Attempted to fetch ${abiUrl} and failed with the message: "'No contract interface data found'"`
     );
   });
 
@@ -1534,11 +1524,11 @@ describe('tx builders', function () {
       functionName
     );
 
-    fetchMock.mockOnce(`{"okay": true, "result": "0x${mockResult}"}`, { url: apiUrl });
+    const mock = mockPost(apiUrl).willResolve(`{"okay": true, "result": "0x${mockResult}"}`);
 
     const result = await callReadOnlyFunction(options);
-    expect(fetchMock.mock.calls.length).toEqual(1);
-    expect(fetchMock.mock.calls[0][0]).toEqual(apiUrl);
+    expect(mock).toHaveFetchedTimes(1);
+    expect(mock.spy.calls[0][0]).toEqual(apiUrl);
     expect(result).toEqual(parseReadOnlyResponse({ okay: true, result: `0x${mockResult}` }));
   });
 });

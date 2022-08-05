@@ -2,6 +2,7 @@ import { getFile } from 'micro-stacks/storage';
 import { setupServer } from 'msw/node';
 import { getGlobalScope } from '../common';
 import { GET_FILE_DATA, GET_FILE_MOCKS } from '../../../tests/mocks/get-file.mocks';
+import _fetch  from 'cross-fetch'
 
 const { FILE_CONTENT, FILE_PATH, gaiaHubConfig } = GET_FILE_DATA;
 
