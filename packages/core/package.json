@@ -141,7 +141,7 @@
     "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\" *.js",
     "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx}\" *.js",
     "pretest": "pnpm typecheck",
-    "test": "NODE_ENV=test vitest --passWithNoTests",
+    "test": "NODE_ENV=test vitest run --passWithNoTests",
     "test:coverage": "NODE_ENV=test vitest --coverage",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "shx mkdir ../micro-stacks && shx cp -r ./dist/* ../micro-stacks && cd ../ && shx rm -rf ./core && mv ./micro-stacks ./core",
