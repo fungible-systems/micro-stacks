@@ -16,6 +16,14 @@ jobs:
         uses: styfle/cancel-workflow-action@0.10.0
         with:
           access_token: ${{ github.token }}
+          
+      - name: Wait for tests to succeed
+        uses: lewagon/wait-on-check-action@v1.1.2
+        with:
+          ref: ${{ github.ref }}
+          check-name: 'Test'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
 
       - name: Checkout Main
         uses: actions/checkout@v3
