@@ -60,7 +60,6 @@
   "devDependencies": {
     "@stacks/stacks-blockchain-api-types": "4.1.0",
     "@types/common-tags": "1.8.1",
-    "@types/jest": "28.1.6",
     "@types/jsdom": "20.0.0",
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0",
