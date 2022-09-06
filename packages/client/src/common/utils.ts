@@ -1,7 +1,7 @@
 import invariant from 'tiny-invariant';
 import { MicroStacksErrors } from './errors';
 
-function makeMicroStacksMsg(msg: string) {
+export function makeMicroStacksMsg(msg: string) {
   return `[@micro-stacks/client] ${msg}`;
 }
 
