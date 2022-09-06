@@ -8,6 +8,7 @@
   export let appIconUrl: ClientConfig['appIconUrl'] = undefined;
   export let storage: ClientConfig['storage'] = defaultStorage;
   export let network: ClientConfig['network'] = undefined;
+  export let enableNetworkSwitching: ClientConfig['enableNetworkSwitching'] = undefined;
   export let dehydratedState: ClientConfig['dehydratedState'] = undefined;
   export let onPersistState: ClientConfig['onPersistState'] = undefined;
   export let onSignOut: ClientConfig['onSignOut'] = undefined;
@@ -23,6 +24,7 @@
       appIconUrl,
       storage,
       network,
+      enableNetworkSwitching,
       dehydratedState,
       onPersistState,
       onSignOut,

@@ -6,6 +6,7 @@ class ClientProvider extends SvelteComponentTyped<{
   appIconUrl?: ClientConfig['appIconUrl'];
   storage?: ClientConfig['storage'];
   network?: ClientConfig['network'];
+  enableNetworkSwitching?: ClientConfig['enableNetworkSwitching'];
   dehydratedState?: ClientConfig['dehydratedState'];
   onPersistState?: ClientConfig['onPersistState'];
   onSignOut?: ClientConfig['onSignOut'];

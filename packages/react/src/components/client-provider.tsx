@@ -90,6 +90,7 @@ export const ClientProvider: React.FC<
     onAuthentication,
     onNoWalletFound,
     onSignOut,
+    enableNetworkSwitching,
   }) => {
     if (!!React.useContext(MicroStacksClientContext))
       throw Error(
@@ -102,6 +103,7 @@ export const ClientProvider: React.FC<
         appIconUrl,
         dehydratedState,
         network,
+        enableNetworkSwitching,
         storage,
         onPersistState,
         onAuthentication,
@@ -113,6 +115,7 @@ export const ClientProvider: React.FC<
         appIconUrl,
         dehydratedState,
         network,
+        enableNetworkSwitching,
         storage,
         onPersistState,
         onAuthentication,
