@@ -1,5 +1,15 @@
 # @micro-stacks/client
 
+## 1.1.0
+
+### Minor Changes
+
+- [#159](https://github.com/fungible-systems/micro-stacks/pull/159) [`22bd7401`](https://github.com/fungible-systems/micro-stacks/commit/22bd7401c3a2d038036b1f43782e202aa140708d) Thanks [@aulneau](https://github.com/aulneau)! - This updates the way in which the network is used in the `@micro-stacks/client` package. Previously, the `network` value in the config would only set the value as long as there was no current session in the users application data. This would lead to unexpected states when folks would try to change the network globally, but some users would have their old network state persisted.
+
+  **Please note!!**
+
+  If you want to allow your users to change their network in-app, you must pass `enableNetworkSwitching` to your client config for micro-stacks.
+
 ## 1.0.3
 
 ### Patch Changes

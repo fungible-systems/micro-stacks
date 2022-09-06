@@ -1,5 +1,12 @@
 # @micro-stacks/react
 
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`22bd7401`](https://github.com/fungible-systems/micro-stacks/commit/22bd7401c3a2d038036b1f43782e202aa140708d)]:
+  - @micro-stacks/client@1.1.0
+
 ## 1.0.3
 
 ### Patch Changes
