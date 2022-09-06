@@ -26,7 +26,7 @@ import type { ClientConfig, SignTransactionRequest, State } from './common/types
 import { DebugOptions } from './common/types';
 import { persist, subscribeWithSelector } from 'zustand/middleware';
 import { bytesToHex, fetchPrivate, getGlobalObject, hexToBytes } from 'micro-stacks/common';
-import { invariantWithMessage } from './common/utils';
+import { invariantWithMessage, makeMicroStacksMsg } from './common/utils';
 import { Status, StatusKeys, STORE_KEY, TxType } from './common/constants';
 import {
   c32address,
@@ -39,7 +39,7 @@ import {
 } from 'micro-stacks/crypto';
 import { SignInWithStacksMessage } from './siwms';
 import { generateGaiaHubConfigSync, getFile, putFile } from 'micro-stacks/storage';
-import { defaultState, getDebugState, hydrate, serialize, VERSION } from './utils';
+import { defaultState, getDebugState, getNetwork, hydrate, serialize, VERSION } from './utils';
 import { MicroStacksErrors } from './common/errors';
 
 export class MicroStacksClient {
@@ -232,9 +232,13 @@ export class MicroStacksClient {
   selectAccounts = (state: State) => state.accounts;
   selectAccount = (state: State) =>
     this.selectHasSession(state) ? state.accounts[state.currentAccountIndex] : undefined;
-  selectNetwork = (state: State) => state.network;
+  selectNetwork = (state: State): StacksNetwork => {
+    const canSwitchNetworks = this.config.enableNetworkSwitching;
+    if (!canSwitchNetworks) return getNetwork(this.config.network);
+    return state.network;
+  };
   selectNetworkChain = (state: State) =>
-    state.network.chainId === ChainID.Mainnet ? 'mainnet' : 'testnet';
+    this.selectNetwork(state).chainId === ChainID.Mainnet ? 'mainnet' : 'testnet';
   selectTestnetStxAddress = (state: State) => {
     const account = this.selectAccount(state);
     return account
@@ -604,6 +608,13 @@ export class MicroStacksClient {
    *  ------------------------------------------------------------------------------------------------------------------
    */
   setNetwork = (network: 'mainnet' | 'testnet' | StacksNetwork) => {
+    const canSwitchNetworks = this.config.enableNetworkSwitching;
+    if (!canSwitchNetworks)
+      throw new Error(
+        makeMicroStacksMsg(
+          'Network switching is currently disabled. Set `enableNetworkSwitching` to `true` to enable.'
+        )
+      );
     if (typeof network === 'string')
       this.setState(s => ({
         ...s,

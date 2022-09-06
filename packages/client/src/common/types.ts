@@ -79,6 +79,12 @@ export interface ClientConfig {
    */
   network?: 'testnet' | 'mainnet' | StacksNetwork;
   /**
+   * enableNetworkSwitching
+   * `true` or `false`
+   * Allows for the user in-app to switch networks
+   */
+  enableNetworkSwitching?: boolean;
+  /**
    * dehydratedState
    * A string value of dehydrated state (via client.dehydrate())
    * OR a getter function: (key: string) => string | undefined

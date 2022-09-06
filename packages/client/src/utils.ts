@@ -49,9 +49,13 @@ export function deserialize(str: string) {
   };
 }
 
-const getNetwork = (network: StacksNetwork | 'testnet' | 'mainnet'): StacksNetwork => {
-  if (typeof network !== 'string') return network;
-  if (network === 'testnet') return new StacksTestnet();
+export const getNetwork = (
+  network: StacksNetwork | 'testnet' | 'mainnet' | undefined
+): StacksNetwork => {
+  if (network) {
+    if (typeof network !== 'string') return network;
+    if (network === 'testnet') return new StacksTestnet();
+  }
   return new StacksMainnet();
 };
 
