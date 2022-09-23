@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Opinionated Vue integration for micro-stacks.",
   "files": [
     "dist"

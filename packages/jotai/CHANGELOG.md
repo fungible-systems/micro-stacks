@@ -1,5 +1,14 @@
 # @micro-stacks/jotai
 
+## 1.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`472bbd9c`](https://github.com/fungible-systems/micro-stacks/commit/472bbd9cb750c2adeadd3763725c346eaa435992)]:
+  - micro-stacks@1.1.4
+  - @micro-stacks/client@1.1.2
+  - @micro-stacks/react@1.0.6
+
 ## 1.0.5
 
 ### Patch Changes
