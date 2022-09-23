@@ -149,13 +149,13 @@ export const verifyMessageSignature = (options: {
   stxAddress?: string;
   mode?: 'vrs' | 'rsv';
 }) => {
-  const isValid = _verifyMessageSignature(options);
-  return isValid
-    ? true
-    : _verifyMessageSignature({
-        ...options,
-        prefix: LEGACY_CHAIN_PREFIX_BYTES,
-      });
+  return (
+    _verifyMessageSignature(options) ||
+    _verifyMessageSignature({
+      ...options,
+      prefix: LEGACY_CHAIN_PREFIX_BYTES,
+    })
+  );
 };
 
 export const verifyStructuredMessageSignature = (options: {
@@ -166,9 +166,8 @@ export const verifyStructuredMessageSignature = (options: {
   stxAddress?: string;
   mode?: 'vrs' | 'rsv';
 }) => {
-  const isValid = _verifyStructuredMessageSignature(options);
   return (
-    isValid ??
+    _verifyStructuredMessageSignature(options) ||
     _verifyStructuredMessageSignature({
       ...options,
       prefix: LEGACY_CHAIN_PREFIX_BYTES,
