@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 1.1.3
+
+### Patch Changes
+
+- [#163](https://github.com/fungible-systems/micro-stacks/pull/163) [`339abb66`](https://github.com/fungible-systems/micro-stacks/commit/339abb6647e14ea6b004c458d0a7687709292d9d) Thanks [@aulneau](https://github.com/aulneau)! - This update changes the default prefix used to encode messages that are signed by the wallets in prep for the updated message signing prefix that the ledger app will support.
+
 ## 1.1.2
 
 ### Patch Changes
