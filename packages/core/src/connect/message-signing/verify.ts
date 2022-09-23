@@ -1,6 +1,6 @@
 import { recoverPublicKey, Signature, verify } from '@noble/secp256k1';
 import { bytesToHex, hexToBigInt } from 'micro-stacks/common';
-import { hashMessage } from './encoding';
+import { hashMessage, LEGACY_CHAIN_PREFIX_BYTES } from './encoding';
 
 import { getStructuredDataHashes, makeStructuredDataHash } from './structured-message';
 import { StructuredSignatureRequestOptions } from './types';
@@ -55,13 +55,14 @@ export const recoverSignature = (options: { signature: string; mode?: 'vrs' | 'r
   };
 };
 
-export const verifyMessageSignature = (options: {
+export const _verifyMessageSignature = (options: {
   // string = message, bytes = hash
   message: string | Uint8Array;
   signature: string;
   publicKey?: string;
   stxAddress?: string;
   mode?: 'vrs' | 'rsv';
+  prefix?: Uint8Array;
 }) => {
   if (!options.publicKey && !options.stxAddress)
     throw Error(
@@ -72,7 +73,7 @@ export const verifyMessageSignature = (options: {
   let publicKey = options.publicKey;
 
   try {
-    const hash = typeof message === 'string' ? hashMessage(message) : message;
+    const hash = typeof message === 'string' ? hashMessage(message, options.prefix) : message;
     const { signature, recoveryBytes } = recoverSignature({
       signature: options.signature,
       mode,
@@ -109,13 +110,14 @@ export const verifyMessageSignature = (options: {
   }
 };
 
-export const verifyStructuredMessageSignature = (options: {
+const _verifyStructuredMessageSignature = (options: {
   message: StructuredSignatureRequestOptions['message'];
   domain: StructuredSignatureRequestOptions['domain'];
   signature: string;
   publicKey?: string;
   stxAddress?: string;
   mode?: 'vrs' | 'rsv';
+  prefix?: Uint8Array;
 }) => {
   if (!options.publicKey && !options.stxAddress)
     throw Error(
@@ -129,11 +131,47 @@ export const verifyStructuredMessageSignature = (options: {
 
   const hashBytes = makeStructuredDataHash(domain, message);
 
-  return verifyMessageSignature({
+  return _verifyMessageSignature({
     message: hashBytes,
     signature: options.signature,
     publicKey: options.publicKey,
     stxAddress: options.stxAddress,
     mode: options.mode,
+    prefix: options.prefix,
   });
+};
+
+export const verifyMessageSignature = (options: {
+  // string = message, bytes = hash
+  message: string | Uint8Array;
+  signature: string;
+  publicKey?: string;
+  stxAddress?: string;
+  mode?: 'vrs' | 'rsv';
+}) => {
+  const isValid = _verifyMessageSignature(options);
+  return isValid
+    ? true
+    : _verifyMessageSignature({
+        ...options,
+        prefix: LEGACY_CHAIN_PREFIX_BYTES,
+      });
+};
+
+export const verifyStructuredMessageSignature = (options: {
+  message: StructuredSignatureRequestOptions['message'];
+  domain: StructuredSignatureRequestOptions['domain'];
+  signature: string;
+  publicKey?: string;
+  stxAddress?: string;
+  mode?: 'vrs' | 'rsv';
+}) => {
+  const isValid = _verifyStructuredMessageSignature(options);
+  return (
+    isValid ??
+    _verifyStructuredMessageSignature({
+      ...options,
+      prefix: LEGACY_CHAIN_PREFIX_BYTES,
+    })
+  );
 };

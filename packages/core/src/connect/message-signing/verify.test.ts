@@ -23,7 +23,7 @@ import {
   verifyMessageSignature,
   verifyStructuredMessageSignature,
 } from './verify';
-import { hashMessage } from './encoding';
+import { hashMessage, LEGACY_CHAIN_PREFIX_BYTES } from './encoding';
 import { getStructuredDataHashes, makeStructuredDataHash } from './structured-message';
 import { publicKeyToStxAddress, StacksNetworkVersion } from 'micro-stacks/crypto';
 
@@ -91,7 +91,7 @@ describe('Verify messages (RSV mode)', () => {
   };
   const stxAddress = publicKeyToStxAddress(payload.publicKey);
 
-  const hash = hashMessage(message);
+  const hash = hashMessage(message, LEGACY_CHAIN_PREFIX_BYTES);
 
   // make sure we can get the public key
   test(getPublicKeyFromSignature.name, () => {

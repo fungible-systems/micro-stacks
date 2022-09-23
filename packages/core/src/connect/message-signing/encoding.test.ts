@@ -2,19 +2,19 @@ import {
   encodeMessage as stacksEncodeMessage,
   hashMessage as stacksHashMessage,
 } from '@stacks/encryption';
-import { decodeMessage, encodeMessage, hashMessage } from './encoding';
+import { decodeMessage, encodeMessage, hashMessage, LEGACY_CHAIN_PREFIX_BYTES } from './encoding';
 import { bytesToHex, utf8ToBytes } from 'micro-stacks/common';
 import { concatBytes } from '@noble/hashes/utils';
 
 describe('encoding', function () {
   test('compat', () => {
     const message = stacksEncodeMessage('hi there');
-    const myMessage = encodeMessage('hi there');
+    const myMessage = encodeMessage('hi there', LEGACY_CHAIN_PREFIX_BYTES);
     expect(bytesToHex(message)).toEqual(bytesToHex(myMessage));
   });
   test('hashing', () => {
     const message = bytesToHex(stacksHashMessage('hi there'));
-    const myMessage = bytesToHex(hashMessage('hi there'));
+    const myMessage = bytesToHex(hashMessage('hi there', LEGACY_CHAIN_PREFIX_BYTES));
     expect(message).toEqual(myMessage);
   });
   // src: https://github.com/hirosystems/stacks.js/blob/a86f01e7a25a79ae9d3da0df5a654caf2bb7e9e9/packages/encryption/tests/messageSignature.test.ts
