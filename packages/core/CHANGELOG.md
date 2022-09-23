@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 1.1.4
+
+### Patch Changes
+
+- [#165](https://github.com/fungible-systems/micro-stacks/pull/165) [`472bbd9c`](https://github.com/fungible-systems/micro-stacks/commit/472bbd9cb750c2adeadd3763725c346eaa435992) Thanks [@aulneau](https://github.com/aulneau)! - This update fixes a small bug where the nullish operator would always return a value and prevent legacy hashed messages from being verified.
+
 ## 1.1.3
 
 ### Patch Changes
