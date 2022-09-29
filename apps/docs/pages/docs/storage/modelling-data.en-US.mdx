@@ -1,0 +1,77 @@
+import * as Integrations from 'components/integrations-tabs';
+
+# Modeling data for Gaia
+
+<Integrations.Tabs />
+
+Gaia is a pretty simple key-value store. There are endpoints for writing data, reading data, listing
+files, and deleting files. In order to build more advanced applications, it's important to think
+about how we can model out our data such that we don't lose files randomly, and can easily know the
+state of our data.
+
+Micro-stacks exposes some helpful abstractions to make this really easy.
+
+## Model
+
+Each framework specific library will expose a function you can use to create new Models:
+
+```tsx
+import { useModel } from '@micro-stacks/react';
+
+interface ModelType {
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+}
+
+const model = useModel<ModelType>('MyModelType');
+```
+
+### Listing Model IDs
+
+When interacting with Gaia, it's often best to create a file that serves as an index for our Model,
+which would allow us to fetch many entries, or list out specific entries of your Model. Because of
+how the underlying Model class names files, we are also able to do some ordering without knowing the
+contents of the file.
+
+#### Ordering
+
+#### Paginating
+
+### Saving an entry
+
+Below we can see an example for saving a model with the built in `save` function:
+
+```tsx
+import * as React from 'react';
+import { useModel } from '@micro-stacks/react';
+
+interface ModelType {
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+}
+
+const SaveButton = (props: ModelType) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const model = useModel<ModelType>('MyModelType');
+
+  const onClick = async () => {
+    setIsLoading(true);
+    await model.save({
+      firstName: props.firstName,
+      lastName: props.lastName,
+      emailAddress: props.emailAddress,
+    });
+    setIsLoading(false);
+  };
+
+  const buttonLabel = isLoading ? 'saving...' : 'save model';
+
+  return <button onClick={onClick}>{buttonLabel}</button>;
+};
+```
+
+#### Saving many entries
+
+### Deleting an entry

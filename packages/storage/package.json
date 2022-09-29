@@ -1,11 +1,11 @@
 {
-  "name": "@micro-stacks/client",
+  "name": "@micro-stacks/storage",
   "private": false,
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.1.2",
-  "description": "Session client for Stacks apps using micro-stacks",
+  "version": "0.0.0",
+  "description": "Opinionated React integration for micro-stacks.",
   "files": [
     "dist"
   ],
@@ -20,6 +20,13 @@
       "main": "./dist/index.js",
       "module": "./dist/index.mjs",
       "import": "./dist/index.mjs"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "require": "./dist/*.js",
+      "main": "./dist/*.js",
+      "module": "./dist/*.mjs",
+      "import": "./dist/*.mjs"
     }
   },
   "sideEffects": false,
@@ -29,6 +36,7 @@
     "dev:publish": "yalc publish --push",
     "dev:build": "pnpm build && yalc publish --push",
     "publish:beta": "pnpm publish --tag beta",
+    "test:dev": "vitest dev --ui",
     "lint": "pnpm lint:eslint && pnpm lint:prettier",
     "lint:eslint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
@@ -37,10 +45,6 @@
     "ci:publish": "pnpm publish --no-git-checks --access public",
     "ci:version": "pnpm changeset version && pnpm install --no-frozen-lockfile && git add ."
   },
-  "engines": {
-    "node": ">=14"
-  },
-  "prettier": "@stacks/prettier-config",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aulneau/micro-stacks.git"
@@ -58,21 +62,18 @@
   },
   "homepage": "https://github.com/fungible-systems/micro-stacks",
   "devDependencies": {
-    "@stacks/stacks-blockchain-api-types": "4.1.2",
-    "@types/common-tags": "1.8.1",
-    "@types/jsdom": "20.0.0",
-    "react": ">=18.2.0",
-    "react-dom": ">=18.2.0",
-    "tsup": "6.2.3",
-    "type-fest": "^2.19.0",
-    "typescript": "4.8.2",
+    "@noble/hashes": "1.1.2",
+    "@noble/secp256k1": "1.6.3",
+    "@vitest/ui": "^0.19.1",
+    "jsdom": "^20.0.0",
+    "tsup": "6.1.3",
+    "typescript": "4.7.4",
     "vite": "3.0.3",
     "vitest": "0.19.1"
   },
   "dependencies": {
-    "fast-deep-equal": "3.1.3",
+    "@micro-stacks/client": "workspace:*",
     "micro-stacks": "workspace:*",
-    "tiny-invariant": ">=1.2.0",
-    "zustand": "4.1.1"
+    "p-queue": "^7.2.0"
   }
 }
