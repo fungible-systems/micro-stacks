@@ -10,7 +10,7 @@ for (let n = 0; n <= 0xff; ++n) {
 export function hexToBytes(hex: string): Uint8Array {
   if (typeof hex !== 'string')
     throw new TypeError('hexToBytes: expected string, got ' + typeof hex);
-  if (hex.startsWith('0x')) hex = hex.slice(2);
+  if (hex.startsWith('0x')) hex = cleanHex(hex);
   if (hex.length % 2)
     throw new Error(`hexToBytes: received invalid unpadded hex, got: ${hex.length}`);
   const array = new Uint8Array(hex.length / 2);
