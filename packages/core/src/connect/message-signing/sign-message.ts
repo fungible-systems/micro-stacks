@@ -6,9 +6,9 @@ import { createWalletJWT } from '../common/create-wallet-jwt';
 
 export const generateSignMessagePayload = async (options: SignatureRequestOptions) => {
   const payload: Json = {
-    stxAddress: options.stxAddress,
+    stxAddress: options.stxAddress || null,
     message: options.message,
-    appDetails: options.appDetails ?? null,
+    appDetails: options.appDetails || null,
     publicKey: safeGetPublicKey(options.privateKey),
     network: options.network as any,
   };

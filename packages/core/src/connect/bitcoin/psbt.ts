@@ -8,8 +8,8 @@ export const generatePSBTMessagePayload = async (options: Omit<PsbtPayload, 'pub
     allowedSighash: options.allowedSighash || null,
     hex: options.hex || null,
     signAtIndex: options.signAtIndex || null,
-    stxAddress: options.stxAddress,
-    appDetails: options.appDetails ?? null,
+    stxAddress: options.stxAddress || null,
+    appDetails: options.appDetails || null,
     publicKey: safeGetPublicKey(options.privateKey),
     network: options.network as any,
   };
