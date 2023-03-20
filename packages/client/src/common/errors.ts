@@ -4,6 +4,7 @@ export enum MicroStacksErrors {
   StxAddressNotAvailable = 'No current Stacks address can be found. This could be because a session has been invalidated, or the user is not signed in.',
   NoSession = 'There is not current user session available. Please make sure the user has signed in before attempting this action.',
   NoMessagePassedToSignMessage = 'No message found -- a message is required when requesting a message signature.',
+  NoHexPassedToPSBT = 'No hex found -- a hex string is required when requesting a PSBT signature.',
   JWTCouldNotBeMade = 'Transaction JWT could not be created',
   NoAppPrivateKey = 'The current user session has no `appPrivateKey` defined. Certain actions require an `appPrivateKey`, such as using gaia or encryption.',
 }

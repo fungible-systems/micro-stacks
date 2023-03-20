@@ -9,6 +9,7 @@ export enum StatusKeys {
   TransactionSigning = 'status/TransactionSigning',
   MessageSigning = 'status/MessageSigning',
   StructuredMessageSigning = 'status/StructuredMessageSigning',
+  PsbtSigning = 'status/PsbtSigning',
 }
 
 export enum Status {
