@@ -65,7 +65,7 @@ export const generateSignStructuredDataPayload = (options: StructuredSignatureRe
   const domain: string = cvToHex(domainTuple);
 
   const payload: Json = {
-    stxAddress: options.stxAddress,
+    stxAddress: options.stxAddress || null,
     message: cleanHex(message),
     domain: cleanHex(domain),
     appDetails: options.appDetails,

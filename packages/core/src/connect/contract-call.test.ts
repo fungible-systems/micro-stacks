@@ -14,6 +14,10 @@ describe('Make contract call token', () => {
     const hash160 = hashRipemd160(sha256);
     const token = await makeContractCallToken({
       privateKey,
+      appDetails: {
+        name: 'My App',
+        icon: 'https://example.com/icon.png',
+      },
       functionName: 'name-preorder',
       contractAddress: 'SP000000000000000000002Q6VF78',
       contractName: 'bns',

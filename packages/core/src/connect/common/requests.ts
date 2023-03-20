@@ -6,8 +6,8 @@ export interface BaseRequestPayload {
     icon: string;
   };
   authOrigin?: string;
-  stxAddress: string;
+  stxAddress?: string | null;
   privateKey?: string;
-  publicKey?: string;
+  publicKey?: string | null;
   network?: StacksNetwork;
 }

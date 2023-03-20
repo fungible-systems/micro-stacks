@@ -11,7 +11,7 @@ export enum TransactionTypes {
 
 export interface TransactionOptionsBase {
   privateKey?: string;
-  appDetails?: {
+  appDetails: {
     name: string;
     icon: string;
   };
