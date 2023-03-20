@@ -5,6 +5,9 @@ import type {
   SignedOptionsWithOnHandlers,
   StacksProvider,
   StacksSessionState,
+  PSBTOptionsWithOnHandlers,
+  PsbtPayload,
+  PsbtData,
 } from 'micro-stacks/connect';
 import {
   authenticate,
@@ -14,6 +17,7 @@ import {
   makeContractDeployToken,
   makeStxTransferToken,
   openTransactionPopup,
+  handlePSBTRequest,
 } from 'micro-stacks/connect';
 import type { StacksNetwork } from 'micro-stacks/network';
 import { ChainID, StacksMainnet, StacksTestnet } from 'micro-stacks/network';
@@ -501,6 +505,49 @@ export class MicroStacksClient {
       onCancel: error => {
         params?.onCancel?.(error);
         this.setIsIdle(StatusKeys.TransactionSigning);
+      },
+    });
+
+    return result;
+  };
+
+  /** ------------------------------------------------------------------------------------------------------------------
+   *   Sign PSBT
+   *  ------------------------------------------------------------------------------------------------------------------
+   */
+
+  signPSBT = async (params: PSBTOptionsWithOnHandlers<Omit<PsbtPayload, 'publicKey'>>) => {
+    if (!this.handleNoStacksProviderFound()) return;
+
+    const state = this.getState();
+    const appDetails = this.selectAppDetails(state);
+    const stxAddress = this.selectStxAddress(state);
+    const account = this.selectAccount(state);
+    const network = this.selectNetwork(state);
+    invariantWithMessage(appDetails, MicroStacksErrors.AppDetailsNotDefined);
+    invariantWithMessage(stxAddress, MicroStacksErrors.StxAddressNotAvailable);
+    invariantWithMessage(account, MicroStacksErrors.NoSession);
+    invariantWithMessage(params.hex, MicroStacksErrors.NoHexPassedToPSBT);
+
+    this.setIsRequestPending(StatusKeys.PsbtSigning);
+    let result: PsbtData | undefined;
+
+    await handlePSBTRequest({
+      appDetails: appDetails,
+      privateKey: account.appPrivateKey,
+      stxAddress: stxAddress,
+      network,
+      allowedSighash: params.allowedSighash,
+      hex: params.hex,
+      signAtIndex: params.signAtIndex,
+      onFinish: payload => {
+        result = payload;
+        params?.onFinish?.(payload);
+        this.setIsIdle(StatusKeys.PsbtSigning);
+      },
+      onCancel: () => {
+        params?.onCancel?.();
+        this.setIsIdle(StatusKeys.PsbtSigning);
       },
     });
 
