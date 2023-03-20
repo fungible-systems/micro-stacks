@@ -34,12 +34,14 @@ export const getPublicKeyFromSignature = ({
   hash,
   signature,
   recoveryBytes,
+  isCompressed = true,
 }: {
   hash: Uint8Array;
   signature: Signature;
   recoveryBytes: number | BigInt;
+  isCompressed?: boolean;
 }) => {
-  return recoverPublicKey(hash, signature, Number(recoveryBytes), true);
+  return recoverPublicKey(hash, signature, Number(recoveryBytes), isCompressed);
 };
 
 export const recoverSignature = (options: { signature: string; mode?: 'vrs' | 'rsv' }) => {
