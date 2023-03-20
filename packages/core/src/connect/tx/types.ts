@@ -1,6 +1,7 @@
 import type { StacksNetwork } from 'micro-stacks/network';
 import type { ClarityAbi, ClarityValue } from 'micro-stacks/clarity';
 import type { PostConditionMode, PostCondition } from 'micro-stacks/transactions';
+import { BaseRequestPayload } from '../common/requests';
 
 export enum TransactionTypes {
   ContractCall = 'contract_call',
@@ -22,14 +23,7 @@ export interface TransactionOptionsBase {
   attachment?: string;
 }
 
-export interface TransactionPayloadBase {
-  appDetails?: {
-    name: string;
-    icon: string;
-  };
-  stxAddress?: string;
-  network?: StacksNetwork;
-  publicKey?: string | null;
+export interface TransactionPayloadBase extends BaseRequestPayload {
   postConditionMode?: PostConditionMode;
   postConditions?: (string | PostCondition)[];
   onFinish?: (data: any) => void;

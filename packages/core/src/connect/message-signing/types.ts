@@ -1,20 +1,13 @@
-import { ChainID, StacksNetwork } from 'micro-stacks/network';
+import { ChainID } from 'micro-stacks/network';
 import { ClarityValue } from 'micro-stacks/clarity';
 import { SignatureData } from '../popup';
+import { BaseRequestPayload } from '../common/requests';
 
-export interface SignatureRequestOptions {
+export interface SignatureRequestOptions extends BaseRequestPayload {
   message: string;
-  appDetails: {
-    name: string;
-    icon: string;
-  };
-  authOrigin?: string;
-  stxAddress: string;
-  privateKey?: string;
-  network?: StacksNetwork;
 }
 
-export type StructuredSignatureRequestOptions = Omit<SignatureRequestOptions, 'message'> & {
+export interface StructuredSignatureRequestOptions extends BaseRequestPayload {
   message: string | ClarityValue;
   domain: {
     name: string;
@@ -23,7 +16,7 @@ export type StructuredSignatureRequestOptions = Omit<SignatureRequestOptions, 'm
     // defaults to ChainID.Mainnet
     chainId?: ChainID;
   };
-};
+}
 
 export type SignedOptionsWithOnHandlers<T> = T & {
   onFinish?: (payload: SignatureData) => void;
