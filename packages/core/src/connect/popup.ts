@@ -1,5 +1,6 @@
 import { genericTransactionPopupFactory } from './popup-helper';
 import type { StacksTransaction } from 'micro-stacks/transactions';
+import type { PsbtData } from './bitcoin/types';
 
 export interface FinishedTxData {
   stacksTransaction: StacksTransaction;
@@ -27,3 +28,5 @@ export const openSignMessagePopup =
 export const openSignStructuredDataPopup = genericTransactionPopupFactory<SignatureData>(
   'structuredDataSignatureRequest'
 );
+
+export const openPSBTPopup = genericTransactionPopupFactory<PsbtData>('psbtRequest');

@@ -43,3 +43,6 @@ export type {
   SignedOptionsWithOnHandlers,
 } from './connect/message-signing/types';
 export type { Browsers } from './connect/common/browser-utils';
+
+export type { PsbtData, PSBTOptionsWithOnHandlers, PsbtPayload } from './connect/bitcoin/types';
+export { handlePSBTRequest, generatePSBTMessagePayload } from './connect/bitcoin/psbt';

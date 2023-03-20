@@ -1,4 +1,5 @@
 import { FinishedTxData, SignatureData } from '../popup';
+import type { PsbtData } from '../bitcoin/types';
 
 export interface StacksProvider {
   /**
@@ -32,12 +33,20 @@ export interface StacksProvider {
    * @param payload - a JSON web token representing a transaction request
    */
   signatureRequest(payload: string): Promise<SignatureData>;
+
   /**
    * Request to sign a clarity message
    *
    * @param payload - a JSON web token representing a transaction request
    */
   structuredDataSignatureRequest(payload: string): Promise<SignatureData>;
+
+  /**
+   * Request to sign a partially signed bitcoin transaction
+   *
+   * @param payload - a JSON web token representing a transaction request
+   */
+  psbtRequest(payload: string): Promise<PsbtData>;
 
   getProductInfo:
     | undefined
