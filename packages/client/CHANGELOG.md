@@ -1,5 +1,12 @@
 # @micro-stacks/client
 
+## 1.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`579aefe4`](https://github.com/fungible-systems/micro-stacks/commit/579aefe4d82c9e26b8d58e76c2d2948e36af58a6)]:
+  - micro-stacks@1.1.5
+
 ## 1.1.2
 
 ### Patch Changes
