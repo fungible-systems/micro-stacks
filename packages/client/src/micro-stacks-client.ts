@@ -417,10 +417,12 @@ export class MicroStacksClient {
     domain,
     nonce,
     version = '1.0.0',
+    statement = 'Sign in with Stacks',
   }: {
     domain?: string;
     nonce: string;
     version?: string;
+    statement?: string;
   }) => {
     if (!this.handleNoStacksProviderFound()) return;
 
@@ -438,7 +440,7 @@ export class MicroStacksClient {
     return new SignInWithStacksMessage({
       domain: appDetails.name,
       address: stxAddress,
-      statement: 'Sign in with Stacks',
+      statement,
       uri: domain ?? fallbackUri,
       version,
       chainId: ChainID.Mainnet,
