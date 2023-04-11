@@ -416,7 +416,7 @@ export class MicroStacksClient {
   getSignInMessage = ({
     domain,
     nonce,
-    version = '1.0.0',
+    version = '1',
     statement = 'Sign in with Stacks',
   }: {
     domain?: string;
