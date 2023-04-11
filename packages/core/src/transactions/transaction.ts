@@ -92,11 +92,8 @@ export class StacksTransaction {
         }
         case PayloadType.ContractCall:
         case PayloadType.SmartContract:
+        case PayloadType.VersionedSmartContract:
         case PayloadType.TokenTransfer: {
-          this.anchorMode = AnchorMode.Any;
-          break;
-        }
-        default: {
           this.anchorMode = AnchorMode.Any;
           break;
         }

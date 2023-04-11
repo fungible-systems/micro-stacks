@@ -44,7 +44,11 @@ export async function makeContractDeploy(
 
   const options = Object.assign(defaultOptions, txOptions);
 
-  const payload = createSmartContractPayload(options.contractName, options.codeBody);
+  const payload = createSmartContractPayload(
+    options.contractName,
+    options.codeBody,
+    options.clarityVersion
+  );
 
   const addressHashMode = AddressHashMode.SerializeP2PKH;
   const privKey = createStacksPrivateKey(options.senderKey);

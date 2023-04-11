@@ -15,11 +15,16 @@ export async function estimateContractDeploy(
   transaction: StacksTransaction,
   network?: StacksNetwork
 ): Promise<bigint> {
-  if (transaction.payload.payloadType !== PayloadType.SmartContract) {
+  if (
+    transaction.payload.payloadType !== PayloadType.SmartContract &&
+    transaction.payload.payloadType !== PayloadType.VersionedSmartContract
+  ) {
     throw new Error(
       `Contract deploy fee estimation only possible with ${
         PayloadType[PayloadType.SmartContract]
-      } transactions. Invoked with: ${PayloadType[transaction.payload.payloadType]}`
+      } or ${PayloadType[PayloadType.VersionedSmartContract]} transactions. Invoked with: ${
+        PayloadType[transaction.payload.payloadType]
+      }`
     );
   }
 
