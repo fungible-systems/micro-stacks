@@ -28,17 +28,20 @@ import {
   intToBigInt,
   intToBytes,
 } from 'micro-stacks/common';
+import { ClarityVersion } from './common/constants';
 
 export type Payload =
   | TokenTransferPayload
   | ContractCallPayload
   | SmartContractPayload
+  | VersionedSmartContractPayload
   | PoisonPayload
   | CoinbasePayload;
 
 export enum PayloadType {
   TokenTransfer = 0x00,
   SmartContract = 0x01,
+  VersionedSmartContract = 0x06,
   ContractCall = 0x02,
   PoisonMicroblock = 0x03,
   Coinbase = 0x04,
@@ -56,6 +59,7 @@ export type PayloadInput =
   | (TokenTransferPayload | (Omit<TokenTransferPayload, 'amount'> & { amount: IntegerType }))
   | ContractCallPayload
   | SmartContractPayload
+  | VersionedSmartContractPayload
   | PoisonPayload
   | CoinbasePayload;
 
@@ -122,15 +126,34 @@ export interface SmartContractPayload {
   readonly codeBody: LengthPrefixedString;
 }
 
+export interface VersionedSmartContractPayload {
+  readonly type: StacksMessageType.Payload;
+  readonly payloadType: PayloadType.VersionedSmartContract;
+  readonly clarityVersion: ClarityVersion;
+  readonly contractName: LengthPrefixedString;
+  readonly codeBody: LengthPrefixedString;
+}
+
 export function createSmartContractPayload(
   contractName: string | LengthPrefixedString,
-  codeBody: string | LengthPrefixedString
-): SmartContractPayload {
+  codeBody: string | LengthPrefixedString,
+  clarityVersion?: ClarityVersion
+): SmartContractPayload | VersionedSmartContractPayload {
   if (typeof contractName === 'string') {
     contractName = createLPString(contractName);
   }
   if (typeof codeBody === 'string') {
     codeBody = codeBodyString(codeBody);
+  }
+
+  if (typeof clarityVersion === 'number') {
+    return {
+      type: StacksMessageType.Payload,
+      payloadType: PayloadType.VersionedSmartContract,
+      clarityVersion,
+      contractName,
+      codeBody,
+    };
   }
 
   return {
@@ -188,6 +211,11 @@ export function serializePayload(payload: PayloadInput): Uint8Array {
       bufferArray.push(serializeStacksMessage(payload.contractName));
       bufferArray.push(serializeStacksMessage(payload.codeBody));
       break;
+    case PayloadType.VersionedSmartContract:
+      bufferArray.appendByte(payload.clarityVersion);
+      bufferArray.push(serializeStacksMessage(payload.contractName));
+      bufferArray.push(serializeStacksMessage(payload.codeBody));
+      break;
     case PayloadType.PoisonMicroblock:
       // TODO: implement
       break;
@@ -230,6 +258,13 @@ export function deserializePayload(bufferReader: BufferReader): Payload {
       const smartContractName = deserializeLPString(bufferReader);
       const codeBody = deserializeLPString(bufferReader, 4, 100000);
       return createSmartContractPayload(smartContractName, codeBody);
+    case PayloadType.VersionedSmartContract:
+      const clarityVersion = bufferReader.readUInt8Enum(ClarityVersion, n => {
+        throw new Error(`Cannot recognize ClarityVersion: ${n}`);
+      });
+      const contractName = deserializeLPString(bufferReader);
+      const contractCodeBody = deserializeLPString(bufferReader, 4, 100_000);
+      return createSmartContractPayload(contractName, contractCodeBody, clarityVersion);
     case PayloadType.PoisonMicroblock:
       // TODO: implement
       return createPoisonPayload();

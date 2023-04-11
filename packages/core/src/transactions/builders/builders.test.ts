@@ -22,6 +22,7 @@ import {
   AddressHashMode,
   AnchorMode,
   PubKeyEncoding,
+  ClarityVersion,
 } from '../common/constants';
 
 import {
@@ -586,7 +587,7 @@ describe('tx builders', function () {
     expect(bytesToHex(serializedSignedTx)).toBe(signedTx);
   });
 
-  test('Make smart contract deploy', async () => {
+  test('Make versioned smart contract deploy', async () => {
     const contractName = 'kv-store';
     const codeBody = KV_STORE_CONTRACT;
     const senderKey = 'e494f188c2d35887531ba474c433b1e41fadd8eb824aca983447fd4bb8b277a801';
@@ -601,6 +602,7 @@ describe('tx builders', function () {
       nonce,
       network: new StacksTestnet(),
       anchorMode: AnchorMode.Any,
+      clarityVersion: ClarityVersion.Clarity1,
     });
 
     const serialized = bytesToHex(transaction.serialize());
@@ -881,7 +883,7 @@ describe('tx builders', function () {
 
     expect(mock.spy.calls[0][0]).toEqual(apiUrl);
     expect(mock.spy.calls[1][0]).toEqual(network.getTransferFeeEstimateApiUrl());
-    expect(mock).toHaveFetchedTimes(2)
+    expect(mock).toHaveFetchedTimes(2);
     expect(resultEstimateFee.toString()).toEqual(estimateFee.toString());
     expect(resultEstimateFee2.toString()).toEqual(estimateFee.toString());
   });
@@ -897,7 +899,7 @@ describe('tx builders', function () {
     const network = new StacksTestnet();
     const apiUrl = network.getAccountApiUrl(senderAddress);
 
-    const mock =mockGet(/.*/).willResolve(`{"balance":"0", "nonce":${nonce}}`);
+    const mock = mockGet(/.*/).willResolve(`{"balance":"0", "nonce":${nonce}}`);
 
     const fetchNonce = await getNonce(senderAddress, network);
 
@@ -1424,7 +1426,7 @@ describe('tx builders', function () {
     const network = new StacksTestnet();
 
     const abi: ClarityAbi = KV_STORE_ABI;
-    const mock = mockGet(/.*/).willResolve(JSON.stringify(abi))
+    const mock = mockGet(/.*/).willResolve(JSON.stringify(abi));
 
     await makeContractCall({
       contractAddress,

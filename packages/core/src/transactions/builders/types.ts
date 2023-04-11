@@ -1,7 +1,12 @@
 import { ClarityAbi, ClarityValue, PrincipalCV } from 'micro-stacks/clarity';
 import { IntegerType } from 'micro-stacks/common';
 import { StacksNetwork } from 'micro-stacks/network';
-import { AddressHashMode, AnchorMode, PostConditionMode } from '../common/constants';
+import {
+  AddressHashMode,
+  AnchorMode,
+  PostConditionMode,
+  ClarityVersion,
+} from '../common/constants';
 import { PostCondition } from '../postcondition';
 import { StacksTransaction } from '../transaction';
 
@@ -86,6 +91,8 @@ export interface ContractDeployOptions {
   postConditions?: PostCondition[];
   /** set to true if another account is sponsoring the transaction (covering the transaction fee) */
   sponsored?: boolean;
+  /** the Clarity version to use for the contract */
+  clarityVersion?: ClarityVersion;
 }
 
 /**

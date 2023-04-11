@@ -1,6 +1,6 @@
 import { TransactionVersion } from 'micro-stacks/common';
 import { StacksMainnet } from 'micro-stacks/network';
-import { AddressHashMode, PostConditionMode } from '../common/constants';
+import { AddressHashMode, ClarityVersion, PostConditionMode } from '../common/constants';
 import { PostCondition } from '../postcondition';
 import { StacksTransaction } from '../transaction';
 import { createSmartContractPayload } from '../payload';
@@ -39,6 +39,7 @@ export async function makeContractDeploy(
     network: new StacksMainnet(),
     postConditionMode: PostConditionMode.Deny,
     sponsored: false,
+    clarityVersion: ClarityVersion.Clarity2,
   };
 
   const options = Object.assign(defaultOptions, txOptions);

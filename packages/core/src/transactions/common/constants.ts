@@ -108,3 +108,8 @@ export enum TxRejectedReason {
   ServerFailureDatabase = 'ServerFailureDatabase',
   ServerFailureOther = 'ServerFailureOther',
 }
+
+export enum ClarityVersion {
+  Clarity1 = 1,
+  Clarity2 = 2,
+}

@@ -96,6 +96,10 @@ export class StacksTransaction {
           this.anchorMode = AnchorMode.Any;
           break;
         }
+        default: {
+          this.anchorMode = AnchorMode.Any;
+          break;
+        }
       }
     }
   }

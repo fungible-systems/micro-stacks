@@ -7,6 +7,7 @@ import {
   ContractCallPayload,
   SmartContractPayload,
   CoinbasePayload,
+  VersionedSmartContractPayload,
 } from './payload';
 
 import {
@@ -22,6 +23,7 @@ import {
 import { serializeDeserialize } from './common/test-utils';
 import { bytesToHex, bytesToUtf8, hexToBytes, utf8ToBytes } from 'micro-stacks/common';
 import { leftPadHexToLength } from './common/utils';
+import { ClarityVersion } from './common/constants';
 
 test('STX token transfer payload serialization and deserialization', () => {
   const recipient = standardPrincipalCV('SP3FGQ8Z7JY9BWYZ5WM53E0M9NK7WHJF0691NZ159');
@@ -120,6 +122,31 @@ test('Smart contract payload serialization and deserialization', () => {
     payload,
     StacksMessageType.Payload
   ) as SmartContractPayload;
+  expect(deserialized.contractName.content).toBe(contractName);
+  expect(deserialized.codeBody.content).toBe(codeBody);
+});
+
+test('Versioned smart contract payload serialization and deserialization', () => {
+  const contractName = 'contract_name';
+  const codeBody =
+    '(define-map store ((key (buff 32))) ((value (buff 32))))' +
+    '(define-public (get-value (key (buff 32)))' +
+    '   (match (map-get? store ((key key)))' +
+    '       entry (ok (get value entry))' +
+    '       (err 0)))' +
+    '(define-public (set-value (key (buff 32)) (value (buff 32)))' +
+    '   (begin' +
+    '       (map-set store ((key key)) ((value value)))' +
+    "       (ok 'true)))";
+
+  const payload = createSmartContractPayload(contractName, codeBody, ClarityVersion.Clarity2);
+
+  const deserialized = serializeDeserialize(
+    payload,
+    StacksMessageType.Payload
+  ) as VersionedSmartContractPayload;
+
+  expect(deserialized.clarityVersion).toBe(ClarityVersion.Clarity2);
   expect(deserialized.contractName.content).toBe(contractName);
   expect(deserialized.codeBody.content).toBe(codeBody);
 });
