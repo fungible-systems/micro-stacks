@@ -1,6 +1,6 @@
 import type { StacksNetwork } from 'micro-stacks/network';
 import type { ClarityAbi, ClarityValue } from 'micro-stacks/clarity';
-import type { PostConditionMode, PostCondition, ClarityVersion } from 'micro-stacks/transactions';
+import type { PostConditionMode, PostCondition } from 'micro-stacks/transactions';
 
 export enum TransactionTypes {
   ContractCall = 'contract_call',
@@ -43,7 +43,6 @@ export interface TransactionPayloadBase {
 export interface ContractDeployTxOptions extends TransactionOptionsBase {
   contractName: string;
   codeBody: string;
-  clarityVersion: ClarityVersion;
 }
 
 export interface ContractDeployTxPayload extends TransactionPayloadBase {
