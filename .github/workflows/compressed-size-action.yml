@@ -1,6 +1,6 @@
 name: Compressed Size
 
-on: [ pull_request ]
+on: [pull_request]
 
 jobs:
   build:
@@ -19,11 +19,11 @@ jobs:
         with:
           node-version: 18
 
-      - uses: pnpm/action-setup@v2.0.1
+      - uses: pnpm/action-setup@v2.2.4
         name: Install pnpm
         id: pnpm-install
         with:
-          version: 7
+          version: 8
           run_install: false
 
       - name: Get pnpm store directory
@@ -42,8 +42,7 @@ jobs:
       - name: Compressed Size Action
         uses: preactjs/compressed-size-action@v2
         with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          build-script: "build:packages"
-          pattern: "packages/**/dist/*.{js,mjs}"
-          exclude: "{**/*.map,**/node_modules/**}"
-
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          build-script: 'build:packages'
+          pattern: 'packages/**/dist/*.{js,mjs}'
+          exclude: '{**/*.map,**/node_modules/**}'

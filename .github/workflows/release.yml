@@ -16,7 +16,7 @@ jobs:
         uses: styfle/cancel-workflow-action@0.10.0
         with:
           access_token: ${{ github.token }}
-          
+
       - name: Wait for tests to succeed
         uses: lewagon/wait-on-check-action@v1.1.2
         with:
@@ -33,11 +33,11 @@ jobs:
         with:
           node-version: 18
 
-      - uses: pnpm/action-setup@v2.0.1
+      - uses: pnpm/action-setup@v2.2.4
         name: Install pnpm
         id: pnpm-install
         with:
-          version: 7
+          version: 8
           run_install: false
 
       - name: Get pnpm store directory
