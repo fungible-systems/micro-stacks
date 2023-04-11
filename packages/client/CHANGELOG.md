@@ -1,5 +1,22 @@
 # @micro-stacks/client
 
+## 1.2.0
+
+### Minor Changes
+
+- [#175](https://github.com/fungible-systems/micro-stacks/pull/175) [`85526f19`](https://github.com/fungible-systems/micro-stacks/commit/85526f194de3c1ca88e0f1157e3157c27b713d64) Thanks [@aulneau](https://github.com/aulneau)! - Adds support for PSBT signing in wallets that support it.
+
+- [#182](https://github.com/fungible-systems/micro-stacks/pull/182) [`501e8ccd`](https://github.com/fungible-systems/micro-stacks/commit/501e8ccd6eacb6291b2a599d1fa1e2178723a718) Thanks [@pradel](https://github.com/pradel)! - Export SignInWithStacksMessage class.
+
+### Patch Changes
+
+- [#181](https://github.com/fungible-systems/micro-stacks/pull/181) [`993bc132`](https://github.com/fungible-systems/micro-stacks/commit/993bc13204860aaea23af7681c32d7d99dd8ba86) Thanks [@pradel](https://github.com/pradel)! - Allow custom statement for getSignInMessage.
+
+- [#184](https://github.com/fungible-systems/micro-stacks/pull/184) [`cb3f3087`](https://github.com/fungible-systems/micro-stacks/commit/cb3f3087260fa3d913a06043eed7042c82870e95) Thanks [@pradel](https://github.com/pradel)! - Fix default version in getSignInMessage.
+
+- Updated dependencies [[`85526f19`](https://github.com/fungible-systems/micro-stacks/commit/85526f194de3c1ca88e0f1157e3157c27b713d64)]:
+  - micro-stacks@1.2.0
+
 ## 1.1.3
 
 ### Patch Changes
