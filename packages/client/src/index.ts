@@ -5,3 +5,4 @@ export * from './common/constants';
 export * from './common/storage';
 export { cleanDehydratedState } from './utils';
 export * from './getters';
+export * from './siwms';
