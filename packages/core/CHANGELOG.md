@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 1.2.0
+
+### Minor Changes
+
+- [#175](https://github.com/fungible-systems/micro-stacks/pull/175) [`85526f19`](https://github.com/fungible-systems/micro-stacks/commit/85526f194de3c1ca88e0f1157e3157c27b713d64) Thanks [@aulneau](https://github.com/aulneau)! - Adds support for PSBT signing in wallets that support it.
+
 ## 1.1.5
 
 ### Patch Changes
