@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Session client for Stacks apps using micro-stacks",
   "files": [
     "dist"
