@@ -1,5 +1,11 @@
 # micro-stacks
 
+## 1.2.1
+
+### Patch Changes
+
+- [`dd4aad69`](https://github.com/fungible-systems/micro-stacks/commit/dd4aad69ce65b4db9d102b4b182bb46b99779bee) Thanks [@aulneau](https://github.com/aulneau)! - Add check for `0x` in hex string
+
 ## 1.2.0
 
 ### Minor Changes

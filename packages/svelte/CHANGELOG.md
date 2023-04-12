@@ -1,5 +1,13 @@
 # @micro-stacks/svelte
 
+## 1.0.9
+
+### Patch Changes
+
+- Updated dependencies [[`dd4aad69`](https://github.com/fungible-systems/micro-stacks/commit/dd4aad69ce65b4db9d102b4b182bb46b99779bee)]:
+  - micro-stacks@1.2.1
+  - @micro-stacks/client@1.2.1
+
 ## 1.0.8
 
 ### Patch Changes
