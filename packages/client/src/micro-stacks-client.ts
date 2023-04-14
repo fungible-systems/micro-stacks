@@ -765,7 +765,8 @@ export class MicroStacksClient {
         console.warn('No Stacks address found while trying to fetch zonefile name');
         return undefined;
       }
-      const path = network.getCoreApiUrl() + `/v1/names/${stxAddress}/zonefile`;
+      const name = await this.fetchBNSName();
+      const path = network.getCoreApiUrl() + `/v1/names/${name}/zonefile`;
       const res = await this.fetcher(path);
       const payload = await res.json();
       return payload as { zonefile: string; address: string };
