@@ -1,7 +1,7 @@
 import { TransactionVersion } from 'micro-stacks/common';
 
 export const CLARITY_INT_BYTE_SIZE = 16;
-export const DEFAULT_CORE_NODE_API_URL = 'https://stacks-node-api.mainnet.stacks.co';
+export const DEFAULT_CORE_NODE_API_URL = 'https://api.mainnet.hiro.so';
 
 /**
  * How a transaction should get appended to the Stacks blockchain.

@@ -94,7 +94,7 @@ const PROFILE_CONTENT = [
 ];
 
 export const GET_FILE_MOCKS = [
-  rest.get('https://stacks-node-api.stacks.co/v1/names/yukan.id', (_req, res, ctx) => {
+  rest.get('https://api.mainnet.hiro.so/v1/names/yukan.id', (_req, res, ctx) => {
     return res(ctx.json(NAME_RECORD));
   }),
   rest.get('https://potato/v1/names/yukan.id', (_req, res, ctx) => {

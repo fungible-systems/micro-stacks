@@ -1,7 +1,7 @@
 import { StacksMainnet, StacksMocknet, StacksTestnet } from 'micro-stacks/network';
 
-export const HIRO_MAINNET_DEFAULT = 'https://stacks-node-api.mainnet.stacks.co';
-export const HIRO_TESTNET_DEFAULT = 'https://stacks-node-api.testnet.stacks.co';
+export const HIRO_MAINNET_DEFAULT = 'https://api.mainnet.hiro.so';
+export const HIRO_TESTNET_DEFAULT = 'https://api.testnet.hiro.so';
 export const HIRO_MOCKNET_DEFAULT = 'http://localhost:3999';
 
 describe('Setting coreApiUrl', () => {
