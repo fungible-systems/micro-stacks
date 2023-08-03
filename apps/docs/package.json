@@ -19,7 +19,7 @@
     "@tailwindcss/typography": "0.5.4",
     "fathom-client": "3.5.0",
     "jotai": "1.7.6",
-    "next": "12.2.3",
+    "next": "12.2.4",
     "nextra": "2.0.0-beta.11",
     "nextra-theme-docs": "2.0.0-beta.11",
     "patch-package": "6.4.7",
